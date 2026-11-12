@@ -264,3 +264,71 @@
     }
   }
 }
+
+/* ---------- Motion utilities (DESIGN.md § 3) ---------- */
+
+/* Page cross-fade for client navigations (see `PageTransition`). Old leaves fast, new settles gently. */
+::view-transition {
+  pointer-events: none;
+}
+
+::view-transition-old(.page-fade) {
+  animation: var(--duration-fast) var(--ease-in-out) both page-fade-out;
+}
+
+::view-transition-new(.page-fade) {
+  animation: var(--duration-base) var(--ease-out) var(--duration-fast) both page-fade-in;
+}
+
+@keyframes page-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes page-fade-in {
+  from {
+    opacity: 0;
+    translate: 0 8px;
+  }
+}
+
+/* Reading progress bar (see `ScrollProgress`): CSS scroll-driven, no JS. */
+.scroll-progress {
+  display: none;
+}
+
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    display: block;
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: var(--z-header);
+    height: 3px;
+    background: var(--color-partner);
+    transform-origin: 0 50%;
+    animation: scroll-progress linear both;
+    animation-timeline: scroll(root block);
+  }
+}
+
+@keyframes scroll-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+
+  .scroll-progress {
+    display: none;
+  }
+}

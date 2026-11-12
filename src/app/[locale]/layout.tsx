@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations } from "next-intl/server";
 
+import { MotionProvider } from "@/components/motion/motion-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { siteConfig } from "@/config/site";
 import { pickClientMessages } from "@/i18n/client-messages";
@@ -50,9 +51,15 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
 
   return (
     <html lang={locale} className={poppins.variable}>
+      <head>
+        {/* Without JS, content waiting for a scroll reveal must still be visible. */}
+        <noscript>
+          <style>{"[data-reveal]{opacity:1!important;transform:none!important}"}</style>
+        </noscript>
+      </head>
       <body className="flex min-h-dvh flex-col">
         <NextIntlClientProvider messages={pickClientMessages(messages)}>
-          {children}
+          <MotionProvider>{children}</MotionProvider>
           <Toaster />
         </NextIntlClientProvider>
       </body>
