@@ -125,6 +125,8 @@ Rules:
 - UI: compose from `src/components/ui` and merge classes with `cn()` from `@/lib/utils` (token-aware). Add a
   primitive with the shadcn CLI only to get the source, then restyle it with tokens and show it on `/design-system`.
 - Interactivity is deliberate: follow `DESIGN.md` § 1.2 before turning static content into a Client Component.
+- Motion: use the primitives in `src/components/motion` (import each from its own file). For custom animations use
+  `m` from `motion/react-m` (LazyMotion is strict) and values from `motion/tokens.ts`; follow `DESIGN.md` § 3.
 
 ### Server Actions & API
 

@@ -36,7 +36,7 @@ Status legend: ⬜ not started · 🟨 in progress · ✅ done
 
 ## Phase 2 — Design system in code & site shell
 
-Delivered as four PRs: **2a** i18n & routing ✅ · **2b** UI primitives + `/design-system` ✅ · **2c** motion primitives · **2d** site shell.
+Delivered as four PRs: **2a** i18n & routing ✅ · **2b** UI primitives + `/design-system` ✅ · **2c** motion primitives ✅ · **2d** site shell.
 
 - Tailwind `@theme` tokens and Poppins were set up early in Phase 1; this phase adds shadcn/ui init and restyle.
 - Primitives: Button, Badge, Input, Select/Combobox, Card, Accordion, Sheet, Dialog, Toast.

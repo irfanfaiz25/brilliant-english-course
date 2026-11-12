@@ -185,24 +185,30 @@ Goal: smooth, light and meaningful. Motion explains hierarchy and feedback; it i
 
 ### 3.2 Patterns (reusable components in `src/components/motion`)
 
-| Pattern                                             | Where                                                                | Implementation                                                             |
-| --------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------------- |
-| **Reveal** — fade + 16–24 px rise, once             | Section headers, cards                                               | Motion `whileInView`, `viewport={{ once: true, amount: 0.2 }}`             |
-| **Stagger** — children 60–80 ms apart, max ~6 items | Program cards, activities, steps                                     | Motion variants                                                            |
-| **CountUp**                                         | Hero / partnership stats                                             | Runs once when visible; final number rendered in HTML for SEO/no-JS        |
-| **Scroll progress**                                 | Blog article top bar                                                 | CSS `animation-timeline: scroll()` with `@supports` fallback (hidden)      |
-| **Subtle parallax**                                 | Hero decorative shapes only                                          | CSS `view()` timeline, ≤ 40 px travel; never on text                       |
-| **Page transition**                                 | Route changes on public site                                         | View Transitions API (cross-fade 200 ms + shared hero image where natural) |
-| **Micro-interactions**                              | Buttons (press), cards (lift 4 px + `shadow-lg`), form success check | CSS transitions; Motion only when physics is needed                        |
-| **Skeletons**                                       | Cek Unit results, admin tables                                       | Shimmer-free pulse (opacity), respects reduced motion                      |
+| Pattern                                          | Component (file)                              | Where                                    | Behavior                                                                                                                                                                   |
+| ------------------------------------------------ | --------------------------------------------- | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Reveal** — fade + 24 px rise, once             | `Reveal` (`reveal.tsx`)                       | Section headers, single blocks           | `whileInView`, once, at 20% visible. Below the fold only.                                                                                                                  |
+| **Stagger** — children 70 ms apart, max ~6 items | `Stagger` + `StaggerItem` (`stagger.tsx`)     | Program cards, activities, steps         | Parent reveals children in sequence; use `as="ul"` / `as="li"` for lists.                                                                                                  |
+| **CountUp**                                      | `CountUp` (`count-up.tsx`)                    | Stats rows (partnership, about)          | Final number is in the HTML and the accessible name. Counts from 0 only if off screen at load; stays static if already visible or reduced motion. Locale-aware separators. |
+| **Scroll progress**                              | `ScrollProgress` (`scroll-progress.tsx`)      | Blog article top bar                     | CSS `animation-timeline: scroll()`, zero JS; hidden without support or with reduced motion.                                                                                |
+| **Page transition**                              | `PageTransition` (in `[locale]/template.tsx`) | Every public route                       | React `<ViewTransition>` cross-fade: old out 150 ms, new in 250 ms with 8 px settle. No-op in unsupported browsers.                                                        |
+| **Subtle parallax**                              | CSS only (when needed)                        | Hero decorative shapes only              | CSS `view()` timeline, ≤ 40 px travel; never on text.                                                                                                                      |
+| **Micro-interactions**                           | Built into `components/ui`                    | Buttons (press), cards (lift), accordion | CSS transitions with duration tokens; Motion only when physics is needed.                                                                                                  |
+| **Skeletons**                                    | `Skeleton` (`components/ui`)                  | Cek Unit results, admin tables           | Opacity pulse, static with reduced motion.                                                                                                                                 |
+
+JS motion values (seconds, easing arrays) come from `src/components/motion/tokens.ts`, which mirrors the CSS tokens in § 3.1.
 
 ### 3.3 Rules
 
 - Animate **only `transform` and `opacity`** (and `clip-path` sparingly). Never animate layout properties.
-- Use `LazyMotion` + `m` components with `domAnimation` features; import from `motion/react`.
-- Motion code lives in small client leaf components; sections stay Server Components and wrap content in `<Reveal>`.
-- **No scroll-jacking**, no smooth-scroll libraries, no autoplaying carousels, no animation blocking LCP (the hero headline and image render visible immediately; only decorative elements animate in).
-- `prefers-reduced-motion: reduce` → disable translate/parallax/count-up, keep instant opacity changes. Use `MotionConfig reducedMotion="user"` plus a CSS media query.
+- `MotionProvider` (root layout) loads `domAnimation` lazily through `LazyMotion` in **strict** mode: use `m` components
+  from `motion/react-m`, never the full `motion` component (it would bundle every feature).
+- Motion code lives in small client leaf components; sections stay Server Components and wrap content in `<Reveal>` / `<Stagger>`.
+- **Never reveal the LCP element** (hero headline or image). Hero content renders visible immediately.
+- Without JS, `[data-reveal]` elements are forced visible by a `<noscript>` style in the root layout.
+- **No scroll-jacking**, no smooth-scroll libraries, no autoplaying carousels.
+- `prefers-reduced-motion: reduce` → `MotionConfig reducedMotion="user"` removes movement (opacity only), CountUp and
+  scroll progress stay static, view transitions are disabled, CSS transitions collapse to ~0 ms.
 - Each page: at most one "hero moment"; everything else is quiet reveals.
 
 ---
