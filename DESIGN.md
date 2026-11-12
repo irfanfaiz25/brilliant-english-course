@@ -19,6 +19,44 @@ Personality: _playful but trustworthy_ — fun for kids, credible for parents an
 4. **Fast is a feature.** Motion and imagery never cost Core Web Vitals.
 5. **Accessible by default.** WCAG 2.2 AA is the floor, not a stretch goal.
 
+### 1.1 Visual direction — modern & elegant
+
+- **Generous whitespace.** Sections breathe (64 → 120 px vertical); content never touches card edges (24–32 px padding).
+- **Restrained color.** Teal carries the page; orange is reserved for partnership actions and small highlights; sunny is decoration only. A section uses at most one strong fill.
+- **Soft surfaces, quiet borders.** White cards with `border-border/70` + `shadow-sm`, alternating with `surface` / `surface-warm` sections instead of heavy dividers.
+- **Large radii, consistent.** Cards `xl`, controls `md`, chips `full` — never mixed within one component.
+- **Type does the hierarchy.** Big, tight headings (Poppins 700), relaxed body (160% line height), overline labels for section context.
+- **Depth is earned.** Shadows grow only on interaction (hover lift, open menu); the playful `pop` shadow is for one hero CTA per viewport.
+- **Focus halos, not outlines.** Inputs show a soft 4 px `primary-soft` halo; everything else uses the 2 px `ring` outline.
+
+### 1.2 Interactivity — purposeful, not everywhere
+
+Make something interactive **only when it helps a visitor decide, find or act faster**. Everything else stays static
+(Server Components, zero JS). Decision checklist before adding interactivity:
+
+1. Does it answer a real question on the page (which level fits my child? is my village available? which unit is near me?)
+2. Does it reduce steps or scrolling compared to static content?
+3. Does it still make sense without JS (content in HTML, link fallback)?
+
+If 1 and 2 are not both "yes", keep it static.
+
+| Good candidates (planned)                                              | Keep static                                |
+| ---------------------------------------------------------------------- | ------------------------------------------ |
+| Age picker that highlights the matching level (Beranda, Program)       | Decorative illustrations and shapes        |
+| Level tabs with scroll-spy (Program)                                   | Section headers, paragraphs, benefit lists |
+| Region cascade + "use my location" + quota badge (Cek Unit, Kemitraan) | Testimonial text (scroll-snap is CSS only) |
+| FAQ accordion                                                          | Step lists ("3 langkah", "5 langkah")      |
+| Simple investment / ROI estimate (Kemitraan)                           | Footer, contact details                    |
+| Multi-step partner form with progress                                  | Auto-rotating carousels (never)            |
+| Blog category filter (URL-based), table of contents, reading progress  | Hover-only effects that hide information   |
+
+Rules for interactive pieces:
+
+- One focused interactive element per section; keep it a small client "island" inside a Server Component.
+- State that matters (filters, selected region, tab) lives in the URL so it is shareable and crawlable.
+- Every control gives immediate feedback (selected state, loading skeleton, toast) within 100 ms.
+- Keyboard and screen-reader complete; touch targets ≥ 44 px; works with reduced motion.
+
 ---
 
 ## 2. Tokens
@@ -44,6 +82,13 @@ Implemented as Tailwind v4 `@theme` variables in `src/styles/globals.css`.
 `neutral-0` = #FFFFFF. `cream` = #FFFBF4 (warm section background).
 
 Semantic: `success` #1E9E62 / soft #E3F5EC · `warning` #E8A317 / soft #FDF4DC · `error` #D93B3B / soft #FCE8E8 · `info` #2F80ED / soft #E6F0FD · `whatsapp` #25D366.
+
+Added beyond Penpot (Phase 2b), all in `globals.css`:
+
+- `*-strong` status shades (`success-strong` #157347, `warning-strong` #8A5A00, `destructive-strong` #B42318, `info-strong` #1D5FBF) for text on soft status backgrounds (AA).
+- Level identity: `level-kindy` (sunny), `level-intro` (teal), `level-secondary` (orange), each with `-soft` and `-strong`.
+- `whatsapp-hover` #1DA851, `overlay` (backdrop), `shadow-partner` (orange pop shadow).
+- Layer tokens: `--z-sticky` 30, `--z-header` 40, `--z-overlay` 50, `--z-toast` 60 (use `z-(--z-overlay)`).
 
 **Roles**
 
@@ -164,23 +209,33 @@ Goal: smooth, light and meaningful. Motion explains hierarchy and feedback; it i
 
 ## 4. Components
 
-Built on shadcn/ui primitives, restyled with tokens. Domain components live in `src/features/<domain>/components`.
+Primitives live in `src/components/ui` (shadcn/ui source, rewritten with our tokens — we own the code). Domain components
+live in `src/features/<domain>/components`. Preview everything at **`/design-system`** (dev and staging only).
 
-| Component                    | Variants / notes                                                                                                                                                                                                                           |
-| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Button**                   | `primary` (teal), `partner` (orange), `whatsapp` (white text), `secondary` (outline teal), `ghost`, `link`; sizes `sm` 40 / `md` 48 / `lg` 56 px height; `loading` state with spinner + disabled; icon left/right. Min touch target 44×44. |
-| **Badge**                    | Level: `Kindy` (sunny), `Intro` (teal), `Secondary` (orange). Quota: `Tersedia` (success), `Sisa N slot` (warning), `Penuh` (error), `Unit baru` (info). Always text + color, never color alone.                                           |
-| **Cascading region select**  | Province → Regency → District → Village. Each disabled with a hint until the parent is chosen ("Pilih kabupaten dulu"). Searchable (combobox) because lists can exceed 50 items. State synced to the URL.                                  |
-| **Search**                   | "Cari nama unit, kecamatan, atau kota…" — combobox with grouped results (Units / Areas), debounced 250 ms, server-side `pg_trgm`.                                                                                                          |
-| **Card · Program**           | Image, level badge, age range, 3 bullet skills, link. Whole card clickable (one link, stretched).                                                                                                                                          |
-| **Card · Unit**              | Initials avatar, name, unit code, quota badge, address, manager, schedule, level badges, actions: **Chat WhatsApp** (primary) + **Lihat Rute** (Google Maps directions link).                                                              |
-| **Section header**           | Overline + H2 + optional lead paragraph; left-aligned on mobile, centered optional on desktop.                                                                                                                                             |
-| **Navbar**                   | Desktop: links + "Gabung Mitra" CTA. Mobile: logo + "Cek Unit" icon button + menu sheet. Becomes compact with `shadow-md` after 8 px scroll. Locale switcher ID/EN.                                                                        |
-| **Sticky mobile action bar** | _(new)_ Bottom bar on mobile, context-aware: parents pages → "Cek Unit" + WhatsApp; partnership pages → "Cek Kuota" + "Daftar Mitra". Hidden while the on-page form is in view.                                                            |
-| **Accordion (FAQ)**          | Native `<details>` styled, or Radix Accordion; content always in HTML for `FAQPage` schema.                                                                                                                                                |
-| **Testimonial**              | Quote, name, role ("Orang tua siswa Kindy", "Mitra Kab. Bogor"), optional photo and rating. Horizontal scroll-snap list on mobile, grid on desktop (no auto carousel).                                                                     |
-| **Form field**               | Label above, helper/error text below, error announced via `aria-describedby`; inline validation on blur, not on every keystroke.                                                                                                           |
-| **Toast**                    | Sonner, top-center on mobile, bottom-right on desktop.                                                                                                                                                                                     |
+Implementation rules:
+
+- Merge classes with `cn()` from `@/lib/utils`; it knows our custom tokens (`text-h1` + `text-primary` both survive).
+- Variants with `cva`; no ad-hoc style props. Shared control/overlay looks come from `input-styles.ts` and `overlay-styles.ts`.
+- **Select** for short fixed lists (≤ ~10). **Combobox** (searchable) for long lists such as regions.
+- Forms use `Field`, which wires `id`, `aria-describedby`, `aria-invalid` and `aria-required` to the control:
+  `<Field label="Nama">{(control) => <Input {...control} />}</Field>`.
+- Built-in UI strings (close, search, no results) come from the `UI` message namespace.
+
+| Component                    | Variants / notes                                                                                                                                                                                                                                                    |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Button**                   | `primary` (teal), `partner` (orange), `whatsapp` (white text), `secondary` (outline teal), `ghost`, `link`; sizes `sm` 40 / `md` 48 / `lg` 56 px, `icon`; `pop` adds the pressable brand shadow; `loading` keeps the label for screen readers; `asChild` for links. |
+| **Badge**                    | Level: `Kindy` (sunny), `Intro` (teal), `Secondary` (orange). Quota: `Tersedia` (success), `Sisa N slot` (warning), `Penuh` (error), `Unit baru` (info). Always text + color, never color alone.                                                                    |
+| **Cascading region select**  | Province → Regency → District → Village. Each disabled with a hint until the parent is chosen ("Pilih kabupaten dulu"). Searchable (combobox) because lists can exceed 50 items. State synced to the URL.                                                           |
+| **Search**                   | "Cari nama unit, kecamatan, atau kota…" — combobox with grouped results (Units / Areas), debounced 250 ms, server-side `pg_trgm`.                                                                                                                                   |
+| **Card · Program**           | Image, level badge, age range, 3 bullet skills, link. Whole card clickable (one link, stretched).                                                                                                                                                                   |
+| **Card · Unit**              | Initials avatar, name, unit code, quota badge, address, manager, schedule, level badges, actions: **Chat WhatsApp** (primary) + **Lihat Rute** (Google Maps directions link).                                                                                       |
+| **Section header**           | Overline + H2 + optional lead paragraph; left-aligned on mobile, centered optional on desktop.                                                                                                                                                                      |
+| **Navbar**                   | Desktop: links + "Gabung Mitra" CTA. Mobile: logo + "Cek Unit" icon button + menu sheet. Becomes compact with `shadow-md` after 8 px scroll. Locale switcher ID/EN.                                                                                                 |
+| **Sticky mobile action bar** | _(new)_ Bottom bar on mobile, context-aware: parents pages → "Cek Unit" + WhatsApp; partnership pages → "Cek Kuota" + "Daftar Mitra". Hidden while the on-page form is in view.                                                                                     |
+| **Accordion (FAQ)**          | Radix Accordion, panels force-mounted and hidden when closed so answers stay in the HTML for `FAQPage` schema. Opening animates, closing is instant.                                                                                                                |
+| **Testimonial**              | Quote, name, role ("Orang tua siswa Kindy", "Mitra Kab. Bogor"), optional photo and rating. Horizontal scroll-snap list on mobile, grid on desktop (no auto carousel).                                                                                              |
+| **Form field**               | Label above, helper/error text below, error announced via `aria-describedby`; inline validation on blur, not on every keystroke.                                                                                                                                    |
+| **Toast**                    | Sonner, top-center on mobile, bottom-right on desktop.                                                                                                                                                                                                              |
 
 ---
 

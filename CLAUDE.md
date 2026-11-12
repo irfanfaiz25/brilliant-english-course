@@ -59,6 +59,7 @@ description; prefer what is already in the stack.
 ├── src/
 │   ├── app/
 │   │   ├── [locale]/(site)/   # public pages (localized)
+│   │   ├── [locale]/(dev)/    # internal pages, e.g. /design-system (flag-gated, noindex)
 │   │   ├── admin/             # dashboard (Indonesian UI, not localized by URL)
 │   │   ├── (auth)/            # login, reset password
 │   │   ├── api/               # route handlers (auth, webhooks, public JSON)
@@ -121,6 +122,9 @@ Rules:
   `src/styles/globals.css` (JS mirror: `src/lib/design-tokens.ts`). Never a raw hex or arbitrary
   `bg-[#…]` class. A new special color is added once as a variable and reused (`DESIGN.md` § 2, ADR-010).
 - Shared constants (routes, cache tags, limits, roles) live in one named module, not repeated literals.
+- UI: compose from `src/components/ui` and merge classes with `cn()` from `@/lib/utils` (token-aware). Add a
+  primitive with the shadcn CLI only to get the source, then restyle it with tokens and show it on `/design-system`.
+- Interactivity is deliberate: follow `DESIGN.md` § 1.2 before turning static content into a Client Component.
 
 ### Server Actions & API
 
