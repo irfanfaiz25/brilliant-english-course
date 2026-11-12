@@ -1,4 +1,6 @@
 @import "tailwindcss";
+/* Enter/exit keyframes used by overlay primitives (data-[state] animations). */
+@import "tw-animate-css";
 
 /*
  * BEC design tokens — single source of truth for colors, type, radius, shadow and motion.
@@ -70,6 +72,11 @@
   --color-red-500: #d93b3b;
   --color-blue-50: #e6f0fd;
   --color-blue-500: #2f80ed;
+  /* Darker status shades for text on soft backgrounds (AA contrast); not in Penpot. */
+  --color-green-700: #157347;
+  --color-amber-700: #8a5a00;
+  --color-red-700: #b42318;
+  --color-blue-700: #1d5fbf;
 
   --color-whatsapp-500: #25d366;
   /* Hover/pressed shade; not in Penpot. */
@@ -122,13 +129,30 @@
 
   --color-success: var(--color-green-500);
   --color-success-soft: var(--color-green-50);
+  --color-success-strong: var(--color-green-700);
   --color-warning: var(--color-amber-500);
   --color-warning-soft: var(--color-amber-50);
+  --color-warning-strong: var(--color-amber-700);
   --color-destructive: var(--color-red-500);
   --color-destructive-soft: var(--color-red-50);
+  --color-destructive-strong: var(--color-red-700);
   --color-destructive-foreground: var(--color-white);
   --color-info: var(--color-blue-500);
   --color-info-soft: var(--color-blue-50);
+  --color-info-strong: var(--color-blue-700);
+
+  /* Program level identity (badges, card accents). */
+  --color-level-kindy: var(--color-sunny-500);
+  --color-level-kindy-soft: var(--color-sunny-50);
+  --color-level-kindy-strong: var(--color-sunny-800);
+  --color-level-intro: var(--color-teal-500);
+  --color-level-intro-soft: var(--color-teal-50);
+  --color-level-intro-strong: var(--color-teal-700);
+  --color-level-secondary: var(--color-orange-500);
+  --color-level-secondary-soft: var(--color-orange-50);
+  --color-level-secondary-strong: var(--color-orange-700);
+
+  --color-overlay: rgb(10 41 48 / 0.48);
 
   /* ---------- Typography (Poppins, fluid 360 → 1440 px) ---------- */
   --text-display: clamp(2.25rem, 1.833rem + 1.852vw, 3.5rem);
@@ -193,6 +217,8 @@
   --shadow-lg: 0 12px 32px rgb(10 41 48 / 0.12);
   --shadow-brand: 0 6px 0 var(--color-primary-shadow);
   --shadow-brand-pressed: 0 2px 0 var(--color-primary-shadow);
+  --shadow-partner: 0 6px 0 var(--color-orange-700);
+  --shadow-partner-pressed: 0 2px 0 var(--color-orange-700);
 
   /* ---------- Motion ---------- */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
@@ -201,6 +227,12 @@
   --duration-base: 250ms;
   --duration-slow: 400ms;
   --duration-reveal: 600ms;
+
+  /* ---------- Layers (use as `z-(--z-overlay)`) ---------- */
+  --z-sticky: 30;
+  --z-header: 40;
+  --z-overlay: 50;
+  --z-toast: 60;
 }
 
 /* Font family comes from next/font (Poppins), exposed as a CSS variable in the root layout. */
