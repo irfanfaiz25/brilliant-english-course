@@ -17,5 +17,11 @@
     "title": "Page not found",
     "description": "The page you are looking for may have moved or never existed.",
     "backHome": "Back to home"
+  },
+  "UI": {
+    "close": "Close",
+    "search": "Search…",
+    "noResults": "No results found.",
+    "loading": "Loading…"
   }
 }
