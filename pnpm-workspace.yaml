@@ -5,3 +5,6 @@ allowBuilds:
   unrs-resolver: true
   # Bundler binary used by Vitest and drizzle-kit.
   esbuild: true
+  # Optional native deps of the next-intl message extractor (unused).
+  "@parcel/watcher": false
+  "@swc/core": false

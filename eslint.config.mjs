@@ -5,6 +5,11 @@ import prettier from "eslint-config-prettier/flat";
 
 const RAW_COLOR = String.raw`/#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})\b|\b(?:rgb|rgba|hsl|hsla|oklch)\(/`;
 
+const NO_DB_IMPORT = {
+  group: ["@/db", "@/db/*"],
+  message: "Use the feature module's queries.ts / service.ts instead of the db directly.",
+};
+
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
@@ -67,14 +72,27 @@ const eslintConfig = defineConfig([
   {
     files: ["src/app/**/*.{ts,tsx}", "src/components/**/*.{ts,tsx}"],
     rules: {
+      "no-restricted-imports": ["error", { patterns: [NO_DB_IMPORT] }],
+    },
+  },
+  // The public site navigates with locale-aware helpers (ADR-012). Repeats NO_DB_IMPORT because
+  // a later config block replaces the rule's options instead of merging them.
+  {
+    files: ["src/app/\\[locale\\]/**/*.{ts,tsx}", "src/components/site/**/*.{ts,tsx}"],
+    rules: {
       "no-restricted-imports": [
         "error",
         {
-          patterns: [
+          patterns: [NO_DB_IMPORT],
+          paths: [
             {
-              group: ["@/db", "@/db/*"],
-              message:
-                "Use the feature module's queries.ts / service.ts instead of the db directly.",
+              name: "next/link",
+              message: "Use `Link` from '@/i18n/navigation' on the public site.",
+            },
+            {
+              name: "next/navigation",
+              importNames: ["redirect", "permanentRedirect", "usePathname", "useRouter"],
+              message: "Use the locale-aware helpers from '@/i18n/navigation'.",
             },
           ],
         },

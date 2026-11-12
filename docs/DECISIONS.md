@@ -89,3 +89,11 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
 - **Decision:** Next.js 16 with Cache Components and Turbopack (defaults from `create-next-app`); `pg` (node-postgres) as the only Postgres driver, shared by Drizzle and pg-boss; ESLint + Prettier (not Biome); Husky + lint-staged + commitlint; local Postgres on host port 5433. ESLint enforces three architecture rules: no raw colors, no `process.env` outside env modules, no `@/db` imports from `app/` or `components/`.
 - **Why:** One driver and one connection pool; rules that matter are enforced by tooling, not only by review.
 - **Alternatives:** `postgres.js` driver (would mean two drivers once pg-boss is added); Biome (faster, but `eslint-config-next` rules are Next-specific).
+
+### ADR-012 — Locale routing details
+
+2026-11-13 · Accepted
+
+- **Decision:** next-intl with `localePrefix: "as-needed"` (`/` = Indonesian, `/en` = English), **no locale detection** (no `Accept-Language`, no locale cookie), localized pathnames mapped in `src/i18n/routing.ts` (route folders use Indonesian paths), hreflang via page metadata (not response headers), and the locale read through `next/root-params`. Only the message namespaces Client Components need are sent to the browser.
+- **Why:** Many Indonesian parents use phones set to English; auto-redirecting them to `/en` would hide the primary-language site. Localized URLs help SEO in both languages. Root params are the supported path with Cache Components; small client payload keeps public pages fast.
+- **Alternatives:** Browser-language detection (rejected for the reason above); Next.js built-in dictionaries without next-intl (would rebuild ICU formatting, typed messages and navigation helpers ourselves).

@@ -1,0 +1,21 @@
+{
+  "Metadata": {
+    "description": "Fun English courses for children aged 4–15. Step-by-step conversation and grammar at a BEC unit near your home."
+  },
+  "Common": {
+    "skipToContent": "Skip to content"
+  },
+  "LocaleSwitcher": {
+    "label": "Change language",
+    "locale": "{locale, select, id {Bahasa Indonesia} en {English} other {{locale}}}"
+  },
+  "HomePage": {
+    "overline": "English Courses for Kids · Ages 4–15",
+    "title": "A Fun Way to Learn English"
+  },
+  "NotFound": {
+    "title": "Page not found",
+    "description": "The page you are looking for may have moved or never existed.",
+    "backHome": "Back to home"
+  }
+}
