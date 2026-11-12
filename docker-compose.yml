@@ -1,0 +1,21 @@
+# Local development services only. Production uses a managed PostgreSQL (see docs/DECISIONS.md, ADR-002).
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: bec
+      POSTGRES_PASSWORD: bec
+      POSTGRES_DB: bec
+    ports:
+      - "${DB_PORT:-5433}:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bec -d bec"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  db-data:

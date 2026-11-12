@@ -1,0 +1,7 @@
+allowBuilds:
+  # Image optimization for next/image in production.
+  sharp: true
+  # Native resolver used by eslint-config-next.
+  unrs-resolver: true
+  # Bundler binary used by Vitest and drizzle-kit.
+  esbuild: true

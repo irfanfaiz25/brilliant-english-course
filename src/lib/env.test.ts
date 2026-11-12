@@ -1,0 +1,22 @@
+import { describe, expect, it, vi } from "vitest";
+
+vi.stubEnv("DATABASE_URL", "postgres://user:pass@localhost:5432/db");
+
+const { parseServerEnv } = await import("./env");
+
+describe("parseServerEnv", () => {
+  const valid = { DATABASE_URL: "postgres://user:pass@localhost:5432/db" };
+
+  it("applies defaults", () => {
+    expect(parseServerEnv(valid)).toMatchObject({ NODE_ENV: "development", DATABASE_POOL_MAX: 10 });
+  });
+
+  it("coerces numeric values", () => {
+    expect(parseServerEnv({ ...valid, DATABASE_POOL_MAX: "5" }).DATABASE_POOL_MAX).toBe(5);
+  });
+
+  it("rejects a missing or non-postgres DATABASE_URL", () => {
+    expect(() => parseServerEnv({})).toThrow(/DATABASE_URL/);
+    expect(() => parseServerEnv({ DATABASE_URL: "mysql://localhost/db" })).toThrow(/DATABASE_URL/);
+  });
+});

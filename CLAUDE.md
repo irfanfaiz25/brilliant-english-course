@@ -8,12 +8,12 @@
 BEC is a network of English courses for children aged 4–15, run through partner-owned
 units (franchise-style "Kemitraan"). The project is one Next.js application with:
 
-| Area | Audience | Purpose |
-|---|---|---|
-| Public website (`/`, `/en`) | Parents | Learn about programs, find the nearest unit, contact it via WhatsApp |
-| Public website | Prospective partners | Understand the partnership, check regional quota, submit an application |
-| Admin dashboard (`/admin`) | BEC staff | Manage leads, units, regional quota, programs, blog, testimonials, settings, SEO |
-| Partner portal (later phase) | Unit owners ("Mitra") | Manage their own unit only |
+| Area                         | Audience              | Purpose                                                                          |
+| ---------------------------- | --------------------- | -------------------------------------------------------------------------------- |
+| Public website (`/`, `/en`)  | Parents               | Learn about programs, find the nearest unit, contact it via WhatsApp             |
+| Public website               | Prospective partners  | Understand the partnership, check regional quota, submit an application          |
+| Admin dashboard (`/admin`)   | BEC staff             | Manage leads, units, regional quota, programs, blog, testimonials, settings, SEO |
+| Partner portal (later phase) | Unit owners ("Mitra") | Manage their own unit only                                                       |
 
 Design reference lives in Penpot (file **BEC**: pages `00 · Design System`, `01 · Website`,
 `02 · Dashboard`). It is a **direction, not a pixel spec** — improve UX where it helps.
@@ -21,24 +21,24 @@ See `DESIGN.md` for the design system, motion rules and page-level UX decisions.
 
 ## 2. Stack
 
-| Concern | Choice |
-|---|---|
-| Framework | Next.js (App Router, latest stable) + React + TypeScript (`strict`) |
-| Styling | Tailwind CSS v4, tokens defined in `src/styles/globals.css` (`@theme`) |
-| UI primitives | shadcn/ui (Radix), copied into `src/components/ui` |
-| Motion | Motion (`motion/react`, via `LazyMotion` + `m`), CSS scroll-driven animations, View Transitions |
-| Database | PostgreSQL 17, Drizzle ORM + drizzle-kit migrations |
-| Auth | Better Auth (email + password), role-based access |
-| i18n | next-intl — `id` (default, no prefix) and `en` (`/en/...`) |
-| Forms | React Hook Form + Zod (schemas shared between client and server) |
-| Tables | TanStack Table (shadcn data-table pattern) |
-| Rich text | Tiptap (blog editor), stored as JSON, rendered server-side |
-| Media | Cloudflare R2 (S3 API) + `next/image` |
-| Jobs / notifications | pg-boss (Postgres-backed queue) + a separate worker process |
-| Spam protection | Cloudflare Turnstile + honeypot + per-IP rate limit |
-| Tests | Vitest (unit/integration), Playwright (E2E) |
-| Package manager | pnpm |
-| Hosting | VPS (app, Docker) + managed PostgreSQL 17, behind Cloudflare |
+| Concern              | Choice                                                                                          |
+| -------------------- | ----------------------------------------------------------------------------------------------- |
+| Framework            | Next.js (App Router, latest stable) + React + TypeScript (`strict`)                             |
+| Styling              | Tailwind CSS v4, tokens defined in `src/styles/globals.css` (`@theme`)                          |
+| UI primitives        | shadcn/ui (Radix), copied into `src/components/ui`                                              |
+| Motion               | Motion (`motion/react`, via `LazyMotion` + `m`), CSS scroll-driven animations, View Transitions |
+| Database             | PostgreSQL 17, Drizzle ORM + drizzle-kit migrations                                             |
+| Auth                 | Better Auth (email + password), role-based access                                               |
+| i18n                 | next-intl — `id` (default, no prefix) and `en` (`/en/...`)                                      |
+| Forms                | React Hook Form + Zod (schemas shared between client and server)                                |
+| Tables               | TanStack Table (shadcn data-table pattern)                                                      |
+| Rich text            | Tiptap (blog editor), stored as JSON, rendered server-side                                      |
+| Media                | Cloudflare R2 (S3 API) + `next/image`                                                           |
+| Jobs / notifications | pg-boss (Postgres-backed queue) + a separate worker process                                     |
+| Spam protection      | Cloudflare Turnstile + honeypot + per-IP rate limit                                             |
+| Tests                | Vitest (unit/integration), Playwright (E2E)                                                     |
+| Package manager      | pnpm                                                                                            |
+| Hosting              | VPS (app, Docker) + managed PostgreSQL 17, behind Cloudflare                                    |
 
 Do not add a separate backend (Express, Nest, …). Server logic lives in Server Actions,
 Route Handlers and the worker. Do not add a new dependency without a reason in the PR
@@ -88,16 +88,17 @@ Domains: `regions`, `units`, `quota`, `partners` (leads), `programs`, `activitie
 
 Each module uses the same files (create only what is needed):
 
-| File | Contains |
-|---|---|
-| `schema.ts` | Zod schemas + inferred types (input validation) |
-| `queries.ts` | Read functions (`import "server-only"`), cached and tagged |
-| `actions.ts` | Server Actions (`"use server"`): validate → authorize → mutate → revalidate |
-| `service.ts` | Business rules shared by actions, route handlers and worker |
-| `components/` | UI specific to this domain |
-| `*.test.ts` | Colocated unit tests |
+| File          | Contains                                                                    |
+| ------------- | --------------------------------------------------------------------------- |
+| `schema.ts`   | Zod schemas + inferred types (input validation)                             |
+| `queries.ts`  | Read functions (`import "server-only"`), cached and tagged                  |
+| `actions.ts`  | Server Actions (`"use server"`): validate → authorize → mutate → revalidate |
+| `service.ts`  | Business rules shared by actions, route handlers and worker                 |
+| `components/` | UI specific to this domain                                                  |
+| `*.test.ts`   | Colocated unit tests                                                        |
 
 Rules:
+
 - Pages and components never import `db` directly — go through `queries.ts` / `service.ts`.
 - `features/a` may import from `features/b` only through its public functions, never its internals.
 - `components/ui` stays generic; domain UI goes in `features/<domain>/components`.
@@ -105,25 +106,38 @@ Rules:
 ## 4. Conventions
 
 ### TypeScript & code
+
 - `strict: true`, no `any` (use `unknown` + narrowing). No non-null `!` without a comment.
 - Server-only modules start with `import "server-only"`.
-- Environment variables are read only through `src/lib/env.ts` (Zod-validated). Never `process.env.X` elsewhere.
+- Environment variables are read only through `src/lib/env.ts` (server, Zod-validated) and `src/lib/public-env.ts`
+  (`NEXT_PUBLIC_*`). Never `process.env.X` elsewhere — ESLint enforces it. Tool configs (`drizzle.config.ts`) are the exception.
+- `src/db/client.ts` and `src/lib/env.ts` do **not** import `server-only` because the worker and scripts run them in plain Node.
+- Next.js 16 specifics: Cache Components are on (`cacheComponents: true`); request interception lives in `src/proxy.ts`
+  (not `middleware.ts`). Check `node_modules/next/dist/docs/` before using an API you are unsure about.
 - Naming: files `kebab-case.ts`, components `PascalCase`, functions `camelCase`, DB tables/columns `snake_case`.
 - Default to Server Components. Add `"use client"` only for interactivity, as low in the tree as possible.
 - Code comments and docs are written in **English**. UI copy lives in `messages/*.json`, never hard-coded.
+- No magic values for design: colors, radii, shadows, durations and z-indexes come from tokens in
+  `src/styles/globals.css` (JS mirror: `src/lib/design-tokens.ts`). Never a raw hex or arbitrary
+  `bg-[#…]` class. A new special color is added once as a variable and reused (`DESIGN.md` § 2, ADR-010).
+- Shared constants (routes, cache tags, limits, roles) live in one named module, not repeated literals.
 
 ### Server Actions & API
+
 Every mutation follows: **validate (Zod) → authorize (`can(user, action, resource)`) → mutate in a transaction when touching >1 table → write audit log → `revalidateTag`**.
 Return a typed result `{ ok: true, data } | { ok: false, error }`; never throw raw errors to the client.
 
 ### Authorization
+
 Roles: `super_admin`, `admin`, `editor`, `mitra` (mitra is scoped to its `unit_id`; portal ships in a later phase).
 Permissions are defined in one place (`src/lib/permissions.ts`) and checked on the server — hiding UI is not authorization.
 
 ### Database
+
 - Schema changes: edit `src/db/schema/*` → `pnpm db:generate` → review the SQL → commit migration with the code.
 - Never edit a migration that was already applied anywhere; add a new one.
-- Use Postgres 17 locally (Docker) to match production. Extensions: `pg_trgm`, `unaccent`.
+- Use Postgres 17 locally (Docker) to match production. Extensions `pg_trgm` and `unaccent` are created by migration `0000_enable_extensions`.
+- Driver: `pg` (node-postgres), shared by Drizzle and pg-boss.
 - Primary keys: `uuid` (v7 when available) for app data; Kemendagri codes as keys for region tables.
 - Every content table has `created_at`, `updated_at`; soft delete (`deleted_at`) for units, posts, leads.
 - Localized content uses `<entity>_translations` tables (`entity_id`, `locale`, fields…), unique on (`entity_id`, `locale`). Fallback: `en` → `id`.
@@ -131,23 +145,27 @@ Permissions are defined in one place (`src/lib/permissions.ts`) and checked on t
 - Never run migrations or seeds against a production database from a local machine.
 
 ### i18n
+
 - Locales: `id` (default, URL without prefix) and `en` (`/en`). Slugs are localized for blog posts and programs.
 - Every public page sets `alternates.languages` (hreflang) and a canonical URL.
 - Admin UI is Indonesian, but strings still go through next-intl so it can be localized later.
 
 ### SEO
+
 - Metadata is generated per route via `generateMetadata` using `src/lib/seo`:
   admin override → content-derived default → global default.
 - Technical SEO (sitemap, robots, canonical, hreflang, JSON-LD shape) lives in code, not in the admin.
 - JSON-LD: `EducationalOrganization` (site), `LocalBusiness` (unit), `Course` (program), `Article` (post), `FAQPage`, `BreadcrumbList`.
 
 ### Dynamic content (admin-editable)
+
 Content is dynamic, **layout is not**: admins edit structured fields (text, images, lists, toggles),
 never free-form page layout. Statistics shown on the site (units, cities, students) are computed
 from data, not typed in. When adding a new section, ask: does it change often, and does a
 non-developer need to change it? If yes → admin field with a sensible default in code.
 
 ### Performance & accessibility budgets (public pages, mobile, 4G)
+
 - LCP < 2.5 s, CLS < 0.1, INP < 200 ms; Lighthouse ≥ 90 in all categories.
 - First-load JS per public route kept minimal; no client component for static content.
 - WCAG 2.2 AA: semantic HTML, visible focus, keyboard reachable, contrast ≥ 4.5:1 for body text, `alt` on images.
@@ -155,17 +173,26 @@ non-developer need to change it? If yes → admin field with a sensible default 
 
 ## 5. Commands
 
-> Filled in during Phase 1 (scaffold). Expected:
+First run: `cp .env.example .env.local && pnpm i && pnpm db:up && pnpm db:migrate && pnpm dev`.
 
-| Command | Purpose |
-|---|---|
-| `pnpm dev` | Dev server |
-| `pnpm build` / `pnpm start` | Production build / run |
-| `pnpm lint` / `pnpm typecheck` / `pnpm format` | Quality checks |
-| `pnpm test` / `pnpm test:e2e` | Vitest / Playwright |
-| `pnpm db:up` | Start local Postgres (Docker Compose) |
-| `pnpm db:generate` / `pnpm db:migrate` / `pnpm db:seed` | Drizzle migrations and seed (local only) |
-| `pnpm worker` | Run the notification worker |
+| Command                                | Purpose                                                    |
+| -------------------------------------- | ---------------------------------------------------------- |
+| `pnpm dev`                             | Dev server (Turbopack) on http://localhost:3000            |
+| `pnpm build` / `pnpm start`            | Production build / run                                     |
+| `pnpm lint` / `pnpm typecheck`         | ESLint (zero warnings) / route typegen + `tsc`             |
+| `pnpm format` / `pnpm format:check`    | Prettier (with Tailwind class sorting)                     |
+| `pnpm test` / `pnpm test:watch`        | Vitest (`*.test.ts` → node, `*.test.tsx` → jsdom)          |
+| `pnpm test:e2e`                        | Playwright, desktop + mobile (Pixel 7)                     |
+| `pnpm db:up` / `pnpm db:down`          | Local Postgres 17 in Docker (host port 5433)               |
+| `pnpm db:generate` / `pnpm db:migrate` | Drizzle: create migration from schema / apply (local only) |
+| `pnpm db:studio`                       | Drizzle Studio                                             |
+| `pnpm db:seed` / `pnpm worker`         | Added in Phase 3 / Phase 6                                 |
+
+Git hooks (Husky): pre-commit runs lint-staged and checks `AGENTS.md` == `CLAUDE.md`;
+commit-msg runs commitlint (Conventional Commits, rejects AI co-author trailers).
+
+CI (`.github/workflows/ci.yml`) on PRs/pushes to `staging` and `main`: quality checks, migrations
+applied to a throwaway Postgres 17, production build and E2E.
 
 ## 6. Workflow
 
@@ -178,6 +205,7 @@ non-developer need to change it? If yes → admin field with a sensible default 
 - Record any decision that later work must follow in `docs/DECISIONS.md` (next ADR number).
 
 ### Definition of done (every PR)
+
 1. `pnpm lint`, `pnpm typecheck`, `pnpm test` pass; `pnpm build` succeeds.
 2. New logic has tests (services, permissions, validation); critical flows have an E2E spec.
 3. UI checked at 360 px, 768 px and 1440 px, keyboard-only, and with reduced motion.
@@ -185,8 +213,19 @@ non-developer need to change it? If yes → admin field with a sensible default 
 5. Docs updated when behavior, structure or a decision changed.
 
 ## 7. Don'ts
+
 - Don't copy the Penpot design pixel-for-pixel when a better pattern exists — but stay within the brand tokens.
 - Don't put secrets in code, docs, commits or logs. `.env*` files are git-ignored; `.env.example` lists keys only.
 - Don't use scroll-jacking or heavy animation libraries for decorative effects.
 - Don't fetch data in client components when a Server Component can do it.
 - Don't bypass `permissions.ts`, `env.ts` or the query layer "just for now".
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+## This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
