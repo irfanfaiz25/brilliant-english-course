@@ -2,6 +2,7 @@ import { ArrowRightIcon, BookOpenIcon, MapPinIcon, MessageCircleIcon } from "luc
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { ScrollProgress } from "@/components/motion/scroll-progress";
 import {
   Accordion,
   AccordionContent,
@@ -23,6 +24,7 @@ import { isDesignPreviewEnabled } from "@/lib/flags";
 
 import { ColorSwatches, RadiusAndShadow, TypeScale } from "./_components/foundations";
 import { FormDemo, OverlayDemo } from "./_components/interactive-demos";
+import { MotionDemo } from "./_components/motion-demo";
 import { ShowcaseSection } from "./_components/showcase-section";
 
 export const metadata: Metadata = {
@@ -40,6 +42,7 @@ const sections = [
   ["cards", "Cards"],
   ["accordion", "Accordion"],
   ["overlays", "Overlays & feedback"],
+  ["motion", "Motion"],
 ] as const;
 
 /**
@@ -51,6 +54,7 @@ export default function DesignSystemPage() {
 
   return (
     <main className="mx-auto w-full max-w-page px-5 pb-24 md:px-8">
+      <ScrollProgress />
       <header className="flex flex-col gap-4 py-12 md:py-16">
         <Badge variant="primary">Internal · not indexed</Badge>
         <h1 className="text-h1 text-foreground">BEC Design System</h1>
@@ -238,6 +242,14 @@ export default function DesignSystemPage() {
 
       <ShowcaseSection id="overlays" title="Overlays & feedback">
         <OverlayDemo />
+      </ShowcaseSection>
+
+      <ShowcaseSection
+        id="motion"
+        title="Motion"
+        description="Quiet reveals below the fold, one count-up for stats, CSS-only scroll progress and route cross-fades. All of it respects reduced motion."
+      >
+        <MotionDemo />
       </ShowcaseSection>
     </main>
   );
