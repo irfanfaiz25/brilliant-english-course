@@ -16,6 +16,10 @@ permissions:
 env:
   NEXT_PUBLIC_SITE_URL: http://localhost:3000
   NEXT_TELEMETRY_DISABLED: "1"
+  # Server env is validated at startup; the build does not connect to this database.
+  DATABASE_URL: postgres://bec:bec@localhost:5432/bec
+  # The design preview is exercised by E2E tests.
+  ENABLE_DESIGN_PREVIEW: "true"
 
 jobs:
   quality:

@@ -10,6 +10,8 @@ export const serverEnvSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
   DATABASE_URL: z.url({ protocol: /^postgres(ql)?$/ }),
   DATABASE_POOL_MAX: z.coerce.number().int().positive().default(10),
+  /** Serves the internal `/design-system` preview. Defaults to on outside production. */
+  ENABLE_DESIGN_PREVIEW: z.stringbool().optional(),
 });
 
 export type ServerEnv = z.infer<typeof serverEnvSchema>;

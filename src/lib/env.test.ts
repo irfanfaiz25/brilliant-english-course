@@ -15,6 +15,16 @@ describe("parseServerEnv", () => {
     expect(parseServerEnv({ ...valid, DATABASE_POOL_MAX: "5" }).DATABASE_POOL_MAX).toBe(5);
   });
 
+  it("parses boolean flags from strings", () => {
+    expect(parseServerEnv({ ...valid, ENABLE_DESIGN_PREVIEW: "true" }).ENABLE_DESIGN_PREVIEW).toBe(
+      true,
+    );
+    expect(parseServerEnv({ ...valid, ENABLE_DESIGN_PREVIEW: "false" }).ENABLE_DESIGN_PREVIEW).toBe(
+      false,
+    );
+    expect(parseServerEnv(valid).ENABLE_DESIGN_PREVIEW).toBeUndefined();
+  });
+
   it("rejects a missing or non-postgres DATABASE_URL", () => {
     expect(() => parseServerEnv({})).toThrow(/DATABASE_URL/);
     expect(() => parseServerEnv({ DATABASE_URL: "mysql://localhost/db" })).toThrow(/DATABASE_URL/);

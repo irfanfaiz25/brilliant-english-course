@@ -36,14 +36,14 @@ Status legend: ⬜ not started · 🟨 in progress · ✅ done
 
 ## Phase 2 — Design system in code & site shell
 
-Delivered as four PRs: **2a** i18n & routing ✅ · **2b** UI primitives + `/_design` · **2c** motion primitives · **2d** site shell.
+Delivered as four PRs: **2a** i18n & routing ✅ · **2b** UI primitives + `/design-system` ✅ · **2c** motion primitives · **2d** site shell.
 
 - Tailwind `@theme` tokens and Poppins were set up early in Phase 1; this phase adds shadcn/ui init and restyle.
 - Primitives: Button, Badge, Input, Select/Combobox, Card, Accordion, Sheet, Dialog, Toast.
 - Motion primitives: `Reveal`, `Stagger`, `CountUp`, reduced-motion handling.
 - next-intl routing (`id` default, `/en`), locale switcher, `messages/id.json` + `en.json`.
 - Public layout: Navbar (desktop + mobile sheet), footer, sticky mobile action bar, 404.
-- Internal `/_design` preview page (dev only) showing tokens and components.
+- Internal `/design-system` preview page (dev only) showing tokens and components.
 - **Done when:** components pass keyboard + contrast checks; layout works at 360–1440 px.
 
 ## Phase 3 — Data model, regions & auth

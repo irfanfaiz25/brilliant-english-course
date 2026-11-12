@@ -17,5 +17,11 @@
     "title": "Halaman tidak ditemukan",
     "description": "Halaman yang kamu cari mungkin sudah dipindahkan atau tidak pernah ada.",
     "backHome": "Kembali ke beranda"
+  },
+  "UI": {
+    "close": "Tutup",
+    "search": "Cari…",
+    "noResults": "Tidak ada hasil.",
+    "loading": "Memuat…"
   }
 }

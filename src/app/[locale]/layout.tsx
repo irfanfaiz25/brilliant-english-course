@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations } from "next-intl/server";
 
+import { Toaster } from "@/components/ui/sonner";
 import { siteConfig } from "@/config/site";
 import { pickClientMessages } from "@/i18n/client-messages";
 import { localeRegion, routing } from "@/i18n/routing";
@@ -52,6 +53,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
       <body className="flex min-h-dvh flex-col">
         <NextIntlClientProvider messages={pickClientMessages(messages)}>
           {children}
+          <Toaster />
         </NextIntlClientProvider>
       </body>
     </html>

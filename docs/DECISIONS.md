@@ -97,3 +97,11 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
 - **Decision:** next-intl with `localePrefix: "as-needed"` (`/` = Indonesian, `/en` = English), **no locale detection** (no `Accept-Language`, no locale cookie), localized pathnames mapped in `src/i18n/routing.ts` (route folders use Indonesian paths), hreflang via page metadata (not response headers), and the locale read through `next/root-params`. Only the message namespaces Client Components need are sent to the browser.
 - **Why:** Many Indonesian parents use phones set to English; auto-redirecting them to `/en` would hide the primary-language site. Localized URLs help SEO in both languages. Root params are the supported path with Cache Components; small client payload keeps public pages fast.
 - **Alternatives:** Browser-language detection (rejected for the reason above); Next.js built-in dictionaries without next-intl (would rebuild ICU formatting, typed messages and navigation helpers ourselves).
+
+### ADR-013 — UI primitives and internal design preview
+
+2026-11-13 · Accepted
+
+- **Decision:** shadcn/ui is used only as a source generator; every primitive in `src/components/ui` is rewritten with BEC tokens and owned by us. `cn()` extends tailwind-merge with our custom token names. Forms use a render-prop `Field` that wires accessibility attributes. FAQ accordion panels are force-mounted so answers stay in the HTML. An internal `/design-system` page previews tokens and primitives; it is noindex and served only when `ENABLE_DESIGN_PREVIEW` is true (default on outside production). Interactivity follows `DESIGN.md` § 1.2.
+- **Why:** Consistent, accessible components with no design drift; reviewers can check every primitive at a glance on staging; SEO keeps FAQ content.
+- **Alternatives:** Using shadcn defaults unchanged (generic look, conflicts with tokens); Storybook (extra tooling and build for a small component set).
