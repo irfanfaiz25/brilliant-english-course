@@ -5,6 +5,8 @@ export default defineConfig({
   plugins: [react()],
   resolve: { tsconfigPaths: true },
   test: {
+    // next-intl imports `next/navigation` without an extension; let Vite resolve it.
+    server: { deps: { inline: ["next-intl"] } },
     // Server-only modules throw outside React Server Components; tests run them as plain modules.
     alias: { "server-only": new URL("./tests/stubs/server-only.ts", import.meta.url).pathname },
     projects: [

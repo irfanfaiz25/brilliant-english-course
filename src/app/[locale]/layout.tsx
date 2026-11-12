@@ -1,0 +1,59 @@
+import type { Metadata, Viewport } from "next";
+import { notFound } from "next/navigation";
+import { hasLocale, NextIntlClientProvider } from "next-intl";
+import { getMessages, getTranslations } from "next-intl/server";
+
+import { siteConfig } from "@/config/site";
+import { pickClientMessages } from "@/i18n/client-messages";
+import { localeRegion, routing } from "@/i18n/routing";
+import { brandColors } from "@/lib/design-tokens";
+import { publicEnv } from "@/lib/public-env";
+import { poppins } from "@/styles/fonts";
+
+import "@/styles/globals.css";
+
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
+
+export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Promise<Metadata> {
+  const { locale } = await params;
+  if (!hasLocale(routing.locales, locale)) return {};
+
+  const t = await getTranslations({ locale, namespace: "Metadata" });
+
+  return {
+    metadataBase: new URL(publicEnv.NEXT_PUBLIC_SITE_URL),
+    title: { default: siteConfig.name, template: `%s · ${siteConfig.shortName}` },
+    description: t("description"),
+    applicationName: siteConfig.name,
+    openGraph: {
+      type: "website",
+      siteName: siteConfig.name,
+      locale: localeRegion[locale],
+      alternateLocale: routing.locales.filter((l) => l !== locale).map((l) => localeRegion[l]),
+    },
+  };
+}
+
+export const viewport: Viewport = {
+  themeColor: brandColors.teal500,
+};
+
+/** Root layout of the public site. The admin area has its own root layout (Phase 3). */
+export default async function LocaleLayout({ children, params }: LayoutProps<"/[locale]">) {
+  const { locale } = await params;
+  if (!hasLocale(routing.locales, locale)) notFound();
+
+  const messages = await getMessages();
+
+  return (
+    <html lang={locale} className={poppins.variable}>
+      <body className="flex min-h-dvh flex-col">
+        <NextIntlClientProvider messages={pickClientMessages(messages)}>
+          {children}
+        </NextIntlClientProvider>
+      </body>
+    </html>
+  );
+}

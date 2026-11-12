@@ -1,0 +1,21 @@
+{
+  "Metadata": {
+    "description": "Kursus bahasa Inggris yang seru untuk anak usia 4–15 tahun. Conversation dan grammar bertahap di unit BEC terdekat dari rumahmu."
+  },
+  "Common": {
+    "skipToContent": "Langsung ke konten"
+  },
+  "LocaleSwitcher": {
+    "label": "Ganti bahasa",
+    "locale": "{locale, select, id {Bahasa Indonesia} en {English} other {{locale}}}"
+  },
+  "HomePage": {
+    "overline": "Kursus Bahasa Inggris Anak · Usia 4–15 tahun",
+    "title": "A Fun Way to Learn English"
+  },
+  "NotFound": {
+    "title": "Halaman tidak ditemukan",
+    "description": "Halaman yang kamu cari mungkin sudah dipindahkan atau tidak pernah ada.",
+    "backHome": "Kembali ke beranda"
+  }
+}
