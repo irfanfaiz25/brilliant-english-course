@@ -111,6 +111,10 @@ Rules:
 - Naming: files `kebab-case.ts`, components `PascalCase`, functions `camelCase`, DB tables/columns `snake_case`.
 - Default to Server Components. Add `"use client"` only for interactivity, as low in the tree as possible.
 - Code comments and docs are written in **English**. UI copy lives in `messages/*.json`, never hard-coded.
+- No magic values for design: colors, radii, shadows, durations and z-indexes come from tokens in
+  `src/styles/globals.css` (JS mirror: `src/lib/design-tokens.ts`). Never a raw hex or arbitrary
+  `bg-[#…]` class. A new special color is added once as a variable and reused (`DESIGN.md` § 2, ADR-010).
+- Shared constants (routes, cache tags, limits, roles) live in one named module, not repeated literals.
 
 ### Server Actions & API
 Every mutation follows: **validate (Zod) → authorize (`can(user, action, resource)`) → mutate in a transaction when touching >1 table → write audit log → `revalidateTag`**.

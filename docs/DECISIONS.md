@@ -55,3 +55,9 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
 2026-11-13 · Accepted
 - **Decision:** Work follows `docs/ROADMAP.md` phase by phase. Branches `main` (production) and `staging`; feature branches are created from the latest `staging`; PRs into `staging`. Conventional Commits in English, no AI co-author trailers.
 - **Why:** Small, reviewable changes; easy rollback; clear control over what ships.
+
+### ADR-010 — Color tokens as global variables; white text on brand fills
+2026-11-13 · Accepted
+- **Decision:** All colors live as CSS variables in `src/styles/globals.css` in two layers (palette → semantic). Components use semantic tokens only; no raw hex anywhere. New special colors are added there once and reused; JS reads them via `src/lib/design-tokens.ts`. White text on `orange-500` and `whatsapp` fills is accepted (semibold, ≥ 16 px).
+- **Why:** Rebranding or adjusting a color is a one-file change; brand look matches Penpot.
+- **Alternatives:** Darker `orange-600` / dark text on WhatsApp green for strict AA contrast — rejected by the product owner for brand consistency.

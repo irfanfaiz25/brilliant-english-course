@@ -23,7 +23,13 @@ Personality: *playful but trustworthy* — fun for kids, credible for parents an
 
 ## 2. Tokens
 
-Implemented as Tailwind v4 `@theme` variables in `src/styles/globals.css`. Use tokens, never raw hex in components.
+Implemented as Tailwind v4 `@theme` variables in `src/styles/globals.css`.
+
+**Token rules (clean code):**
+- **No raw color values** (`#hex`, `rgb()`, arbitrary `bg-[#…]`) in components, SVGs or JS. Every color is a CSS variable.
+- Two layers: **palette** (`--color-teal-500`, …) holds raw values; **semantic** tokens (`--color-primary`, `--color-partner`, `--color-whatsapp`, `--color-surface`, …) point to the palette. Components use semantic tokens (`bg-primary`, `text-foreground`); palette classes only for decoration.
+- A new special color (a partner brand, a campaign accent, a chart color) is added **once** as a variable in `globals.css` (palette + semantic alias), then reused. Rebranding = editing that file only.
+- JS that needs a color (charts, OG images, `theme-color`) reads it from `src/lib/design-tokens.ts`, which mirrors the CSS variables — never a hard-coded hex.
 
 ### 2.1 Color
 
@@ -42,16 +48,15 @@ Semantic: `success` #1E9E62 / soft #E3F5EC · `warning` #E8A317 / soft #FDF4DC �
 | Role | Token |
 |---|---|
 | Primary action, nav, headings accent | `teal-500` (hover `teal-600`, pressed `teal-700`) |
-| Partnership CTA, highlights | `orange-600` background (see contrast note), `orange-500` for decoration |
+| Partnership CTA, highlights | `orange-500` (hover `orange-600`, pressed `orange-700`) |
 | Badges, illustrations, decoration | `sunny-*` |
 | Body text / muted text | `neutral-800` / `neutral-600` |
 | Borders / surfaces | `neutral-200` / `neutral-0`, `neutral-50`, `cream` |
 | Focus ring | `teal-400`, 2 px + 2 px offset |
 
-**Contrast rules (enhancement over Penpot):**
-- White text on `orange-500` is ~3.5:1 → fails AA for button text. **Use `orange-600` (#B8520B, ~4.9:1) for filled orange buttons**, keep `orange-500` for large display text, icons and decoration.
+**Contrast notes:**
+- White text on `orange-500` and on `whatsapp` is an accepted brand decision (ADR-010), as in Penpot. Keep that text **semibold, ≥ 16 px** (button style) — never small body text on these fills.
 - White on `teal-500` ≈ 5.9:1 ✅.
-- White text on `whatsapp` #25D366 fails. WhatsApp buttons use `neutral-900` text on `whatsapp`, or a white button with the WhatsApp icon in green.
 - `sunny-*` is never used for text on light backgrounds.
 
 ### 2.2 Typography — Poppins 400 / 500 / 600 / 700
@@ -154,7 +159,7 @@ Built on shadcn/ui primitives, restyled with tokens. Domain components live in `
 
 | Component | Variants / notes |
 |---|---|
-| **Button** | `primary` (teal), `partner` (orange-600), `whatsapp`, `secondary` (outline teal), `ghost`, `link`; sizes `sm` 40 / `md` 48 / `lg` 56 px height; `loading` state with spinner + disabled; icon left/right. Min touch target 44×44. |
+| **Button** | `primary` (teal), `partner` (orange), `whatsapp` (white text), `secondary` (outline teal), `ghost`, `link`; sizes `sm` 40 / `md` 48 / `lg` 56 px height; `loading` state with spinner + disabled; icon left/right. Min touch target 44×44. |
 | **Badge** | Level: `Kindy` (sunny), `Intro` (teal), `Secondary` (orange). Quota: `Tersedia` (success), `Sisa N slot` (warning), `Penuh` (error), `Unit baru` (info). Always text + color, never color alone. |
 | **Cascading region select** | Province → Regency → District → Village. Each disabled with a hint until the parent is chosen ("Pilih kabupaten dulu"). Searchable (combobox) because lists can exceed 50 items. State synced to the URL. |
 | **Search** | "Cari nama unit, kecamatan, atau kota…" — combobox with grouped results (Units / Areas), debounced 250 ms, server-side `pg_trgm`. |
