@@ -1,5 +1,11 @@
 import { expect, test, type Page } from "@playwright/test";
 
+/**
+ * Visible text only: while results stream in, React briefly keeps the new markup in a hidden
+ * node before swapping it in, so the same text can exist twice for a moment.
+ */
+const visibleText = (page: Page, text: string) => page.getByText(text).filter({ visible: true });
+
 const unitCards = (page: Page) =>
   page.getByRole("article").filter({ has: page.getByText(/Kode Unit/) });
 
@@ -10,7 +16,7 @@ test.describe("unit finder", () => {
     await expect(
       page.getByRole("heading", { level: 1, name: "Temukan Unit BEC Terdekat" }),
     ).toBeVisible();
-    await expect(page.getByText("8 unit aktif di jaringan BEC")).toBeVisible();
+    await expect(visibleText(page, "8 unit aktif di jaringan BEC")).toBeVisible();
     await expect(unitCards(page)).toHaveCount(8);
   });
 
@@ -45,7 +51,7 @@ test.describe("unit finder", () => {
     await page.goto("/en/find-a-unit?q=depok");
 
     await expect(page).toHaveTitle(/Find the Nearest BEC Unit/);
-    await expect(page.getByText("2 units for “depok”")).toBeVisible();
+    await expect(visibleText(page, "2 units for “depok”")).toBeVisible();
   });
 });
 
@@ -64,10 +70,10 @@ test.describe("unit finder region cascade (desktop)", () => {
       .getByRole("combobox", { name: "Kabupaten / Kota" })
       .selectOption({ label: "Kab. Bogor" });
     await expect(page).toHaveURL(/\?wilayah=32\.01$/);
-    await expect(page.getByText("4 unit aktif di Kab. Bogor")).toBeVisible();
+    await expect(visibleText(page, "4 unit aktif di Kab. Bogor")).toBeVisible();
 
     await page.getByRole("link", { name: "Hapus filter Kab. Bogor" }).click();
-    await expect(page.getByText("8 unit aktif di jaringan BEC")).toBeVisible();
+    await expect(visibleText(page, "8 unit aktif di jaringan BEC")).toBeVisible();
   });
 });
 
@@ -86,7 +92,7 @@ test.describe("unit finder region sheet (mobile)", () => {
     await sheet.getByRole("button", { name: "Lihat hasil" }).click();
 
     await expect(sheet).toBeHidden();
-    await expect(page.getByText("2 unit aktif di Kota Depok")).toBeVisible();
+    await expect(visibleText(page, "2 unit aktif di Kota Depok")).toBeVisible();
   });
 });
 
@@ -98,7 +104,7 @@ test.describe("unit finder with location", () => {
     await page.getByRole("button", { name: "Gunakan lokasi saya" }).first().click();
 
     await expect(page).toHaveURL(/lat=-6\.480&lng=106\.850/);
-    await expect(page.getByText("Diurutkan dari yang terdekat")).toBeVisible();
+    await expect(visibleText(page, "Diurutkan dari yang terdekat")).toBeVisible();
     await expect(unitCards(page).first()).toContainText("Unit Cibinong");
     await expect(unitCards(page).first()).toContainText("km");
   });
