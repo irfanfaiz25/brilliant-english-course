@@ -10,11 +10,13 @@ import { getVillageQuota } from "@/features/quota/queries";
 import { getRegionPath } from "@/features/regions/queries";
 import { routing } from "@/i18n/routing";
 import type { ActionResult } from "@/lib/action-result";
+import { hashIp } from "@/lib/audit";
 import { clientIp, createRateLimiter } from "@/lib/rate-limit";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 import { partnerApplicationSchema, type PartnerApplicationError } from "./schema";
-import { createLeadReference, createPartnerLead } from "./service";
+import { createLeadReference } from "./reference";
+import { createPartnerLead } from "./service";
 
 type SubmittedApplication = { reference: string; whatsappUrl: string; village: string };
 
@@ -25,8 +27,8 @@ const rateLimiter = createRateLimiter({
 
 /**
  * Public "Daftar Mitra" submission (ADR-007): validate → honeypot → rate limit → quota check →
- * store the lead → hand back a reference and a pre-filled WhatsApp link. Public, so there is no
- * role check; the audit log and notifications are added with the leads table (Phases 3, 6).
+ * store the lead with its audit row → hand back a reference and a pre-filled WhatsApp link. Public,
+ * so there is no role check; notifications follow in Phase 6.
  */
 export async function submitPartnerApplication(
   locale: string,
@@ -64,15 +66,17 @@ export async function submitPartnerApplication(
     return { ok: true, data: { reference, whatsappUrl: whatsappFor(reference), village } };
   }
 
-  if (!rateLimiter.hit(clientIp(await headers()))) return { ok: false, error: "rateLimited" };
+  const ip = clientIp(await headers());
+  if (!rateLimiter.hit(ip)) return { ok: false, error: "rateLimited" };
 
   const quota = await getVillageQuota(application.villageCode);
   if (quota.status === "full") return { ok: false, error: "quotaFull" };
 
   try {
-    const { reference } = await createPartnerLead(application);
+    const { reference } = await createPartnerLead(application, { locale, ipHash: hashIp(ip) });
     return { ok: true, data: { reference, whatsappUrl: whatsappFor(reference), village } };
-  } catch {
+  } catch (error) {
+    console.error("[partners] storing the lead failed", error);
     return { ok: false, error: "unknown" };
   }
 }

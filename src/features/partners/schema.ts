@@ -1,9 +1,13 @@
 import { z } from "zod";
 
-import { partnerBackgrounds, partnerSpaceOptions } from "@/config/enums";
+import { leadStatuses, partnerBackgrounds, partnerSpaceOptions } from "@/config/enums";
 import { limits } from "@/config/limits";
 import { regionCodeSchema } from "@/features/regions/schema";
 import { normalizeWhatsAppNumber } from "@/lib/whatsapp";
+
+/** Pipeline stages of a lead in admin (Phase 4d). */
+export { leadStatuses };
+export type LeadStatus = (typeof leadStatuses)[number];
 
 /** What the applicant does today; helps admins prioritise follow-ups. */
 export { partnerBackgrounds };
