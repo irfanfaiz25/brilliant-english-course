@@ -8,8 +8,9 @@ import { units } from "./units";
 export const userRoleEnum = pgEnum("user_role", userRoles);
 
 /**
- * Staff and partner accounts. Columns follow Better Auth's core user model so Phase 3b can plug
- * the library in; its session, account and verification tables arrive with it.
+ * Staff and partner accounts. Columns follow Better Auth's core user model (ADR-025); `role`,
+ * `unit_id` and `is_active` are its additional fields and can never be set through sign-in input.
+ * Better Auth stores emails lowercased; the unique index enforces it for direct writes too.
  */
 export const users = pgTable(
   "users",
