@@ -5,7 +5,7 @@ test.describe("locale routing", () => {
     await page.goto("/");
 
     await expect(page.locator("html")).toHaveAttribute("lang", "id");
-    await expect(page.getByText("Kursus Bahasa Inggris Anak · Usia 4–15 tahun")).toBeVisible();
+    await expect(page.getByText("Usia 4–15", { exact: true })).toBeVisible();
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
       "href",
       /^https?:\/\/[^/]+\/?$/,
@@ -26,7 +26,7 @@ test.describe("locale routing", () => {
 
     await expect(page).toHaveURL(/\/en$/);
     await expect(page.locator("html")).toHaveAttribute("lang", "en");
-    await expect(page.getByText("English Courses for Kids · Ages 4–15")).toBeVisible();
+    await expect(page.getByText("Ages 4–15", { exact: true })).toBeVisible();
 
     await page
       .getByRole("contentinfo")

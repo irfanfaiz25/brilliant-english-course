@@ -56,12 +56,16 @@ export async function HeroSection({ levels }: { levels: Level[] }) {
 
       <div className="mx-auto grid w-full max-w-page items-center gap-12 px-5 pt-8 pb-24 md:px-8 md:pt-12 lg:grid-cols-[1.1fr_1fr] lg:gap-16 lg:pt-14 lg:pb-32">
         <div className="flex flex-col gap-6">
+          {/* Two short segments instead of one long line, so it never wraps on phones. */}
           <p
             style={enterDelay(0)}
-            className="inline-flex w-fit animate-rise-in items-center gap-2 rounded-full border border-border/70 bg-background/80 px-3 py-1.5 text-overline tracking-wide text-partner uppercase shadow-sm backdrop-blur sm:tracking-widest"
+            className="inline-flex w-fit animate-rise-in items-center gap-2 rounded-full border border-border/70 bg-background/80 py-1 pr-1 pl-3 text-overline whitespace-nowrap text-partner uppercase shadow-sm backdrop-blur max-sm:tracking-wide"
           >
             <span aria-hidden className="size-1.5 rounded-full bg-partner" />
             {t("overline")}
+            <span className="rounded-full bg-partner-soft px-2.5 py-1 tracking-normal normal-case">
+              {t("ageBadge")}
+            </span>
           </p>
 
           <h1 id="hero-title" className="text-display text-primary">

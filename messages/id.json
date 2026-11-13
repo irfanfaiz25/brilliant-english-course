@@ -64,7 +64,7 @@
   "Home": {
     "metaTitle": "Kursus Bahasa Inggris Anak Usia 4–15 Tahun",
     "hero": {
-      "overline": "Kursus Bahasa Inggris Anak · Usia 4–15 tahun",
+      "overline": "Kursus Bahasa Inggris Anak",
       "title": "A <hl>Fun</hl> Way to Learn English",
       "lead": "Kelas bahasa Inggris yang seru untuk anak — conversation dan grammar dari dasar, diajarkan bertahap di unit BEC dekat rumahmu.",
       "primaryCta": "Cek Unit Terdekat",
@@ -77,13 +77,14 @@
       "badgeLevels": "3 level sesuai usia",
       "badgeNearby": "Unit dekat rumah",
       "badgeSmallClass": "Kelas kecil & seru",
-      "imageAlt": "Anak perempuan tersenyum sambil menulis di kelas"
+      "imageAlt": "Anak perempuan tersenyum sambil menulis di kelas",
+      "ageBadge": "Usia 4–15"
     },
     "stats": {
       "label": "BEC dalam angka",
-      "activeUnits": "Unit BEC aktif",
-      "cities": "Kota & kabupaten",
-      "students": "Siswa belajar"
+      "activeUnits": "Unit BEC<br></br> aktif",
+      "cities": "Kota &<br></br> kabupaten",
+      "students": "Siswa<br></br> belajar"
     },
     "programs": {
       "overline": "Program BEC",

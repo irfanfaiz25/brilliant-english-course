@@ -14,6 +14,11 @@ type CountUpProps = {
   prefix?: string;
   /** Seconds. */
   duration?: number;
+  /**
+   * Set when the number is invisible on first paint (e.g. inside `<Reveal>`, which starts at
+   * opacity 0). It can then count from 0 even if it is already on screen, without a visible reset.
+   */
+  hiddenOnLoad?: boolean;
   className?: string;
 };
 
@@ -22,13 +27,15 @@ type CountUpProps = {
  *
  * The final number is always in the server HTML (SEO, no-JS) and in the accessible name.
  * If the number is already on screen when the page hydrates (e.g. above the fold), it stays
- * static: resetting a visible number to 0 would look like a glitch. Reduced motion also stays static.
+ * static — resetting a visible number to 0 would look like a glitch — unless `hiddenOnLoad` says
+ * nothing is painted yet. Reduced motion always stays static.
  */
 export function CountUp({
   value,
   suffix = "",
   prefix = "",
   duration = 1.2,
+  hiddenOnLoad = false,
   className,
 }: CountUpProps) {
   const locale = useLocale();
@@ -38,17 +45,18 @@ export function CountUp({
   const [phase, setPhase] = useState<"static" | "armed" | "done">("static");
   const finalText = formatCount(value, locale);
 
-  // On mount: arm the animation only when the number is still off screen.
+  // On mount: arm the animation only when the number has not been seen yet. Runs once: the
+  // reduced-motion preference resolves after the first render and must not reset a running count.
   useEffect(() => {
     const element = ref.current;
-    if (!element || prefersReducedMotion) return;
+    if (!element || phase !== "static" || prefersReducedMotion !== false) return;
     const { top, bottom } = element.getBoundingClientRect();
     const visible = top < window.innerHeight && bottom > 0;
-    if (!visible) {
+    if (hiddenOnLoad || !visible) {
       element.textContent = formatCount(0, locale);
       setPhase("armed");
     }
-  }, [locale, prefersReducedMotion]);
+  }, [hiddenOnLoad, locale, phase, prefersReducedMotion]);
 
   useEffect(() => {
     const element = ref.current;
