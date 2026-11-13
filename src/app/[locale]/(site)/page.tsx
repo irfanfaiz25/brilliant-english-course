@@ -12,7 +12,8 @@ import { getFaqItems } from "@/features/faq/queries";
 import { getLevels } from "@/features/programs/queries";
 import { TestimonialsSection } from "@/features/testimonials/components/testimonials-section";
 import { getTestimonials } from "@/features/testimonials/queries";
-import { getFeaturedUnits, getNetworkStats } from "@/features/units/queries";
+import { unitPathsByCode } from "@/features/units/directory";
+import { getFeaturedUnits, getNetworkStats, getUnitDirectory } from "@/features/units/queries";
 import { routing } from "@/i18n/routing";
 import { localizedAlternates } from "@/lib/seo/alternates";
 
@@ -44,11 +45,12 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
 
   const t = await getTranslations("Home");
   const tWhatsApp = await getTranslations("WhatsApp");
-  const [levels, activities, stats, units, testimonials, faqItems] = await Promise.all([
+  const [levels, activities, stats, units, directory, testimonials, faqItems] = await Promise.all([
     getLevels(locale),
     getActivities(locale),
     getNetworkStats(),
     getFeaturedUnits(),
+    getUnitDirectory(),
     getTestimonials(locale, "parent"),
     getFaqItems(locale, "parents"),
   ]);
@@ -59,7 +61,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
       <StatsSection stats={stats} />
       <ProgramsSection levels={levels} />
       <ActivitiesSection activities={activities} />
-      <UnitFinderSection units={units} />
+      <UnitFinderSection units={units} unitPaths={unitPathsByCode(directory)} />
       <StepsSection />
       <PartnershipSection activeUnits={stats.activeUnits} />
       <TestimonialsSection

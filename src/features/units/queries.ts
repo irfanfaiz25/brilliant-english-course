@@ -3,7 +3,10 @@ import "server-only";
 import { cacheLife, cacheTag } from "next/cache";
 
 import { cacheTags } from "@/config/cache-tags";
+import { getRegionsByCodes } from "@/features/regions/queries";
+import { regionCodePath } from "@/features/regions/service";
 
+import { buildUnitDirectory, type UnitDirectory } from "./directory";
 import { unitFixtures } from "./fixtures";
 import type { NetworkStats, UnitSummary } from "./schema";
 
@@ -32,4 +35,17 @@ export async function getActiveUnits(): Promise<UnitSummary[]> {
   cacheTag(cacheTags.units);
   cacheLife("hours");
   return unitFixtures;
+}
+
+/**
+ * Active units grouped by province and regency with their page paths (`/unit/…`). Phase 3:
+ * the same grouping over SQL, still cached under the units and regions tags.
+ */
+export async function getUnitDirectory(): Promise<UnitDirectory> {
+  "use cache";
+  cacheTag(cacheTags.units, cacheTags.regions);
+  cacheLife("hours");
+  const units = await getActiveUnits();
+  const codes = [...new Set(units.flatMap((unit) => regionCodePath(unit.villageCode).slice(0, 2)))];
+  return buildUnitDirectory(units, await getRegionsByCodes(codes));
 }

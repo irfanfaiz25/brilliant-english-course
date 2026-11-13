@@ -19,7 +19,14 @@ import { cn } from "@/lib/utils";
  * Compact unit finder: a plain GET search form to the Cek Unit page (works without JS) and a
  * preview of active units. The full region cascade lives on the Cek Unit page (Phase 5c).
  */
-export async function UnitFinderSection({ units }: { units: UnitSummary[] }) {
+export async function UnitFinderSection({
+  units,
+  unitPaths,
+}: {
+  units: UnitSummary[];
+  /** Unit code → page path under `/unit`, so cards link to their unit page. */
+  unitPaths: Record<string, string[]>;
+}) {
   const t = await getTranslations("Home.unitFinder");
   const locale = (await getLocale()) as Locale;
   const searchAction = getPathname({ href: "/cek-unit", locale });
@@ -94,7 +101,7 @@ export async function UnitFinderSection({ units }: { units: UnitSummary[] }) {
           <Stagger as="ul" className="flex flex-col gap-4">
             {units.map((unit) => (
               <StaggerItem key={unit.code} as="li">
-                <UnitCard unit={unit} />
+                <UnitCard unit={unit} path={unitPaths[unit.code]} />
               </StaggerItem>
             ))}
           </Stagger>

@@ -417,6 +417,19 @@ Implementation rules:
   contact settings (sticky beside the form on desktop, below it on phones). The hero shows the reply window.
 - **Structured data:** `EducationalOrganization` with a customer-service `ContactPoint` and opening hours.
 
+**Unit & area pages, 5c-2:**
+
+- **URLs:** `/unit` (directory) → `/unit/{provinsi}` → `/unit/{provinsi}/{kabupaten}` → `/unit/{provinsi}/{kabupaten}/{unit}`
+  (English `/en/units/…`, same slugs). Only areas with at least one active unit get a page.
+- **Area page:** "Kursus Bahasa Inggris Anak di {area}" with fact chips (units, regencies or districts, levels),
+  regency links on province pages, the unit cards, a "sort by my location" shortcut into Cek Unit and the partner
+  banner pre-filled with the area (`/kemitraan?wilayah=…#kuota`).
+- **Unit page:** breadcrumb through province and regency, enrollment badge, an info card (address + map pin, schedule,
+  manager, enrollment note, WhatsApp + directions as a `pop` pair), the classes it offers (links into Program), the shared
+  activities section and the three nearest other units with distances.
+- **Linking:** unit names on every card (Cek Unit, Beranda, area pages) link to the unit page; the footer links to the
+  directory. Shared `PageHero` and `PartnerBanner` keep these pages identical in rhythm to Cek Unit and Blog.
+
 ### 5.4 WhatsApp deep links
 
 All WhatsApp CTAs use `https://wa.me/<number>?text=<encoded template>`. Templates come from admin settings with

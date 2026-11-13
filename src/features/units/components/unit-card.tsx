@@ -12,6 +12,7 @@ import { BrandIcon } from "@/components/icons/brand-icon";
 import { Badge, type BadgeProps } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { levelTheme } from "@/features/programs/level-theme";
+import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
@@ -31,9 +32,11 @@ type UnitCardProps = {
   unit: UnitSummary;
   /** Shown as a chip when results are sorted by distance, e.g. "2,4 km". */
   distanceLabel?: string;
+  /** Page path under `/unit` (province, regency, unit); the name links to it. */
+  path?: readonly string[];
 };
 
-export async function UnitCard({ unit, distanceLabel }: UnitCardProps) {
+export async function UnitCard({ unit, distanceLabel, path }: UnitCardProps) {
   const t = await getTranslations("Units");
   const tWhatsApp = await getTranslations("WhatsApp");
   const locale = (await getLocale()) as Locale;
@@ -49,7 +52,18 @@ export async function UnitCard({ unit, distanceLabel }: UnitCardProps) {
         </span>
         <div className="flex min-w-0 flex-1 flex-wrap items-start justify-between gap-x-3 gap-y-1.5">
           <div className="flex min-w-0 flex-col">
-            <h3 className="text-h5 text-foreground">{unit.name}</h3>
+            <h3 className="text-h5 text-foreground">
+              {path ? (
+                <Link
+                  href={{ pathname: "/unit/[...path]", params: { path: [...path] } }}
+                  className="rounded-sm underline decoration-primary/30 underline-offset-4 transition-colors duration-(--duration-fast) hover:text-primary hover:decoration-primary"
+                >
+                  {unit.name}
+                </Link>
+              ) : (
+                unit.name
+              )}
+            </h3>
             <p className="text-caption text-muted-foreground">{t("code", { code: unit.code })}</p>
           </div>
           <Badge variant={enrollmentBadge[unit.enrollment]} dot>

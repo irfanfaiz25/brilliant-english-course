@@ -1,4 +1,5 @@
 import { limits } from "@/config/limits";
+import { slugify } from "@/lib/slug";
 import type { Locale } from "@/i18n/routing";
 
 import type {
@@ -39,16 +40,6 @@ export function documentText(doc: RichTextDoc): string {
 export function readingMinutes(doc: RichTextDoc): number {
   const words = documentText(doc).split(/\s+/).filter(Boolean).length;
   return Math.max(1, Math.round(words / limits.blog.wordsPerMinute));
-}
-
-/** URL-safe anchor: lowercase ASCII words joined by dashes ("Tips & Trik!" → "tips-trik"). */
-export function slugify(text: string): string {
-  return text
-    .normalize("NFKD")
-    .replace(/[̀-ͯ]/g, "")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
 }
 
 export type PostHeading = { id: string; text: string; level: 2 | 3 };

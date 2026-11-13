@@ -34,7 +34,8 @@
     "openMenu": "Buka menu",
     "menuTitle": "Menu",
     "menuDescription": "Jelajahi program, cari unit terdekat, atau gabung jadi mitra.",
-    "homeLabel": "Brilliant English Course, ke beranda"
+    "homeLabel": "Brilliant English Course, ke beranda",
+    "allUnits": "Semua unit"
   },
   "Footer": {
     "tagline": "Kursus bahasa Inggris yang seru untuk anak usia 4–15 tahun, hadir di unit-unit BEC di seluruh Indonesia.",
@@ -707,6 +708,58 @@
       "nameTooLong": "Nama terlalu panjang.",
       "messageTooShort": "Tulis pesan minimal 10 karakter.",
       "messageTooLong": "Maksimal 500 karakter."
+    }
+  },
+  "UnitPages": {
+    "directory": {
+      "metaTitle": "Daftar Unit BEC per Wilayah",
+      "metaDescription": "Daftar unit kursus bahasa Inggris anak Brilliant English Course per provinsi dan kabupaten/kota. Lihat alamat, jadwal, dan kontak WhatsApp setiap unit.",
+      "overline": "Unit BEC",
+      "title": "Unit BEC di Berbagai Wilayah",
+      "lead": "Pilih provinsi atau kabupaten/kota untuk melihat unit BEC beserta alamat, jadwal, dan kontaknya.",
+      "unitCount": "{count, plural, other {# unit}}",
+      "regencies": "Kabupaten & kota di {province}",
+      "finder": "Cari dengan lokasi"
+    },
+    "area": {
+      "metaTitle": "Kursus Bahasa Inggris Anak di {area}",
+      "metaDescription": "{count} unit BEC di {area} untuk anak usia 4–15 tahun: kelas Kindy, Intro, dan Secondary. Lihat alamat, jadwal, dan chat WhatsApp unit terdekat.",
+      "overline": "Unit BEC · {area}",
+      "title": "Kursus Bahasa Inggris Anak di {area}",
+      "lead": "{count, plural, other {# unit BEC aktif}} di {area} untuk anak usia 4–15 tahun. Pilih unit terdekat dan tanyakan jadwal langsung lewat WhatsApp.",
+      "units": "{count, plural, other {# unit aktif}}",
+      "regencyCount": "{count, plural, other {# kabupaten/kota}}",
+      "districtCount": "{count, plural, other {# kecamatan}}",
+      "levels": "Kindy · Intro · Secondary",
+      "regenciesTitle": "Kabupaten & Kota di {area}",
+      "unitsTitle": "Unit BEC di {area}",
+      "unitsLead": "Klik nama unit untuk melihat detail, atau langsung chat admin unit.",
+      "finder": "Cari unit terdekat dari lokasimu",
+      "finderText": "Urutkan unit di {area} dari jarak terdekat dengan rumahmu.",
+      "partner": {
+        "title": "Desamu di {area} belum ada unit BEC?",
+        "text": "Setiap desa maksimal 2 unit. Cek kuota desamu dan jadilah mitra pertama di sana.",
+        "cta": "Cek kuota desamu"
+      },
+      "unitsOverline": "Daftar unit",
+      "finderCta": "Urutkan dari lokasiku"
+    },
+    "unit": {
+      "metaTitle": "{unit} — Kursus Bahasa Inggris Anak di {district}, {regency}",
+      "metaDescription": "{unit} di {district}, {regency}: kelas {levels} untuk anak usia 4–15 tahun. Lihat alamat, jadwal, dan chat WhatsApp admin unit.",
+      "overline": "Unit BEC · {regency}",
+      "lead": "Kursus bahasa Inggris anak di {district}, {regency}. Tanyakan jadwal dan pendaftaran langsung ke admin unit lewat WhatsApp.",
+      "detailsTitle": "Info unit",
+      "mapLink": "Buka di Google Maps",
+      "levelsTitle": "Kelas yang tersedia",
+      "levelsLead": "Kurikulum yang sama di setiap unit BEC.",
+      "levelAge": "{min}–{max} tahun",
+      "levelLink": "Lihat program {level}",
+      "enrollmentNote": "{status, select, open {Unit ini sedang menerima siswa baru.} limited {Kursi terbatas — tanyakan jadwal lebih dulu lewat WhatsApp.} full {Kelas sedang penuh. Tanyakan daftar tunggu atau lihat unit terdekat lainnya.} other {}}",
+      "nearbyOverline": "Terdekat",
+      "nearbyTitle": "Unit Lain di Sekitar",
+      "distance": "{distance} km dari unit ini",
+      "allInArea": "Lihat semua unit di {area}"
     }
   }
 }

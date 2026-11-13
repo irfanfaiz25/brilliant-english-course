@@ -1,16 +1,23 @@
 import { ArrowRightIcon, HandshakeIcon } from "lucide-react";
-import { getTranslations } from "next-intl/server";
+import type { ComponentProps } from "react";
 
 import { Reveal } from "@/components/motion/reveal";
-import { DecorBlob } from "@/components/site/decor-blob";
-import { Section } from "@/components/site/section";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 
-/** Cross-journey nudge for visitors whose village has no unit yet (DESIGN.md § 5.1). */
-export async function PartnerBanner() {
-  const t = await getTranslations("Finder.partner");
+import { DecorBlob } from "./decor-blob";
+import { Section } from "./section";
 
+type PartnerBannerProps = {
+  title: string;
+  text: string;
+  cta: string;
+  /** Defaults to the partnership page; pass a query to pre-select the visitor's region. */
+  href?: ComponentProps<typeof Link>["href"];
+};
+
+/** Cross-journey nudge for visitors whose village has no unit yet (DESIGN.md § 5.1). */
+export function PartnerBanner({ title, text, cta, href = "/kemitraan" }: PartnerBannerProps) {
   return (
     <Section spacing="compact" className="pb-20 md:pb-28">
       <Reveal>
@@ -24,13 +31,13 @@ export async function PartnerBanner() {
               <HandshakeIcon aria-hidden />
             </span>
             <div className="flex flex-col gap-1.5">
-              <h2 className="text-h3">{t("title")}</h2>
-              <p className="max-w-xl text-body text-inverse-muted">{t("text")}</p>
+              <h2 className="text-h3">{title}</h2>
+              <p className="max-w-xl text-body text-inverse-muted">{text}</p>
             </div>
           </div>
           <Button asChild variant="partner" size="lg" pop className="shrink-0">
-            <Link href="/kemitraan">
-              {t("cta")}
+            <Link href={href}>
+              {cta}
               <ArrowRightIcon aria-hidden />
             </Link>
           </Button>

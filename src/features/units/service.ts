@@ -52,6 +52,14 @@ export function buildDirectionsUrl(address: string): string {
   return url.toString();
 }
 
+/** Google Maps pin at the unit's coordinates (opens the app on phones). */
+export function buildMapUrl(location: { lat: number; lng: number }): string {
+  const url = new URL("https://www.google.com/maps/search/");
+  url.searchParams.set("api", "1");
+  url.searchParams.set("query", `${location.lat},${location.lng}`);
+  return url.toString();
+}
+
 /** Two-letter initials for the unit avatar, e.g. "Unit Sukamaju" → "SU". */
 export function unitInitials(name: string): string {
   const words = name

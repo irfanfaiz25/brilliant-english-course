@@ -20,6 +20,8 @@ export const routing = defineRouting({
     "/": "/",
     "/program": { id: "/program", en: "/programs" },
     "/cek-unit": { id: "/cek-unit", en: "/find-a-unit" },
+    "/unit": { id: "/unit", en: "/units" },
+    "/unit/[...path]": { id: "/unit/[...path]", en: "/units/[...path]" },
     "/kemitraan": { id: "/kemitraan", en: "/partnership" },
     "/blog": "/blog",
     "/blog/[slug]": "/blog/[slug]",

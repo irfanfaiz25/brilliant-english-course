@@ -130,7 +130,7 @@ Rules:
   reusable section building blocks (`Section`, `SectionHeader`, `DecorBlob`, `Doodle`, `PageCanvas`) live in `components/site`.
   Wrap a page's sections in `PageCanvas` so backgrounds stay continuous (`DESIGN.md` § 1.1).
   Sections used by more than one page are shared and prop-driven: `FaqSection`, `ClosingCtaSection`, `Breadcrumbs`,
-  `SectionTabs`, `UrlStateShell`, `CopyLinkButton` (`components/site`), `ActivitiesSection`, `TestimonialsSection` and `RegionFilter`
+  `SectionTabs`, `UrlStateShell`, `CopyLinkButton`, `PageHero`, `PartnerBanner` (`components/site`), `ActivitiesSection`, `TestimonialsSection` and `RegionFilter`
   (`features/<domain>/components`). Promote a section the moment a
   second page needs it; don't copy it.
 - Until the database exists, `queries.ts` returns typed fixtures from `features/<domain>/fixtures.ts` (marked

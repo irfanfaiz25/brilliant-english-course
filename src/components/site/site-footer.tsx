@@ -86,6 +86,11 @@ export async function SiteFooter() {
                 </Link>
               </li>
             ))}
+            <li>
+              <Link href="/unit" className={footerLinkClass}>
+                {tNav("allUnits")}
+              </Link>
+            </li>
           </ul>
         </nav>
 

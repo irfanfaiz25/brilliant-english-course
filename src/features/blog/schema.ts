@@ -2,12 +2,13 @@ import { z } from "zod";
 
 import type { Locale } from "@/i18n/routing";
 import { imageSchema } from "@/lib/schemas";
+import { slugSchemaPattern } from "@/lib/slug";
 
 /** Post categories; the key is also the `?kategori=` value on the blog index. */
 export const postCategories = ["tips-belajar", "parenting", "kegiatan", "kemitraan"] as const;
 export type PostCategory = (typeof postCategories)[number];
 
-export const postSlugSchema = z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/);
+export const postSlugSchema = z.string().regex(slugSchemaPattern);
 
 /* -------------------------------------------------------------------------------------------- */
 /* Rich text: the subset of Tiptap's JSON document the blog editor (Phase 4e) is allowed to    */
