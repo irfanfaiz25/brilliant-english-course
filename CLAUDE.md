@@ -125,6 +125,11 @@ Rules:
 - UI: compose from `src/components/ui` and merge classes with `cn()` from `@/lib/utils` (token-aware). Add a
   primitive with the shadcn CLI only to get the source, then restyle it with tokens and show it on `/design-system`.
 - Interactivity is deliberate: follow `DESIGN.md` § 1.2 before turning static content into a Client Component.
+- Page-specific sections are colocated in a private folder next to the page (e.g. `app/[locale]/(site)/_home/`);
+  reusable section building blocks (`Section`, `SectionHeader`, `DecorBlob`) live in `components/site`.
+- Until the database exists, `queries.ts` returns typed fixtures from `features/<domain>/fixtures.ts` (marked
+  PLACEHOLDER), cached with `"use cache"` + `cacheTag(cacheTags.x)` from `src/config/cache-tags.ts`. Placeholder photos
+  are referenced only through `src/config/placeholder-images.ts` (credits in `public/placeholders/CREDITS.md`).
 - Public pages render inside `SiteShell` (`src/app/[locale]/(site)/layout.tsx`); page content starts below the header,
   so a page provides its sections, not another `<main>`. Navigation items live in `src/config/navigation.ts`.
 - WhatsApp links are always built with `buildWhatsAppUrl()` (`src/lib/whatsapp.ts`); message templates live in the

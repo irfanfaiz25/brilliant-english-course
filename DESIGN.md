@@ -285,7 +285,15 @@ Implementation rules:
 | **Kontak**                    | Navbar link only                                                                       | Contact page: central WhatsApp, email, office address with map link, social links — all from settings.                                                                                                                                                                                                                             |
 | **404 / error** _(new)_       | —                                                                                      | Friendly illustration + search + links to Cek Unit and Program.                                                                                                                                                                                                                                                                    |
 
-### 5.3 WhatsApp deep links
+### 5.3 Implementation notes (Beranda, 5a-1)
+
+- **Hero:** headline and photo render immediately (LCP, never animated in). Floating glass badges drift slowly (`animate-float`, off for reduced motion). "Fun" is highlighted with a hand-drawn underline.
+- **Age chips** are plain `#level-<slug>` anchors: the browser scrolls to the level card and CSS `:target` rings it in the level color. No JavaScript.
+- **Stats** sit on a card that overlaps the hero's bottom edge; numbers come from `getNetworkStats()`.
+- **Level cards:** photo, level color bar, age chip, skills with level-colored checks; whole card is one link to `/program#<slug>`.
+- **Activities:** photo-led cards with text on a dark gradient; CSS scroll-snap row on phones, grid from `md`.
+
+### 5.4 WhatsApp deep links
 
 All WhatsApp CTAs use `https://wa.me/<number>?text=<encoded template>`. Templates come from admin settings with
 variables (`{unit_name}`, `{child_age}`, `{lead_ref}`, `{page_title}`) and are localized. Every click is tracked

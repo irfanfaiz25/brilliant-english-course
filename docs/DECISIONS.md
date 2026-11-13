@@ -121,3 +121,11 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
 - **Decision:** One `SiteShell` (skip link, sticky header, main landmark, footer, mobile action bar) frames every public page and the localized 404. Header elevation uses an IntersectionObserver sentinel, not scroll listeners. Navigation lives in `src/config/navigation.ts`; WhatsApp links go through `buildWhatsAppUrl()`. Visual depth comes from tokens: gradients, `DecorBlob`, `shadow-card`/glow shadows, `surface-glass` and `inverse-*` colors for dark bands. Brand icons come from `simple-icons` (only the needed glyph paths are imported).
 - **Why:** Consistent frame and journeys on every page; the product owner asked for a less flat, more dimensional look while staying light and on-brand.
 - **Alternatives:** Hand-drawn brand SVGs (risk of inaccurate logos); scroll event listeners for the header (more main-thread work).
+
+### ADR-016 — UI-first pages on typed fixtures
+
+2026-11-13 · Accepted
+
+- **Decision:** Public pages are built before the database. Each domain exposes `queries.ts` functions with the final signatures (`getLevels(locale)`, `getActivities(locale)`, `getNetworkStats()`), cached with `"use cache"`, `cacheTag` and `cacheLife`. For now they return Zod-validated fixtures from `fixtures.ts` (content from Penpot, marked PLACEHOLDER). Page sections are colocated next to their page in private folders (`_home/`). Placeholder photos come from Unsplash (free license, credited) and are referenced through one config module.
+- **Why:** The product owner can review real pages early; swapping fixtures for SQL later changes only `queries.ts`, and cache tags are already in place for admin revalidation.
+- **Alternatives:** Build the database and admin first (slower feedback on the public UX); hard-coding content inside components (would need rewrites later).
