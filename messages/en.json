@@ -153,8 +153,7 @@
     "testimonials": {
       "overline": "What Parents Say",
       "title": "Kids Who Dare to Speak English",
-      "lead": "Stories from parents whose children learn at BEC units.",
-      "rating": "Rated {rating} out of 5"
+      "lead": "Stories from parents whose children learn at BEC units."
     },
     "faq": {
       "overline": "FAQ",
@@ -189,8 +188,22 @@
     "detailLink": "See program details",
     "scrollHint": "Swipe to see more activities"
   },
+  "Testimonials": {
+    "rating": "Rated {rating} out of 5"
+  },
   "Breadcrumbs": {
     "label": "Breadcrumb"
+  },
+  "Regions": {
+    "title": "Area",
+    "province": "Province",
+    "regency": "Regency / City",
+    "district": "District",
+    "village": "Village",
+    "all": "All",
+    "chooseParentFirst": "Choose a {parent} first",
+    "apply": "Apply",
+    "reset": "Reset"
   },
   "Program": {
     "metaTitle": "English Programs for Kids: Kindy, Intro, Secondary",
@@ -278,15 +291,6 @@
       "locationHint": "Allow location access to see the units closest to home.",
       "locationDenied": "Location access was denied. Enable it in your browser settings or choose an area manually.",
       "locationUnavailable": "We couldn't get your location. Try again or choose an area.",
-      "regionTitle": "Area",
-      "province": "Province",
-      "regency": "Regency / City",
-      "district": "District",
-      "village": "Village",
-      "all": "All",
-      "chooseParentFirst": "Choose a {parent} first",
-      "apply": "Apply",
-      "reset": "Reset",
       "openFilters": "Area filter",
       "activeCount": "{count} active",
       "showResults": "Show results"

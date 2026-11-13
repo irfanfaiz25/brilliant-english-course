@@ -5,6 +5,7 @@ import { getTranslations } from "next-intl/server";
 import { ClosingCtaSection } from "@/components/site/closing-cta-section";
 import { FaqSection } from "@/components/site/faq-section";
 import { PageCanvas } from "@/components/site/page-canvas";
+import { SectionTabs } from "@/components/site/section-tabs";
 import { ActivitiesSection } from "@/features/activities/components/activities-section";
 import { getActivities } from "@/features/activities/queries";
 import { getFaqItems } from "@/features/faq/queries";
@@ -14,7 +15,6 @@ import { localizedAlternates } from "@/lib/seo/alternates";
 
 import { CompareSection } from "./_sections/compare-section";
 import { LevelDetail } from "./_sections/level-detail";
-import { LevelTabs } from "./_sections/level-tabs";
 import { ProgramHero } from "./_sections/program-hero";
 import { WhySection } from "./_sections/why-section";
 
@@ -52,12 +52,12 @@ export default async function ProgramPage({ params }: PageProps<"/[locale]/progr
   return (
     <PageCanvas>
       <ProgramHero />
-      <LevelTabs
+      <SectionTabs
         label={t("tabs.label")}
         tabs={levels.map((level) => ({
           slug: level.slug,
           label: level.name,
-          age: t("tabs.age", { min: level.ageMin, max: level.ageMax }),
+          meta: t("tabs.age", { min: level.ageMin, max: level.ageMax }),
         }))}
       />
       {levels.map((level, index) => (

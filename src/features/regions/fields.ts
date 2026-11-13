@@ -1,42 +1,38 @@
 import "server-only";
 
-import type { RegionLevelField } from "./components/region-filter";
+import { getTranslations } from "next-intl/server";
+
+import type { RegionFilterLabels, RegionLevelField } from "./components/region-filter";
 import { getRegionChildren } from "./queries";
-import type { Region } from "./schema";
+import { regionLevels, type Region } from "./schema";
 
-export const REGION_LEVEL_KEYS = ["province", "regency", "district", "village"] as const;
-export type RegionLevelKey = (typeof REGION_LEVEL_KEYS)[number];
-
-type RegionFieldLabels = {
-  /** Label per level, e.g. "Provinsi". */
-  levels: Record<RegionLevelKey, string>;
-  /** Placeholder for a level whose parent is not chosen yet. */
-  chooseParentFirst: (parentLabel: string) => string;
-};
+/** Shared labels of the `RegionFilter` cascade (`Regions` messages). */
+export async function getRegionFilterLabels(): Promise<RegionFilterLabels> {
+  const t = await getTranslations("Regions");
+  return { title: t("title"), all: t("all"), apply: t("apply"), reset: t("reset") };
+}
 
 /**
  * Builds the `RegionFilter` cascade for the selected region path: one field per level, whose
  * options are the children of the level above's selection.
  */
-export async function buildRegionFields(
-  path: readonly Region[],
-  labels: RegionFieldLabels,
-): Promise<RegionLevelField[]> {
+export async function buildRegionFields(path: readonly Region[]): Promise<RegionLevelField[]> {
+  const t = await getTranslations("Regions");
   return Promise.all(
-    REGION_LEVEL_KEYS.map(async (key, index) => {
+    regionLevels.map(async (level, index) => {
       const parent = index === 0 ? null : path[index - 1];
+      const parentLevel = regionLevels[index - 1];
       const available = index === 0 || parent !== undefined;
-      const parentKey = REGION_LEVEL_KEYS[index - 1];
       return {
-        key,
-        label: labels.levels[key],
+        key: level,
+        label: t(level),
         options: available ? await getRegionChildren(parent?.code ?? null) : [],
         value: path[index]?.code ?? null,
         parentCode: parent?.code ?? null,
         disabledHint:
-          available || !parentKey
+          available || !parentLevel
             ? undefined
-            : labels.chooseParentFirst(labels.levels[parentKey].toLowerCase()),
+            : t("chooseParentFirst", { parent: t(parentLevel).toLowerCase() }),
       };
     }),
   );

@@ -5,7 +5,7 @@ import type { CSSProperties } from "react";
 import { PendingRegion, UrlStateShell } from "@/components/site/url-state-shell";
 import { Separator } from "@/components/ui/separator";
 import { RegionFilter } from "@/features/regions/components/region-filter";
-import { buildRegionFields } from "@/features/regions/fields";
+import { buildRegionFields, getRegionFilterLabels } from "@/features/regions/fields";
 import { getRegionPath } from "@/features/regions/queries";
 import type { Region } from "@/features/regions/schema";
 import { UnitCard } from "@/features/units/components/unit-card";
@@ -50,15 +50,10 @@ export async function Finder({
   const region = path.at(-1);
   const results = searchUnits(units, { query: params.query, regionCode, near: params.near });
 
-  const fields = await buildRegionFields(path, {
-    levels: {
-      province: t("filters.province"),
-      regency: t("filters.regency"),
-      district: t("filters.district"),
-      village: t("filters.village"),
-    },
-    chooseParentFirst: (parent) => t("filters.chooseParentFirst", { parent }),
-  });
+  const [fields, regionLabels] = await Promise.all([
+    buildRegionFields(path),
+    getRegionFilterLabels(),
+  ]);
   const action = getPathname({ href: "/cek-unit", locale });
   const keepForRegion = finderQuery({ query: params.query });
   const keepForSearch = finderQuery({ regionCode, near: params.near });
@@ -70,12 +65,6 @@ export async function Finder({
       ? t("results.countIn", { count: results.length, area: region.name })
       : t("results.countAll", { count: results.length });
 
-  const filterLabels = {
-    title: t("filters.regionTitle"),
-    all: t("filters.all"),
-    apply: t("filters.apply"),
-    reset: t("filters.reset"),
-  };
   const searchBox = (idPrefix: string) => (
     <SearchBox
       action={action}
@@ -120,7 +109,7 @@ export async function Finder({
               action={action}
               fields={fields}
               keep={keepForRegion}
-              labels={filterLabels}
+              labels={regionLabels}
               idPrefix="desktop"
             />
           </div>
@@ -142,7 +131,7 @@ export async function Finder({
                 keep={keepForRegion}
                 activeCount={path.length}
                 labels={{
-                  ...filterLabels,
+                  ...regionLabels,
                   open: t("filters.openFilters"),
                   activeCount: t("filters.activeCount", { count: path.length }),
                   description: t("hero.note"),

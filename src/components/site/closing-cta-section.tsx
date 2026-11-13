@@ -1,4 +1,4 @@
-import { MapPinIcon } from "lucide-react";
+import { ClipboardPenIcon, MapPinIcon } from "lucide-react";
 
 import { BrandIcon } from "@/components/icons/brand-icon";
 import { Reveal } from "@/components/motion/reveal";
@@ -16,16 +16,21 @@ type ClosingCtaSectionProps = {
   primaryLabel: string;
   secondaryLabel: string;
   whatsappMessage: string;
+  /** Parents are sent to the unit finder, prospective partners to the application form. */
+  audience?: "parent" | "partner";
 };
 
-/** Closing call to action: one last nudge towards the two parent actions (find a unit / WhatsApp). */
+/** Closing call to action: one last nudge towards the page's main action, or WhatsApp. */
 export function ClosingCtaSection({
   title,
   lead,
   primaryLabel,
   secondaryLabel,
   whatsappMessage,
+  audience = "parent",
 }: ClosingCtaSectionProps) {
+  const forPartners = audience === "partner";
+
   return (
     <Section aria-labelledby="closing-cta-title" spacing="compact" className="pb-20 md:pb-28">
       <Reveal>
@@ -49,9 +54,9 @@ export function ClosingCtaSection({
             </h2>
             <p className="text-body-lg text-muted-foreground">{lead}</p>
             <div className="flex w-full flex-col justify-center gap-3 pt-2 sm:w-auto sm:flex-row">
-              <Button asChild size="lg" pop>
-                <Link href="/cek-unit">
-                  <MapPinIcon aria-hidden />
+              <Button asChild size="lg" variant={forPartners ? "partner" : "primary"} pop>
+                <Link href={forPartners ? { pathname: "/kemitraan", hash: "daftar" } : "/cek-unit"}>
+                  {forPartners ? <ClipboardPenIcon aria-hidden /> : <MapPinIcon aria-hidden />}
                   {primaryLabel}
                 </Link>
               </Button>

@@ -153,8 +153,7 @@
     "testimonials": {
       "overline": "Kata Orang Tua",
       "title": "Anak Jadi Berani Ngomong Inggris",
-      "lead": "Cerita dari orang tua yang anaknya belajar di unit-unit BEC.",
-      "rating": "Rating {rating} dari 5"
+      "lead": "Cerita dari orang tua yang anaknya belajar di unit-unit BEC."
     },
     "faq": {
       "overline": "Pertanyaan Umum",
@@ -189,8 +188,22 @@
     "detailLink": "Lihat detail program",
     "scrollHint": "Geser untuk melihat kegiatan lain"
   },
+  "Testimonials": {
+    "rating": "Rating {rating} dari 5"
+  },
   "Breadcrumbs": {
     "label": "Jejak navigasi"
+  },
+  "Regions": {
+    "title": "Wilayah",
+    "province": "Provinsi",
+    "regency": "Kabupaten / Kota",
+    "district": "Kecamatan",
+    "village": "Desa / Kelurahan",
+    "all": "Semua",
+    "chooseParentFirst": "Pilih {parent} dulu",
+    "apply": "Terapkan",
+    "reset": "Atur ulang"
   },
   "Program": {
     "metaTitle": "Program Kursus Bahasa Inggris Anak: Kindy, Intro, Secondary",
@@ -278,15 +291,6 @@
       "locationHint": "Izinkan lokasi untuk melihat unit terdekat dari rumahmu.",
       "locationDenied": "Izin lokasi ditolak. Aktifkan di pengaturan browser atau pilih wilayah secara manual.",
       "locationUnavailable": "Lokasimu tidak bisa didapatkan. Coba lagi atau pilih wilayah.",
-      "regionTitle": "Wilayah",
-      "province": "Provinsi",
-      "regency": "Kabupaten / Kota",
-      "district": "Kecamatan",
-      "village": "Desa / Kelurahan",
-      "all": "Semua",
-      "chooseParentFirst": "Pilih {parent} dulu",
-      "apply": "Terapkan",
-      "reset": "Atur ulang",
       "openFilters": "Filter wilayah",
       "activeCount": "{count} aktif",
       "showResults": "Lihat hasil"

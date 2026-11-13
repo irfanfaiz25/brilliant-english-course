@@ -19,12 +19,14 @@ export type RegionLevelField = {
   disabledHint?: string;
 };
 
+export type RegionFilterLabels = { title: string; all: string; apply: string; reset: string };
+
 type RegionFilterProps = {
   action: string;
   fields: readonly RegionLevelField[];
   /** Params to keep when the region changes (search text). */
   keep: Record<string, string>;
-  labels: { title: string; all: string; apply: string; reset: string };
+  labels: RegionFilterLabels;
   idPrefix: string;
   /** Called after a change, e.g. to keep a mobile sheet open or closed. */
   onChange?: () => void;
