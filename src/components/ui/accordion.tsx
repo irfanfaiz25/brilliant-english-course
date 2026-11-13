@@ -25,26 +25,36 @@ function AccordionItem({ className, ...props }: ComponentProps<typeof AccordionP
   );
 }
 
+const headingTags = { 2: "h2", 3: "h3", 4: "h4" } as const;
+
 function AccordionTrigger({
   className,
   children,
+  headingLevel = 3,
   ...props
-}: ComponentProps<typeof AccordionPrimitive.Trigger>) {
+}: ComponentProps<typeof AccordionPrimitive.Trigger> & {
+  /** Level of the heading that wraps the trigger; match the surrounding outline. */
+  headingLevel?: keyof typeof headingTags;
+}) {
+  const Heading = headingTags[headingLevel];
+
   return (
-    <AccordionPrimitive.Header className="flex">
-      <AccordionPrimitive.Trigger
-        data-slot="accordion-trigger"
-        className={cn(
-          "group flex flex-1 items-center justify-between gap-4 rounded-lg px-5 py-4 text-left text-h5 text-foreground transition-colors duration-(--duration-fast) hover:text-primary sm:px-6",
-          className,
-        )}
-        {...props}
-      >
-        {children}
-        <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground transition-[transform,background-color,color] duration-(--duration-base) ease-out group-data-[state=open]:rotate-180 group-data-[state=open]:bg-primary group-data-[state=open]:text-primary-foreground">
-          <ChevronDownIcon aria-hidden className="size-4" />
-        </span>
-      </AccordionPrimitive.Trigger>
+    <AccordionPrimitive.Header asChild>
+      <Heading className="flex">
+        <AccordionPrimitive.Trigger
+          data-slot="accordion-trigger"
+          className={cn(
+            "group flex flex-1 items-center justify-between gap-4 rounded-lg px-5 py-4 text-left text-h5 text-foreground transition-colors duration-(--duration-fast) hover:text-primary sm:px-6",
+            className,
+          )}
+          {...props}
+        >
+          {children}
+          <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground transition-[transform,background-color,color] duration-(--duration-base) ease-out group-data-[state=open]:rotate-180 group-data-[state=open]:bg-primary group-data-[state=open]:text-primary-foreground">
+            <ChevronDownIcon aria-hidden className="size-4" />
+          </span>
+        </AccordionPrimitive.Trigger>
+      </Heading>
     </AccordionPrimitive.Header>
   );
 }

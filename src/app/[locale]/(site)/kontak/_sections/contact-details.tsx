@@ -1,9 +1,9 @@
 import { ClockIcon, MailIcon, MapPinIcon, NavigationIcon } from "lucide-react";
 import { getTranslations } from "next-intl/server";
-import type { ReactNode } from "react";
 
 import { BrandIcon } from "@/components/icons/brand-icon";
 import { DecorBlob } from "@/components/site/decor-blob";
+import { FactRow } from "@/components/site/fact-row";
 import { socialNetworkNames, type SocialNetwork } from "@/config/site";
 import type { ContactSettings } from "@/features/settings/schema";
 import { buildDirectionsUrl } from "@/features/units/service";
@@ -13,28 +13,6 @@ import { buildWhatsAppUrl } from "@/lib/whatsapp";
 function displayPhone(phone: string): string {
   const local = phone.replace(/^62/, "");
   return `+62 ${local.slice(0, 3)}-${local.slice(3, 7)}-${local.slice(7)}`;
-}
-
-function DetailRow({
-  icon,
-  label,
-  children,
-}: {
-  icon: ReactNode;
-  label: string;
-  children: ReactNode;
-}) {
-  return (
-    <div className="flex items-start gap-4">
-      <span className="inline-flex size-11 shrink-0 items-center justify-center rounded-xl bg-white/10 text-sunny-300">
-        {icon}
-      </span>
-      <div className="flex min-w-0 flex-col gap-1">
-        <dt className="text-caption text-inverse-muted uppercase">{label}</dt>
-        <dd className="text-body text-inverse-foreground">{children}</dd>
-      </div>
-    </div>
-  );
 }
 
 const inverseLinkClass =
@@ -63,7 +41,7 @@ export async function ContactDetails({
       </h3>
 
       <dl className="flex flex-col gap-5">
-        <DetailRow icon={<BrandIcon name="whatsapp" className="size-5" />} label={t("whatsapp")}>
+        <FactRow tone="inverse" icon={<BrandIcon name="whatsapp" />} label={t("whatsapp")}>
           <a
             href={buildWhatsAppUrl(contact.whatsapp, tWhatsApp("general"))}
             target="_blank"
@@ -72,13 +50,13 @@ export async function ContactDetails({
           >
             {displayPhone(contact.whatsapp)}
           </a>
-        </DetailRow>
-        <DetailRow icon={<MailIcon aria-hidden className="size-5" />} label={t("email")}>
+        </FactRow>
+        <FactRow tone="inverse" icon={<MailIcon aria-hidden />} label={t("email")}>
           <a href={`mailto:${contact.email}`} className={inverseLinkClass}>
             {contact.email}
           </a>
-        </DetailRow>
-        <DetailRow icon={<MapPinIcon aria-hidden className="size-5" />} label={t("address")}>
+        </FactRow>
+        <FactRow tone="inverse" icon={<MapPinIcon aria-hidden />} label={t("address")}>
           <span className="flex flex-col gap-2">
             {contact.address}
             <a
@@ -91,14 +69,14 @@ export async function ContactDetails({
               {t("directions")}
             </a>
           </span>
-        </DetailRow>
-        <DetailRow icon={<ClockIcon aria-hidden className="size-5" />} label={t("hours")}>
+        </FactRow>
+        <FactRow tone="inverse" icon={<ClockIcon aria-hidden />} label={t("hours")}>
           <span className="flex flex-col gap-1">
             {hours.map((line) => (
               <span key={line}>{line}</span>
             ))}
           </span>
-        </DetailRow>
+        </FactRow>
       </dl>
 
       <div className="flex flex-col gap-3 border-t border-white/10 pt-6">

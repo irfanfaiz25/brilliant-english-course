@@ -9,8 +9,11 @@ test.describe("motion", () => {
     const stats = page.getByTestId("count-up-demo");
     await stats.scrollIntoViewIfNeeded();
 
-    await expect(stats.getByLabel("5.400+")).toBeVisible();
-    await expect(stats.getByLabel("5.400+")).toHaveText("5.400+", { timeout: 5000 });
+    // The animated digits are aria-hidden; assistive tech reads the final value once.
+    await expect(stats.locator(".tabular-nums").filter({ hasText: "5.400" })).toBeVisible({
+      timeout: 5000,
+    });
+    await expect(stats).toMatchAriaSnapshot(`- definition: "5.400+"`);
   });
 
   test("reveals settle without movement when reduced motion is requested", async ({ page }) => {

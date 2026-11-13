@@ -31,13 +31,19 @@ type LevelDetailProps = {
   level: Level;
   /** Alternates the photo side on desktop so the page reads as a rhythm. */
   reversed?: boolean;
+  /** The first level sits in the first viewport, so it renders without entrance animations. */
+  aboveFold?: boolean;
 };
 
 /**
  * One program level: what it is, what children learn, class facts, the two parent actions, and
  * `Course` structured data. `id` = level slug, the target of `/program#<slug>` links and the tabs.
  */
-export async function LevelDetail({ level, reversed = false }: LevelDetailProps) {
+export async function LevelDetail({
+  level,
+  reversed = false,
+  aboveFold = false,
+}: LevelDetailProps) {
   const t = await getTranslations("Program.level");
   const tWhatsApp = await getTranslations("WhatsApp");
   const locale = (await getLocale()) as Locale;
@@ -77,7 +83,7 @@ export async function LevelDetail({ level, reversed = false }: LevelDetailProps)
 
       <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
         <div className={cn("flex flex-col gap-6", reversed && "lg:order-2")}>
-          <Reveal className="flex flex-col gap-3">
+          <Reveal immediate={aboveFold} className="flex flex-col gap-3">
             <Badge variant={theme.badge} className="text-label">
               {t("ages", { min: level.ageMin, max: level.ageMax })}
             </Badge>
@@ -89,7 +95,7 @@ export async function LevelDetail({ level, reversed = false }: LevelDetailProps)
 
           <div className="flex flex-col gap-3">
             <p className="text-overline text-muted-foreground uppercase">{t("learnTitle")}</p>
-            <Stagger as="ul" className="grid gap-2.5 sm:grid-cols-2">
+            <Stagger as="ul" immediate={aboveFold} className="grid gap-2.5 sm:grid-cols-2">
               {level.curriculum.map((topic) => (
                 <StaggerItem
                   key={topic}
@@ -111,7 +117,7 @@ export async function LevelDetail({ level, reversed = false }: LevelDetailProps)
             </Stagger>
           </div>
 
-          <Reveal as="div" className="flex flex-col gap-6">
+          <Reveal as="div" immediate={aboveFold} className="flex flex-col gap-6">
             <ul className="flex flex-wrap gap-2">
               <Fact icon={<CalendarDaysIcon aria-hidden />}>
                 {t("sessions", { count: level.sessionsPerWeek })}
@@ -146,6 +152,7 @@ export async function LevelDetail({ level, reversed = false }: LevelDetailProps)
         </div>
 
         <Reveal
+          immediate={aboveFold}
           className={cn("relative mx-auto w-full max-w-md lg:max-w-none", reversed && "lg:order-1")}
         >
           <span

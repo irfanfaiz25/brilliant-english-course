@@ -38,7 +38,7 @@ export function ActivityCard({
         {detailLabel && (
           <Link
             href={{ pathname: "/program", hash: "kegiatan" }}
-            className="mt-1 inline-flex items-center gap-1 text-label text-sunny-300 after:absolute after:inset-0 after:rounded-xl focus-visible:outline-none"
+            className="mt-1 inline-flex items-center gap-1 text-label text-sunny-300 after:absolute after:inset-0 after:rounded-xl focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:outline-offset-2 focus-visible:after:outline-ring"
           >
             {detailLabel}
             <ArrowUpRightIcon

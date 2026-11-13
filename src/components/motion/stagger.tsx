@@ -25,13 +25,15 @@ type StaggerProps = {
   className?: string;
   /** Rendered element; use `ul` with `StaggerItem as="li"` for lists. */
   as?: "div" | "ul" | "ol";
+  /** Render in the final state, without the entrance (first-viewport content, see `Reveal`). */
+  immediate?: boolean;
 };
 
 const containers = { div: m.div, ul: m.ul, ol: m.ol };
 const items = { div: m.div, li: m.li, article: m.article };
 
 /** Reveals its `StaggerItem` children one after another when the group scrolls into view. */
-export function Stagger({ children, className, as = "div" }: StaggerProps) {
+export function Stagger({ children, className, as = "div", immediate = false }: StaggerProps) {
   const Element = containers[as];
 
   return (
@@ -39,7 +41,7 @@ export function Stagger({ children, className, as = "div" }: StaggerProps) {
       data-reveal=""
       className={className}
       variants={container}
-      initial="hidden"
+      initial={immediate ? false : "hidden"}
       whileInView="visible"
       viewport={{ once: true, amount: 0.15 }}
     >

@@ -8,12 +8,12 @@ import {
   UserRoundIcon,
 } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
-import type { ReactNode } from "react";
 
 import { BrandIcon } from "@/components/icons/brand-icon";
 import { Reveal } from "@/components/motion/reveal";
 import { Stagger, StaggerItem } from "@/components/motion/stagger";
 import { DecorBlob } from "@/components/site/decor-blob";
+import { FactRow } from "@/components/site/fact-row";
 import { HeroChip, PageHero } from "@/components/site/page-hero";
 import { Section } from "@/components/site/section";
 import { SectionHeader } from "@/components/site/section-header";
@@ -58,20 +58,6 @@ const unitHref = (path: readonly string[]) => ({
   pathname: "/unit/[...path]" as const,
   params: { path: [...path] },
 });
-
-function Fact({ icon, label, children }: { icon: ReactNode; label: string; children: ReactNode }) {
-  return (
-    <div className="flex items-start gap-4">
-      <span className="inline-flex size-11 shrink-0 items-center justify-center rounded-xl bg-primary-soft text-primary [&_svg]:size-5">
-        {icon}
-      </span>
-      <div className="flex min-w-0 flex-col gap-1">
-        <dt className="text-caption text-muted-foreground uppercase">{label}</dt>
-        <dd className="text-body text-foreground">{children}</dd>
-      </div>
-    </div>
-  );
-}
 
 /**
  * One unit's page: who and where it is, schedule, classes, the two actions parents need
@@ -133,7 +119,8 @@ export async function UnitView({
 
       <Section aria-labelledby="unit-details-title" spacing="compact" className="pt-2 md:pt-4">
         <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-8">
-          <Reveal>
+          {/* Directly under the hero, so it is in the first viewport on phones. */}
+          <Reveal immediate>
             <article
               aria-labelledby="unit-details-title"
               className="relative isolate flex flex-col gap-6 overflow-hidden rounded-3xl border border-border/60 bg-card p-5 shadow-glow-primary sm:p-8"
@@ -152,7 +139,7 @@ export async function UnitView({
               </header>
 
               <dl className="flex flex-col gap-5">
-                <Fact icon={<MapPinIcon aria-hidden />} label={tUnits("address")}>
+                <FactRow icon={<MapPinIcon aria-hidden />} label={tUnits("address")}>
                   <span className="flex flex-col gap-2">
                     {unit.address}
                     <a
@@ -165,13 +152,13 @@ export async function UnitView({
                       {t("mapLink")}
                     </a>
                   </span>
-                </Fact>
-                <Fact icon={<ClockIcon aria-hidden />} label={tUnits("schedule")}>
+                </FactRow>
+                <FactRow icon={<ClockIcon aria-hidden />} label={tUnits("schedule")}>
                   {formatUnitSchedule(unit, locale)}
-                </Fact>
-                <Fact icon={<UserRoundIcon aria-hidden />} label={tUnits("managerLabel")}>
+                </FactRow>
+                <FactRow icon={<UserRoundIcon aria-hidden />} label={tUnits("managerLabel")}>
                   {unit.manager}
-                </Fact>
+                </FactRow>
               </dl>
 
               <p

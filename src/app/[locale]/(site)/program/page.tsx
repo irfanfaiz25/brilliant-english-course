@@ -61,7 +61,12 @@ export default async function ProgramPage({ params }: PageProps<"/[locale]/progr
         }))}
       />
       {levels.map((level, index) => (
-        <LevelDetail key={level.slug} level={level} reversed={index % 2 === 1} />
+        <LevelDetail
+          key={level.slug}
+          level={level}
+          reversed={index % 2 === 1}
+          aboveFold={index === 0}
+        />
       ))}
       <ActivitiesSection activities={activities} id="kegiatan" linkToProgram={false} />
       <WhySection />

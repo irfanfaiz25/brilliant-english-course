@@ -149,7 +149,8 @@ export async function Finder({
           <PendingRegion className="flex flex-col gap-5">
             <div className="flex items-center justify-between gap-3">
               <div aria-live="polite" className="flex flex-col gap-0.5">
-                <p className="text-h5 text-foreground">{countText}</p>
+                {/* Heads the result list, so unit cards (h3) sit under an h2. */}
+                <h2 className="text-h5 text-foreground">{countText}</h2>
                 {results.length > 0 && (
                   <p className="text-caption text-muted-foreground">
                     {params.near ? t("results.sortedByDistance") : t("results.sortedByName")}

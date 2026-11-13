@@ -178,7 +178,7 @@ export function SectionTabs({ tabs, label }: { tabs: readonly SectionTab[]; labe
                   <span
                     className={cn(
                       "text-caption",
-                      active ? "text-primary-foreground/80" : "text-muted-foreground",
+                      active ? "text-primary-foreground" : "text-muted-foreground",
                     )}
                   >
                     {tab.meta}

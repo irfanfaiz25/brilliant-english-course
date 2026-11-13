@@ -74,7 +74,7 @@ export function LevelCard({ level, ageLabel, detailLabel }: LevelCardProps) {
 
         <Link
           href={{ pathname: "/program", hash: level.slug }}
-          className="mt-auto inline-flex items-center gap-1.5 pt-2 text-label text-primary after:absolute after:inset-0 after:rounded-xl focus-visible:outline-none"
+          className="mt-auto inline-flex items-center gap-1.5 pt-2 text-label text-primary after:absolute after:inset-0 after:rounded-xl focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:outline-offset-2 focus-visible:after:outline-ring"
         >
           {detailLabel}
           <ArrowRightIcon

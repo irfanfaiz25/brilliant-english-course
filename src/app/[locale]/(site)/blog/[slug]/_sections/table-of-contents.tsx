@@ -60,7 +60,8 @@ export function TableOfContents({
     <nav aria-label={label}>
       <Accordion type="single" collapsible>
         <AccordionItem value="toc" className="rounded-2xl shadow-card">
-          <AccordionTrigger className="text-label">
+          {/* Sits between the h1 and the article's first h2. */}
+          <AccordionTrigger headingLevel={2} className="text-label">
             <span className="inline-flex items-center gap-2">
               <ListIcon aria-hidden className="size-4 text-primary" />
               {label}
