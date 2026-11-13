@@ -48,6 +48,34 @@ test.describe("program page", () => {
     );
   });
 
+  test("jumping between levels never flashes the levels in between", async ({ page }) => {
+    await page.goto("/program#intro");
+    const tabs = page.getByRole("navigation", { name: "Level program" });
+    await expect(tabs.getByRole("link", { name: /Intro/ })).toHaveAttribute(
+      "aria-current",
+      "location",
+    );
+
+    // Record every tab that becomes current while the page scrolls to Secondary.
+    await page.evaluate(() => {
+      const seen: string[] = [];
+      (window as unknown as { __seen: string[] }).__seen = seen;
+      new MutationObserver(() => {
+        const current = document.querySelector('[aria-current="location"]')?.getAttribute("href");
+        if (current && seen.at(-1) !== current) seen.push(current);
+      }).observe(document.body, {
+        subtree: true,
+        attributes: true,
+        attributeFilter: ["aria-current"],
+      });
+    });
+    await tabs.getByRole("link", { name: /Secondary/ }).click();
+    await page.waitForTimeout(1600);
+
+    const seen = await page.evaluate(() => (window as unknown as { __seen: string[] }).__seen);
+    expect(seen).toEqual(["#secondary"]);
+  });
+
   test("home links land on the matching level", async ({ page }) => {
     await page.goto("/program#intro");
     await expect(
