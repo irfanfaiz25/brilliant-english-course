@@ -2,8 +2,11 @@ import type { Metadata } from "next";
 import { hasLocale } from "next-intl";
 import { getTranslations } from "next-intl/server";
 
+import { ClosingCtaSection } from "@/components/site/closing-cta-section";
+import { FaqSection } from "@/components/site/faq-section";
 import { PageCanvas } from "@/components/site/page-canvas";
 import { siteConfig } from "@/config/site";
+import { ActivitiesSection } from "@/features/activities/components/activities-section";
 import { getActivities } from "@/features/activities/queries";
 import { getFaqItems } from "@/features/faq/queries";
 import { getLevels } from "@/features/programs/queries";
@@ -12,9 +15,6 @@ import { getFeaturedUnits, getNetworkStats } from "@/features/units/queries";
 import { routing } from "@/i18n/routing";
 import { localizedAlternates } from "@/lib/seo/alternates";
 
-import { ActivitiesSection } from "./_home/activities-section";
-import { CtaSection } from "./_home/cta-section";
-import { FaqSection } from "./_home/faq-section";
 import { HeroSection } from "./_home/hero-section";
 import { PartnershipSection } from "./_home/partnership-section";
 import { ProgramsSection } from "./_home/programs-section";
@@ -42,6 +42,8 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return null;
 
+  const t = await getTranslations("Home");
+  const tWhatsApp = await getTranslations("WhatsApp");
   const [levels, activities, stats, units, testimonials, faqItems] = await Promise.all([
     getLevels(locale),
     getActivities(locale),
@@ -61,8 +63,25 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
       <StepsSection />
       <PartnershipSection activeUnits={stats.activeUnits} />
       <TestimonialsSection testimonials={testimonials} />
-      <FaqSection items={faqItems} />
-      <CtaSection />
+      <FaqSection
+        overline={t("faq.overline")}
+        title={t("faq.title")}
+        lead={t("faq.lead")}
+        items={faqItems}
+        help={{
+          title: t("faq.askTitle"),
+          text: t("faq.askText"),
+          cta: t("faq.askCta"),
+          whatsappMessage: tWhatsApp("general"),
+        }}
+      />
+      <ClosingCtaSection
+        title={t("cta.title")}
+        lead={t("cta.lead")}
+        primaryLabel={t("cta.primary")}
+        secondaryLabel={t("cta.secondary")}
+        whatsappMessage={tWhatsApp("general")}
+      />
     </PageCanvas>
   );
 }

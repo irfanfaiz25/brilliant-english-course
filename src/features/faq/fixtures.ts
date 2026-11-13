@@ -40,6 +40,34 @@ export const faqFixtures: Record<Locale, FaqItem[]> = {
       answer:
         "Pengajar memberikan laporan perkembangan berkala, dan orang tua bisa berdiskusi langsung dengan admin unit.",
     },
+    {
+      id: "fee-program",
+      topic: "program",
+      question: "Berapa biaya kursus di BEC?",
+      answer:
+        "Biaya ditentukan tiap unit. Hubungi unit terdekat lewat halaman Cek Unit untuk info biaya dan jadwal.",
+    },
+    {
+      id: "placement-program",
+      topic: "program",
+      question: "Apakah ada tes penempatan?",
+      answer:
+        "Ada. Sebelum mulai, anak ikut placement test singkat dan santai di unit supaya masuk ke level yang paling pas.",
+    },
+    {
+      id: "prior-knowledge",
+      topic: "program",
+      question: "Bagaimana kalau anak sudah bisa sedikit bahasa Inggris?",
+      answer:
+        "Tidak masalah. Hasil placement test menentukan level dan modul awal, jadi anak tidak mengulang materi yang sudah dikuasai.",
+    },
+    {
+      id: "transfer",
+      topic: "program",
+      question: "Apakah bisa pindah unit?",
+      answer:
+        "Bisa. Semua unit memakai kurikulum yang sama, jadi anak bisa melanjutkan level yang sama di unit lain. Koordinasikan dengan admin kedua unit.",
+    },
   ],
   en: [
     {
@@ -76,6 +104,34 @@ export const faqFixtures: Record<Locale, FaqItem[]> = {
       question: "How will I know how my child is doing?",
       answer:
         "Teachers share regular progress reports, and parents can talk directly with the unit admin.",
+    },
+    {
+      id: "fee-program",
+      topic: "program",
+      question: "How much does a BEC course cost?",
+      answer:
+        "Fees are set by each unit. Contact your nearest unit via the Find a Unit page for fees and schedules.",
+    },
+    {
+      id: "placement-program",
+      topic: "program",
+      question: "Is there a placement test?",
+      answer:
+        "Yes. Before starting, children take a short, relaxed placement test at the unit so they join the level that fits best.",
+    },
+    {
+      id: "prior-knowledge",
+      topic: "program",
+      question: "What if my child already knows some English?",
+      answer:
+        "No problem. The placement test sets the starting level and module, so your child won't repeat what they already know.",
+    },
+    {
+      id: "transfer",
+      topic: "program",
+      question: "Can my child move to another unit?",
+      answer:
+        "Yes. All units use the same curriculum, so your child can continue the same level at another unit. Just coordinate with both unit admins.",
     },
   ],
 };

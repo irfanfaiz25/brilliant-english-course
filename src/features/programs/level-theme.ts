@@ -16,6 +16,10 @@ type LevelThemeEntry = {
   chip: string;
   /** Soft level-colored halo when the card is hovered or focused. */
   halo: string;
+  /** `DecorBlob` / `Doodle` tone that matches the level color. */
+  decor: "primary" | "partner" | "highlight";
+  /** Tilted frame behind the level photo. */
+  frame: string;
 };
 
 export const levelTheme: Record<LevelSlug, LevelThemeEntry> = {
@@ -27,6 +31,8 @@ export const levelTheme: Record<LevelSlug, LevelThemeEntry> = {
     bar: "bg-level-kindy",
     chip: "hover:border-level-kindy hover:bg-level-kindy-soft",
     halo: "hover:ring-level-kindy-soft has-[a:focus-visible]:ring-level-kindy-soft",
+    decor: "highlight",
+    frame: "bg-sunny-200/80",
   },
   intro: {
     badge: "intro",
@@ -36,6 +42,8 @@ export const levelTheme: Record<LevelSlug, LevelThemeEntry> = {
     bar: "bg-level-intro",
     chip: "hover:border-level-intro hover:bg-level-intro-soft",
     halo: "hover:ring-level-intro-soft has-[a:focus-visible]:ring-level-intro-soft",
+    decor: "primary",
+    frame: "bg-teal-100",
   },
   secondary: {
     badge: "secondary",
@@ -45,5 +53,7 @@ export const levelTheme: Record<LevelSlug, LevelThemeEntry> = {
     bar: "bg-level-secondary",
     chip: "hover:border-level-secondary hover:bg-level-secondary-soft",
     halo: "hover:ring-level-secondary-soft has-[a:focus-visible]:ring-level-secondary-soft",
+    decor: "partner",
+    frame: "bg-orange-100",
   },
 };

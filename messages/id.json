@@ -59,7 +59,8 @@
   "WhatsApp": {
     "general": "Halo BEC, saya ingin bertanya tentang kursus bahasa Inggris anak.",
     "partner": "Halo BEC, saya tertarik membuka unit BEC (kemitraan). Boleh minta informasinya?",
-    "unit": "Halo {unit}, saya ingin bertanya tentang kelas bahasa Inggris untuk anak saya."
+    "unit": "Halo {unit}, saya ingin bertanya tentang kelas bahasa Inggris untuk anak saya.",
+    "level": "Halo BEC, saya ingin bertanya tentang kelas {level} untuk anak saya."
   },
   "Home": {
     "metaTitle": "Kursus Bahasa Inggris Anak Usia 4–15 Tahun",
@@ -92,13 +93,6 @@
       "lead": "Kurikulum BEC mengajarkan conversation dan grammar bertahap — anak belajar sambil bermain, lalu naik level dengan percaya diri.",
       "ageRange": "{min}–{max} tahun",
       "detailLink": "Lihat detail level"
-    },
-    "activities": {
-      "overline": "Kegiatan Seru",
-      "title": "Belajar Lewat Pengalaman",
-      "lead": "Selain kelas rutin, setiap unit BEC mengadakan kegiatan berkala supaya anak berani memakai bahasa Inggris di dunia nyata.",
-      "detailLink": "Lihat detail program",
-      "scrollHint": "Geser untuk melihat kegiatan lain"
     },
     "unitFinder": {
       "overline": "Cek Unit BEC",
@@ -187,5 +181,80 @@
     "schedule": "Jadwal",
     "address": "Alamat",
     "managerLabel": "Pengelola"
+  },
+  "Activities": {
+    "overline": "Kegiatan Seru",
+    "title": "Belajar Lewat Pengalaman",
+    "lead": "Selain kelas rutin, setiap unit BEC mengadakan kegiatan berkala supaya anak berani memakai bahasa Inggris di dunia nyata.",
+    "detailLink": "Lihat detail program",
+    "scrollHint": "Geser untuk melihat kegiatan lain"
+  },
+  "Breadcrumbs": {
+    "label": "Jejak navigasi"
+  },
+  "Program": {
+    "metaTitle": "Program Kursus Bahasa Inggris Anak: Kindy, Intro, Secondary",
+    "metaDescription": "Tiga level kursus bahasa Inggris anak usia 4–15 tahun: Kindy, Intro, dan Secondary. Conversation dan grammar bertahap dengan kurikulum yang sama di semua unit BEC.",
+    "hero": {
+      "overline": "Kurikulum BEC",
+      "title": "Program BEC",
+      "lead": "Real English Course — conversation dan grammar dari dasar sampai mahir, dibagi tiga level sesuai usia anak. Semua unit BEC memakai kurikulum yang sama.",
+      "levelsCount": "3 level",
+      "sameCurriculum": "Kurikulum sama di semua unit"
+    },
+    "tabs": {
+      "label": "Level program",
+      "age": "{min}–{max} th"
+    },
+    "level": {
+      "ages": "Usia {min}–{max} tahun",
+      "learnTitle": "Yang dipelajari",
+      "sessions": "{count}× pertemuan / minggu",
+      "classSize": "Maks. {count} siswa / kelas",
+      "materials": "Modul BEC",
+      "findUnit": "Cek Unit Terdekat",
+      "askWhatsApp": "Tanya via WhatsApp"
+    },
+    "why": {
+      "overline": "Kenapa BEC",
+      "title": "Belajar Seru, Hasilnya Terukur",
+      "lead": "Metode yang sama dipakai di semua unit, jadi kualitas kelas tetap terjaga di mana pun anak belajar.",
+      "conversationTitle": "Fokus conversation",
+      "conversationText": "Anak diajak bicara sejak pertemuan pertama.",
+      "grammarTitle": "Grammar bertahap",
+      "grammarText": "Dari dasar sampai mahir, sesuai level.",
+      "classTitle": "Kelas kecil",
+      "classText": "Guru bisa memperhatikan tiap anak.",
+      "reportTitle": "Laporan progres",
+      "reportText": "Orang tua dapat update perkembangan anak."
+    },
+    "compare": {
+      "overline": "Perbandingan",
+      "title": "Bandingkan Ketiga Level",
+      "lead": "Lihat sekilas perbedaan tiap level untuk memilih yang paling pas dengan usia dan kemampuan anak.",
+      "feature": "Aspek",
+      "age": "Usia",
+      "focus": "Fokus",
+      "sessions": "Pertemuan",
+      "classSize": "Ukuran kelas",
+      "topics": "Contoh materi",
+      "sessionsValue": "{count}× / minggu",
+      "classSizeValue": "Maks. {count} siswa",
+      "caption": "Perbandingan level Kindy, Intro, dan Secondary"
+    },
+    "faq": {
+      "overline": "FAQ",
+      "title": "Pertanyaan yang Sering Ditanyakan",
+      "lead": "Belum terjawab? Tanyakan langsung ke unit terdekat lewat WhatsApp.",
+      "askTitle": "Masih ada pertanyaan?",
+      "askText": "Admin BEC siap membantu memilih level yang pas untuk anak.",
+      "askCta": "Tanya via WhatsApp"
+    },
+    "cta": {
+      "title": "Siap mulai belajar?",
+      "lead": "Cari unit BEC terdekat dan jadwalkan kelas percobaan untuk anak.",
+      "primary": "Cek Unit Terdekat",
+      "secondary": "Chat via WhatsApp"
+    }
   }
 }

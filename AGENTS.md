@@ -128,6 +128,9 @@ Rules:
 - Page-specific sections are colocated in a private folder next to the page (e.g. `app/[locale]/(site)/_home/`);
   reusable section building blocks (`Section`, `SectionHeader`, `DecorBlob`, `Doodle`, `PageCanvas`) live in `components/site`.
   Wrap a page's sections in `PageCanvas` so backgrounds stay continuous (`DESIGN.md` § 1.1).
+  Sections used by more than one page are shared and prop-driven: `FaqSection`, `ClosingCtaSection`, `Breadcrumbs`
+  (`components/site`) and `ActivitiesSection` (`features/activities/components`). Promote a section the moment a
+  second page needs it; don't copy it.
 - Until the database exists, `queries.ts` returns typed fixtures from `features/<domain>/fixtures.ts` (marked
   PLACEHOLDER), cached with `"use cache"` + `cacheTag(cacheTags.x)` from `src/config/cache-tags.ts`. Placeholder photos
   are referenced only through `src/config/placeholder-images.ts` (credits in `public/placeholders/CREDITS.md`).
@@ -183,7 +186,8 @@ Permissions are defined in one place (`src/lib/permissions.ts`) and checked on t
   admin override → content-derived default → global default.
 - Technical SEO (sitemap, robots, canonical, hreflang, JSON-LD shape) lives in code, not in the admin.
 - JSON-LD: `EducationalOrganization` (site), `LocalBusiness` (unit), `Course` (program), `Article` (post), `FAQPage`, `BreadcrumbList`.
-  Render it with `<JsonLd data={…} />` and the builders in `src/lib/seo/json-ld.tsx` (escapes `<`); never hand-roll script tags.
+  Render it with `<JsonLd data={…} />` and the builders in `src/lib/seo/json-ld.tsx` (`faqPageJsonLd`, `breadcrumbJsonLd`,
+  `courseJsonLd`; escapes `<`); never hand-roll script tags. Use `absoluteUrl()` for URLs inside structured data.
 
 ### Dynamic content (admin-editable)
 

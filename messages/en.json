@@ -59,7 +59,8 @@
   "WhatsApp": {
     "general": "Hi BEC, I'd like to ask about your English courses for kids.",
     "partner": "Hi BEC, I'm interested in opening a BEC unit (partnership). Could you share more information?",
-    "unit": "Hi {unit}, I'd like to ask about English classes for my child."
+    "unit": "Hi {unit}, I'd like to ask about English classes for my child.",
+    "level": "Hi BEC, I'd like to ask about the {level} class for my child."
   },
   "Home": {
     "metaTitle": "English Courses for Kids Aged 4–15",
@@ -92,13 +93,6 @@
       "lead": "The BEC curriculum teaches conversation and grammar step by step — children learn through play, then move up a level with confidence.",
       "ageRange": "Ages {min}–{max}",
       "detailLink": "See level details"
-    },
-    "activities": {
-      "overline": "Fun Activities",
-      "title": "Learning Through Experience",
-      "lead": "Beyond regular classes, every BEC unit runs regular activities so children dare to use English in real life.",
-      "detailLink": "See program details",
-      "scrollHint": "Swipe to see more activities"
     },
     "unitFinder": {
       "overline": "Find a BEC Unit",
@@ -187,5 +181,80 @@
     "schedule": "Schedule",
     "address": "Address",
     "managerLabel": "Manager"
+  },
+  "Activities": {
+    "overline": "Fun Activities",
+    "title": "Learning Through Experience",
+    "lead": "Beyond regular classes, every BEC unit runs regular activities so children dare to use English in real life.",
+    "detailLink": "See program details",
+    "scrollHint": "Swipe to see more activities"
+  },
+  "Breadcrumbs": {
+    "label": "Breadcrumb"
+  },
+  "Program": {
+    "metaTitle": "English Programs for Kids: Kindy, Intro, Secondary",
+    "metaDescription": "Three English levels for children aged 4–15: Kindy, Intro and Secondary. Step-by-step conversation and grammar with the same curriculum at every BEC unit.",
+    "hero": {
+      "overline": "BEC Curriculum",
+      "title": "BEC Programs",
+      "lead": "A real English course — conversation and grammar from the basics to fluency, split into three levels by age. Every BEC unit uses the same curriculum.",
+      "levelsCount": "3 levels",
+      "sameCurriculum": "Same curriculum at every unit"
+    },
+    "tabs": {
+      "label": "Program levels",
+      "age": "{min}–{max} yrs"
+    },
+    "level": {
+      "ages": "Ages {min}–{max}",
+      "learnTitle": "What children learn",
+      "sessions": "{count}× classes / week",
+      "classSize": "Max. {count} students / class",
+      "materials": "BEC modules",
+      "findUnit": "Find the Nearest Unit",
+      "askWhatsApp": "Ask on WhatsApp"
+    },
+    "why": {
+      "overline": "Why BEC",
+      "title": "Fun Learning, Measurable Results",
+      "lead": "Every unit uses the same method, so class quality stays consistent wherever your child learns.",
+      "conversationTitle": "Conversation first",
+      "conversationText": "Children start speaking from the very first class.",
+      "grammarTitle": "Step-by-step grammar",
+      "grammarText": "From the basics to fluency, matched to each level.",
+      "classTitle": "Small classes",
+      "classText": "Teachers can pay attention to every child.",
+      "reportTitle": "Progress reports",
+      "reportText": "Parents get regular updates on their child's progress."
+    },
+    "compare": {
+      "overline": "Comparison",
+      "title": "Compare the Three Levels",
+      "lead": "See the differences at a glance and pick the level that best fits your child's age and skills.",
+      "feature": "Feature",
+      "age": "Age",
+      "focus": "Focus",
+      "sessions": "Classes",
+      "classSize": "Class size",
+      "topics": "Sample topics",
+      "sessionsValue": "{count}× / week",
+      "classSizeValue": "Max. {count} students",
+      "caption": "Comparison of the Kindy, Intro and Secondary levels"
+    },
+    "faq": {
+      "overline": "FAQ",
+      "title": "Frequently Asked Questions",
+      "lead": "Not answered here? Ask your nearest unit directly on WhatsApp.",
+      "askTitle": "Still have questions?",
+      "askText": "The BEC admin is happy to help you choose the right level for your child.",
+      "askCta": "Ask on WhatsApp"
+    },
+    "cta": {
+      "title": "Ready to start learning?",
+      "lead": "Find the nearest BEC unit and book a trial class for your child.",
+      "primary": "Find the Nearest Unit",
+      "secondary": "Chat on WhatsApp"
+    }
   }
 }

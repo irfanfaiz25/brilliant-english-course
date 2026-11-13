@@ -14,7 +14,14 @@ export const levelSchema = z
     ageMax: z.number().int().max(18),
     tagline: z.string().min(1),
     summary: z.string().min(1),
+    /** Short highlights for cards (Home). */
     skills: z.array(z.string().min(1)).min(1).max(5),
+    /** Longer description for the Program page. */
+    description: z.string().min(1),
+    /** "What children learn" list for the Program page. */
+    curriculum: z.array(z.string().min(1)).min(1).max(8),
+    sessionsPerWeek: z.number().int().positive(),
+    maxStudentsPerClass: z.number().int().positive(),
     image: imageSchema,
   })
   .refine((level) => level.ageMin <= level.ageMax, { message: "ageMin must not exceed ageMax" });
