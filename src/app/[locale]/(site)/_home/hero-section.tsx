@@ -1,9 +1,10 @@
-import { ArrowRightIcon, LayersIcon, MapPinIcon, SparklesIcon } from "lucide-react";
+import { ArrowRightIcon, BookOpenIcon, LayersIcon, MapPinIcon, UsersRoundIcon } from "lucide-react";
 import Image from "next/image";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { getTranslations } from "next-intl/server";
 
 import { DecorBlob } from "@/components/site/decor-blob";
+import { Doodle } from "@/components/site/doodle";
 import { Button } from "@/components/ui/button";
 import { placeholderImages } from "@/config/placeholder-images";
 import { levelTheme } from "@/features/programs/level-theme";
@@ -11,10 +12,20 @@ import type { Level } from "@/features/programs/schema";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
+/** Delay between hero entrance steps (matches the stagger rhythm in motion/tokens.ts). */
+const ENTER_STEP_MS = 90;
+
+/** Inline delay for the CSS `animate-rise-in` entrance of the n-th hero element. */
+const enterDelay = (step: number): CSSProperties => ({
+  animationDelay: `${step * ENTER_STEP_MS}ms`,
+});
+
 /**
  * Home hero (DESIGN.md § 5.2): dual path (parents → find a unit, partners → partnership),
  * age chips that jump to and highlight the matching level card (CSS `:target`, no JS).
- * The headline and photo render immediately — they are the LCP, so they are never animated in.
+ * The headline and photo render immediately — they are the LCP, so they are never faded in: the
+ * other hero elements rise in with CSS on load, and the photo only settles from a slight zoom.
+ * Decorative layers drift with scroll (`parallax-*`, CSS scroll-driven, off for reduced motion).
  */
 export async function HeroSection({ levels }: { levels: Level[] }) {
   const t = await getTranslations("Home.hero");
@@ -24,8 +35,23 @@ export async function HeroSection({ levels }: { levels: Level[] }) {
       aria-labelledby="hero-title"
       className="relative isolate overflow-hidden bg-gradient-soft"
     >
-      <DecorBlob tone="highlight" className="top-16 -right-24 size-80" />
-      <DecorBlob tone="primary" className="-bottom-24 -left-32 size-96" />
+      <DecorBlob tone="highlight" className="parallax-strong top-16 -right-24 size-80" />
+      <DecorBlob tone="primary" className="parallax-soft -bottom-24 -left-32 size-96" />
+      <Doodle
+        shape="squiggle"
+        tone="partner"
+        className="parallax-soft top-10 left-[46%] hidden w-16 lg:block"
+      />
+      <Doodle
+        shape="ring"
+        tone="highlight"
+        className="parallax-strong bottom-28 left-[8%] size-8"
+      />
+      <Doodle
+        shape="plus"
+        tone="primary"
+        className="top-24 right-[6%] hidden size-7 animate-float md:block"
+      />
       <span
         aria-hidden
         className="absolute inset-y-0 right-0 -z-10 hidden w-1/2 bg-dots [mask-image:radial-gradient(70%_70%_at_70%_40%,black,transparent)] opacity-70 lg:block"
@@ -33,7 +59,10 @@ export async function HeroSection({ levels }: { levels: Level[] }) {
 
       <div className="mx-auto grid w-full max-w-page items-center gap-12 px-5 pt-8 pb-24 md:px-8 md:pt-12 lg:grid-cols-[1.1fr_1fr] lg:gap-16 lg:pt-14 lg:pb-32">
         <div className="flex flex-col gap-6">
-          <p className="inline-flex w-fit items-center gap-2 rounded-full border border-border/70 bg-background/80 px-3 py-1.5 text-overline tracking-wide text-partner uppercase shadow-sm backdrop-blur sm:tracking-widest">
+          <p
+            style={enterDelay(0)}
+            className="inline-flex w-fit animate-rise-in items-center gap-2 rounded-full border border-border/70 bg-background/80 px-3 py-1.5 text-overline tracking-wide text-partner uppercase shadow-sm backdrop-blur sm:tracking-widest"
+          >
             <span aria-hidden className="size-1.5 rounded-full bg-partner" />
             {t("overline")}
           </p>
@@ -62,21 +91,35 @@ export async function HeroSection({ levels }: { levels: Level[] }) {
             })}
           </h1>
 
-          <p className="max-w-xl text-body-lg text-muted-foreground">{t("lead")}</p>
+          <p
+            style={enterDelay(1)}
+            className="max-w-xl animate-rise-in text-body-lg text-muted-foreground"
+          >
+            {t("lead")}
+          </p>
 
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+          <div
+            style={enterDelay(2)}
+            className="flex animate-rise-in flex-col gap-3 sm:flex-row sm:items-center"
+          >
             <Button asChild size="lg" pop>
               <Link href="/cek-unit">
                 <MapPinIcon aria-hidden />
                 {t("primaryCta")}
               </Link>
             </Button>
-            <Button asChild size="lg" variant="secondary">
-              <Link href="/program">{t("secondaryCta")}</Link>
+            <Button asChild size="lg" variant="secondary" pop>
+              <Link href="/program">
+                <BookOpenIcon aria-hidden />
+                {t("secondaryCta")}
+              </Link>
             </Button>
           </div>
 
-          <div className="grid grid-cols-3 items-center gap-2 sm:flex sm:flex-wrap">
+          <div
+            style={enterDelay(3)}
+            className="grid animate-rise-in grid-cols-3 items-center gap-2 sm:flex sm:flex-wrap"
+          >
             <span className="col-span-3 text-label text-muted-foreground sm:col-span-1">
               {t("agePrompt")}
             </span>
@@ -100,7 +143,7 @@ export async function HeroSection({ levels }: { levels: Level[] }) {
             ))}
           </div>
 
-          <p className="text-body-sm text-muted-foreground">
+          <p style={enterDelay(4)} className="animate-rise-in text-body-sm text-muted-foreground">
             {t("partnerPrompt")}{" "}
             <Link
               href="/kemitraan"
@@ -131,12 +174,13 @@ export async function HeroSection({ levels }: { levels: Level[] }) {
               fill
               priority
               sizes="(min-width: 1024px) 40vw, (min-width: 640px) 28rem, 90vw"
-              className="object-cover"
+              className="animate-settle object-cover"
             />
           </div>
 
           <HeroBadge
             icon={<LayersIcon aria-hidden />}
+            step={5}
             className="top-6 -left-4 sm:-left-8"
             tone="primary"
           >
@@ -144,14 +188,18 @@ export async function HeroSection({ levels }: { levels: Level[] }) {
           </HeroBadge>
           <HeroBadge
             icon={<MapPinIcon aria-hidden />}
-            className="-right-3 bottom-24 [animation-delay:-2s] sm:-right-8"
+            step={6}
+            floatClassName="[animation-delay:-2.5s]"
+            className="-right-3 bottom-24 sm:-right-8"
             tone="partner"
           >
             {t("badgeNearby")}
           </HeroBadge>
           <HeroBadge
-            icon={<SparklesIcon aria-hidden />}
-            className="-bottom-5 left-8 [animation-delay:-4s]"
+            icon={<UsersRoundIcon aria-hidden />}
+            step={7}
+            floatClassName="[animation-delay:-5s]"
+            className="-bottom-5 left-8"
             tone="highlight"
           >
             {t("badgeSmallClass")}
@@ -168,34 +216,43 @@ const badgeTones = {
   highlight: "bg-highlight-soft text-level-kindy-strong",
 } as const;
 
-/** Floating glass badge over the hero photo; decorative drift is disabled for reduced motion. */
+/**
+ * Glass badge over the hero photo: rises in after the copy, then drifts slowly. The two motions
+ * live on separate elements because each element can run only one `animation` shorthand.
+ */
 function HeroBadge({
   icon,
   tone,
+  step,
   className,
+  floatClassName,
   children,
 }: {
   icon: ReactNode;
   tone: keyof typeof badgeTones;
+  step: number;
   className?: string;
+  floatClassName?: string;
   children: ReactNode;
 }) {
   return (
-    <p
-      className={cn(
-        "absolute inline-flex animate-float items-center gap-2.5 rounded-2xl border border-border/60 surface-glass py-2 pr-4 pl-2 text-label text-foreground shadow-lg motion-reduce:animate-none",
-        className,
-      )}
-    >
+    <p style={enterDelay(step)} className={cn("absolute animate-rise-in", className)}>
       <span
         className={cn(
-          "inline-flex size-9 items-center justify-center rounded-xl [&_svg]:size-5",
-          badgeTones[tone],
+          "inline-flex animate-float items-center gap-2.5 rounded-2xl border border-border/60 surface-glass py-2 pr-4 pl-2 text-label text-foreground shadow-lg motion-reduce:animate-none",
+          floatClassName,
         )}
       >
-        {icon}
+        <span
+          className={cn(
+            "inline-flex size-9 items-center justify-center rounded-xl [&_svg]:size-5",
+            badgeTones[tone],
+          )}
+        >
+          {icon}
+        </span>
+        {children}
       </span>
-      {children}
     </p>
   );
 }

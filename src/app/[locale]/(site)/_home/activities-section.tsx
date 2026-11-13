@@ -2,6 +2,7 @@ import { getTranslations } from "next-intl/server";
 
 import { Stagger, StaggerItem } from "@/components/motion/stagger";
 import { DecorBlob } from "@/components/site/decor-blob";
+import { Doodle } from "@/components/site/doodle";
 import { Section } from "@/components/site/section";
 import { SectionHeader } from "@/components/site/section-header";
 import { ActivityCard } from "@/features/activities/components/activity-card";
@@ -14,8 +15,23 @@ export async function ActivitiesSection({ activities }: { activities: Activity[]
   const t = await getTranslations("Home.activities");
 
   return (
-    <Section tone="warm" aria-labelledby="activities-title">
-      <DecorBlob tone="highlight" className="-top-20 -left-24 size-80" />
+    <Section
+      tone="warm"
+      aria-labelledby="activities-title"
+      className="-mt-10 rounded-t-3xl shadow-sheet md:-mt-16"
+    >
+      <DecorBlob tone="highlight" className="parallax-strong -top-20 -left-24 size-80" />
+      <DecorBlob tone="primary" className="parallax-soft right-0 bottom-0 size-96 opacity-40" />
+      <Doodle
+        shape="blob"
+        tone="soft"
+        className="parallax-soft top-16 right-[8%] hidden size-24 md:block"
+      />
+      <Doodle
+        shape="dots"
+        tone="partner"
+        className="parallax-strong top-24 right-[14%] hidden size-14 opacity-70 md:block"
+      />
       <SectionHeader
         id="activities-title"
         overline={t("overline")}

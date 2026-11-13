@@ -27,7 +27,8 @@ export function LevelCard({ level, ageLabel, detailLabel }: LevelCardProps) {
       className={cn(
         "group relative flex h-full scroll-mt-28 flex-col overflow-hidden rounded-xl border border-border/60 bg-card shadow-card",
         "transition-[transform,box-shadow] duration-(--duration-base) ease-out hover:-translate-y-1 hover:shadow-lg has-[a:focus-visible]:-translate-y-1 has-[a:focus-visible]:shadow-lg",
-        "target:shadow-lg target:ring-4",
+        "target:shadow-lg target:ring-4 hover:ring-8 has-[a:focus-visible]:ring-8",
+        theme.halo,
         theme.ring,
       )}
     >

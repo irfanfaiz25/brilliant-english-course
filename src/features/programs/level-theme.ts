@@ -14,6 +14,8 @@ type LevelThemeEntry = {
   bar: string;
   /** Hover state for age chips that point at this level. */
   chip: string;
+  /** Soft level-colored halo when the card is hovered or focused. */
+  halo: string;
 };
 
 export const levelTheme: Record<LevelSlug, LevelThemeEntry> = {
@@ -24,6 +26,7 @@ export const levelTheme: Record<LevelSlug, LevelThemeEntry> = {
     ring: "target:ring-level-kindy",
     bar: "bg-level-kindy",
     chip: "hover:border-level-kindy hover:bg-level-kindy-soft",
+    halo: "hover:ring-level-kindy-soft has-[a:focus-visible]:ring-level-kindy-soft",
   },
   intro: {
     badge: "intro",
@@ -32,6 +35,7 @@ export const levelTheme: Record<LevelSlug, LevelThemeEntry> = {
     ring: "target:ring-level-intro",
     bar: "bg-level-intro",
     chip: "hover:border-level-intro hover:bg-level-intro-soft",
+    halo: "hover:ring-level-intro-soft has-[a:focus-visible]:ring-level-intro-soft",
   },
   secondary: {
     badge: "secondary",
@@ -40,5 +44,6 @@ export const levelTheme: Record<LevelSlug, LevelThemeEntry> = {
     ring: "target:ring-level-secondary",
     bar: "bg-level-secondary",
     chip: "hover:border-level-secondary hover:bg-level-secondary-soft",
+    halo: "hover:ring-level-secondary-soft has-[a:focus-visible]:ring-level-secondary-soft",
   },
 };
