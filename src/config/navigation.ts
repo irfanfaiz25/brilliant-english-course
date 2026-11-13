@@ -1,10 +1,10 @@
-import type { AppPathname } from "@/i18n/routing";
+import type { AppPathname, StaticPathname } from "@/i18n/routing";
 import type { Messages } from "next-intl";
 
 /** Keys of the `Nav` message namespace used as link labels. */
 type NavLabel = keyof Messages["Nav"];
 
-export type NavItem = { href: AppPathname; label: NavLabel };
+export type NavItem = { href: StaticPathname; label: NavLabel };
 
 /** Primary navigation, in display order (header, mobile menu, footer). */
 export const mainNav = [
@@ -16,7 +16,7 @@ export const mainNav = [
 ] as const satisfies readonly NavItem[];
 
 /** Pages aimed at prospective partners; they get partner-focused mobile actions. */
-export const partnerPaths = ["/kemitraan"] as const satisfies readonly AppPathname[];
+export const partnerPaths = ["/kemitraan"] as const satisfies readonly StaticPathname[];
 
 /**
  * Whether a nav item is the current section. `pathname` is the internal (Indonesian) route

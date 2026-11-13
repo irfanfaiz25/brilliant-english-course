@@ -4,12 +4,22 @@ import { LinkIcon } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
-/** Copies the current results URL (the finder state lives in the URL, so it is shareable). */
-export function ShareResultsButton({
+/**
+ * Copies the current page URL (finder results, a blog post…) with a toast as feedback.
+ * `compact` hides the label on phones, leaving an icon button.
+ */
+export function CopyLinkButton({
   labels,
+  variant = "ghost",
+  compact = true,
+  className,
 }: {
   labels: { share: string; copied: string; failed: string };
+  variant?: "ghost" | "secondary";
+  compact?: boolean;
+  className?: string;
 }) {
   const copy = async () => {
     try {
@@ -23,13 +33,13 @@ export function ShareResultsButton({
   return (
     <Button
       type="button"
-      variant="ghost"
+      variant={variant}
       size="sm"
       onClick={copy}
-      className="shrink-0 max-sm:size-10 max-sm:px-0"
+      className={cn("shrink-0", compact && "max-sm:size-10 max-sm:px-0", className)}
     >
       <LinkIcon aria-hidden />
-      <span className="max-sm:sr-only">{labels.share}</span>
+      <span className={cn(compact && "max-sm:sr-only")}>{labels.share}</span>
     </Button>
   );
 }

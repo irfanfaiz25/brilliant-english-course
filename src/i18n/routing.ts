@@ -22,12 +22,15 @@ export const routing = defineRouting({
     "/cek-unit": { id: "/cek-unit", en: "/find-a-unit" },
     "/kemitraan": { id: "/kemitraan", en: "/partnership" },
     "/blog": "/blog",
+    "/blog/[slug]": "/blog/[slug]",
     "/kontak": { id: "/kontak", en: "/contact" },
   },
 });
 
 export type Locale = (typeof routing.locales)[number];
 export type AppPathname = keyof typeof routing.pathnames;
+/** Routes without dynamic segments; these can be linked to without `params`. */
+export type StaticPathname = Exclude<AppPathname, `${string}[${string}]${string}`>;
 
 /** Open Graph / BCP 47 region tags per locale. */
 export const localeRegion = {

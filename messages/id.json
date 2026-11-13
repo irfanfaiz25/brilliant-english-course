@@ -565,5 +565,74 @@
       "almostFull": "Sisa {remaining} slot",
       "full": "Penuh"
     }
+  },
+  "Blog": {
+    "metaTitle": "Blog — Tips Belajar Bahasa Inggris Anak",
+    "metaDescription": "Tips belajar bahasa Inggris untuk anak, panduan orang tua, cerita kegiatan unit, dan info kemitraan dari Brilliant English Course.",
+    "hero": {
+      "overline": "Blog BEC",
+      "title": "Tips & Cerita dari Kelas BEC",
+      "lead": "Ide sederhana untuk menemani anak belajar bahasa Inggris di rumah, cerita kegiatan di unit, dan kabar untuk calon mitra."
+    },
+    "categories": {
+      "label": "Kategori artikel",
+      "all": "Semua",
+      "tips-belajar": "Tips belajar",
+      "parenting": "Parenting",
+      "kegiatan": "Kegiatan",
+      "kemitraan": "Kemitraan"
+    },
+    "readingTime": "{minutes} menit baca",
+    "readMore": "Baca artikel",
+    "latest": "Artikel terbaru",
+    "count": "{count, plural, =0 {Belum ada artikel} other {# artikel}}",
+    "listLabel": "Daftar artikel",
+    "loading": "Memuat artikel…",
+    "pagination": {
+      "label": "Halaman artikel",
+      "previous": "Sebelumnya",
+      "next": "Berikutnya",
+      "page": "Halaman {page}",
+      "pageOf": "Halaman {page} dari {total}"
+    },
+    "empty": {
+      "title": "Belum ada artikel di kategori ini",
+      "text": "Artikel baru sedang disiapkan. Sementara itu, baca artikel lain di blog BEC.",
+      "cta": "Lihat semua artikel"
+    },
+    "post": {
+      "toc": "Daftar isi",
+      "share": "Bagikan artikel",
+      "shareWhatsApp": "WhatsApp",
+      "copyLink": "Salin tautan",
+      "copied": "Tautan artikel disalin",
+      "copyFailed": "Tautan tidak bisa disalin",
+      "shareMessage": "{title} — baca di BEC: {url}",
+      "writtenBy": "Ditulis oleh",
+      "updated": "Diperbarui {date}",
+      "backToBlog": "Kembali ke blog",
+      "related": {
+        "overline": "Baca juga",
+        "title": "Artikel Lainnya untuk Kamu"
+      },
+      "parentCta": {
+        "title": "Ingin anak belajar di kelas yang seru?",
+        "text": "Coba kelas kecil BEC dengan kurikulum yang sama di setiap unit.",
+        "primary": "Cek Unit Terdekat",
+        "secondary": "Tanya via WhatsApp"
+      },
+      "partnerCta": {
+        "title": "Tertarik membuka unit BEC?",
+        "text": "Cek kuota desamu dan daftar jadi mitra dalam beberapa menit.",
+        "primary": "Cek Kuota Desamu",
+        "secondary": "Chat Tim Kemitraan"
+      }
+    },
+    "cta": {
+      "title": "Siap Mulai Belajar Bersama BEC?",
+      "lead": "Temukan unit terdekat atau tanya admin kami lewat WhatsApp.",
+      "primary": "Cek Unit Terdekat",
+      "secondary": "Chat WhatsApp"
+    }
   }
 }
