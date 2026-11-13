@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { levelSlugs } from "@/features/programs/schema";
+import { regionCodeSchema } from "@/features/regions/schema";
 
 /** Network-wide numbers shown on the site; always computed from data, never typed in (AGENTS.md § 4). */
 export const networkStatsSchema = z.object({
@@ -24,6 +25,9 @@ export const unitSummarySchema = z.object({
   address: z.string().min(1),
   district: z.string().min(1),
   regency: z.string().min(1),
+  /** Kemendagri village code; the region filter matches any ancestor of it. */
+  villageCode: regionCodeSchema,
+  location: z.object({ lat: z.number().min(-90).max(90), lng: z.number().min(-180).max(180) }),
   manager: z.string().min(1),
   whatsapp: z.string().min(8),
   /** ISO weekdays the unit is open (1 = Monday … 7 = Sunday). */

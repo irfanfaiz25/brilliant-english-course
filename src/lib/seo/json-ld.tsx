@@ -73,3 +73,53 @@ export function courseJsonLd(course: CourseInput): JsonLdThing {
     },
   };
 }
+
+type LocalBusinessInput = {
+  name: string;
+  url: string;
+  telephone: string;
+  streetAddress: string;
+  locality: string;
+  region?: string;
+  geo: { lat: number; lng: number };
+  /** schema.org day names, e.g. ["Monday", "Tuesday"]. */
+  openDays: readonly string[];
+  opens: string;
+  closes: string;
+};
+
+/** `LocalBusiness` for a BEC unit (AGENTS.md § 4 SEO). */
+export function localBusinessJsonLd(unit: LocalBusinessInput): JsonLdThing {
+  return {
+    "@type": "LocalBusiness",
+    name: unit.name,
+    url: unit.url,
+    telephone: unit.telephone,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: unit.streetAddress,
+      addressLocality: unit.locality,
+      ...(unit.region ? { addressRegion: unit.region } : {}),
+      addressCountry: "ID",
+    },
+    geo: { "@type": "GeoCoordinates", latitude: unit.geo.lat, longitude: unit.geo.lng },
+    openingHoursSpecification: {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: unit.openDays,
+      opens: unit.opens,
+      closes: unit.closes,
+    },
+  };
+}
+
+/** `ItemList` wrapping other things (e.g. the units in a search result). */
+export function itemListJsonLd(items: readonly JsonLdThing[]): JsonLdThing {
+  return {
+    "@type": "ItemList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      item,
+    })),
+  };
+}
