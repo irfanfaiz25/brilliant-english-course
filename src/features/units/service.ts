@@ -1,5 +1,7 @@
 import type { Locale } from "@/i18n/routing";
 
+import { isWithinRegion } from "@/features/regions/service";
+
 import type { UnitSummary } from "./schema";
 
 /** Monday-based reference week, used only to get localized weekday names. */
@@ -58,4 +60,64 @@ export function unitInitials(name: string): string {
     .filter(Boolean);
   const [first = "", second = ""] = words;
   return (second ? first[0] + second[0] : first.slice(0, 2)).toUpperCase();
+}
+
+type GeoPoint = { lat: number; lng: number };
+
+const EARTH_RADIUS_KM = 6371;
+
+/** Great-circle distance in km (haversine) — accurate enough for "nearest unit" sorting. */
+export function distanceKm(from: GeoPoint, to: GeoPoint): number {
+  const toRad = (deg: number) => (deg * Math.PI) / 180;
+  const dLat = toRad(to.lat - from.lat);
+  const dLng = toRad(to.lng - from.lng);
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(from.lat)) * Math.cos(toRad(to.lat)) * Math.sin(dLng / 2) ** 2;
+  return 2 * EARTH_RADIUS_KM * Math.asin(Math.sqrt(a));
+}
+
+/** Lowercase, accent-free, single-spaced text for forgiving search ("Pakánsari " → "pakansari"). */
+export function normalizeSearchText(text: string): string {
+  return text
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .toLowerCase()
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+export type UnitSearch = {
+  /** Free text matched against unit name, district, regency and address (all words must match). */
+  query?: string;
+  /** Kemendagri code; keeps units located inside this region. */
+  regionCode?: string;
+  /** When set, results are sorted by distance and carry `distanceKm`. */
+  near?: GeoPoint;
+};
+
+export type UnitResult = UnitSummary & { distanceKm?: number };
+
+/** Filters and orders units for the finder: nearest first with a location, otherwise by name. */
+export function searchUnits(units: readonly UnitSummary[], search: UnitSearch): UnitResult[] {
+  const words = normalizeSearchText(search.query ?? "")
+    .split(" ")
+    .filter(Boolean);
+
+  const matches = units.filter((unit) => {
+    if (search.regionCode && !isWithinRegion(unit.villageCode, search.regionCode)) return false;
+    if (words.length === 0) return true;
+    const haystack = normalizeSearchText(
+      [unit.name, unit.district, unit.regency, unit.address].join(" "),
+    );
+    return words.every((word) => haystack.includes(word));
+  });
+
+  const { near } = search;
+  if (near) {
+    return matches
+      .map((unit) => ({ ...unit, distanceKm: distanceKm(near, unit.location) }))
+      .sort((a, b) => a.distanceKm - b.distanceKm);
+  }
+  return [...matches].sort((a, b) => a.name.localeCompare(b.name, "id"));
 }

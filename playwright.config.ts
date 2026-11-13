@@ -1,6 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
-const PORT = 3000;
+// E2E_PORT lets you test a separate build (e.g. `pnpm start -p 3100`) while `pnpm dev` keeps 3000.
+const PORT = Number(process.env.E2E_PORT ?? 3000);
 const isCI = Boolean(process.env.CI);
 
 export default defineConfig({
@@ -19,7 +20,7 @@ export default defineConfig({
   ],
   webServer: {
     // CI runs against the production build; locally the dev server is reused if already running.
-    command: isCI ? "pnpm start" : "pnpm dev",
+    command: isCI ? `pnpm start -p ${PORT}` : `pnpm dev -p ${PORT}`,
     port: PORT,
     reuseExistingServer: !isCI,
     timeout: 120_000,

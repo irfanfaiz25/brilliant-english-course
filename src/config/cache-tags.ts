@@ -6,6 +6,7 @@ export const cacheTags = {
   programs: "programs",
   activities: "activities",
   units: "units",
+  regions: "regions",
   testimonials: "testimonials",
   faq: "faq",
 } as const;

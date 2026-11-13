@@ -129,3 +129,11 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
 - **Decision:** Public pages are built before the database. Each domain exposes `queries.ts` functions with the final signatures (`getLevels(locale)`, `getActivities(locale)`, `getNetworkStats()`), cached with `"use cache"`, `cacheTag` and `cacheLife`. For now they return Zod-validated fixtures from `fixtures.ts` (content from Penpot, marked PLACEHOLDER). Page sections are colocated next to their page in private folders (`_home/`). Placeholder photos come from Unsplash (free license, credited) and are referenced through one config module.
 - **Why:** The product owner can review real pages early; swapping fixtures for SQL later changes only `queries.ts`, and cache tags are already in place for admin revalidation.
 - **Alternatives:** Build the database and admin first (slower feedback on the public UX); hard-coding content inside components (would need rewrites later).
+
+### ADR-017 — Unit finder: URL state, server results, location on tap
+
+2026-11-13 · Accepted
+
+- **Decision:** The Cek Unit page keeps all state in the URL (`q`, `wilayah` = deepest region code, `lat`/`lng` rounded to 3 decimals, `dekat`). Results and the region cascade are computed on the server from that URL (`parseFinderParams`, `searchUnits`), streamed behind `Suspense` on first load and swapped in place via `router.replace` in a transition afterwards. Native selects for the cascade; geolocation only on an explicit tap. Empty areas route to the partnership form with the region pre-filled.
+- **Why:** Shareable, crawlable and back-button-friendly searches; no client data fetching; works without JS; best native pickers on phones; privacy-friendly location handling; turns dead ends into partner leads.
+- **Alternatives:** Client-side filtering with all units shipped to the browser (does not scale to the real network); separate `prov/kab/kec/desa` params (redundant — the code already encodes the hierarchy).

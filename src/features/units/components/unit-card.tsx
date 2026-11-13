@@ -1,4 +1,10 @@
-import { ClockIcon, MapPinIcon, NavigationIcon, UserRoundIcon } from "lucide-react";
+import {
+  ClockIcon,
+  LocateFixedIcon,
+  MapPinIcon,
+  NavigationIcon,
+  UserRoundIcon,
+} from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
 
@@ -21,7 +27,13 @@ const enrollmentBadge: Record<EnrollmentStatus, NonNullable<BadgeProps["variant"
 const levelNames = { kindy: "Kindy", intro: "Intro", secondary: "Secondary" } as const;
 
 /** Unit card (DESIGN.md § 4 Card · Unit): identity, status, where/when, levels, and two actions. */
-export async function UnitCard({ unit }: { unit: UnitSummary }) {
+type UnitCardProps = {
+  unit: UnitSummary;
+  /** Shown as a chip when results are sorted by distance, e.g. "2,4 km". */
+  distanceLabel?: string;
+};
+
+export async function UnitCard({ unit, distanceLabel }: UnitCardProps) {
   const t = await getTranslations("Units");
   const tWhatsApp = await getTranslations("WhatsApp");
   const locale = (await getLocale()) as Locale;
@@ -45,6 +57,13 @@ export async function UnitCard({ unit }: { unit: UnitSummary }) {
           </Badge>
         </div>
       </header>
+
+      {distanceLabel && (
+        <p className="-mt-1 inline-flex w-fit items-center gap-1.5 rounded-full bg-primary-soft px-3 py-1 text-caption font-semibold text-primary">
+          <LocateFixedIcon aria-hidden className="size-3.5" />
+          {distanceLabel}
+        </p>
+      )}
 
       <dl className="flex flex-col gap-2 text-body-sm text-muted-foreground">
         <UnitFact icon={<MapPinIcon aria-hidden />} label={t("address")}>

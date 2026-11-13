@@ -6,6 +6,23 @@ import { cn } from "@/lib/utils";
 
 type LevelTab = { slug: string; label: string; age: string };
 
+/** Upper bound for a smooth anchor scroll, after which scroll-spy resumes anyway. */
+const SCROLL_LOCK_FALLBACK_MS = 1500;
+/** Pixel tolerance when checking that an anchor target reached its scroll position. */
+const ARRIVAL_TOLERANCE_PX = 4;
+
+/** Whether an anchor target sits where the browser scrolls it (scroll-padding + scroll-margin). */
+function hasArrived(target: HTMLElement): boolean {
+  const offset =
+    parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop || "0") +
+    parseFloat(getComputedStyle(target).scrollMarginTop || "0");
+  const atTarget = Math.abs(target.getBoundingClientRect().top - offset) <= ARRIVAL_TOLERANCE_PX;
+  const atBottom =
+    window.innerHeight + window.scrollY >=
+    document.documentElement.scrollHeight - ARRIVAL_TOLERANCE_PX;
+  return atTarget || atBottom;
+}
+
 /**
  * Sticky level switcher with scroll-spy (DESIGN.md § 5.2 Program).
  * - Plain `#slug` anchors: they work without JS and scroll smoothly (global `scroll-behavior`).
@@ -17,15 +34,55 @@ export function LevelTabs({ tabs, label }: { tabs: readonly LevelTab[]; label: s
   const [indicator, setIndicator] = useState({ x: 0, width: 0, ready: false });
   const listRef = useRef<HTMLUListElement>(null);
   const linkRefs = useRef(new Map<string, HTMLAnchorElement>());
+  /**
+   * Set while a tab click scrolls the page. The smooth scroll passes the levels in between, and
+   * letting scroll-spy react to those would make the pill jump back and forth (flicker).
+   */
+  const scrollLockRef = useRef<string | null>(null);
+  /** Levels currently inside the scroll-spy band, kept across observer callbacks. */
+  const intersectingRef = useRef(new Set<string>());
+
+  /** The last level (in page order) inside the band — the one the reader is on. */
+  const syncWithScroll = () => {
+    const latest = tabs
+      .map((tab) => tab.slug)
+      .filter((slug) => intersectingRef.current.has(slug))
+      .at(-1);
+    if (latest) setCurrent(latest);
+  };
+
+  const lockUntilScrollEnds = (slug: string) => {
+    const target = document.getElementById(slug);
+    scrollLockRef.current = slug;
+
+    const userInputs = ["wheel", "touchstart", "keydown"] as const;
+    const release = () => {
+      scrollLockRef.current = null;
+      window.removeEventListener("scrollend", onScrollEnd);
+      userInputs.forEach((type) => window.removeEventListener(type, onUserScroll));
+      window.clearTimeout(fallback);
+      // Whatever happened meanwhile, end up on the level that is actually on screen.
+      syncWithScroll();
+    };
+    // Browsers may fire a `scrollend` before the smooth scroll even starts, so only release once
+    // the target has arrived (or the page cannot scroll further). The timeout is a safety net.
+    const onScrollEnd = () => {
+      if (!target || hasArrived(target)) release();
+    };
+    // The visitor took over (wheel, touch, keys): hand control back to scroll-spy right away.
+    const onUserScroll = () => release();
+    const fallback = window.setTimeout(release, SCROLL_LOCK_FALLBACK_MS);
+    window.addEventListener("scrollend", onScrollEnd);
+    userInputs.forEach((type) => window.addEventListener(type, onUserScroll, { passive: true }));
+  };
 
   // Scroll-spy: the root is the top 40% of the viewport. Of the levels intersecting it, the last
   // one in page order is current — the level whose top has most recently passed that line.
   useEffect(() => {
-    const order = tabs.map((tab) => tab.slug);
-    const sections = order
-      .map((slug) => document.getElementById(slug))
+    const intersecting = intersectingRef.current;
+    const sections = tabs
+      .map((tab) => document.getElementById(tab.slug))
       .filter((section): section is HTMLElement => section !== null);
-    const intersecting = new Set<string>();
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -33,13 +90,14 @@ export function LevelTabs({ tabs, label }: { tabs: readonly LevelTab[]; label: s
           if (entry.isIntersecting) intersecting.add(entry.target.id);
           else intersecting.delete(entry.target.id);
         }
-        const latest = order.filter((slug) => intersecting.has(slug)).at(-1);
-        if (latest) setCurrent(latest);
+        if (!scrollLockRef.current) syncWithScroll();
       },
       { rootMargin: "0px 0px -60% 0px" },
     );
     sections.forEach((section) => observer.observe(section));
     return () => observer.disconnect();
+    // `syncWithScroll` only reads refs and `tabs`.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tabs]);
 
   // Move the pill under the current tab. Offsets are relative to the list (the pill's positioned
@@ -97,7 +155,10 @@ export function LevelTabs({ tabs, label }: { tabs: readonly LevelTab[]; label: s
                 }}
                 href={`#${tab.slug}`}
                 aria-current={active ? "location" : undefined}
-                onClick={() => setCurrent(tab.slug)}
+                onClick={() => {
+                  setCurrent(tab.slug);
+                  lockUntilScrollEnds(tab.slug);
+                }}
                 className={cn(
                   // `relative` paints the label above the sliding pill.
                   "relative inline-flex h-10 items-center gap-2 rounded-full px-4 text-label whitespace-nowrap transition-colors duration-(--duration-base) sm:px-5",

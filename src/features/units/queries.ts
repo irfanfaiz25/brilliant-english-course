@@ -25,3 +25,11 @@ export async function getFeaturedUnits(limit = 2): Promise<UnitSummary[]> {
   cacheLife("hours");
   return unitFixtures.slice(0, limit);
 }
+
+/** All active units shown on the public site. Phase 3: active, not soft-deleted units. */
+export async function getActiveUnits(): Promise<UnitSummary[]> {
+  "use cache";
+  cacheTag(cacheTags.units);
+  cacheLife("hours");
+  return unitFixtures;
+}

@@ -4,7 +4,7 @@ import { ClipboardPenIcon, MapPinIcon, MapPinnedIcon } from "lucide-react";
 
 import { BrandIcon } from "@/components/icons/brand-icon";
 import { Button } from "@/components/ui/button";
-import { isPartnerPath } from "@/config/navigation";
+import { isActivePath, isPartnerPath } from "@/config/navigation";
 import { Link, usePathname } from "@/i18n/navigation";
 
 type MobileActionBarProps = {
@@ -25,6 +25,8 @@ type MobileActionBarProps = {
 export function MobileActionBar({ labels, whatsappUrl }: MobileActionBarProps) {
   const pathname = usePathname();
   const forPartners = isPartnerPath(pathname);
+  // On the finder itself "find a unit" points at the current page, so only WhatsApp remains.
+  const onFinder = isActivePath(pathname, "/cek-unit");
 
   return (
     <div
@@ -50,13 +52,20 @@ export function MobileActionBar({ labels, whatsappUrl }: MobileActionBarProps) {
           </>
         ) : (
           <>
-            <Button asChild size="sm">
-              <Link href="/cek-unit">
-                <MapPinIcon aria-hidden />
-                {labels.findUnit}
-              </Link>
-            </Button>
-            <Button asChild variant="whatsapp" size="sm">
+            {!onFinder && (
+              <Button asChild size="sm">
+                <Link href="/cek-unit">
+                  <MapPinIcon aria-hidden />
+                  {labels.findUnit}
+                </Link>
+              </Button>
+            )}
+            <Button
+              asChild
+              variant="whatsapp"
+              size="sm"
+              className={onFinder ? "col-span-2" : undefined}
+            >
               <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
                 <BrandIcon name="whatsapp" className="size-4" />
                 {labels.chatWhatsApp}

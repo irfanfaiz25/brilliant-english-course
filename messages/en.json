@@ -256,5 +256,71 @@
       "primary": "Find the Nearest Unit",
       "secondary": "Chat on WhatsApp"
     }
+  },
+  "Finder": {
+    "metaTitle": "Find the Nearest BEC Unit",
+    "metaDescription": "Find the nearest BEC English course for kids: choose a province down to a village, search by unit name, or use your location to see unit schedules and contacts.",
+    "hero": {
+      "overline": "Find a BEC Unit",
+      "title": "Find the Nearest BEC Unit",
+      "lead": "Choose your area down to the village, search by unit name, or use your location to see active units with their schedules and contacts.",
+      "note": "Region data follows the Ministry of Home Affairs codes"
+    },
+    "filters": {
+      "panelLabel": "Unit search filters",
+      "searchLabel": "Search unit name, district or city",
+      "searchPlaceholder": "e.g. Cibinong",
+      "searchSubmit": "Search",
+      "useLocation": "Use my location",
+      "locating": "Finding your location…",
+      "locationActive": "Sorted from your location",
+      "clearLocation": "Clear location",
+      "locationHint": "Allow location access to see the units closest to home.",
+      "locationDenied": "Location access was denied. Enable it in your browser settings or choose an area manually.",
+      "locationUnavailable": "We couldn't get your location. Try again or choose an area.",
+      "regionTitle": "Area",
+      "province": "Province",
+      "regency": "Regency / City",
+      "district": "District",
+      "village": "Village",
+      "all": "All",
+      "chooseParentFirst": "Choose a {parent} first",
+      "apply": "Apply",
+      "reset": "Reset",
+      "openFilters": "Area filter",
+      "activeCount": "{count} active",
+      "showResults": "Show results"
+    },
+    "results": {
+      "countIn": "{count, plural, =0 {No units} one {# active unit} other {# active units}} in {area}",
+      "countAll": "{count, plural, =0 {No units yet} one {# active unit} other {# active units}} in the BEC network",
+      "countQuery": "{count, plural, =0 {No units} one {# unit} other {# units}} for “{query}”",
+      "sortedByDistance": "Sorted by distance",
+      "sortedByName": "Sorted by name",
+      "share": "Copy results link",
+      "copied": "Results link copied",
+      "copyFailed": "Couldn't copy the link",
+      "distance": "{distance} km",
+      "activeFilters": "Active filters",
+      "removeFilter": "Remove filter {label}",
+      "clearAll": "Clear all",
+      "location": "Your location",
+      "loading": "Loading units…"
+    },
+    "empty": {
+      "regionTitle": "No BEC unit in {area} yet",
+      "regionText": "Partnership slots here are still open (max. 2 units per village). Be the first partner, or look for units in the wider area.",
+      "partnerCta": "Be the first partner here",
+      "widen": "Search in {area}",
+      "showAll": "See all units",
+      "queryTitle": "No units match “{query}”",
+      "queryText": "Try another word, check the spelling, or use the area filter.",
+      "ask": "Ask the BEC admin"
+    },
+    "partner": {
+      "title": "No unit in your village yet?",
+      "text": "Open a BEC unit at home and be the first in your area. Check the quota and apply in a few minutes.",
+      "cta": "Explore the partnership"
+    }
   }
 }
