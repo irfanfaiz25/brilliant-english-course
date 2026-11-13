@@ -8,12 +8,14 @@ type Href = Parameters<typeof getPathname>[0]["href"];
 /**
  * Canonical URL and hreflang alternates for a localized route (AGENTS.md § 4 SEO).
  * Paths are relative; `metadataBase` in the root layout turns them into absolute URLs.
+ * Pass a function when params differ per locale (localized blog slugs).
  */
 export function localizedAlternates(
-  href: Href,
+  href: Href | ((target: Locale) => Href),
   locale: Locale,
 ): NonNullable<Metadata["alternates"]> {
-  const pathFor = (target: Locale) => getPathname({ href, locale: target });
+  const pathFor = (target: Locale) =>
+    getPathname({ href: typeof href === "function" ? href(target) : href, locale: target });
 
   return {
     canonical: pathFor(locale),

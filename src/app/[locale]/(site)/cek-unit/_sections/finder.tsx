@@ -2,6 +2,7 @@ import { XIcon } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 import type { CSSProperties } from "react";
 
+import { CopyLinkButton } from "@/components/site/copy-link-button";
 import { PendingRegion, UrlStateShell } from "@/components/site/url-state-shell";
 import { Separator } from "@/components/ui/separator";
 import { RegionFilter } from "@/features/regions/components/region-filter";
@@ -21,7 +22,6 @@ import { FinderEmptyState } from "./finder-empty-state";
 import { LocationButton } from "./location-button";
 import { MobileFilterSheet } from "./mobile-filter-sheet";
 import { SearchBox } from "./search-box";
-import { ShareResultsButton } from "./share-results-button";
 
 const SCHEMA_DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 /** Delay between result cards rising in (CSS), capped so long lists don't drag. */
@@ -154,7 +154,7 @@ export async function Finder({
                 )}
               </div>
               {results.length > 0 && (
-                <ShareResultsButton
+                <CopyLinkButton
                   labels={{
                     share: t("results.share"),
                     copied: t("results.copied"),

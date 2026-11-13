@@ -2,12 +2,15 @@ import { ChevronRightIcon } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 
 import { getPathname, Link } from "@/i18n/navigation";
-import type { AppPathname, Locale } from "@/i18n/routing";
+import type { Locale } from "@/i18n/routing";
 import { absoluteUrl } from "@/lib/seo/absolute-url";
 import { breadcrumbJsonLd, JsonLd } from "@/lib/seo/json-ld";
 import { cn } from "@/lib/utils";
 
-export type BreadcrumbItem = { label: string; href: AppPathname };
+export type BreadcrumbItem = {
+  label: string;
+  href: Parameters<typeof getPathname>[0]["href"];
+};
 
 /**
  * Visible breadcrumb trail plus matching `BreadcrumbList` structured data.
@@ -37,7 +40,7 @@ export async function Breadcrumbs({
         {items.map((item, index) => {
           const current = index === items.length - 1;
           return (
-            <li key={item.href} className="inline-flex items-center gap-1.5">
+            <li key={index} className="inline-flex items-center gap-1.5">
               {index > 0 && <ChevronRightIcon aria-hidden className="size-4 text-neutral-400" />}
               <Link
                 href={item.href}

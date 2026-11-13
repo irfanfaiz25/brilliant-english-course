@@ -9,6 +9,13 @@ export function normalizeWhatsAppNumber(phone: string): string {
   return digits;
 }
 
+/** A `wa.me` link that lets the visitor pick who to share `message` with (no fixed number). */
+export function buildWhatsAppShareUrl(message: string): string {
+  const url = new URL("https://wa.me/");
+  url.searchParams.set("text", message);
+  return url.toString();
+}
+
 /** Builds a `wa.me` click-to-chat link with an optional pre-filled message (DESIGN.md § 5.3). */
 export function buildWhatsAppUrl(phone: string, message?: string): string {
   const url = new URL(`https://wa.me/${normalizeWhatsAppNumber(phone)}`);

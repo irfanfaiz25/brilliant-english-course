@@ -3,7 +3,7 @@
 import { createContext, useContext, useTransition, type ReactNode } from "react";
 
 import { useRouter } from "@/i18n/navigation";
-import type { AppPathname } from "@/i18n/routing";
+import type { StaticPathname } from "@/i18n/routing";
 
 type UrlQuery = Record<string, string>;
 
@@ -31,7 +31,7 @@ export function UrlStateShell({
   pathname,
   children,
 }: {
-  pathname: AppPathname;
+  pathname: StaticPathname;
   children: ReactNode;
 }) {
   const router = useRouter();

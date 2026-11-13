@@ -123,3 +123,36 @@ export function itemListJsonLd(items: readonly JsonLdThing[]): JsonLdThing {
     })),
   };
 }
+
+type ArticleInput = {
+  headline: string;
+  description: string;
+  url: string;
+  image: string;
+  datePublished: string;
+  dateModified?: string;
+  inLanguage: string;
+  author: string;
+  publisher: { name: string; logo: string };
+};
+
+/** `BlogPosting` for a blog post (Google article rich results). */
+export function articleJsonLd(article: ArticleInput): JsonLdThing {
+  return {
+    "@type": "BlogPosting",
+    headline: article.headline,
+    description: article.description,
+    mainEntityOfPage: { "@type": "WebPage", "@id": article.url },
+    url: article.url,
+    image: [article.image],
+    datePublished: article.datePublished,
+    dateModified: article.dateModified ?? article.datePublished,
+    inLanguage: article.inLanguage,
+    author: { "@type": "Organization", name: article.author },
+    publisher: {
+      "@type": "Organization",
+      name: article.publisher.name,
+      logo: { "@type": "ImageObject", url: article.publisher.logo },
+    },
+  };
+}
