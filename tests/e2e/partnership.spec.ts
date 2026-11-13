@@ -41,7 +41,7 @@ test.describe("partnership page", () => {
   });
 
   test("arrives from Cek Unit with the village pre-selected", async ({ page }) => {
-    await page.goto("/kemitraan?wilayah=36.03.01.2001#daftar");
+    await page.goto("/kemitraan?wilayah=36.03.18.2009#daftar");
 
     const quota = page.getByRole("article", { name: "Bitung Jaya" });
     await expect(quota).toBeVisible();
@@ -53,13 +53,13 @@ test.describe("partnership page", () => {
   });
 
   test("blocks a full village and points to its units", async ({ page }) => {
-    await page.goto("/kemitraan?wilayah=32.01.01.1001");
+    await page.goto("/kemitraan?wilayah=32.01.01.1006");
 
     const quota = page.getByRole("article", { name: "Cibinong" });
     await expect(quota.getByText("Penuh", { exact: true })).toBeVisible();
     await expect(quota.getByRole("link", { name: "Lihat unit di Cibinong" })).toHaveAttribute(
       "href",
-      "/cek-unit?wilayah=32.01.01.1001",
+      "/cek-unit?wilayah=32.01.01.1006",
     );
 
     await expect(partnerForm(page).getByText(/^Kuota desa ini sudah penuh/)).toBeVisible();
@@ -70,7 +70,7 @@ test.describe("partnership page", () => {
   });
 
   test("validates each step and submits the application", async ({ page }) => {
-    await page.goto("/kemitraan?wilayah=32.01.01.1003#daftar");
+    await page.goto("/kemitraan?wilayah=32.01.01.1008#daftar");
     const form = partnerForm(page);
 
     await form.getByRole("button", { name: "Lanjut" }).click();
@@ -114,7 +114,7 @@ test.describe("partnership page", () => {
   });
 
   test("English page uses its localized URL", async ({ page }) => {
-    await page.goto("/en/partnership?wilayah=32.01.05.2001");
+    await page.goto("/en/partnership?wilayah=32.01.06.2001");
 
     await expect(page).toHaveTitle(/Partnership/);
     await expect(

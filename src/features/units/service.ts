@@ -44,6 +44,11 @@ export function formatUnitSchedule(
   return `${dayText} · ${formatTime(unit.opensAt, locale)} – ${formatTime(unit.closesAt, locale)}`;
 }
 
+/** "14:00:00" (Postgres `time`) → "14:00", the `HH:MM` form unit schedules use. */
+export function timeOfDay(value: string): string {
+  return value.slice(0, 5);
+}
+
 /** Google Maps directions link to the unit's address (no API key needed). */
 export function buildDirectionsUrl(address: string): string {
   const url = new URL("https://www.google.com/maps/dir/");

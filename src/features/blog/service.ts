@@ -60,6 +60,45 @@ export function extractHeadings(doc: RichTextDoc): PostHeading[] {
   });
 }
 
+/** Calendar date of an instant in Indonesia's western time zone ("2026-11-06"), as posts show it. */
+export function jakartaDate(instant: Date): string {
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Jakarta" }).format(instant);
+}
+
+type StoredTranslation = PostRecord["translations"]["id"];
+
+/** The database shape of a post, before dates become calendar days. */
+export type StoredPost = Omit<PostRecord, "publishedAt" | "updatedAt" | "translations"> & {
+  publishedAt: Date;
+  updatedAt: Date;
+  translations: Record<Locale, StoredTranslation>;
+};
+
+/**
+ * A `PostRecord` from database rows. `updatedAt` is kept only when the post changed on a later
+ * day than it was published, so a typo fix on publish day does not show "Diperbarui".
+ */
+export function toPostRecord(stored: StoredPost): PostRecord {
+  const published = jakartaDate(stored.publishedAt);
+  const updated = jakartaDate(stored.updatedAt);
+  const pick = ({ slug, title, excerpt, coverAlt, content }: StoredTranslation) => ({
+    slug,
+    title,
+    excerpt,
+    coverAlt,
+    content,
+  });
+  return {
+    id: stored.id,
+    category: stored.category,
+    cover: stored.cover,
+    author: stored.author,
+    publishedAt: published,
+    ...(updated > published ? { updatedAt: updated } : {}),
+    translations: { id: pick(stored.translations.id), en: pick(stored.translations.en) },
+  };
+}
+
 /** Resolves a stored post to one locale. */
 export function toPost(record: PostRecord, locale: Locale): Post {
   const translation = record.translations[locale];

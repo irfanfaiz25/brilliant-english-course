@@ -32,18 +32,18 @@ test.describe("unit finder", () => {
   });
 
   test("shows a partnership path when an area has no unit", async ({ page }) => {
-    await page.goto("/cek-unit?wilayah=36.03.01.2001");
+    await page.goto("/cek-unit?wilayah=36.03.18.2009");
 
     await expect(
       page.getByRole("heading", { name: "Belum ada unit BEC di Bitung Jaya" }),
     ).toBeVisible();
     await expect(page.getByRole("link", { name: "Jadi mitra pertama di sini" })).toHaveAttribute(
       "href",
-      "/kemitraan?wilayah=36.03.01.2001#daftar",
+      "/kemitraan?wilayah=36.03.18.2009#daftar",
     );
     await expect(page.getByRole("link", { name: "Cari di Cikupa" })).toHaveAttribute(
       "href",
-      "/cek-unit?wilayah=36.03.01",
+      "/cek-unit?wilayah=36.03.18",
     );
   });
 

@@ -1,22 +1,72 @@
 import "server-only";
 
+import { and, desc, eq, inArray, isNotNull, isNull, lte, sql } from "drizzle-orm";
 import { cacheLife, cacheTag } from "next/cache";
 
 import { cacheTags } from "@/config/cache-tags";
+import { db } from "@/db/client";
+import { mediaAssets, posts, postTranslations } from "@/db/schema";
+import { mediaUrl } from "@/features/media/service";
 import { routing, type Locale } from "@/i18n/routing";
+import { groupTranslations, pickTranslation } from "@/lib/translations";
 
-import { postFixtures } from "./fixtures";
-import type { Post, PostCategory, PostSummary } from "./schema";
-import { toPost, toSummary } from "./service";
+import type { Post, PostCategory, PostRecord, PostSummary } from "./schema";
+import { toPost, toSummary, toPostRecord } from "./service";
 
-/** Published posts, newest first. Reads fixtures until the blog admin lands (Phase 4e). */
-async function getPosts(locale: Locale): Promise<Post[]> {
+/** Published, non-deleted posts (publish date reached), newest first, as stored records. */
+async function getPostRecords(): Promise<PostRecord[]> {
   "use cache";
   cacheTag(cacheTags.blog);
   cacheLife("hours");
-  return postFixtures
-    .map((record) => toPost(record, locale))
-    .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+
+  const rows = await db
+    .select({ post: posts, cover: mediaAssets })
+    .from(posts)
+    .innerJoin(mediaAssets, eq(mediaAssets.id, posts.coverImageId))
+    .where(
+      and(
+        eq(posts.status, "published"),
+        isNull(posts.deletedAt),
+        isNotNull(posts.publishedAt),
+        lte(posts.publishedAt, sql`now()`),
+      ),
+    )
+    .orderBy(desc(posts.publishedAt));
+  if (rows.length === 0) return [];
+
+  const translations = await db
+    .select()
+    .from(postTranslations)
+    .where(
+      inArray(
+        postTranslations.postId,
+        rows.map((row) => row.post.id),
+      ),
+    );
+  const byPost = groupTranslations(translations, (row) => row.postId);
+
+  return rows.flatMap(({ post, cover }) => {
+    const texts = byPost.get(post.id) ?? [];
+    const id = pickTranslation(texts, "id");
+    const en = pickTranslation(texts, "en");
+    if (!id || !en || !post.publishedAt) return [];
+    return [
+      toPostRecord({
+        id: post.id,
+        category: post.category,
+        cover: { src: mediaUrl(cover.key), width: cover.width, height: cover.height },
+        author: { name: post.authorName, role: post.authorRole },
+        publishedAt: post.publishedAt,
+        updatedAt: post.updatedAt,
+        translations: { id, en },
+      }),
+    ];
+  });
+}
+
+/** Published posts resolved to `locale`, newest first. */
+async function getPosts(locale: Locale): Promise<Post[]> {
+  return (await getPostRecords()).map((record) => toPost(record, locale));
 }
 
 /** Card data for the index, optionally limited to one category. */
