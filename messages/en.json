@@ -761,5 +761,72 @@
       "distance": "{distance} km from this unit",
       "allInArea": "See all units in {area}"
     }
+  },
+  "Auth": {
+    "metaTitle": "Admin sign in",
+    "area": "BEC Admin",
+    "backToSite": "Back to the site",
+    "email": "Email",
+    "emailPlaceholder": "name@example.com",
+    "password": "Password",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "signIn": {
+      "title": "Sign in to the dashboard",
+      "description": "For the BEC team only. Use your account email and password.",
+      "submit": "Sign in",
+      "forgot": "Forgot password?"
+    },
+    "forgot": {
+      "metaTitle": "Forgot password",
+      "title": "Forgot password",
+      "description": "Enter your account email. We'll send a link to create a new password.",
+      "submit": "Send link",
+      "sentTitle": "Check your email",
+      "sent": "If {email} is registered, a link to create a new password is on its way. It is valid for {minutes} minutes.",
+      "backToSignIn": "Back to sign in"
+    },
+    "reset": {
+      "metaTitle": "Create a new password",
+      "title": "Create a new password",
+      "description": "At least {min} characters. Saving it signs out every other device.",
+      "newPassword": "New password",
+      "confirmPassword": "Repeat the new password",
+      "submit": "Save password",
+      "doneTitle": "Password saved",
+      "done": "Sign in with your new password.",
+      "toSignIn": "Sign in now",
+      "missingToken": "This link is incomplete. Open the link from the email again, or request a new one.",
+      "requestNew": "Request a new link"
+    },
+    "errors": {
+      "emailRequired": "Enter your email.",
+      "emailInvalid": "That email doesn't look right.",
+      "passwordRequired": "Enter your password.",
+      "passwordTooShort": "Use at least {min} characters.",
+      "passwordTooLong": "That password is too long.",
+      "confirmRequired": "Repeat the new password.",
+      "passwordMismatch": "The passwords don't match.",
+      "invalid": "Check the highlighted fields.",
+      "invalidCredentials": "Wrong email or password.",
+      "accountDisabled": "This account is deactivated. Contact a super admin.",
+      "rateLimited": "Too many attempts. Try again in a few minutes.",
+      "tokenInvalid": "This link has expired. Request a new one.",
+      "unknown": "Something went wrong. Please try again."
+    }
+  },
+  "Admin": {
+    "metaTitle": "Dashboard",
+    "greeting": "Hi, {name}",
+    "role": {
+      "super_admin": "Super admin",
+      "admin": "Admin",
+      "editor": "Editor",
+      "mitra": "Partner"
+    },
+    "comingSoon": "Admin modules are being prepared. The full menu arrives in the next stage.",
+    "noAccess": "Partner accounts can't use this dashboard yet. The partner portal arrives in a later stage.",
+    "signOut": "Sign out",
+    "loading": "Loading the dashboard…"
   }
 }

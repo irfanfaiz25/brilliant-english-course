@@ -761,5 +761,72 @@
       "distance": "{distance} km dari unit ini",
       "allInArea": "Lihat semua unit di {area}"
     }
+  },
+  "Auth": {
+    "metaTitle": "Masuk Admin",
+    "area": "Admin BEC",
+    "backToSite": "Kembali ke situs",
+    "email": "Email",
+    "emailPlaceholder": "nama@contoh.com",
+    "password": "Kata sandi",
+    "showPassword": "Tampilkan kata sandi",
+    "hidePassword": "Sembunyikan kata sandi",
+    "signIn": {
+      "title": "Masuk ke dashboard",
+      "description": "Khusus tim BEC. Gunakan email dan kata sandi akunmu.",
+      "submit": "Masuk",
+      "forgot": "Lupa kata sandi?"
+    },
+    "forgot": {
+      "metaTitle": "Lupa kata sandi",
+      "title": "Lupa kata sandi",
+      "description": "Masukkan email akunmu. Kami kirim tautan untuk membuat kata sandi baru.",
+      "submit": "Kirim tautan",
+      "sentTitle": "Cek email kamu",
+      "sent": "Kalau {email} terdaftar, tautan untuk membuat kata sandi baru sudah dikirim. Tautan berlaku {minutes} menit.",
+      "backToSignIn": "Kembali ke halaman masuk"
+    },
+    "reset": {
+      "metaTitle": "Buat kata sandi baru",
+      "title": "Buat kata sandi baru",
+      "description": "Minimal {min} karakter. Setelah disimpan, semua perangkat lain otomatis keluar.",
+      "newPassword": "Kata sandi baru",
+      "confirmPassword": "Ulangi kata sandi baru",
+      "submit": "Simpan kata sandi",
+      "doneTitle": "Kata sandi tersimpan",
+      "done": "Silakan masuk dengan kata sandi barumu.",
+      "toSignIn": "Masuk sekarang",
+      "missingToken": "Tautan tidak lengkap. Buka lagi tautan dari email, atau minta tautan baru.",
+      "requestNew": "Minta tautan baru"
+    },
+    "errors": {
+      "emailRequired": "Isi email.",
+      "emailInvalid": "Format email belum benar.",
+      "passwordRequired": "Isi kata sandi.",
+      "passwordTooShort": "Kata sandi minimal {min} karakter.",
+      "passwordTooLong": "Kata sandi terlalu panjang.",
+      "confirmRequired": "Ulangi kata sandi baru.",
+      "passwordMismatch": "Kata sandi tidak sama.",
+      "invalid": "Periksa lagi isian yang ditandai.",
+      "invalidCredentials": "Email atau kata sandi salah.",
+      "accountDisabled": "Akun ini dinonaktifkan. Hubungi super admin.",
+      "rateLimited": "Terlalu banyak percobaan. Coba lagi beberapa menit lagi.",
+      "tokenInvalid": "Tautan sudah tidak berlaku. Minta tautan baru.",
+      "unknown": "Terjadi kesalahan. Coba lagi."
+    }
+  },
+  "Admin": {
+    "metaTitle": "Dashboard",
+    "greeting": "Halo, {name}",
+    "role": {
+      "super_admin": "Super admin",
+      "admin": "Admin",
+      "editor": "Editor",
+      "mitra": "Mitra"
+    },
+    "comingSoon": "Modul admin sedang disiapkan. Menu lengkap hadir di tahap berikutnya.",
+    "noAccess": "Akun mitra belum bisa memakai dashboard ini. Portal mitra hadir di tahap berikutnya.",
+    "signOut": "Keluar",
+    "loading": "Memuat dashboard…"
   }
 }

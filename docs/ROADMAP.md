@@ -48,7 +48,7 @@ Delivered as four PRs: **2a** i18n & routing ✅ · **2b** UI primitives + `/des
 
 ## Phase 3 — Data model, regions & auth
 
-Sub-phases: **3a** schema & regions ✅ · **3b** auth & permissions ⬜ · **3c** admin shell, seed & fixture swap ⬜.
+Sub-phases: **3a** schema & regions ✅ · **3b** auth & permissions ✅ · **3c** admin shell, seed & fixture swap ⬜.
 
 - Drizzle schema for all domains (incl. `_translations` tables, audit log, settings). ✅ 3a: 23 tables in
   `src/db/schema` (migration `0001_domain_schema`), value lists shared with Zod via `src/config/enums.ts` (ADR-024).
@@ -56,11 +56,13 @@ Sub-phases: **3a** schema & regions ✅ · **3b** auth & permissions ⬜ · **3c
   `pnpm db:regions` upserts the checked-in dataset (ADR-023) — 38 provinces, 514 regencies, 7,285 districts,
   83,762 villages (91,599 rows, matching upstream's published totals) in ~3 s; CI runs it on a fresh database. Name search (`ILIKE` on the trigram
   index) and the children query take 1–3 ms locally.
-- Better Auth: login, logout, reset password; roles `super_admin`, `admin`, `editor`, `mitra` (scoped, inactive UI). (3b)
-- `permissions.ts` with unit tests (3b); admin shell (sidebar, top bar, protected routes) (3c).
+- Better Auth: login, logout, reset password; roles `super_admin`, `admin`, `editor`, `mitra` (scoped, inactive UI). ✅ 3b
+  (ADR-025): Server Actions only (no `/api/auth`), staff created with `pnpm auth:create-user`, sign-in at `/admin/masuk`,
+  failed sign-ins rate-limited, hashed reset tokens, inactive accounts blocked. Reset emails are logged locally until Phase 6.
+- `permissions.ts` with unit tests ✅ 3b (every role × resource × action, unit scoping, inactive accounts); admin shell (sidebar, top bar, protected routes) (3c).
 - Dev seed: sample units, programs, posts, testimonials; public `queries.ts` switch from fixtures to the
   database with no visual change, and CI's build/E2E job gets a database. (3c)
-- **Done when:** permission matrix fully tested; region search returns in < 100 ms locally (✅ measured in 3a).
+- **Done when:** permission matrix fully tested (✅ 3b); region search returns in < 100 ms locally (✅ measured in 3a).
 
 ## Phase 4 — Admin modules
 

@@ -11,6 +11,12 @@ export const clientNamespaces = [
   "ContactForm",
 ] as const satisfies readonly (keyof Messages)[];
 
-export function pickClientMessages(messages: Messages): Partial<Messages> {
-  return Object.fromEntries(clientNamespaces.map((namespace) => [namespace, messages[namespace]]));
+/** Namespaces for the admin area's root layout; never sent with public pages. */
+export const adminClientNamespaces = ["UI", "Auth"] as const satisfies readonly (keyof Messages)[];
+
+export function pickClientMessages(
+  messages: Messages,
+  namespaces: readonly (keyof Messages)[] = clientNamespaces,
+): Partial<Messages> {
+  return Object.fromEntries(namespaces.map((namespace) => [namespace, messages[namespace]]));
 }

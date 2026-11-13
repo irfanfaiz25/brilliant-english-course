@@ -6,6 +6,7 @@
 export * from "./_helpers";
 export * from "./activities";
 export * from "./audit";
+export * from "./auth";
 export * from "./blog";
 export * from "./faq";
 export * from "./media";

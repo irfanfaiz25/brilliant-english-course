@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { clientIp, createRateLimiter } from "./rate-limit";
+import { clientIp, createRateLimiter, isLocalOrUnknownIp } from "./rate-limit";
 
 describe("createRateLimiter", () => {
   it("allows `limit` hits per window, per key", () => {
@@ -12,6 +12,27 @@ describe("createRateLimiter", () => {
     ]);
     expect(limiter.hit("b", 2)).toBe(true);
     expect(limiter.hit("a", 1000)).toBe(true);
+  });
+
+  it("reports a used-up key without counting, and forgets a reset key", () => {
+    const limiter = createRateLimiter({ limit: 2, windowMs: 1000 });
+    limiter.hit("a", 0);
+    expect(limiter.isBlocked("a", 1)).toBe(false);
+    limiter.hit("a", 1);
+    expect(limiter.isBlocked("a", 2)).toBe(true);
+    expect(limiter.isBlocked("a", 1000)).toBe(false);
+    limiter.reset("a");
+    expect(limiter.isBlocked("a", 3)).toBe(false);
+    expect(limiter.hit("a", 3)).toBe(true);
+  });
+});
+
+describe("isLocalOrUnknownIp", () => {
+  it("matches loopback and unknown addresses only", () => {
+    for (const ip of ["unknown", "::1", "127.0.0.1", "::ffff:127.0.0.1"]) {
+      expect(isLocalOrUnknownIp(ip)).toBe(true);
+    }
+    expect(isLocalOrUnknownIp("203.0.113.7")).toBe(false);
   });
 });
 
