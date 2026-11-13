@@ -10,7 +10,7 @@ Status legend: ⬜ not started · 🟨 in progress · ✅ done
 | 0   | Foundation docs                            | ✅         |
 | 1   | Scaffold & tooling                         | ✅         |
 | 2   | Design system in code & site shell         | ✅         |
-| 3   | Data model, regions & auth                 | 🟨         |
+| 3   | Data model, regions & auth                 | ✅         |
 | 4   | Admin modules                              | ⬜         |
 | 5   | Public website                             | ✅         |
 | 6   | Notifications                              | ⬜         |
@@ -48,7 +48,7 @@ Delivered as four PRs: **2a** i18n & routing ✅ · **2b** UI primitives + `/des
 
 ## Phase 3 — Data model, regions & auth
 
-Sub-phases: **3a** schema & regions ✅ · **3b** auth & permissions ✅ · **3c** admin shell, seed & fixture swap ⬜.
+Sub-phases: **3a** schema & regions ✅ · **3b** auth & permissions ✅ · **3c** admin shell, seed & fixture swap ✅.
 
 - Drizzle schema for all domains (incl. `_translations` tables, audit log, settings). ✅ 3a: 23 tables in
   `src/db/schema` (migration `0001_domain_schema`), value lists shared with Zod via `src/config/enums.ts` (ADR-024).
@@ -59,9 +59,13 @@ Sub-phases: **3a** schema & regions ✅ · **3b** auth & permissions ✅ · **3c
 - Better Auth: login, logout, reset password; roles `super_admin`, `admin`, `editor`, `mitra` (scoped, inactive UI). ✅ 3b
   (ADR-025): Server Actions only (no `/api/auth`), staff created with `pnpm auth:create-user`, sign-in at `/admin/masuk`,
   failed sign-ins rate-limited, hashed reset tokens, inactive accounts blocked. Reset emails are logged locally until Phase 6.
-- `permissions.ts` with unit tests ✅ 3b (every role × resource × action, unit scoping, inactive accounts); admin shell (sidebar, top bar, protected routes) (3c).
+- `permissions.ts` with unit tests ✅ 3b (every role × resource × action, unit scoping, inactive accounts); admin shell (sidebar, top bar, protected routes) ✅ 3c (ADR-026):
+  frosted sidebar and top bar, menu filtered by permission, Ringkasan with KPIs and latest leads, one guarded
+  placeholder per Phase 4 module, admin 404.
 - Dev seed: sample units, programs, posts, testimonials; public `queries.ts` switch from fixtures to the
-  database with no visual change, and CI's build/E2E job gets a database. (3c)
+  database with no visual change, and CI's build/E2E job gets a database. ✅ 3c (ADR-026): `pnpm db:seed` loads the
+  Phase 5 sample content (units on real Kemendagri villages) plus sample leads; every public query reads Postgres;
+  partner applications are stored with an audit row; CI seeds a throwaway database before the build.
 - **Done when:** permission matrix fully tested (✅ 3b); region search returns in < 100 ms locally (✅ measured in 3a).
 
 ## Phase 4 — Admin modules
