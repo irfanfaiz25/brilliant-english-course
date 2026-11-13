@@ -16,12 +16,52 @@
   "NotFound": {
     "title": "Page not found",
     "description": "The page you are looking for may have moved or never existed.",
-    "backHome": "Back to home"
+    "backHome": "Back to home",
+    "findUnit": "Find the nearest unit",
+    "popular": "Popular pages"
   },
   "UI": {
     "close": "Close",
     "search": "Search…",
     "noResults": "No results found.",
     "loading": "Loading…"
+  },
+  "Nav": {
+    "home": "Home",
+    "program": "Programs",
+    "findUnit": "Find a Unit",
+    "partnership": "Partnership",
+    "blog": "Blog",
+    "contact": "Contact",
+    "joinPartner": "Become a Partner",
+    "primaryLabel": "Main navigation",
+    "openMenu": "Open menu",
+    "menuTitle": "Menu",
+    "menuDescription": "Explore programs, find the nearest unit, or become a partner.",
+    "homeLabel": "Brilliant English Course, go to home"
+  },
+  "Footer": {
+    "tagline": "Fun English courses for children aged 4–15, available at BEC units across Indonesia.",
+    "programs": "Programs",
+    "explore": "Explore",
+    "contactUs": "Contact Us",
+    "followUs": "Follow us on {network}",
+    "rights": "© {year} Brilliant English Course. All rights reserved.",
+    "chatWhatsApp": "Chat on WhatsApp",
+    "levelKindy": "Kindy · ages 4–6",
+    "levelIntro": "Intro · ages 7–9",
+    "levelSecondary": "Secondary · ages 10–15",
+    "language": "Language"
+  },
+  "MobileBar": {
+    "label": "Quick actions",
+    "findUnit": "Find a Unit",
+    "chatWhatsApp": "WhatsApp",
+    "checkQuota": "Check Quota",
+    "applyPartner": "Apply Now"
+  },
+  "WhatsApp": {
+    "general": "Hi BEC, I'd like to ask about your English courses for kids.",
+    "partner": "Hi BEC, I'm interested in opening a BEC unit (partnership). Could you share more information?"
   }
 }

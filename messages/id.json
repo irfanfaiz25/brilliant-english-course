@@ -16,12 +16,52 @@
   "NotFound": {
     "title": "Halaman tidak ditemukan",
     "description": "Halaman yang kamu cari mungkin sudah dipindahkan atau tidak pernah ada.",
-    "backHome": "Kembali ke beranda"
+    "backHome": "Kembali ke beranda",
+    "findUnit": "Cek unit terdekat",
+    "popular": "Halaman populer"
   },
   "UI": {
     "close": "Tutup",
     "search": "Cari…",
     "noResults": "Tidak ada hasil.",
     "loading": "Memuat…"
+  },
+  "Nav": {
+    "home": "Beranda",
+    "program": "Program",
+    "findUnit": "Cek Unit",
+    "partnership": "Kemitraan",
+    "blog": "Blog",
+    "contact": "Kontak",
+    "joinPartner": "Gabung Mitra",
+    "primaryLabel": "Navigasi utama",
+    "openMenu": "Buka menu",
+    "menuTitle": "Menu",
+    "menuDescription": "Jelajahi program, cari unit terdekat, atau gabung jadi mitra.",
+    "homeLabel": "Brilliant English Course, ke beranda"
+  },
+  "Footer": {
+    "tagline": "Kursus bahasa Inggris yang seru untuk anak usia 4–15 tahun, hadir di unit-unit BEC di seluruh Indonesia.",
+    "programs": "Program",
+    "explore": "Jelajahi",
+    "contactUs": "Hubungi Kami",
+    "followUs": "Ikuti kami di {network}",
+    "rights": "© {year} Brilliant English Course. Hak cipta dilindungi.",
+    "chatWhatsApp": "Chat WhatsApp",
+    "levelKindy": "Kindy · 4–6 tahun",
+    "levelIntro": "Intro · 7–9 tahun",
+    "levelSecondary": "Secondary · 10–15 tahun",
+    "language": "Bahasa"
+  },
+  "MobileBar": {
+    "label": "Aksi cepat",
+    "findUnit": "Cek Unit",
+    "chatWhatsApp": "Chat WA",
+    "checkQuota": "Cek Kuota",
+    "applyPartner": "Daftar Mitra"
+  },
+  "WhatsApp": {
+    "general": "Halo BEC, saya ingin bertanya tentang kursus bahasa Inggris anak.",
+    "partner": "Halo BEC, saya tertarik membuka unit BEC (kemitraan). Boleh minta informasinya?"
   }
 }
