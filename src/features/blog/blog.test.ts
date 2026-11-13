@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
 
+import { slugify } from "@/lib/slug";
+
 import { bold, doc, h2, h3, link, p, ul } from "./doc-builders";
 import { postFixtures } from "./fixtures";
 import { blogQuery, parseBlogParams } from "./index-params";
@@ -10,7 +12,6 @@ import {
   paginatePosts,
   readingMinutes,
   relatedPosts,
-  slugify,
   toPost,
 } from "./service";
 

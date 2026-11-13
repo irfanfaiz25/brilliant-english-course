@@ -74,7 +74,7 @@ export function courseJsonLd(course: CourseInput): JsonLdThing {
   };
 }
 
-type LocalBusinessInput = {
+export type LocalBusinessInput = {
   name: string;
   url: string;
   telephone: string;

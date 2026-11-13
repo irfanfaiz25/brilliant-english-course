@@ -4,6 +4,7 @@ import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 
 import { PageCanvas } from "@/components/site/page-canvas";
+import { PartnerBanner } from "@/components/site/partner-banner";
 import { Section } from "@/components/site/section";
 import { routing } from "@/i18n/routing";
 import { localizedAlternates } from "@/lib/seo/alternates";
@@ -11,7 +12,6 @@ import { localizedAlternates } from "@/lib/seo/alternates";
 import { Finder } from "./_sections/finder";
 import { FinderHero } from "./_sections/finder-hero";
 import { FinderSkeleton } from "./_sections/finder-skeleton";
-import { PartnerBanner } from "./_sections/partner-banner";
 
 export async function generateMetadata({
   params,
@@ -36,6 +36,7 @@ export default async function FinderPage(props: PageProps<"/[locale]/cek-unit">)
   const { locale } = await props.params;
   if (!hasLocale(routing.locales, locale)) return null;
   const t = await getTranslations("Finder.results");
+  const tPartner = await getTranslations("Finder.partner");
 
   return (
     <PageCanvas>
@@ -45,7 +46,7 @@ export default async function FinderPage(props: PageProps<"/[locale]/cek-unit">)
           <Finder searchParams={props.searchParams} />
         </Suspense>
       </Section>
-      <PartnerBanner />
+      <PartnerBanner title={tPartner("title")} text={tPartner("text")} cta={tPartner("cta")} />
     </PageCanvas>
   );
 }
