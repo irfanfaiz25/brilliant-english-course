@@ -63,7 +63,7 @@
   "Home": {
     "metaTitle": "English Courses for Kids Aged 4–15",
     "hero": {
-      "overline": "English Courses for Kids · Ages 4–15",
+      "overline": "English Courses for Kids",
       "title": "A <hl>Fun</hl> Way to Learn English",
       "lead": "Fun English classes for children — conversation and grammar from the basics, taught step by step at a BEC unit near your home.",
       "primaryCta": "Find the Nearest Unit",
@@ -76,13 +76,14 @@
       "badgeLevels": "3 levels by age",
       "badgeNearby": "Units near you",
       "badgeSmallClass": "Small, fun classes",
-      "imageAlt": "A smiling girl writing in class"
+      "imageAlt": "A smiling girl writing in class",
+      "ageBadge": "Ages 4–15"
     },
     "stats": {
       "label": "BEC in numbers",
-      "activeUnits": "Active BEC units",
-      "cities": "Cities & regencies",
-      "students": "Students learning"
+      "activeUnits": "Active<br></br> BEC units",
+      "cities": "Cities &<br></br> regencies",
+      "students": "Students<br></br> learning"
     },
     "programs": {
       "overline": "BEC Programs",

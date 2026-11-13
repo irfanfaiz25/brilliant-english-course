@@ -308,7 +308,10 @@ Implementation rules:
 
 - **Hero:** headline and photo render immediately (LCP, never animated in). Floating glass badges drift slowly (`animate-float`, off for reduced motion). "Fun" is highlighted with a hand-drawn underline.
 - **Age chips** are plain `#level-<slug>` anchors: the browser scrolls to the level card and CSS `:target` rings it in the level color. No JavaScript.
-- **Stats** sit on a card that overlaps the hero's bottom edge; numbers come from `getNetworkStats()`.
+- **Hero overline** is two short segments (label + age chip) on one line — never let a pill wrap on phones.
+- **Stats** sit on a card that overlaps the hero's bottom edge; numbers come from `getNetworkStats()` and count up
+  (`CountUp hiddenOnLoad`, safe because the card is inside a `Reveal`). Labels break into two balanced lines on phones
+  (`<br>` in the message, hidden from `md`) so columns stay aligned.
 - **Level cards:** photo, level color bar, age chip, skills with level-colored checks; whole card is one link to `/program#<slug>`.
 - **Activities:** photo-led cards with text on a dark gradient; CSS scroll-snap row on phones, grid from `md`.
 
