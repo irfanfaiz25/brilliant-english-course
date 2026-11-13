@@ -66,7 +66,7 @@ export async function PartnershipHero({ stats }: { stats: NetworkStats }) {
           <h1 id="partnership-title" className="text-display text-foreground">
             {t("title")}
           </h1>
-          <p className="max-w-2xl animate-rise-in text-body-lg text-muted-foreground [animation-delay:180ms]">
+          <p className="max-w-2xl animate-lift-in text-body-lg text-muted-foreground [animation-delay:180ms]">
             {t("lead")}
           </p>
           <div className="flex animate-rise-in flex-col gap-3 pt-1 [animation-delay:270ms] sm:flex-row">

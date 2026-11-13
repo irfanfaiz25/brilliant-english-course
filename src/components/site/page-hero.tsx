@@ -57,7 +57,7 @@ export function PageHero({
           {title}
         </h1>
         {lead && (
-          <p className="max-w-3xl animate-rise-in text-body-lg text-muted-foreground [animation-delay:180ms]">
+          <p className="max-w-3xl animate-lift-in text-body-lg text-muted-foreground [animation-delay:180ms]">
             {lead}
           </p>
         )}

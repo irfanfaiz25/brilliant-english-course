@@ -110,6 +110,8 @@
   --color-partner-hover: var(--color-orange-600);
   --color-partner-active: var(--color-orange-700);
   --color-partner-soft: var(--color-orange-50);
+  /* Small partner text on `partner-soft` surfaces (AA); fills keep `partner` (ADR-010). */
+  --color-partner-strong: var(--color-orange-700);
   --color-partner-foreground: var(--color-white);
 
   /* Badges, illustrations, decoration (never text on light surfaces). */
@@ -259,6 +261,9 @@
   --animate-float: float 7s var(--ease-in-out) infinite;
   /* Page-load entrance for hero content (CSS only; set `animation-delay` per element). */
   --animate-rise-in: rise-in var(--duration-reveal) var(--ease-out) both;
+  /* Same entrance without the fade, for large hero text that can be the LCP element: text painted
+     at opacity 0 is only reported once JS repaints it, which delays LCP (ADR-022). */
+  --animate-lift-in: lift-in var(--duration-reveal) var(--ease-out) both;
   /* Hero photo settles from a slight zoom; transform only, so it never delays LCP. */
   --animate-settle: settle 1.4s var(--ease-out) both;
   /* Horizontal fill from the left (skill bars, progress); set duration per use when needed. */
@@ -378,6 +383,12 @@
 @keyframes rise-in {
   from {
     opacity: 0;
+    translate: 0 16px;
+  }
+}
+
+@keyframes lift-in {
+  from {
     translate: 0 16px;
   }
 }
