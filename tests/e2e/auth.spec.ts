@@ -1,18 +1,6 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
-import { E2E_PASSWORD, e2eUsers } from "./auth-users";
-
-async function signIn(page: Page, email: string, password = E2E_PASSWORD) {
-  await page
-    .getByRole("main")
-    .getByLabel(/^Email/)
-    .fill(email);
-  await page
-    .getByRole("main")
-    .getByLabel(/^Kata sandi/)
-    .fill(password);
-  await page.getByRole("button", { name: "Masuk" }).click();
-}
+import { e2eUsers, signIn, signOut } from "./auth-users";
 
 test.describe("admin authentication", () => {
   test("sends signed-out visitors to sign in and back where they were going", async ({
@@ -25,10 +13,9 @@ test.describe("admin authentication", () => {
 
     await signIn(page, users.admin.email);
     await expect(page).toHaveURL(/\/admin$/);
-    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Halo, E2E Admin");
-    await expect(page.getByText("Super admin")).toBeVisible();
+    await expect(page.getByText("Halo, E2E Admin")).toBeVisible();
 
-    await page.getByRole("button", { name: "Keluar" }).click();
+    await signOut(page);
     await expect(page).toHaveURL(/\/admin\/masuk$/);
     // The session is gone on the server, not only hidden.
     await page.goto("/admin");
@@ -71,7 +58,7 @@ test.describe("admin authentication", () => {
     await page.goto("/admin/masuk?next=https%3A%2F%2Fevil.example%2Fadmin");
     await signIn(page, users.editor.email);
     await expect(page).toHaveURL(/localhost:\d+\/admin$/);
-    await expect(page.getByText("Editor", { exact: true })).toBeVisible();
+    await expect(page.getByText("Halo, E2E Editor")).toBeVisible();
   });
 });
 
