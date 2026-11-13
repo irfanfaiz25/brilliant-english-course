@@ -636,6 +636,80 @@
       "secondary": "Chat WhatsApp"
     }
   },
+  "Contact": {
+    "metaTitle": "Kontak — Hubungi Brilliant English Course",
+    "metaDescription": "Hubungi BEC lewat WhatsApp atau email. Orang tua bisa langsung terhubung ke unit terdekat, calon mitra ke tim kemitraan.",
+    "hero": {
+      "overline": "Kontak",
+      "title": "Kami Siap Membantu",
+      "lead": "Pilih kebutuhanmu supaya pesanmu sampai ke orang yang tepat — atau tulis pesan dan lanjutkan di WhatsApp.",
+      "hoursLabel": "Dibalas di jam kerja"
+    },
+    "routes": {
+      "overline": "Pilih kebutuhanmu",
+      "title": "Mau Menghubungi Soal Apa?",
+      "lead": "Jadwal dan biaya kelas ditangani langsung oleh unit, jadi orang tua akan lebih cepat terbantu di sana.",
+      "parent": {
+        "title": "Orang tua & calon siswa",
+        "text": "Jadwal, biaya, dan pendaftaran kelas dijawab langsung oleh admin unit terdekat.",
+        "primary": "Cek Unit Terdekat",
+        "secondary": "Tanya admin pusat"
+      },
+      "partner": {
+        "title": "Calon mitra",
+        "text": "Informasi kemitraan, kuota desa, dan proses membuka unit BEC.",
+        "primary": "Lihat Kemitraan",
+        "secondary": "Chat tim kemitraan"
+      },
+      "other": {
+        "title": "Media & kerja sama",
+        "text": "Liputan, kolaborasi dengan sekolah, atau pertanyaan lainnya.",
+        "primary": "Kirim email",
+        "secondary": "Tulis pesan"
+      }
+    },
+    "message": {
+      "overline": "Tulis pesan",
+      "title": "Sampaikan Pesanmu",
+      "lead": "Isi singkat di bawah ini, lalu pesanmu terbuka di WhatsApp dan siap dikirim ke admin BEC."
+    },
+    "details": {
+      "title": "Kantor pusat BEC",
+      "whatsapp": "WhatsApp",
+      "email": "Email",
+      "address": "Alamat",
+      "directions": "Petunjuk arah",
+      "hours": "Jam operasional",
+      "social": "Media sosial",
+      "followUs": "Ikuti kami di {network}"
+    }
+  },
+  "ContactForm": {
+    "label": "Formulir pesan WhatsApp",
+    "topic": "Saya menghubungi sebagai",
+    "topics": {
+      "parent": "Orang tua",
+      "partner": "Calon mitra",
+      "other": "Lainnya"
+    },
+    "name": "Nama",
+    "namePlaceholder": "Contoh: Rina Lestari",
+    "message": "Pesan",
+    "messagePlaceholder": "Tulis pertanyaanmu di sini…",
+    "messageCount": "{count}/{max}",
+    "privacy": "Pesan tidak disimpan di situs ini — langsung terbuka di aplikasi WhatsApp-mu.",
+    "submit": "Lanjut ke WhatsApp",
+    "template": "Halo BEC, saya {name} ({topic}).\n\n{message}",
+    "opened": "WhatsApp sudah dibuka di tab baru.",
+    "openAgain": "Belum terbuka? Buka WhatsApp",
+    "errors": {
+      "topicRequired": "Pilih salah satu.",
+      "nameRequired": "Isi namamu.",
+      "nameTooLong": "Nama terlalu panjang.",
+      "messageTooShort": "Tulis pesan minimal 10 karakter.",
+      "messageTooLong": "Maksimal 500 karakter."
+    }
+  },
   "UnitPages": {
     "directory": {
       "metaTitle": "Daftar Unit BEC per Wilayah",

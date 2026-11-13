@@ -155,6 +155,14 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
 - **Alternatives:** Storing HTML (XSS risk, styling drift); rendering with `@tiptap/html` (extra dependency for a subset we control); the same slug in both languages (weaker English SEO).
 - **Known limitation:** Because pages stream, an unknown slug or a cross-language redirect is resolved after the shell is sent (404 page with `noindex`, client redirect). Real 404/308 status codes for these can move into `src/proxy.ts` during Phase 7.
 
+### ADR-020 — Contact via a WhatsApp composer, details from settings
+
+2026-11-13 · Accepted
+
+- **Decision:** The Kontak page routes visitors first (parents → their unit, partners → Kemitraan, others → email) and offers a message composer whose validated text opens in WhatsApp (`features/contact/schema.ts`). It has no Server Action and stores nothing. Head-office details (WhatsApp, email, address, office hours, socials) come from `getContactSettings()` in the `settings` domain, which returns code defaults until the settings module (Phase 4a).
+- **Why:** WhatsApp is where parents already talk to BEC and where admins answer. A server-side contact form would add storage, spam protection and notifications for little gain. Partner leads keep their own stored form (ADR-007, ADR-018).
+- **Alternatives:** A stored contact form with email notifications (more moving parts, slower replies); an embedded Google Map (heavy third-party script; a directions link is enough).
+
 ### ADR-021 — Unit and area pages from a unit directory
 
 2026-11-13 · Accepted

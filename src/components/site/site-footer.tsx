@@ -5,20 +5,13 @@ import { getTranslations } from "next-intl/server";
 import { BrandIcon } from "@/components/icons/brand-icon";
 import { Button } from "@/components/ui/button";
 import { mainNav } from "@/config/navigation";
-import { siteConfig, type SocialNetwork } from "@/config/site";
+import { siteConfig, socialNetworkNames, type SocialNetwork } from "@/config/site";
 import { Link } from "@/i18n/navigation";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 import { DecorBlob } from "./decor-blob";
 import { LocaleSwitcher } from "./locale-switcher";
 import { Logo } from "./logo";
-
-const socialNames: Record<SocialNetwork, string> = {
-  instagram: "Instagram",
-  facebook: "Facebook",
-  youtube: "YouTube",
-  tiktok: "TikTok",
-};
 
 /** Current year for the copyright line, cached so pages stay static (Cache Components). */
 async function getCopyrightYear() {
@@ -56,7 +49,7 @@ export async function SiteFooter() {
                   href={siteConfig.social[network]}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={t("followUs", { network: socialNames[network] })}
+                  aria-label={t("followUs", { network: socialNetworkNames[network] })}
                   className="inline-flex size-11 items-center justify-center rounded-full bg-white/10 text-inverse-foreground transition-[background-color,transform] duration-(--duration-fast) hover:-translate-y-0.5 hover:bg-white/20"
                 >
                   <BrandIcon name={network} className="size-5" />

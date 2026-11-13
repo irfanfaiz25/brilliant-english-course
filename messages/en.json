@@ -636,6 +636,80 @@
       "secondary": "Chat on WhatsApp"
     }
   },
+  "Contact": {
+    "metaTitle": "Contact — Get in Touch with Brilliant English Course",
+    "metaDescription": "Contact BEC on WhatsApp or by email. Parents can reach the nearest unit directly, prospective partners the partnership team.",
+    "hero": {
+      "overline": "Contact",
+      "title": "We're Here to Help",
+      "lead": "Choose what you need so your message reaches the right person — or write a message and continue on WhatsApp.",
+      "hoursLabel": "Replies during office hours"
+    },
+    "routes": {
+      "overline": "Choose what you need",
+      "title": "What Would You Like to Ask About?",
+      "lead": "Class schedules and fees are handled by each unit, so parents get help fastest there.",
+      "parent": {
+        "title": "Parents & students",
+        "text": "Class schedules, fees and enrolment are answered by the nearest unit's admin.",
+        "primary": "Find the Nearest Unit",
+        "secondary": "Ask the head office"
+      },
+      "partner": {
+        "title": "Prospective partners",
+        "text": "Partnership details, village quota and how to open a BEC unit.",
+        "primary": "See Partnership",
+        "secondary": "Chat the partnership team"
+      },
+      "other": {
+        "title": "Media & collaboration",
+        "text": "Press, school collaborations or any other questions.",
+        "primary": "Send an email",
+        "secondary": "Write a message"
+      }
+    },
+    "message": {
+      "overline": "Write a message",
+      "title": "Tell Us What You Need",
+      "lead": "Fill in the short form below and your message opens in WhatsApp, ready to send to the BEC admin."
+    },
+    "details": {
+      "title": "BEC head office",
+      "whatsapp": "WhatsApp",
+      "email": "Email",
+      "address": "Address",
+      "directions": "Get directions",
+      "hours": "Office hours",
+      "social": "Social media",
+      "followUs": "Follow us on {network}"
+    }
+  },
+  "ContactForm": {
+    "label": "WhatsApp message form",
+    "topic": "I'm getting in touch as",
+    "topics": {
+      "parent": "Parent",
+      "partner": "Prospective partner",
+      "other": "Other"
+    },
+    "name": "Name",
+    "namePlaceholder": "e.g. Rina Lestari",
+    "message": "Message",
+    "messagePlaceholder": "Write your question here…",
+    "messageCount": "{count}/{max}",
+    "privacy": "Your message isn't stored on this site — it opens straight in your WhatsApp app.",
+    "submit": "Continue to WhatsApp",
+    "template": "Hello BEC, I'm {name} ({topic}).\n\n{message}",
+    "opened": "WhatsApp opened in a new tab.",
+    "openAgain": "Didn't open? Open WhatsApp",
+    "errors": {
+      "topicRequired": "Choose one option.",
+      "nameRequired": "Enter your name.",
+      "nameTooLong": "The name is too long.",
+      "messageTooShort": "Write at least 10 characters.",
+      "messageTooLong": "500 characters at most."
+    }
+  },
   "UnitPages": {
     "directory": {
       "metaTitle": "BEC Units by Area",
