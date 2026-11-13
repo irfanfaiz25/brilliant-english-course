@@ -60,7 +60,8 @@
     "general": "Halo BEC, saya ingin bertanya tentang kursus bahasa Inggris anak.",
     "partner": "Halo BEC, saya tertarik membuka unit BEC (kemitraan). Boleh minta informasinya?",
     "unit": "Halo {unit}, saya ingin bertanya tentang kelas bahasa Inggris untuk anak saya.",
-    "level": "Halo BEC, saya ingin bertanya tentang kelas {level} untuk anak saya."
+    "level": "Halo BEC, saya ingin bertanya tentang kelas {level} untuk anak saya.",
+    "partnerApplication": "Halo BEC, saya {name} baru saja mendaftar kemitraan untuk Desa {village} (no. pendaftaran {reference}). Mohon info langkah selanjutnya."
   },
   "Home": {
     "metaTitle": "Kursus Bahasa Inggris Anak Usia 4–15 Tahun",
@@ -325,6 +326,238 @@
       "title": "Belum ada unit di desamu?",
       "text": "Buka unit BEC di rumahmu dan jadi yang pertama di wilayahmu. Cek kuota dan daftar dalam beberapa menit.",
       "cta": "Pelajari kemitraan"
+    }
+  },
+  "Partnership": {
+    "metaTitle": "Kemitraan — Buka Unit Kursus Bahasa Inggris Anak",
+    "metaDescription": "Buka unit kursus bahasa Inggris anak BEC di rumahmu. Kurikulum, pelatihan, dan dukungan disiapkan. Cek kuota desamu (maks. 2 unit per desa) dan daftar online.",
+    "hero": {
+      "overline": "Kemitraan BEC",
+      "title": "Buka Unit Kursus Bahasa Inggris Anak di Rumahmu",
+      "lead": "Jadikan ruang tamu tempat belajar yang seru dan bermanfaat untuk desamu. BEC menyiapkan kurikulum, pelatihan, dan pendampingan — kamu fokus membimbing anak-anak.",
+      "primaryCta": "Cek Kuota Desamu",
+      "secondaryCta": "Daftar Jadi Mitra",
+      "statsLabel": "Kemitraan BEC dalam angka",
+      "units": "unit sudah<br></br> bergabung",
+      "cities": "kota &<br></br> kabupaten",
+      "quotaValue": "Maks. 2",
+      "quota": "unit per desa,<br></br> wilayah terlindungi",
+      "imageBadge": "Kelas kecil, suasana rumah"
+    },
+    "tabs": {
+      "label": "Bagian halaman kemitraan",
+      "benefits": "Keuntungan",
+      "fit": "Siapa cocok",
+      "steps": "Alur",
+      "apply": "Cek kuota & daftar",
+      "stories": "Cerita mitra",
+      "faq": "FAQ"
+    },
+    "benefits": {
+      "overline": "Keuntungan",
+      "title": "Semua yang Kamu Butuhkan Sudah Disiapkan",
+      "lead": "Mulai tanpa menyusun materi dari nol. Kamu mendapat sistem yang sudah dipakai ratusan kelas BEC.",
+      "curriculum": {
+        "title": "Kurikulum siap pakai",
+        "text": "Modul Kindy, Intro, dan Secondary lengkap dengan rencana pertemuan."
+      },
+      "training": {
+        "title": "Pelatihan & pendampingan",
+        "text": "Pelatihan metode mengajar untukmu dan pengajar, plus pendampingan rutin."
+      },
+      "marketing": {
+        "title": "Materi promosi",
+        "text": "Desain brosur, spanduk, dan konten media sosial yang tinggal dipakai."
+      },
+      "system": {
+        "title": "Sistem administrasi",
+        "text": "Pendaftaran siswa dan laporan perkembangan yang rapi untuk orang tua."
+      },
+      "brand": {
+        "title": "Merek yang dipercaya",
+        "text": "Orang tua sudah mengenal BEC, jadi unit barumu lebih mudah dipercaya."
+      },
+      "territory": {
+        "title": "Wilayah terlindungi",
+        "text": "Maksimal 2 unit per desa, supaya setiap unit punya cukup calon siswa."
+      }
+    },
+    "fit": {
+      "overline": "Siapa cocok",
+      "title": "Tidak Harus Lulusan Sastra Inggris",
+      "lead": "Yang terpenting adalah senang dengan anak-anak dan mau belajar. Mitra BEC datang dari banyak latar belakang.",
+      "parent": {
+        "title": "Ibu rumah tangga",
+        "text": "Punya waktu luang dan ingin usaha dari rumah."
+      },
+      "educator": {
+        "title": "Guru & pendidik",
+        "text": "Ingin membuka kelas sendiri dengan sistem yang jelas."
+      },
+      "graduate": {
+        "title": "Mahasiswa & lulusan baru",
+        "text": "Suka mengajar dan ingin membangun usaha pertama."
+      },
+      "entrepreneur": {
+        "title": "Pengusaha lokal",
+        "text": "Mencari usaha pendidikan yang berdampak untuk desa."
+      },
+      "needsTitle": "Yang perlu kamu siapkan",
+      "needs": {
+        "space": "Ruangan nyaman untuk kelas kecil (ruang tamu pun cukup)",
+        "basics": "Dasar bahasa Inggris dan kesabaran mendampingi anak",
+        "commitment": "Komitmen mengikuti pelatihan dan standar BEC"
+      }
+    },
+    "package": {
+      "overline": "Paket kemitraan",
+      "title": "Yang kamu dapatkan",
+      "investmentLabel": "Investasi",
+      "investmentFrom": "Mulai {amount}",
+      "investmentAsk": "Dijelaskan saat konsultasi",
+      "investmentNote": "Rincian biaya dan skema pembayaran disampaikan langsung oleh tim kemitraan.",
+      "cta": "Tanya detail via WhatsApp"
+    },
+    "steps": {
+      "overline": "Alur kemitraan",
+      "title": "5 Langkah Sampai Unitmu Aktif",
+      "lead": "Prosesnya jelas dari awal. Tim kemitraan mendampingimu di setiap langkah.",
+      "quota": {
+        "title": "Cek kuota desa",
+        "text": "Pastikan masih ada slot di desa tempat unitmu akan dibuka."
+      },
+      "apply": {
+        "title": "Isi formulir",
+        "text": "Kirim data singkat, tim kemitraan menerima pendaftaranmu."
+      },
+      "consult": {
+        "title": "Konsultasi & survei",
+        "text": "Diskusi lewat WhatsApp lalu survei lokasi bersama tim BEC."
+      },
+      "training": {
+        "title": "Pelatihan",
+        "text": "Kamu dan pengajar belajar metode dan sistem BEC."
+      },
+      "launch": {
+        "title": "Unit aktif",
+        "text": "Promosi pembukaan, kelas pertama dimulai, unitmu tampil di Cek Unit."
+      }
+    },
+    "apply": {
+      "overline": "Cek kuota & daftar",
+      "title": "Amankan Slot di Desamu",
+      "lead": "Pilih desa tempat unitmu akan dibuka untuk melihat sisa kuotanya, lalu isi formulir singkat. Gratis dan tanpa komitmen.",
+      "loading": "Memuat kuota…"
+    },
+    "quota": {
+      "title": "Cek kuota desa",
+      "hint": "Pilih sampai tingkat desa/kelurahan untuk melihat sisa slot.",
+      "chooseTitle": "Pilih desa untuk melihat kuota",
+      "chooseText": "Setiap desa maksimal {max} unit BEC. Kuota dihitung dari unit aktif dan mitra yang sedang bergabung.",
+      "available": "Tersedia",
+      "almostFull": "Sisa {remaining} slot",
+      "full": "Penuh",
+      "slots": "{remaining} dari {max} slot masih tersedia",
+      "meterLabel": "{used} dari {max} slot terisi",
+      "activeUnits": "{count, plural, =0 {Belum ada unit aktif} other {# unit aktif}}",
+      "reserved": "{count, plural, =0 {} other {# mitra sedang bergabung}}",
+      "availableText": "Kuota di {village} masih terbuka. Isi formulir di bawah untuk mengamankan slotmu.",
+      "almostFullText": "Tinggal {remaining} slot di {village}. Daftar sekarang sebelum diambil mitra lain.",
+      "fullText": "Kuota di {village} sudah penuh. Coba desa lain di sekitarnya, atau lihat unit yang sudah ada.",
+      "applyCta": "Daftar untuk desa ini",
+      "seeUnits": "Lihat unit di {village}"
+    },
+    "stories": {
+      "overline": "Cerita mitra",
+      "title": "Dari Ruang Tamu Jadi Tempat Belajar",
+      "lead": "Mitra BEC membuka kelas di rumah dan tumbuh bersama anak-anak di sekitarnya."
+    },
+    "faq": {
+      "overline": "FAQ kemitraan",
+      "title": "Pertanyaan Calon Mitra",
+      "lead": "Jawaban singkat untuk pertanyaan yang paling sering ditanyakan calon mitra.",
+      "askTitle": "Masih ada pertanyaan?",
+      "askText": "Tim kemitraan siap menjelaskan detail investasi dan prosesnya.",
+      "askCta": "Chat tim kemitraan"
+    },
+    "cta": {
+      "title": "Amankan Slot di Desamu Sekarang",
+      "lead": "Kuota setiap desa terbatas. Daftar hari ini dan tim kemitraan BEC akan menghubungimu.",
+      "primary": "Daftar Jadi Mitra",
+      "secondary": "Chat Tim Kemitraan"
+    }
+  },
+  "PartnerForm": {
+    "label": "Formulir pendaftaran mitra",
+    "title": "Formulir calon mitra",
+    "stepOf": "Langkah {current} dari {total}",
+    "steps": {
+      "contact": "Data diri",
+      "details": "Tentang kamu"
+    },
+    "village": {
+      "label": "Desa yang dipilih",
+      "none": "Belum memilih desa",
+      "noneHint": "Pilih desa di cek kuota agar slotnya bisa kami amankan.",
+      "choose": "Pilih desa",
+      "change": "Ganti"
+    },
+    "fields": {
+      "fullName": "Nama lengkap",
+      "fullNamePlaceholder": "Contoh: Rina Lestari",
+      "whatsapp": "Nomor WhatsApp",
+      "whatsappPlaceholder": "0812 3456 7890",
+      "whatsappHint": "Tim kemitraan akan menghubungimu di nomor ini.",
+      "email": "Email",
+      "emailOptional": "(opsional)",
+      "emailPlaceholder": "nama@email.com",
+      "background": "Kegiatanmu saat ini",
+      "space": "Ruang untuk kelas",
+      "motivation": "Ceritakan sedikit rencanamu",
+      "motivationOptional": "(opsional)",
+      "motivationPlaceholder": "Misalnya: jumlah anak di sekitar rumah, jadwal yang kamu bisa…",
+      "motivationCount": "{count}/{max}",
+      "consent": "Saya setuju dihubungi tim kemitraan BEC lewat WhatsApp dan data saya disimpan untuk proses pendaftaran.",
+      "honeypot": "Jangan isi kolom ini"
+    },
+    "backgrounds": {
+      "educator": "Guru / pendidik",
+      "parent": "Ibu / bapak rumah tangga",
+      "entrepreneur": "Pengusaha / karyawan",
+      "other": "Lainnya"
+    },
+    "spaces": {
+      "ready": "Sudah ada",
+      "preparing": "Sedang disiapkan",
+      "notYet": "Belum ada"
+    },
+    "next": "Lanjut",
+    "back": "Kembali",
+    "submit": "Kirim pendaftaran",
+    "submitting": "Mengirim…",
+    "errors": {
+      "nameRequired": "Isi nama lengkapmu.",
+      "nameTooLong": "Nama terlalu panjang.",
+      "whatsappRequired": "Isi nomor WhatsApp.",
+      "whatsappInvalid": "Gunakan nomor HP Indonesia, contoh 0812 3456 7890.",
+      "emailInvalid": "Format email belum benar.",
+      "backgroundRequired": "Pilih salah satu.",
+      "spaceRequired": "Pilih salah satu.",
+      "motivationTooLong": "Maksimal 500 karakter.",
+      "consentRequired": "Centang persetujuan untuk melanjutkan.",
+      "villageRequired": "Pilih desa di cek kuota terlebih dahulu.",
+      "quotaFull": "Kuota desa ini baru saja penuh. Pilih desa lain di cek kuota.",
+      "rateLimited": "Terlalu banyak percobaan. Coba lagi beberapa menit lagi.",
+      "invalid": "Periksa kembali isian formulir.",
+      "unknown": "Pendaftaran gagal terkirim. Coba lagi atau hubungi kami lewat WhatsApp."
+    },
+    "success": {
+      "title": "Pendaftaran terkirim!",
+      "text": "Terima kasih, {name}. Tim kemitraan BEC akan menghubungimu lewat WhatsApp untuk konsultasi slot di {village}.",
+      "referenceLabel": "Nomor pendaftaran",
+      "whatsappCta": "Lanjut chat di WhatsApp",
+      "whatsappHint": "Kirim nomor pendaftaran agar tim bisa langsung membantu.",
+      "again": "Isi pendaftaran lain"
     }
   }
 }

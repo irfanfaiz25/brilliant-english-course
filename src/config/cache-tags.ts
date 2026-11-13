@@ -9,4 +9,6 @@ export const cacheTags = {
   regions: "regions",
   testimonials: "testimonials",
   faq: "faq",
+  quota: "quota",
+  settings: "settings",
 } as const;

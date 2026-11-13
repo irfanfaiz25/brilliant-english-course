@@ -60,7 +60,8 @@
     "general": "Hi BEC, I'd like to ask about your English courses for kids.",
     "partner": "Hi BEC, I'm interested in opening a BEC unit (partnership). Could you share more information?",
     "unit": "Hi {unit}, I'd like to ask about English classes for my child.",
-    "level": "Hi BEC, I'd like to ask about the {level} class for my child."
+    "level": "Hi BEC, I'd like to ask about the {level} class for my child.",
+    "partnerApplication": "Hello BEC, I'm {name} and I just applied for a partnership in {village} (application no. {reference}). Could you share the next steps?"
   },
   "Home": {
     "metaTitle": "English Courses for Kids Aged 4–15",
@@ -325,6 +326,238 @@
       "title": "No unit in your village yet?",
       "text": "Open a BEC unit at home and be the first in your area. Check the quota and apply in a few minutes.",
       "cta": "Explore the partnership"
+    }
+  },
+  "Partnership": {
+    "metaTitle": "Partnership — Open a Kids' English Course Unit",
+    "metaDescription": "Open a BEC kids' English course unit at home. Curriculum, training and support are ready. Check your village quota (max. 2 units per village) and apply online.",
+    "hero": {
+      "overline": "BEC Partnership",
+      "title": "Open a Kids' English Course Unit at Home",
+      "lead": "Turn your living room into a fun place to learn that helps your village. BEC prepares the curriculum, training and mentoring — you focus on guiding the children.",
+      "primaryCta": "Check Your Village Quota",
+      "secondaryCta": "Apply as a Partner",
+      "statsLabel": "BEC partnership in numbers",
+      "units": "units have<br></br> joined",
+      "cities": "cities &<br></br> regencies",
+      "quotaValue": "Max. 2",
+      "quota": "units per village,<br></br> protected area",
+      "imageBadge": "Small classes, homely feel"
+    },
+    "tabs": {
+      "label": "Partnership page sections",
+      "benefits": "Benefits",
+      "fit": "Who fits",
+      "steps": "Process",
+      "apply": "Quota & apply",
+      "stories": "Partner stories",
+      "faq": "FAQ"
+    },
+    "benefits": {
+      "overline": "Benefits",
+      "title": "Everything You Need Is Ready",
+      "lead": "Start without building materials from scratch. You get a system already used in hundreds of BEC classes.",
+      "curriculum": {
+        "title": "Ready-to-use curriculum",
+        "text": "Kindy, Intro and Secondary modules with lesson plans for every meeting."
+      },
+      "training": {
+        "title": "Training & mentoring",
+        "text": "Teaching-method training for you and your teachers, plus regular mentoring."
+      },
+      "marketing": {
+        "title": "Marketing kit",
+        "text": "Ready-made brochure, banner and social-media designs."
+      },
+      "system": {
+        "title": "Admin system",
+        "text": "Student enrolment and clear progress reports for parents."
+      },
+      "brand": {
+        "title": "A trusted brand",
+        "text": "Parents already know BEC, so your new unit earns trust faster."
+      },
+      "territory": {
+        "title": "Protected area",
+        "text": "At most 2 units per village, so every unit has enough prospective students."
+      }
+    },
+    "fit": {
+      "overline": "Who fits",
+      "title": "No English Literature Degree Needed",
+      "lead": "What matters most is loving children and being willing to learn. BEC partners come from many backgrounds.",
+      "parent": {
+        "title": "Stay-at-home parents",
+        "text": "Have spare time and want a business from home."
+      },
+      "educator": {
+        "title": "Teachers & educators",
+        "text": "Want to run their own classes with a clear system."
+      },
+      "graduate": {
+        "title": "Students & graduates",
+        "text": "Enjoy teaching and want to build a first business."
+      },
+      "entrepreneur": {
+        "title": "Local entrepreneurs",
+        "text": "Looking for an education business that helps the village."
+      },
+      "needsTitle": "What you need to prepare",
+      "needs": {
+        "space": "A comfortable room for a small class (a living room is enough)",
+        "basics": "Basic English and patience with children",
+        "commitment": "Commitment to the training and BEC standards"
+      }
+    },
+    "package": {
+      "overline": "Partnership package",
+      "title": "What you get",
+      "investmentLabel": "Investment",
+      "investmentFrom": "From {amount}",
+      "investmentAsk": "Explained during the consultation",
+      "investmentNote": "Costs and payment options are shared directly by the partnership team.",
+      "cta": "Ask for details on WhatsApp"
+    },
+    "steps": {
+      "overline": "Partnership process",
+      "title": "5 Steps to an Active Unit",
+      "lead": "A clear process from the start. The partnership team guides you at every step.",
+      "quota": {
+        "title": "Check the village quota",
+        "text": "Make sure there is still a slot in the village where you will open."
+      },
+      "apply": {
+        "title": "Fill in the form",
+        "text": "Send a few details and the partnership team receives your application."
+      },
+      "consult": {
+        "title": "Consultation & visit",
+        "text": "A WhatsApp consultation, then a site visit with the BEC team."
+      },
+      "training": {
+        "title": "Training",
+        "text": "You and your teachers learn the BEC method and system."
+      },
+      "launch": {
+        "title": "Unit goes live",
+        "text": "Opening promotion, first classes start and your unit appears in Find a Unit."
+      }
+    },
+    "apply": {
+      "overline": "Quota & application",
+      "title": "Secure a Slot in Your Village",
+      "lead": "Choose the village where your unit will open to see its remaining quota, then fill in a short form. Free and without obligation.",
+      "loading": "Loading quota…"
+    },
+    "quota": {
+      "title": "Check village quota",
+      "hint": "Choose down to the village level to see the remaining slots.",
+      "chooseTitle": "Choose a village to see its quota",
+      "chooseText": "Each village has at most {max} BEC units. The quota counts active units and partners who are joining.",
+      "available": "Available",
+      "almostFull": "{remaining} slot left",
+      "full": "Full",
+      "slots": "{remaining} of {max} slots still open",
+      "meterLabel": "{used} of {max} slots taken",
+      "activeUnits": "{count, plural, =0 {No active units yet} one {# active unit} other {# active units}}",
+      "reserved": "{count, plural, =0 {} one {# partner joining} other {# partners joining}}",
+      "availableText": "The quota in {village} is still open. Fill in the form below to secure your slot.",
+      "almostFullText": "Only {remaining} slot left in {village}. Apply now before another partner takes it.",
+      "fullText": "The quota in {village} is full. Try a nearby village, or see the units already there.",
+      "applyCta": "Apply for this village",
+      "seeUnits": "See units in {village}"
+    },
+    "stories": {
+      "overline": "Partner stories",
+      "title": "From Living Room to Learning Space",
+      "lead": "BEC partners open classes at home and grow together with the children around them."
+    },
+    "faq": {
+      "overline": "Partnership FAQ",
+      "title": "Questions from Prospective Partners",
+      "lead": "Short answers to the questions prospective partners ask most.",
+      "askTitle": "Still have questions?",
+      "askText": "The partnership team is happy to explain the investment and the process.",
+      "askCta": "Chat the partnership team"
+    },
+    "cta": {
+      "title": "Secure a Slot in Your Village Today",
+      "lead": "Every village has a limited quota. Apply today and the BEC partnership team will contact you.",
+      "primary": "Apply as a Partner",
+      "secondary": "Chat the Partnership Team"
+    }
+  },
+  "PartnerForm": {
+    "label": "Partner application form",
+    "title": "Partner application",
+    "stepOf": "Step {current} of {total}",
+    "steps": {
+      "contact": "Your details",
+      "details": "About you"
+    },
+    "village": {
+      "label": "Selected village",
+      "none": "No village selected",
+      "noneHint": "Choose a village in the quota checker so we can hold its slot.",
+      "choose": "Choose a village",
+      "change": "Change"
+    },
+    "fields": {
+      "fullName": "Full name",
+      "fullNamePlaceholder": "e.g. Rina Lestari",
+      "whatsapp": "WhatsApp number",
+      "whatsappPlaceholder": "0812 3456 7890",
+      "whatsappHint": "The partnership team will contact you on this number.",
+      "email": "Email",
+      "emailOptional": "(optional)",
+      "emailPlaceholder": "name@email.com",
+      "background": "What you do now",
+      "space": "Room for classes",
+      "motivation": "Tell us a bit about your plan",
+      "motivationOptional": "(optional)",
+      "motivationPlaceholder": "For example: how many children live nearby, which days suit you…",
+      "motivationCount": "{count}/{max}",
+      "consent": "I agree to be contacted by the BEC partnership team on WhatsApp and to my data being stored for the application.",
+      "honeypot": "Leave this field empty"
+    },
+    "backgrounds": {
+      "educator": "Teacher / educator",
+      "parent": "Stay-at-home parent",
+      "entrepreneur": "Business owner / employee",
+      "other": "Other"
+    },
+    "spaces": {
+      "ready": "Ready",
+      "preparing": "Being prepared",
+      "notYet": "Not yet"
+    },
+    "next": "Continue",
+    "back": "Back",
+    "submit": "Send application",
+    "submitting": "Sending…",
+    "errors": {
+      "nameRequired": "Enter your full name.",
+      "nameTooLong": "The name is too long.",
+      "whatsappRequired": "Enter your WhatsApp number.",
+      "whatsappInvalid": "Use an Indonesian mobile number, e.g. 0812 3456 7890.",
+      "emailInvalid": "The email format is not valid.",
+      "backgroundRequired": "Choose one option.",
+      "spaceRequired": "Choose one option.",
+      "motivationTooLong": "500 characters at most.",
+      "consentRequired": "Tick the consent box to continue.",
+      "villageRequired": "Choose a village in the quota checker first.",
+      "quotaFull": "This village's quota has just filled up. Choose another village in the quota checker.",
+      "rateLimited": "Too many attempts. Please try again in a few minutes.",
+      "invalid": "Please check the form again.",
+      "unknown": "The application could not be sent. Try again or message us on WhatsApp."
+    },
+    "success": {
+      "title": "Application sent!",
+      "text": "Thank you, {name}. The BEC partnership team will contact you on WhatsApp to discuss the slot in {village}.",
+      "referenceLabel": "Application number",
+      "whatsappCta": "Continue on WhatsApp",
+      "whatsappHint": "Send the application number so the team can help you right away.",
+      "again": "Send another application"
     }
   }
 }
