@@ -256,5 +256,71 @@
       "primary": "Cek Unit Terdekat",
       "secondary": "Chat via WhatsApp"
     }
+  },
+  "Finder": {
+    "metaTitle": "Cek Unit BEC Terdekat",
+    "metaDescription": "Cari unit kursus bahasa Inggris anak BEC terdekat: pilih provinsi sampai desa, cari nama unit, atau gunakan lokasimu untuk melihat jadwal dan kontak unit.",
+    "hero": {
+      "overline": "Cek Unit BEC",
+      "title": "Temukan Unit BEC Terdekat",
+      "lead": "Pilih wilayah sampai desa/kelurahan, cari nama unit, atau gunakan lokasimu untuk melihat unit aktif beserta jadwal dan kontaknya.",
+      "note": "Data wilayah mengacu pada kode Kemendagri"
+    },
+    "filters": {
+      "panelLabel": "Filter pencarian unit",
+      "searchLabel": "Cari nama unit, kecamatan, atau kota",
+      "searchPlaceholder": "Contoh: Cibinong",
+      "searchSubmit": "Cari",
+      "useLocation": "Gunakan lokasi saya",
+      "locating": "Mencari lokasimu…",
+      "locationActive": "Diurutkan dari lokasimu",
+      "clearLocation": "Hapus lokasi",
+      "locationHint": "Izinkan lokasi untuk melihat unit terdekat dari rumahmu.",
+      "locationDenied": "Izin lokasi ditolak. Aktifkan di pengaturan browser atau pilih wilayah secara manual.",
+      "locationUnavailable": "Lokasimu tidak bisa didapatkan. Coba lagi atau pilih wilayah.",
+      "regionTitle": "Wilayah",
+      "province": "Provinsi",
+      "regency": "Kabupaten / Kota",
+      "district": "Kecamatan",
+      "village": "Desa / Kelurahan",
+      "all": "Semua",
+      "chooseParentFirst": "Pilih {parent} dulu",
+      "apply": "Terapkan",
+      "reset": "Atur ulang",
+      "openFilters": "Filter wilayah",
+      "activeCount": "{count} aktif",
+      "showResults": "Lihat hasil"
+    },
+    "results": {
+      "countIn": "{count, plural, =0 {Tidak ada unit} other {# unit aktif}} di {area}",
+      "countAll": "{count, plural, =0 {Belum ada unit} other {# unit aktif}} di jaringan BEC",
+      "countQuery": "{count, plural, =0 {Tidak ada unit} other {# unit}} untuk “{query}”",
+      "sortedByDistance": "Diurutkan dari yang terdekat",
+      "sortedByName": "Diurutkan berdasarkan nama",
+      "share": "Salin tautan hasil",
+      "copied": "Tautan hasil disalin",
+      "copyFailed": "Tautan tidak bisa disalin",
+      "distance": "{distance} km",
+      "activeFilters": "Filter aktif",
+      "removeFilter": "Hapus filter {label}",
+      "clearAll": "Hapus semua",
+      "location": "Lokasimu",
+      "loading": "Memuat unit…"
+    },
+    "empty": {
+      "regionTitle": "Belum ada unit BEC di {area}",
+      "regionText": "Kuota kemitraan di wilayah ini masih terbuka (maks. 2 unit per desa). Jadilah mitra pertama, atau cari unit di wilayah sekitar.",
+      "partnerCta": "Jadi mitra pertama di sini",
+      "widen": "Cari di {area}",
+      "showAll": "Lihat semua unit",
+      "queryTitle": "Tidak ada unit yang cocok dengan “{query}”",
+      "queryText": "Coba kata lain, periksa ejaannya, atau gunakan filter wilayah.",
+      "ask": "Tanya admin BEC"
+    },
+    "partner": {
+      "title": "Belum ada unit di desamu?",
+      "text": "Buka unit BEC di rumahmu dan jadi yang pertama di wilayahmu. Cek kuota dan daftar dalam beberapa menit.",
+      "cta": "Pelajari kemitraan"
+    }
   }
 }
