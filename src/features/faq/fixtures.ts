@@ -68,6 +68,48 @@ export const faqFixtures: Record<Locale, FaqItem[]> = {
       answer:
         "Bisa. Semua unit memakai kurikulum yang sama, jadi anak bisa melanjutkan level yang sama di unit lain. Koordinasikan dengan admin kedua unit.",
     },
+    {
+      id: "fluent",
+      topic: "partners",
+      question: "Apakah saya harus fasih berbahasa Inggris?",
+      answer:
+        "Tidak harus fasih. Cukup punya dasar bahasa Inggris dan senang dengan anak-anak. BEC memberikan pelatihan metode mengajar, modul lengkap, dan pendampingan. Kamu juga bisa merekrut pengajar yang dilatih bersama BEC.",
+    },
+    {
+      id: "investment",
+      topic: "partners",
+      question: "Berapa biaya investasi kemitraan?",
+      answer:
+        "Rincian investasi dan apa saja yang termasuk di dalamnya dijelaskan saat konsultasi. Hubungi tim kemitraan lewat WhatsApp untuk penawaran terbaru.",
+    },
+    {
+      id: "quota",
+      topic: "partners",
+      question: "Kenapa maksimal 2 unit per desa?",
+      answer:
+        "Supaya setiap unit punya cukup calon siswa dan tidak saling berebut. Kuota dihitung dari unit yang sudah aktif ditambah mitra yang sedang proses bergabung di desa tersebut.",
+    },
+    {
+      id: "space",
+      topic: "partners",
+      question: "Ruangan seperti apa yang dibutuhkan?",
+      answer:
+        "Ruang tamu atau ruangan yang nyaman untuk kelas kecil sudah cukup. Saat survei, tim BEC membantu menata ruang belajar supaya aman dan menyenangkan untuk anak.",
+    },
+    {
+      id: "timeline",
+      topic: "partners",
+      question: "Berapa lama sampai unit bisa mulai beroperasi?",
+      answer:
+        "Tergantung kesiapan tempat dan jadwal pelatihan. Setelah konsultasi, tim kemitraan menyusun jadwal persiapan bersamamu sampai kelas pertama dibuka.",
+    },
+    {
+      id: "after-apply",
+      topic: "partners",
+      question: "Apa yang terjadi setelah saya mengisi formulir?",
+      answer:
+        "Tim kemitraan BEC menghubungimu lewat WhatsApp untuk konsultasi, lalu menjadwalkan survei lokasi, pelatihan, dan persiapan pembukaan unit.",
+    },
   ],
   en: [
     {
@@ -132,6 +174,48 @@ export const faqFixtures: Record<Locale, FaqItem[]> = {
       question: "Can my child move to another unit?",
       answer:
         "Yes. All units use the same curriculum, so your child can continue the same level at another unit. Just coordinate with both unit admins.",
+    },
+    {
+      id: "fluent",
+      topic: "partners",
+      question: "Do I need to be fluent in English?",
+      answer:
+        "Not necessarily. A basic command of English and a love for children are enough. BEC provides teaching-method training, complete modules and mentoring. You can also hire teachers who are trained together with BEC.",
+    },
+    {
+      id: "investment",
+      topic: "partners",
+      question: "How much is the partnership investment?",
+      answer:
+        "The investment and everything it includes are explained during the consultation. Message the partnership team on WhatsApp for the latest offer.",
+    },
+    {
+      id: "quota",
+      topic: "partners",
+      question: "Why at most 2 units per village?",
+      answer:
+        "So every unit has enough prospective students and units don't compete with each other. The quota counts active units plus partners who are currently joining in that village.",
+    },
+    {
+      id: "space",
+      topic: "partners",
+      question: "What kind of room do I need?",
+      answer:
+        "A living room or any comfortable room for a small class is enough. During the site visit, the BEC team helps you set up a safe and fun learning space for children.",
+    },
+    {
+      id: "timeline",
+      topic: "partners",
+      question: "How long until my unit can open?",
+      answer:
+        "It depends on your space and the training schedule. After the consultation, the partnership team plans the preparation with you up to the first class.",
+    },
+    {
+      id: "after-apply",
+      topic: "partners",
+      question: "What happens after I submit the form?",
+      answer:
+        "The BEC partnership team contacts you on WhatsApp for a consultation, then schedules the site visit, training and the unit's opening preparation.",
     },
   ],
 };

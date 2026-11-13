@@ -5,15 +5,35 @@ import { DecorBlob } from "@/components/site/decor-blob";
 import { Doodle } from "@/components/site/doodle";
 import { Section } from "@/components/site/section";
 import { SectionHeader } from "@/components/site/section-header";
-import { TestimonialCard } from "@/features/testimonials/components/testimonial-card";
-import type { Testimonial } from "@/features/testimonials/schema";
 
-/** Parent testimonials: CSS scroll-snap row on phones, three-column grid from `lg`. No carousel JS. */
-export async function TestimonialsSection({ testimonials }: { testimonials: Testimonial[] }) {
-  const t = await getTranslations("Home.testimonials");
+import type { Testimonial } from "../schema";
+import { TestimonialCard } from "./testimonial-card";
+
+type TestimonialsSectionProps = {
+  testimonials: Testimonial[];
+  /** Section anchor (also prefixes the heading id). */
+  id?: string;
+  overline: string;
+  title: string;
+  lead: string;
+};
+
+/**
+ * Testimonials (parents on Beranda, partners on Kemitraan): CSS scroll-snap row on phones,
+ * three-column grid from `lg`. No carousel JS.
+ */
+export async function TestimonialsSection({
+  testimonials,
+  id = "testimonials",
+  overline,
+  title,
+  lead,
+}: TestimonialsSectionProps) {
+  const t = await getTranslations("Testimonials");
+  const headingId = `${id}-title`;
 
   return (
-    <Section aria-labelledby="testimonials-title">
+    <Section id={id} aria-labelledby={headingId} className="scroll-mt-16">
       <span
         aria-hidden
         className="absolute inset-0 -z-20 [mask-image:linear-gradient(to_bottom,transparent,black_30%,black_70%,transparent)] bg-gradient-warm"
@@ -25,12 +45,7 @@ export async function TestimonialsSection({ testimonials }: { testimonials: Test
         className="parallax-soft top-16 right-[10%] hidden size-20 md:block"
       />
 
-      <SectionHeader
-        id="testimonials-title"
-        overline={t("overline")}
-        title={t("title")}
-        lead={t("lead")}
-      />
+      <SectionHeader id={headingId} overline={overline} title={title} lead={lead} />
 
       <Stagger
         as="ul"

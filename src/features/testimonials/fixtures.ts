@@ -32,6 +32,33 @@ export const testimonialFixtures: Record<Locale, Testimonial[]> = {
       role: "Orang tua siswa Secondary · Kab. Bekasi",
       rating: 5,
     },
+    {
+      id: "p1",
+      audience: "partner",
+      quote:
+        "Anak-anak tetangga sekarang belajar di ruang tamu saya. Modulnya lengkap, jadi saya tinggal fokus mengajar dan mendampingi mereka.",
+      author: "Ibu Wulan",
+      role: "Mitra BEC · Kab. Bogor",
+      rating: 5,
+    },
+    {
+      id: "p2",
+      audience: "partner",
+      quote:
+        "Pelatihannya praktis dan tim BEC cepat membantu kalau ada kendala. Unit saya penuh di tahun pertama.",
+      author: "Bapak Hendra",
+      role: "Mitra BEC · Kota Depok",
+      rating: 5,
+    },
+    {
+      id: "p3",
+      audience: "partner",
+      quote:
+        "Saya bukan lulusan sastra Inggris, tapi metode BEC mudah diikuti. Sekarang saya punya usaha yang bermanfaat untuk desa sendiri.",
+      author: "Ibu Maya",
+      role: "Mitra BEC · Kab. Bekasi",
+      rating: 5,
+    },
   ],
   en: [
     {
@@ -59,6 +86,33 @@ export const testimonialFixtures: Record<Locale, Testimonial[]> = {
         "Small classes mean the teacher knows every child. Progress reports are clear and the unit admin replies quickly on WhatsApp.",
       author: "Mrs. Wulan",
       role: "Parent of a Secondary student · Bekasi Regency",
+      rating: 5,
+    },
+    {
+      id: "p1",
+      audience: "partner",
+      quote:
+        "Neighbourhood kids now learn in my living room. The modules are complete, so I can focus on teaching and guiding them.",
+      author: "Mrs. Wulan",
+      role: "BEC partner · Bogor Regency",
+      rating: 5,
+    },
+    {
+      id: "p2",
+      audience: "partner",
+      quote:
+        "The training is practical and the BEC team helps quickly whenever something comes up. My unit was full in its first year.",
+      author: "Mr. Hendra",
+      role: "BEC partner · Depok City",
+      rating: 5,
+    },
+    {
+      id: "p3",
+      audience: "partner",
+      quote:
+        "I didn't study English literature, but the BEC method is easy to follow. Now I run a business that helps my own village.",
+      author: "Mrs. Maya",
+      role: "BEC partner · Bekasi Regency",
       rating: 5,
     },
   ],

@@ -137,3 +137,11 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
 - **Decision:** The Cek Unit page keeps all state in the URL (`q`, `wilayah` = deepest region code, `lat`/`lng` rounded to 3 decimals, `dekat`). Results and the region cascade are computed on the server from that URL (`parseFinderParams`, `searchUnits`), streamed behind `Suspense` on first load and swapped in place via `router.replace` in a transition afterwards. Native selects for the cascade; geolocation only on an explicit tap. Empty areas route to the partnership form with the region pre-filled.
 - **Why:** Shareable, crawlable and back-button-friendly searches; no client data fetching; works without JS; best native pickers on phones; privacy-friendly location handling; turns dead ends into partner leads.
 - **Alternatives:** Client-side filtering with all units shipped to the browser (does not scale to the real network); separate `prov/kab/kec/desa` params (redundant — the code already encodes the hierarchy).
+
+### ADR-018 — Partner application before the leads table
+
+2026-11-13 · Accepted
+
+- **Decision:** The Kemitraan form is built now on the final contract: one Zod schema (`features/partners/schema.ts`) validates in the browser (React Hook Form) and in the Server Action; validation messages are stable codes translated by the UI. The action runs validate → honeypot → per-IP rate limit (in memory, `limits.partnerApplication`) → village quota check → `createPartnerLead()` and returns `ActionResult` with a reference and a pre-filled WhatsApp link. Village quota = active units + slots reserved by onboarding partners, max `limits.unitsPerVillage` (2). Until Phase 3/4d `createPartnerLead()` does **not** persist anything (PLACEHOLDER) and reservations are fixtures. Turnstile is added with the production keys (Phase 7); the audit log and notifications come with the leads table (Phases 3, 6).
+- **Why:** The product owner can review the full partner journey now; swapping the placeholder for an insert changes only the service. Shared codes keep client and server messages identical in both locales.
+- **Alternatives:** Waiting for the database (blocks UX review); a WhatsApp-only flow (leads get lost, ADR-007); a Redis rate limiter (extra service for one instance).

@@ -3,10 +3,9 @@
 import { Loader2Icon, SearchIcon, XIcon } from "lucide-react";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 
+import { useUrlState } from "@/components/site/url-state-shell";
 import { fieldControlClass } from "@/components/ui/input-styles";
 import { cn } from "@/lib/utils";
-
-import { useFinder } from "./finder-shell";
 
 /** Wait after the last keystroke before searching, so typing stays smooth. */
 const SEARCH_DEBOUNCE_MS = 450;
@@ -22,7 +21,7 @@ type SearchBoxProps = {
 };
 
 export function SearchBox({ action, defaultValue, keep, labels, idPrefix }: SearchBoxProps) {
-  const { navigate, isPending } = useFinder();
+  const { navigate, isPending } = useUrlState();
   const [value, setValue] = useState(defaultValue);
   const lastSubmitted = useRef(defaultValue);
   const inputId = `${idPrefix}-q`;

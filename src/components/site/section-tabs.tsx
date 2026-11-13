@@ -4,7 +4,13 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import { cn } from "@/lib/utils";
 
-type LevelTab = { slug: string; label: string; age: string };
+type SectionTab = {
+  /** Id of the section the tab scrolls to. */
+  slug: string;
+  label: string;
+  /** Secondary text after the label, e.g. an age range. */
+  meta?: string;
+};
 
 /** Upper bound for a smooth anchor scroll, after which scroll-spy resumes anyway. */
 const SCROLL_LOCK_FALLBACK_MS = 1500;
@@ -24,12 +30,12 @@ function hasArrived(target: HTMLElement): boolean {
 }
 
 /**
- * Sticky level switcher with scroll-spy (DESIGN.md § 5.2 Program).
+ * Sticky in-page section switcher with scroll-spy (Program levels, Kemitraan sections; DESIGN.md § 5.2).
  * - Plain `#slug` anchors: they work without JS and scroll smoothly (global `scroll-behavior`).
- * - IntersectionObserver marks the level whose top most recently passed the top 40% of the viewport.
+ * - IntersectionObserver marks the section whose top most recently passed the top 40% of the viewport.
  * - A pill slides under the current tab (measured position, CSS transform transition).
  */
-export function LevelTabs({ tabs, label }: { tabs: readonly LevelTab[]; label: string }) {
+export function SectionTabs({ tabs, label }: { tabs: readonly SectionTab[]; label: string }) {
   const [current, setCurrent] = useState(tabs[0]?.slug ?? "");
   const [indicator, setIndicator] = useState({ x: 0, width: 0, ready: false });
   const listRef = useRef<HTMLUListElement>(null);
@@ -168,14 +174,16 @@ export function LevelTabs({ tabs, label }: { tabs: readonly LevelTab[]; label: s
                 )}
               >
                 {tab.label}
-                <span
-                  className={cn(
-                    "text-caption",
-                    active ? "text-primary-foreground/80" : "text-muted-foreground",
-                  )}
-                >
-                  {tab.age}
-                </span>
+                {tab.meta && (
+                  <span
+                    className={cn(
+                      "text-caption",
+                      active ? "text-primary-foreground/80" : "text-muted-foreground",
+                    )}
+                  >
+                    {tab.meta}
+                  </span>
+                )}
               </a>
             </li>
           );

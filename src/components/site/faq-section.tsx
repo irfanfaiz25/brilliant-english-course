@@ -34,7 +34,7 @@ export function FaqSection({ id = "faq", overline, title, lead, items, help }: F
   const headingId = `${id}-title`;
 
   return (
-    <Section id={id} aria-labelledby={headingId}>
+    <Section id={id} aria-labelledby={headingId} className="scroll-mt-16">
       <JsonLd data={faqPageJsonLd(items)} />
       <Doodle shape="ring" tone="partner" className="parallax-strong bottom-24 left-[6%] size-9" />
 
