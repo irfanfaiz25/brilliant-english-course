@@ -50,7 +50,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
   const messages = await getMessages();
 
   return (
-    <html lang={locale} className={poppins.variable}>
+    <html lang={locale} className={poppins.variable} data-scroll-behavior="smooth">
       <head>
         {/* Without JS, content waiting for a scroll reveal must still be visible. */}
         <noscript>
