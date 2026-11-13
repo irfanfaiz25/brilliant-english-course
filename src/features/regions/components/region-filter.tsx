@@ -2,10 +2,9 @@
 
 import { ChevronDownIcon, RotateCcwIcon } from "lucide-react";
 
+import { useUrlState } from "@/components/site/url-state-shell";
 import { fieldControlClass } from "@/components/ui/input-styles";
 import { cn } from "@/lib/utils";
-
-import { useFinder } from "./finder-shell";
 
 export type RegionLevelField = {
   /** Level key, used for ids. */
@@ -33,7 +32,8 @@ type RegionFilterProps = {
 
 /**
  * Province → regency → district → village cascade with native selects (best on phones: the OS
- * picker). Each change applies immediately; lower levels reset and their options come from the
+ * picker), shared by the unit finder and the partnership quota checker; must sit inside a
+ * `UrlStateShell`. Each change applies immediately; lower levels reset and their options come from the
  * server for the new parent. Without JS it is a GET form with an Apply button.
  */
 export function RegionFilter({
@@ -44,7 +44,7 @@ export function RegionFilter({
   idPrefix,
   onChange,
 }: RegionFilterProps) {
-  const { navigate } = useFinder();
+  const { navigate } = useUrlState();
   const hasSelection = fields.some((field) => field.value);
 
   const select = (field: RegionLevelField, code: string) => {

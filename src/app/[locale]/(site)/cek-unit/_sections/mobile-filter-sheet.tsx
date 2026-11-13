@@ -13,8 +13,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-
-import { RegionFilter } from "./region-filter";
+import { RegionFilter } from "@/features/regions/components/region-filter";
 
 type MobileFilterSheetProps = Omit<ComponentProps<typeof RegionFilter>, "onChange" | "idPrefix"> & {
   activeCount: number;

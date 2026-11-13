@@ -2,8 +2,11 @@ import { XIcon } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 import type { CSSProperties } from "react";
 
+import { PendingRegion, UrlStateShell } from "@/components/site/url-state-shell";
 import { Separator } from "@/components/ui/separator";
-import { getRegionChildren, getRegionPath } from "@/features/regions/queries";
+import { RegionFilter } from "@/features/regions/components/region-filter";
+import { buildRegionFields } from "@/features/regions/fields";
+import { getRegionPath } from "@/features/regions/queries";
 import type { Region } from "@/features/regions/schema";
 import { UnitCard } from "@/features/units/components/unit-card";
 import { finderQuery, parseFinderParams, type FinderParams } from "@/features/units/finder-params";
@@ -15,14 +18,11 @@ import { absoluteUrl } from "@/lib/seo/absolute-url";
 import { itemListJsonLd, JsonLd, localBusinessJsonLd } from "@/lib/seo/json-ld";
 
 import { FinderEmptyState } from "./finder-empty-state";
-import { FinderShell, PendingRegion } from "./finder-shell";
 import { LocationButton } from "./location-button";
 import { MobileFilterSheet } from "./mobile-filter-sheet";
-import { RegionFilter, type RegionLevelField } from "./region-filter";
 import { SearchBox } from "./search-box";
 import { ShareResultsButton } from "./share-results-button";
 
-const LEVEL_KEYS = ["province", "regency", "district", "village"] as const;
 const SCHEMA_DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 /** Delay between result cards rising in (CSS), capped so long lists don't drag. */
 const CARD_STAGGER_MS = 60;
@@ -50,7 +50,15 @@ export async function Finder({
   const region = path.at(-1);
   const results = searchUnits(units, { query: params.query, regionCode, near: params.near });
 
-  const fields = await regionFields(path, t);
+  const fields = await buildRegionFields(path, {
+    levels: {
+      province: t("filters.province"),
+      regency: t("filters.regency"),
+      district: t("filters.district"),
+      village: t("filters.village"),
+    },
+    chooseParentFirst: (parent) => t("filters.chooseParentFirst", { parent }),
+  });
   const action = getPathname({ href: "/cek-unit", locale });
   const keepForRegion = finderQuery({ query: params.query });
   const keepForSearch = finderQuery({ regionCode, near: params.near });
@@ -100,7 +108,7 @@ export async function Finder({
   );
 
   return (
-    <FinderShell>
+    <UrlStateShell pathname="/cek-unit">
       <div className="grid gap-6 lg:grid-cols-[22rem_1fr] lg:gap-10">
         {/* Desktop: everything in a sticky side panel. */}
         <aside aria-label={t("filters.panelLabel")} className="hidden lg:block">
@@ -220,30 +228,7 @@ export async function Finder({
           </PendingRegion>
         </div>
       </div>
-    </FinderShell>
-  );
-}
-
-type Translator = Awaited<ReturnType<typeof getTranslations<"Finder">>>;
-
-/** One field per level: options are the children of the level above's selection. */
-async function regionFields(path: readonly Region[], t: Translator): Promise<RegionLevelField[]> {
-  const labels = LEVEL_KEYS.map((key) => t(`filters.${key}`));
-  return Promise.all(
-    LEVEL_KEYS.map(async (key, index) => {
-      const parent = index === 0 ? null : path[index - 1];
-      const available = index === 0 || parent !== undefined;
-      return {
-        key,
-        label: labels[index] ?? key,
-        options: available ? await getRegionChildren(parent?.code ?? null) : [],
-        value: path[index]?.code ?? null,
-        parentCode: parent?.code ?? null,
-        disabledHint: available
-          ? undefined
-          : t("filters.chooseParentFirst", { parent: (labels[index - 1] ?? "").toLowerCase() }),
-      };
-    }),
+    </UrlStateShell>
   );
 }
 

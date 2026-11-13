@@ -4,11 +4,10 @@ import { LocateFixedIcon, Loader2Icon, XIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
+import { useUrlState } from "@/components/site/url-state-shell";
 import { Button } from "@/components/ui/button";
 import { finderQuery } from "@/features/units/finder-params";
 import { cn } from "@/lib/utils";
-
-import { useFinder } from "./finder-shell";
 
 type LocationButtonProps = {
   active: boolean;
@@ -32,7 +31,7 @@ type LocationButtonProps = {
  * ~100 m and puts it in the URL so the server sorts units by distance.
  */
 export function LocationButton({ active, highlight, keep, labels }: LocationButtonProps) {
-  const { navigate } = useFinder();
+  const { navigate } = useUrlState();
   const [locating, setLocating] = useState(false);
 
   if (active) {
