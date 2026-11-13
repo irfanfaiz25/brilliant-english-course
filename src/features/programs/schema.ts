@@ -1,8 +1,9 @@
 import { z } from "zod";
 
+import { levelSlugs } from "@/config/enums";
 import { imageSchema } from "@/lib/schemas";
 
-export const levelSlugs = ["kindy", "intro", "secondary"] as const;
+export { levelSlugs };
 export type LevelSlug = (typeof levelSlugs)[number];
 
 /** A program level as shown on the public site (already resolved to one locale). */

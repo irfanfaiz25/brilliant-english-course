@@ -21,3 +21,9 @@ if (env.NODE_ENV !== "production") {
 
 export const db = drizzle({ client: pool, schema, casing: "snake_case" });
 export type Database = typeof db;
+
+/** Closes the pool so scripts and the worker can exit; the Next.js server never calls it. */
+export async function closeDb(): Promise<void> {
+  await pool.end();
+  delete globalForDb.__becPool;
+}

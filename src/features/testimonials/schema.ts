@@ -1,6 +1,8 @@
 import { z } from "zod";
 
-export const testimonialAudiences = ["parent", "partner"] as const;
+import { testimonialAudiences } from "@/config/enums";
+
+export { testimonialAudiences };
 
 /** A published testimonial, resolved to one locale. */
 export const testimonialSchema = z.object({

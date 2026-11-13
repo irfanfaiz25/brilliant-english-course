@@ -10,7 +10,7 @@ Status legend: ⬜ not started · 🟨 in progress · ✅ done
 | 0   | Foundation docs                            | ✅         |
 | 1   | Scaffold & tooling                         | ✅         |
 | 2   | Design system in code & site shell         | ✅         |
-| 3   | Data model, regions & auth                 | ⬜         |
+| 3   | Data model, regions & auth                 | 🟨         |
 | 4   | Admin modules                              | ⬜         |
 | 5   | Public website                             | ✅         |
 | 6   | Notifications                              | ⬜         |
@@ -48,12 +48,19 @@ Delivered as four PRs: **2a** i18n & routing ✅ · **2b** UI primitives + `/des
 
 ## Phase 3 — Data model, regions & auth
 
-- Drizzle schema for all domains (incl. `_translations` tables, audit log, settings).
-- Region import script (Kemendagri codes: province → regency → district → village) + trigram indexes.
-- Better Auth: login, logout, reset password; roles `super_admin`, `admin`, `editor`, `mitra` (scoped, inactive UI).
-- `permissions.ts` with unit tests; admin shell (sidebar, top bar, protected routes).
-- Dev seed: sample units, programs, posts, testimonials.
-- **Done when:** permission matrix fully tested; region search returns in < 100 ms locally.
+Sub-phases: **3a** schema & regions ✅ · **3b** auth & permissions ⬜ · **3c** admin shell, seed & fixture swap ⬜.
+
+- Drizzle schema for all domains (incl. `_translations` tables, audit log, settings). ✅ 3a: 23 tables in
+  `src/db/schema` (migration `0001_domain_schema`), value lists shared with Zod via `src/config/enums.ts` (ADR-024).
+- Region import script (Kemendagri codes: province → regency → district → village) + trigram indexes. ✅ 3a:
+  `pnpm db:regions` upserts the checked-in dataset (ADR-023) — 38 provinces, 514 regencies, 7,285 districts,
+  83,762 villages (91,599 rows, matching upstream's published totals) in ~3 s; CI runs it on a fresh database. Name search (`ILIKE` on the trigram
+  index) and the children query take 1–3 ms locally.
+- Better Auth: login, logout, reset password; roles `super_admin`, `admin`, `editor`, `mitra` (scoped, inactive UI). (3b)
+- `permissions.ts` with unit tests (3b); admin shell (sidebar, top bar, protected routes) (3c).
+- Dev seed: sample units, programs, posts, testimonials; public `queries.ts` switch from fixtures to the
+  database with no visual change, and CI's build/E2E job gets a database. (3c)
+- **Done when:** permission matrix fully tested; region search returns in < 100 ms locally (✅ measured in 3a).
 
 ## Phase 4 — Admin modules
 

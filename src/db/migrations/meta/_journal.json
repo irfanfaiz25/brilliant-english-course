@@ -8,6 +8,13 @@
       "when": 1794525184415,
       "tag": "0000_enable_extensions",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1794609435378,
+      "tag": "0001_domain_schema",
+      "breakpoints": true
     }
   ]
 }

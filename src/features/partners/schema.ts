@@ -1,15 +1,16 @@
 import { z } from "zod";
 
+import { partnerBackgrounds, partnerSpaceOptions } from "@/config/enums";
 import { limits } from "@/config/limits";
 import { regionCodeSchema } from "@/features/regions/schema";
 import { normalizeWhatsAppNumber } from "@/lib/whatsapp";
 
 /** What the applicant does today; helps admins prioritise follow-ups. */
-export const partnerBackgrounds = ["educator", "parent", "entrepreneur", "other"] as const;
+export { partnerBackgrounds };
 export type PartnerBackground = (typeof partnerBackgrounds)[number];
 
 /** Whether the applicant has a room to teach in (a living room is enough). */
-export const partnerSpaceOptions = ["ready", "preparing", "notYet"] as const;
+export { partnerSpaceOptions };
 export type PartnerSpace = (typeof partnerSpaceOptions)[number];
 
 /** Indonesian mobile number once normalized to international digits (62 8xx…). */

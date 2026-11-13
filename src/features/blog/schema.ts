@@ -1,11 +1,12 @@
 import { z } from "zod";
 
+import { postCategories } from "@/config/enums";
 import type { Locale } from "@/i18n/routing";
 import { imageSchema } from "@/lib/schemas";
 import { slugSchemaPattern } from "@/lib/slug";
 
 /** Post categories; the key is also the `?kategori=` value on the blog index. */
-export const postCategories = ["tips-belajar", "parenting", "kegiatan", "kemitraan"] as const;
+export { postCategories };
 export type PostCategory = (typeof postCategories)[number];
 
 export const postSlugSchema = z.string().regex(slugSchemaPattern);

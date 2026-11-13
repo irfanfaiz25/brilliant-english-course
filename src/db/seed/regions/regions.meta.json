@@ -1,0 +1,21 @@
+{
+  "source": {
+    "repository": "cahyadsn/wilayah",
+    "path": "db/wilayah.sql",
+    "license": "MIT",
+    "commit": "c2eff0881e3c75b8822f8c84ea9d23affc11aadb",
+    "regulation": "Kepmendagri No. 300.2.2-2430 Tahun 2025",
+    "url": "https://raw.githubusercontent.com/cahyadsn/wilayah/c2eff0881e3c75b8822f8c84ea9d23affc11aadb/db/wilayah.sql",
+    "sha256": "c4c3396d9380d4edee072af1d9dff83573b574d7cd00a6562cf82e200e954031"
+  },
+  "generatedAt": "2026-11-13T22:53:52.943Z",
+  "counts": {
+    "province": 38,
+    "regency": 514,
+    "district": 7285,
+    "village": 83762
+  },
+  "total": 91599,
+  "skippedCount": 0,
+  "skipped": []
+}
