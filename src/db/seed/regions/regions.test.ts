@@ -19,13 +19,24 @@ describe("parseWilayahSql", () => {
 ('32','Jawa Barat'),
 ('32.01','Kabupaten Bogor'),
 ('32.01.01.1001','Pondok Rajeg'),
-('53.01.01.2001','Bu Nuapu\\'u');`;
+('53.01.01.2001','Bu Nuapu\\'u'),
+('12.04.28','Ma''u'),
+('73.26.12','Dende'' Piongan Napo'),
+('61.01.09.2001','Kaliau''');`;
     expect(parseWilayahSql(sql)).toEqual([
       { code: "32", name: "Jawa Barat" },
       { code: "32.01", name: "Kabupaten Bogor" },
       { code: "32.01.01.1001", name: "Pondok Rajeg" },
       { code: "53.01.01.2001", name: "Bu Nuapu'u" },
+      { code: "12.04.28", name: "Ma'u" },
+      { code: "73.26.12", name: "Dende' Piongan Napo" },
+      { code: "61.01.09.2001", name: "Kaliau'" },
     ]);
+  });
+
+  it("fails loudly instead of dropping a tuple it cannot read", () => {
+    const sql = `INSERT INTO wilayah (kode, nama) VALUES ('32','Jawa Barat'),('33','Jawa "Tengah);`;
+    expect(() => parseWilayahSql(sql)).toThrow(/Parsed 1 of 2/);
   });
 });
 

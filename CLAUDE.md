@@ -165,7 +165,7 @@ Permissions are defined in one place (`src/lib/permissions.ts`) and checked on t
 - Every content table has `created_at`, `updated_at` (helpers in `src/db/schema/_helpers.ts`); soft delete (`deleted_at`) for units, posts, leads.
 - Localized content uses `<entity>_translations` tables with the composite primary key (`entity_id`, `locale`). Fallback: `en` → `id`.
 - Enum value lists (roles, statuses, categories, locales) are defined once in `src/config/enums.ts` and re-exported by the owning `features/<domain>/schema.ts`; `src/db/schema` imports that file relatively because drizzle-kit does not resolve the `@/` alias. Nothing else imports `src/config/enums.ts` directly.
-- Regions are reference data (ADR-023): `pnpm db:regions` upserts `src/db/seed/regions/regions.csv` (91k Kemendagri codes with official names); `pnpm db:regions:build` refreshes that file from the pinned upstream commit. Never edit regions in admin or by hand.
+- Regions are reference data (ADR-023): `pnpm db:regions` upserts `src/db/seed/regions/regions.csv` (91,599 Kemendagri codes with official names); `pnpm db:regions:build` refreshes that file from the pinned upstream commit. Never edit regions in admin or by hand.
 - Settings are one JSON document per key in `settings`, validated by a Zod schema with code defaults in `features/settings` (no migration for a new setting).
 - Production storage is small (1–2 GB): no binary data in the DB, prune job/audit tables on a schedule.
 - Never run migrations or seeds against a production database from a local machine.

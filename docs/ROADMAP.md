@@ -53,8 +53,8 @@ Sub-phases: **3a** schema & regions ✅ · **3b** auth & permissions ⬜ · **3c
 - Drizzle schema for all domains (incl. `_translations` tables, audit log, settings). ✅ 3a: 23 tables in
   `src/db/schema` (migration `0001_domain_schema`), value lists shared with Zod via `src/config/enums.ts` (ADR-024).
 - Region import script (Kemendagri codes: province → regency → district → village) + trigram indexes. ✅ 3a:
-  `pnpm db:regions` upserts the checked-in dataset (ADR-023) — 38 provinces, 514 regencies, 7,265 districts,
-  83,202 villages (91,019 rows) in ~3 s; CI runs it on a fresh database. Name search (`ILIKE` on the trigram
+  `pnpm db:regions` upserts the checked-in dataset (ADR-023) — 38 provinces, 514 regencies, 7,285 districts,
+  83,762 villages (91,599 rows, matching upstream's published totals) in ~3 s; CI runs it on a fresh database. Name search (`ILIKE` on the trigram
   index) and the children query take 1–3 ms locally.
 - Better Auth: login, logout, reset password; roles `super_admin`, `admin`, `editor`, `mitra` (scoped, inactive UI). (3b)
 - `permissions.ts` with unit tests (3b); admin shell (sidebar, top bar, protected routes) (3c).

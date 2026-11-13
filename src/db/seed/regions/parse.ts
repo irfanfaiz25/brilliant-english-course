@@ -13,15 +13,26 @@ export const CSV_HEADER = "code,name";
 /**
  * Extracts `(code, name)` tuples from the upstream MySQL dump (`db/wilayah.sql` in
  * cahyadsn/wilayah). The file is a sequence of `INSERT INTO wilayah (kode, nama) VALUES (...)`
- * statements; names may contain MySQL-escaped quotes (`\'`).
+ * statements. Apostrophes in names ("Ma'u", "Kaliau'") are written SQL-style as `''`, and
+ * possibly MySQL-style as `\'`; both are unescaped.
+ *
+ * Throws when any tuple opening `('<code>',` fails to parse, so an unexpected escape can never
+ * drop rows silently again (an earlier version lost 437 names containing `''`).
  */
 export function parseWilayahSql(sql: string): RegionRecord[] {
-  const tuple = /\('([0-9.]+)','((?:[^'\\]|\\.)*)'\)/g;
+  const tuple = /\('([0-9.]+)','((?:[^'\\]|''|\\.)*)'\)/g;
   const records: RegionRecord[] = [];
   for (const match of sql.matchAll(tuple)) {
     const [, code, rawName] = match;
     if (code === undefined || rawName === undefined) continue;
-    records.push({ code, name: rawName.replace(/\\(.)/g, "$1").trim() });
+    const name = rawName.replace(/''|\\(.)/g, (escape, char?: string) => char ?? "'").trim();
+    records.push({ code, name });
+  }
+  const openings = sql.match(/\('[0-9.]+',/g)?.length ?? 0;
+  if (openings !== records.length) {
+    throw new Error(
+      `Parsed ${records.length} of ${openings} region tuples; check the upstream escaping.`,
+    );
   }
   return records;
 }
