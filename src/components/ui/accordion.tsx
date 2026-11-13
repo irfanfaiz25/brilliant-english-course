@@ -7,8 +7,8 @@ import type { ComponentProps } from "react";
 import { cn } from "@/lib/utils";
 
 /**
- * FAQ-style disclosure. Panels are force-mounted and hidden when closed so answers stay in the
- * HTML for crawlers (FAQPage). Opening animates; closing is instant.
+ * FAQ-style disclosure. Panels are force-mounted so answers stay in the HTML for crawlers
+ * (FAQPage), and open/close animate smoothly in CSS.
  */
 const Accordion = AccordionPrimitive.Root;
 
@@ -58,10 +58,26 @@ function AccordionContent({
     <AccordionPrimitive.Content
       data-slot="accordion-content"
       forceMount
-      className="overflow-hidden text-body text-muted-foreground data-[state=closed]:hidden data-[state=open]:animate-accordion-down"
+      className="text-body text-muted-foreground"
       {...props}
     >
-      <div className={cn("px-5 pb-5 sm:px-6", className)}>{children}</div>
+      {/*
+       * Radix zeroes transitions on the Content element while it measures, so the animation lives
+       * on this wrapper. Height animates both ways with the grid-rows technique (no JS measuring);
+       * `visibility` flips only after closing finishes, hiding closed answers from keyboard and AT.
+       */}
+      <div className="invisible grid grid-rows-[0fr] transition-[grid-template-rows,visibility] duration-(--duration-slow) ease-out in-data-[state=open]:visible in-data-[state=open]:grid-rows-[1fr]">
+        <div className="min-h-0 overflow-hidden">
+          <div
+            className={cn(
+              "-translate-y-1 px-5 pb-5 opacity-0 transition-[opacity,translate] duration-(--duration-slow) ease-out in-data-[state=open]:translate-y-0 in-data-[state=open]:opacity-100 sm:px-6",
+              className,
+            )}
+          >
+            {children}
+          </div>
+        </div>
+      </div>
     </AccordionPrimitive.Content>
   );
 }

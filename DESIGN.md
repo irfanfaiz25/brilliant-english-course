@@ -210,6 +210,10 @@ JS motion values (seconds, easing arrays) come from `src/components/motion/token
 - `prefers-reduced-motion: reduce` → `MotionConfig reducedMotion="user"` removes movement (opacity only), CountUp and
   scroll progress stay static, view transitions are disabled, CSS transitions collapse to ~0 ms.
 - Each page: at most one "hero moment"; everything else is quiet reveals.
+- **Every show/hide animates both ways** (accordion, mobile menu, tabs, filters, collapsibles, toasts): 200–400 ms,
+  ease-out, CSS first. For height use the grid-rows technique (`grid-rows-[0fr]` → `grid-rows-[1fr]`) on a wrapper,
+  not JS measuring; pair it with a short opacity/translate on the content. Nothing should pop in or vanish abruptly.
+- Keep it light: CSS transitions/keyframes before Motion, Motion before anything heavier; never animate on every scroll frame in JS.
 
 ---
 
@@ -238,7 +242,7 @@ Implementation rules:
 | **Section header**           | Overline + H2 + optional lead paragraph; left-aligned on mobile, centered optional on desktop.                                                                                                                                                                      |
 | **Navbar**                   | Desktop: links + "Gabung Mitra" CTA. Mobile: logo + "Cek Unit" icon button + menu sheet. Becomes compact with `shadow-md` after 8 px scroll. Locale switcher ID/EN.                                                                                                 |
 | **Sticky mobile action bar** | _(new)_ Bottom bar on mobile, context-aware: parents pages → "Cek Unit" + WhatsApp; partnership pages → "Cek Kuota" + "Daftar Mitra". Hidden while the on-page form is in view.                                                                                     |
-| **Accordion (FAQ)**          | Radix Accordion, panels force-mounted and hidden when closed so answers stay in the HTML for `FAQPage` schema. Opening animates, closing is instant.                                                                                                                |
+| **Accordion (FAQ)**          | Radix Accordion, panels force-mounted so answers stay in the HTML for `FAQPage` schema. Opens and closes smoothly (grid-rows height + fade); hidden from AT when closed.                                                                                            |
 | **Testimonial**              | Quote, name, role ("Orang tua siswa Kindy", "Mitra Kab. Bogor"), optional photo and rating. Horizontal scroll-snap list on mobile, grid on desktop (no auto carousel).                                                                                              |
 | **Form field**               | Label above, helper/error text below, error announced via `aria-describedby`; inline validation on blur, not on every keystroke.                                                                                                                                    |
 | **Toast**                    | Sonner, top-center on mobile, bottom-right on desktop.                                                                                                                                                                                                              |
