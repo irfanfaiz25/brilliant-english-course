@@ -122,7 +122,27 @@
       "step2Text": "Contact the admin on WhatsApp to ask about fees, schedules and a trial class.",
       "step3Title": "Placement test & start",
       "step3Text": "Your child takes a relaxed placement test, then joins the level that fits best.",
-      "cta": "Find a Unit Now"
+      "cta": "Find a Unit Now",
+      "mock": {
+        "tabsLabel": "Steps to join",
+        "stepLabel": "Step {n}",
+        "searchValue": "Cibinong",
+        "resultsCount": "2 units found",
+        "resultName": "Unit Cibinong",
+        "resultMeta": "Monday – Friday · 15:00 – 19:00",
+        "resultStatus": "Open",
+        "chatName": "BEC Cibinong Admin",
+        "chatStatus": "online",
+        "chatParent": "Hi, I'd like to ask about classes for my 6-year-old.",
+        "chatAdmin": "Hi! There's a Kindy class on Monday & Wednesday at 15:00. Would you like a free trial class first?",
+        "chatTime": "10:12",
+        "placementTitle": "Placement result",
+        "skillSpeaking": "Speaking",
+        "skillVocabulary": "Vocabulary",
+        "skillListening": "Listening",
+        "placementLevel": "Best fit: Intro",
+        "placementStart": "First class: Monday, 15:00"
+      }
     },
     "partnership": {
       "overline": "BEC Partnership",

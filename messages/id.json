@@ -122,7 +122,27 @@
       "step2Text": "Hubungi admin lewat WhatsApp untuk tanya biaya, jadwal, dan kelas percobaan.",
       "step3Title": "Ikut placement & mulai",
       "step3Text": "Anak ikut placement test santai, lalu bergabung di level yang paling pas.",
-      "cta": "Cek Unit Sekarang"
+      "cta": "Cek Unit Sekarang",
+      "mock": {
+        "tabsLabel": "Langkah pendaftaran",
+        "stepLabel": "Langkah {n}",
+        "searchValue": "Cibinong",
+        "resultsCount": "2 unit ditemukan",
+        "resultName": "Unit Cibinong",
+        "resultMeta": "Senin – Jumat · 15.00 – 19.00",
+        "resultStatus": "Tersedia",
+        "chatName": "Admin BEC Cibinong",
+        "chatStatus": "online",
+        "chatParent": "Halo, saya mau tanya kelas untuk anak usia 6 tahun.",
+        "chatAdmin": "Halo Bunda! Ada kelas Kindy Senin & Rabu jam 15.00. Mau coba kelas gratis dulu?",
+        "chatTime": "10.12",
+        "placementTitle": "Hasil placement",
+        "skillSpeaking": "Speaking",
+        "skillVocabulary": "Vocabulary",
+        "skillListening": "Listening",
+        "placementLevel": "Level yang pas: Intro",
+        "placementStart": "Kelas pertama: Senin, 15.00"
+      }
     },
     "partnership": {
       "overline": "Kemitraan BEC",

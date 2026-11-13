@@ -1,34 +1,79 @@
 import { GraduationCapIcon, MapPinIcon, MessageCircleIcon } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
-import { Stagger, StaggerItem } from "@/components/motion/stagger";
+import { Reveal } from "@/components/motion/reveal";
+import { DecorBlob } from "@/components/site/decor-blob";
 import { Doodle } from "@/components/site/doodle";
 import { Section } from "@/components/site/section";
 import { SectionHeader } from "@/components/site/section-header";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
-import { cn } from "@/lib/utils";
 
-const stepStyles = [
-  { icon: MapPinIcon, tone: "bg-level-intro text-primary-foreground shadow-glow-primary" },
-  {
-    icon: MessageCircleIcon,
-    tone: "bg-level-secondary text-partner-foreground shadow-glow-partner",
-  },
-  { icon: GraduationCapIcon, tone: "bg-level-kindy text-highlight-foreground shadow-lg" },
-] as const;
+import { ChatPreview, PlacementPreview, SearchPreview } from "./steps-previews";
+import { StepsShowcase, type ShowcaseStep } from "./steps-showcase";
 
-/** How to join: three numbered steps joined by a dashed path (horizontal on desktop, vertical on phones). */
+/** How to join: an interactive stepper with a live preview of each step. */
 export async function StepsSection() {
   const t = await getTranslations("Home.steps");
-  const steps = [
-    { title: t("step1Title"), text: t("step1Text") },
-    { title: t("step2Title"), text: t("step2Text") },
-    { title: t("step3Title"), text: t("step3Text") },
+  const mock = await getTranslations("Home.steps.mock");
+
+  const steps: ShowcaseStep[] = [
+    {
+      label: mock("stepLabel", { n: 1 }),
+      title: t("step1Title"),
+      text: t("step1Text"),
+      icon: <MapPinIcon aria-hidden />,
+      tone: "bg-level-intro text-primary-foreground shadow-glow-primary",
+      preview: (
+        <SearchPreview
+          query={mock("searchValue")}
+          count={mock("resultsCount")}
+          name={mock("resultName")}
+          meta={mock("resultMeta")}
+          status={mock("resultStatus")}
+        />
+      ),
+    },
+    {
+      label: mock("stepLabel", { n: 2 }),
+      title: t("step2Title"),
+      text: t("step2Text"),
+      icon: <MessageCircleIcon aria-hidden />,
+      tone: "bg-level-secondary text-partner-foreground shadow-glow-partner",
+      preview: (
+        <ChatPreview
+          name={mock("chatName")}
+          status={mock("chatStatus")}
+          parent={mock("chatParent")}
+          admin={mock("chatAdmin")}
+          time={mock("chatTime")}
+        />
+      ),
+    },
+    {
+      label: mock("stepLabel", { n: 3 }),
+      title: t("step3Title"),
+      text: t("step3Text"),
+      icon: <GraduationCapIcon aria-hidden />,
+      tone: "bg-level-kindy text-highlight-foreground shadow-lg",
+      preview: (
+        <PlacementPreview
+          title={mock("placementTitle")}
+          skills={[
+            { label: mock("skillSpeaking"), percent: 78 },
+            { label: mock("skillVocabulary"), percent: 70 },
+            { label: mock("skillListening"), percent: 84 },
+          ]}
+          level={mock("placementLevel")}
+          start={mock("placementStart")}
+        />
+      ),
+    },
   ];
 
   return (
     <Section aria-labelledby="steps-title">
+      <DecorBlob tone="highlight" className="parallax-soft top-1/3 -left-32 size-96 opacity-60" />
       <Doodle
         shape="squiggle"
         tone="highlight"
@@ -48,43 +93,9 @@ export async function StepsSection() {
         align="center"
       />
 
-      <div className="relative mt-12 lg:mt-16">
-        {/* Dashed path behind the step markers. */}
-        <span
-          aria-hidden
-          className="absolute top-8 bottom-28 left-8 w-0 border-l-2 border-dashed border-teal-200 md:inset-x-[16%] md:top-8 md:bottom-auto md:h-0 md:w-auto md:border-t-2 md:border-l-0"
-        />
-        <Stagger as="ol" className="relative grid gap-8 md:grid-cols-3 md:gap-6">
-          {steps.map((step, index) => {
-            const { icon: Icon, tone } = stepStyles[index] ?? stepStyles[0];
-            return (
-              <StaggerItem
-                key={step.title}
-                as="li"
-                className="flex gap-5 md:flex-col md:items-center md:text-center"
-              >
-                <span className="relative shrink-0">
-                  <span
-                    className={cn(
-                      "inline-flex size-16 items-center justify-center rounded-2xl ring-8 ring-background [&_svg]:size-7",
-                      tone,
-                    )}
-                  >
-                    <Icon aria-hidden />
-                  </span>
-                  <span className="absolute -top-2 -right-2 inline-flex size-7 items-center justify-center rounded-full bg-foreground text-caption font-bold text-background">
-                    {index + 1}
-                  </span>
-                </span>
-                <div className="flex flex-col gap-1.5 pt-1 md:max-w-xs">
-                  <h3 className="text-h4 text-foreground">{step.title}</h3>
-                  <p className="text-body text-muted-foreground">{step.text}</p>
-                </div>
-              </StaggerItem>
-            );
-          })}
-        </Stagger>
-      </div>
+      <Reveal className="mt-12 lg:mt-16">
+        <StepsShowcase steps={steps} tabsLabel={mock("tabsLabel")} />
+      </Reveal>
 
       <div className="mt-12 flex justify-center">
         <Button asChild size="lg" pop>
