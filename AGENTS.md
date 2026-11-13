@@ -183,6 +183,7 @@ Permissions are defined in one place (`src/lib/permissions.ts`) and checked on t
   admin override → content-derived default → global default.
 - Technical SEO (sitemap, robots, canonical, hreflang, JSON-LD shape) lives in code, not in the admin.
 - JSON-LD: `EducationalOrganization` (site), `LocalBusiness` (unit), `Course` (program), `Article` (post), `FAQPage`, `BreadcrumbList`.
+  Render it with `<JsonLd data={…} />` and the builders in `src/lib/seo/json-ld.tsx` (escapes `<`); never hand-roll script tags.
 
 ### Dynamic content (admin-editable)
 

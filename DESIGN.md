@@ -250,6 +250,7 @@ Implementation rules:
 
 | Component                    | Variants / notes                                                                                                                                                                                                                                                                                                                                                   |
 | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Button · inverse**         | Outline button for dark panels (`variant="inverse"`, white/30 border); with `pop` uses `shadow-inverse-pop`.                                                                                                                                                                                                                                                       |
 | **Button pairs**             | Buttons shown side by side share one model: same size and, if one uses `pop`, the other does too (`secondary` + `pop` = outline with `shadow-soft-pop`). Colors may differ.                                                                                                                                                                                        |
 | **Button**                   | `primary` (teal), `partner` (orange), `whatsapp` (white text), `secondary` (outline teal), `ghost`, `link`; sizes `sm` 40 / `md` 48 / `lg` 56 px, `icon`; `pop` adds the pressable brand shadow; `loading` keeps the label for screen readers; `asChild` for links.                                                                                                |
 | **Badge**                    | Level: `Kindy` (sunny), `Intro` (teal), `Secondary` (orange). Quota: `Tersedia` (success), `Sisa N slot` (warning), `Penuh` (error), `Unit baru` (info). Always text + color, never color alone.                                                                                                                                                                   |
@@ -311,6 +312,19 @@ Implementation rules:
 - **Stats** sit on a card that overlaps the hero's bottom edge; numbers come from `getNetworkStats()`.
 - **Level cards:** photo, level color bar, age chip, skills with level-colored checks; whole card is one link to `/program#<slug>`.
 - **Activities:** photo-led cards with text on a dark gradient; CSS scroll-snap row on phones, grid from `md`.
+
+**Beranda, 5a-2:**
+
+- **Unit finder teaser:** a plain GET `<form role="search">` to the localized Cek Unit URL (`?q=`), so it works without JS;
+  "Use my location" links to `?dekat=1`. Preview of active units uses the shared `UnitCard` (`features/units/components`).
+- **Unit card:** initials avatar, enrollment badge (text + color), address / manager / schedule (`formatUnitSchedule`,
+  localized weekdays and time notation), level badges, WhatsApp (pre-filled with the unit name) + Google Maps directions.
+- **Steps:** three numbered icon markers joined by a dashed path — horizontal from `md`, vertical timeline on phones.
+- **Partnership teaser:** a dark rounded **panel** floating on the canvas (never a full-width band), `inverse` + `pop`
+  outline button paired with the partner CTA, quota note, count-up of joined units.
+- **Testimonials:** quote cards with rating (`aria-label`), CSS scroll-snap row on phones, grid from `lg`.
+- **FAQ:** sticky intro + "ask on WhatsApp" card beside the accordion; `FAQPage` JSON-LD via `src/lib/seo/json-ld.tsx`.
+- **Closing CTA:** warm panel with the two parent actions (find a unit / WhatsApp), both `pop`.
 
 ### 5.4 WhatsApp deep links
 
