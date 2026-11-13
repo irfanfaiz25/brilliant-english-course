@@ -61,7 +61,9 @@ test.describe("site shell on desktop", () => {
       "href",
       "/en/find-a-unit",
     );
-    await expect(page.getByRole("link", { name: "Become a Partner" })).toBeVisible();
+    await expect(
+      page.getByRole("banner").getByRole("link", { name: "Become a Partner" }),
+    ).toBeVisible();
   });
 });
 

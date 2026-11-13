@@ -22,6 +22,9 @@ const buttonVariants = cva(
         whatsapp: "bg-whatsapp text-whatsapp-foreground hover:bg-whatsapp-hover",
         secondary:
           "border border-primary/30 bg-background text-primary hover:border-primary hover:bg-primary-soft",
+        /** Outline button for dark surfaces (`inverse-*` tokens). */
+        inverse:
+          "border border-white/30 bg-white/5 text-inverse-foreground hover:border-white/60 hover:bg-white/10",
         ghost: "text-foreground hover:bg-muted",
         link: "h-auto px-0 text-primary underline-offset-4 hover:underline active:translate-y-0",
       },
@@ -45,6 +48,11 @@ const buttonVariants = cva(
         variant: "partner",
         pop: true,
         className: "shadow-partner active:translate-y-1 active:shadow-partner-pressed",
+      },
+      {
+        variant: "inverse",
+        pop: true,
+        className: "shadow-inverse-pop active:translate-y-1 active:shadow-inverse-pop-pressed",
       },
       {
         variant: "secondary",

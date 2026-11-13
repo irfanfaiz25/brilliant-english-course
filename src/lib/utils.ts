@@ -41,6 +41,8 @@ const twMerge = extendTailwindMerge({
             "glow-partner",
             "soft-pop",
             "soft-pop-pressed",
+            "inverse-pop",
+            "inverse-pop-pressed",
             "sheet",
           ],
         },

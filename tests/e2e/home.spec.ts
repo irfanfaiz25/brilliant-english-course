@@ -56,7 +56,7 @@ test.describe("home page — top sections", () => {
     await page.goto("/en");
 
     await expect(page).toHaveTitle(/English Courses for Kids Aged 4–15/);
-    await expect(page.getByRole("link", { name: "Find the Nearest Unit" })).toHaveAttribute(
+    await expect(page.getByRole("link", { name: "Find the Nearest Unit" }).first()).toHaveAttribute(
       "href",
       "/en/find-a-unit",
     );

@@ -58,7 +58,8 @@
   },
   "WhatsApp": {
     "general": "Halo BEC, saya ingin bertanya tentang kursus bahasa Inggris anak.",
-    "partner": "Halo BEC, saya tertarik membuka unit BEC (kemitraan). Boleh minta informasinya?"
+    "partner": "Halo BEC, saya tertarik membuka unit BEC (kemitraan). Boleh minta informasinya?",
+    "unit": "Halo {unit}, saya ingin bertanya tentang kelas bahasa Inggris untuk anak saya."
   },
   "Home": {
     "metaTitle": "Kursus Bahasa Inggris Anak Usia 4–15 Tahun",
@@ -98,6 +99,93 @@
       "lead": "Selain kelas rutin, setiap unit BEC mengadakan kegiatan berkala supaya anak berani memakai bahasa Inggris di dunia nyata.",
       "detailLink": "Lihat detail program",
       "scrollHint": "Geser untuk melihat kegiatan lain"
+    },
+    "unitFinder": {
+      "overline": "Cek Unit BEC",
+      "title": "Temukan Unit BEC Terdekat di Daerahmu",
+      "lead": "Cari berdasarkan kecamatan, kota, atau nama unit untuk melihat unit aktif beserta jadwal dan kontaknya.",
+      "searchLabel": "Cari unit",
+      "searchPlaceholder": "Cari kecamatan, kota, atau nama unit…",
+      "submit": "Cari Unit",
+      "useLocation": "Gunakan lokasi saya",
+      "previewTitle": "Unit aktif di sekitar Kab. Bogor",
+      "seeAll": "Lihat semua unit",
+      "note": "Data wilayah mengacu pada kode Kemendagri"
+    },
+    "steps": {
+      "overline": "Cara Daftar",
+      "title": "Mulai Belajar dalam 3 Langkah",
+      "lead": "Tanpa formulir panjang — cukup temukan unit, sapa adminnya, dan anak bisa langsung ikut kelas.",
+      "step1Title": "Cek unit terdekat",
+      "step1Text": "Cari unit BEC di kecamatan atau kotamu dan lihat jadwal kelasnya.",
+      "step2Title": "Chat admin unit",
+      "step2Text": "Hubungi admin lewat WhatsApp untuk tanya biaya, jadwal, dan kelas percobaan.",
+      "step3Title": "Ikut placement & mulai",
+      "step3Text": "Anak ikut placement test santai, lalu bergabung di level yang paling pas.",
+      "cta": "Cek Unit Sekarang",
+      "mock": {
+        "tabsLabel": "Langkah pendaftaran",
+        "stepLabel": "Langkah {n}",
+        "searchValue": "Cibinong",
+        "resultsCount": "2 unit ditemukan",
+        "resultName": "Unit Cibinong",
+        "resultMeta": "Senin – Jumat · 15.00 – 19.00",
+        "resultStatus": "Tersedia",
+        "chatName": "Admin BEC Cibinong",
+        "chatStatus": "online",
+        "chatParent": "Halo, saya mau tanya kelas untuk anak usia 6 tahun.",
+        "chatAdmin": "Halo Bunda! Ada kelas Kindy Senin & Rabu jam 15.00. Mau coba kelas gratis dulu?",
+        "chatTime": "10.12",
+        "placementTitle": "Hasil placement",
+        "skillSpeaking": "Speaking",
+        "skillVocabulary": "Vocabulary",
+        "skillListening": "Listening",
+        "placementLevel": "Level yang pas: Intro",
+        "placementStart": "Kelas pertama: Senin, 15.00"
+      }
+    },
+    "partnership": {
+      "overline": "Kemitraan BEC",
+      "title": "Buka Unit BEC di Rumahmu",
+      "lead": "Jadikan ruang tamu tempat belajar yang seru. BEC menyiapkan kurikulum, pelatihan, dan dukungan supaya unitmu cepat berjalan.",
+      "benefit1": "Kurikulum & modul siap pakai",
+      "benefit2": "Pelatihan pengajar dan pendampingan",
+      "benefit3": "Dukungan materi promosi dan sistem",
+      "quotaNote": "Maks. 2 unit per desa — amankan wilayahmu lebih dulu.",
+      "primaryCta": "Gabung Mitra",
+      "secondaryCta": "Pelajari Kemitraan",
+      "joinedLabel": "unit sudah bergabung"
+    },
+    "testimonials": {
+      "overline": "Kata Orang Tua",
+      "title": "Anak Jadi Berani Ngomong Inggris",
+      "lead": "Cerita dari orang tua yang anaknya belajar di unit-unit BEC.",
+      "rating": "Rating {rating} dari 5"
+    },
+    "faq": {
+      "overline": "Pertanyaan Umum",
+      "title": "Yang Sering Ditanyakan Orang Tua",
+      "lead": "Belum menemukan jawabannya? Admin kami siap membantu.",
+      "askTitle": "Masih ada pertanyaan?",
+      "askText": "Tim BEC biasanya membalas di jam kerja dalam hitungan menit.",
+      "askCta": "Tanya via WhatsApp"
+    },
+    "cta": {
+      "title": "Siap mulai belajar bahasa Inggris dengan seru?",
+      "lead": "Temukan unit terdekat atau ngobrol dulu dengan tim BEC — gratis, tanpa komitmen.",
+      "primary": "Cek Unit Terdekat",
+      "secondary": "Chat via WhatsApp"
     }
+  },
+  "Units": {
+    "code": "Kode Unit {code}",
+    "manager": "Pengelola: {name}",
+    "enrollment": "{status, select, open {Tersedia} limited {Kuota terbatas} full {Penuh} other {—}}",
+    "chat": "Chat WhatsApp",
+    "directions": "Lihat Rute",
+    "levels": "Level tersedia",
+    "schedule": "Jadwal",
+    "address": "Alamat",
+    "managerLabel": "Pengelola"
   }
 }
