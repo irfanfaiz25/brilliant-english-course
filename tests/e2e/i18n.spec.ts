@@ -5,7 +5,7 @@ test.describe("locale routing", () => {
     await page.goto("/");
 
     await expect(page.locator("html")).toHaveAttribute("lang", "id");
-    await expect(page.getByText("Kursus Bahasa Inggris Anak")).toBeVisible();
+    await expect(page.getByText("Kursus Bahasa Inggris Anak · Usia 4–15 tahun")).toBeVisible();
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
       "href",
       /^https?:\/\/[^/]+\/?$/,
@@ -19,13 +19,20 @@ test.describe("locale routing", () => {
 
   test("the locale switcher moves between languages", async ({ page }) => {
     await page.goto("/");
-    await page.getByRole("link", { name: "English" }).click();
+    const switcher = page
+      .getByRole("contentinfo")
+      .getByRole("navigation", { name: "Ganti bahasa" });
+    await switcher.getByRole("link", { name: "English" }).click();
 
     await expect(page).toHaveURL(/\/en$/);
     await expect(page.locator("html")).toHaveAttribute("lang", "en");
-    await expect(page.getByText("English Courses for Kids")).toBeVisible();
+    await expect(page.getByText("English Courses for Kids · Ages 4–15")).toBeVisible();
 
-    await page.getByRole("link", { name: "Bahasa Indonesia" }).click();
+    await page
+      .getByRole("contentinfo")
+      .getByRole("navigation", { name: "Change language" })
+      .getByRole("link", { name: "Bahasa Indonesia" })
+      .click();
     await expect(page).toHaveURL(/\/$/);
     await expect(page.locator("html")).toHaveAttribute("lang", "id");
   });

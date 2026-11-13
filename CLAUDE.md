@@ -125,6 +125,10 @@ Rules:
 - UI: compose from `src/components/ui` and merge classes with `cn()` from `@/lib/utils` (token-aware). Add a
   primitive with the shadcn CLI only to get the source, then restyle it with tokens and show it on `/design-system`.
 - Interactivity is deliberate: follow `DESIGN.md` § 1.2 before turning static content into a Client Component.
+- Public pages render inside `SiteShell` (`src/app/[locale]/(site)/layout.tsx`); page content starts below the header,
+  so a page provides its sections, not another `<main>`. Navigation items live in `src/config/navigation.ts`.
+- WhatsApp links are always built with `buildWhatsAppUrl()` (`src/lib/whatsapp.ts`); message templates live in the
+  `WhatsApp` message namespace. Contact and social values in `siteConfig` are placeholders until Phase 4a.
 - Motion: use the primitives in `src/components/motion` (import each from its own file). For custom animations use
   `m` from `motion/react-m` (LazyMotion is strict) and values from `motion/tokens.ts`; follow `DESIGN.md` § 3.
 

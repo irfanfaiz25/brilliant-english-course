@@ -113,3 +113,11 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
 - **Decision:** Motion (`motion` package) loaded through a strict, lazily-loaded `LazyMotion` (`domAnimation`) with `MotionConfig reducedMotion="user"`. Primitives: `Reveal`, `Stagger`/`StaggerItem`, `CountUp`, plus CSS-only `ScrollProgress` and a React `<ViewTransition>` page cross-fade mounted in `[locale]/template.tsx`. CountUp never resets a number that is already on screen. A `<noscript>` rule keeps reveal targets visible without JS.
 - **Why:** Smooth, consistent motion with a small JS cost; native browser features (scroll-driven animations, View Transitions) where they exist; no accessibility or SEO regressions.
 - **Alternatives:** GSAP (heavier, imperative, more than we need); pure CSS `view()` reveals (no "once" behavior, reverse on scroll up).
+
+### ADR-015 — Site shell and layered depth
+
+2026-11-13 · Accepted
+
+- **Decision:** One `SiteShell` (skip link, sticky header, main landmark, footer, mobile action bar) frames every public page and the localized 404. Header elevation uses an IntersectionObserver sentinel, not scroll listeners. Navigation lives in `src/config/navigation.ts`; WhatsApp links go through `buildWhatsAppUrl()`. Visual depth comes from tokens: gradients, `DecorBlob`, `shadow-card`/glow shadows, `surface-glass` and `inverse-*` colors for dark bands. Brand icons come from `simple-icons` (only the needed glyph paths are imported).
+- **Why:** Consistent frame and journeys on every page; the product owner asked for a less flat, more dimensional look while staying light and on-brand.
+- **Alternatives:** Hand-drawn brand SVGs (risk of inaccurate logos); scroll event listeners for the header (more main-thread work).

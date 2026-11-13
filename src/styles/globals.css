@@ -123,6 +123,12 @@
   --color-accent: var(--color-neutral-100);
   --color-accent-foreground: var(--color-neutral-900);
 
+  /* Dark brand surfaces (footer, highlight bands). */
+  --color-inverse: var(--color-teal-900);
+  --color-inverse-foreground: var(--color-white);
+  --color-inverse-muted: var(--color-teal-100);
+  --color-inverse-subtle: var(--color-teal-200);
+
   --color-whatsapp: var(--color-whatsapp-500);
   --color-whatsapp-hover: var(--color-whatsapp-600);
   --color-whatsapp-foreground: var(--color-white);
@@ -155,6 +161,11 @@
   --color-overlay: rgb(10 41 48 / 0.48);
 
   /* ---------- Typography (Poppins, fluid 360 → 1440 px) ---------- */
+  /* Oversized numerals (404, hero stats accents). */
+  --text-jumbo: clamp(6rem, 4rem + 10vw, 11rem);
+  --text-jumbo--line-height: 1;
+  --text-jumbo--letter-spacing: -0.04em;
+  --text-jumbo--font-weight: 700;
   --text-display: clamp(2.25rem, 1.833rem + 1.852vw, 3.5rem);
   --text-display--line-height: 1.15;
   --text-display--letter-spacing: -0.0625rem;
@@ -218,6 +229,11 @@
   --shadow-brand: 0 6px 0 var(--color-primary-shadow);
   --shadow-brand-pressed: 0 2px 0 var(--color-primary-shadow);
   --shadow-partner: 0 6px 0 var(--color-orange-700);
+  /* Layered resting shadow for cards: a crisp contact shadow plus a soft ambient one. */
+  --shadow-card: 0 1px 2px rgb(10 41 48 / 0.04), 0 10px 28px -10px rgb(10 41 48 / 0.14);
+  /* Tinted glows for hero CTAs and highlighted cards (depth without gray haze). */
+  --shadow-glow-primary: 0 18px 40px -14px rgb(27 110 126 / 0.5);
+  --shadow-glow-partner: 0 18px 40px -14px rgb(221 101 16 / 0.45);
   --shadow-partner-pressed: 0 2px 0 var(--color-orange-700);
 
   /* ---------- Motion ---------- */
@@ -233,6 +249,58 @@
   --z-header: 40;
   --z-overlay: 50;
   --z-toast: 60;
+}
+
+/* ---------- Depth & texture (DESIGN.md § 1.1) ---------- */
+:root {
+  --gradient-brand: linear-gradient(
+    120deg,
+    var(--color-teal-500),
+    var(--color-teal-400) 45%,
+    var(--color-orange-400)
+  );
+  --gradient-teal-deep:
+    radial-gradient(120% 90% at 0% 0%, var(--color-teal-700), transparent 60%),
+    linear-gradient(160deg, var(--color-teal-800), var(--color-teal-900) 70%);
+  --gradient-warm:
+    radial-gradient(80% 60% at 100% 0%, var(--color-sunny-100), transparent 70%),
+    radial-gradient(70% 60% at 0% 100%, var(--color-teal-50), transparent 70%), var(--color-cream);
+  --gradient-soft:
+    radial-gradient(90% 70% at 50% 0%, var(--color-teal-50), transparent 70%), var(--color-white);
+}
+
+@utility bg-gradient-brand {
+  background-image: var(--gradient-brand);
+}
+
+@utility bg-gradient-teal-deep {
+  background-image: var(--gradient-teal-deep);
+}
+
+@utility bg-gradient-warm {
+  background: var(--gradient-warm);
+}
+
+@utility bg-gradient-soft {
+  background: var(--gradient-soft);
+}
+
+/* Frosted surface for sticky bars over content. */
+@utility surface-glass {
+  background-color: color-mix(in oklab, var(--color-background) 82%, transparent);
+  backdrop-filter: blur(14px) saturate(1.5);
+}
+
+/* Subtle dot grid texture for large plain areas. */
+@utility bg-dots {
+  background-image: radial-gradient(var(--color-neutral-200) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+@utility text-gradient-brand {
+  background-image: var(--gradient-brand);
+  background-clip: text;
+  color: transparent;
 }
 
 /* Font family comes from next/font (Poppins), exposed as a CSS variable in the root layout. */
@@ -291,6 +359,20 @@
     opacity: 0;
     translate: 0 8px;
   }
+}
+
+/* Keep the header still while page content cross-fades underneath it. */
+::view-transition-group(site-header) {
+  z-index: 100;
+  animation: none;
+}
+
+::view-transition-old(site-header) {
+  display: none;
+}
+
+::view-transition-new(site-header) {
+  animation: none;
 }
 
 /* Reading progress bar (see `ScrollProgress`): CSS scroll-driven, no JS. */
