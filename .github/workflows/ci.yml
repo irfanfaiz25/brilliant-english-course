@@ -76,7 +76,7 @@ jobs:
     name: Build and E2E
     needs: quality
     runs-on: ubuntu-latest
-    # Throwaway database for the admin sign-in specs (E2E accounts are created in global setup).
+    # Throwaway database: seeded content for the build, E2E accounts from the global setup.
     services:
       postgres:
         image: postgres:17-alpine
@@ -99,6 +99,9 @@ jobs:
       - name: Throwaway auth secret for this run
         run: echo "BETTER_AUTH_SECRET=$(openssl rand -base64 32)" >> "$GITHUB_ENV"
       - run: pnpm db:migrate
+      # Public pages are prerendered from the database at build time (ADR-026).
+      - name: Regions and dev seed for the build and E2E
+        run: pnpm db:regions && pnpm db:seed
       - run: pnpm build
       - run: pnpm exec playwright install --with-deps chromium
       - run: pnpm test:e2e
