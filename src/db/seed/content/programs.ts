@@ -1,7 +1,7 @@
 import { placeholderImages } from "@/config/placeholder-images";
 import type { Locale } from "@/i18n/routing";
 
-import type { Level } from "./schema";
+import type { Level } from "@/features/programs/schema";
 
 /**
  * PLACEHOLDER content from the Penpot design, used by `queries.ts` until the programs table

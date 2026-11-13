@@ -1,7 +1,7 @@
 import { placeholderImages } from "@/config/placeholder-images";
 
-import { bold, doc, h2, h3, italic, link, ol, p, quote, ul } from "./doc-builders";
-import type { PostRecord } from "./schema";
+import { bold, doc, h2, h3, italic, link, ol, p, quote, ul } from "@/features/blog/doc-builders";
+import type { PostRecord } from "@/features/blog/schema";
 
 const academicTeam = { name: "Tim Akademik BEC", role: "Kurikulum & Pelatihan" };
 const partnershipTeam = { name: "Tim Kemitraan BEC", role: "Pendampingan Mitra" };

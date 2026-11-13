@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { contactSettingsFixture } from "@/features/settings/fixtures";
+import { contactSettingsDefaults } from "@/features/settings/defaults";
 import { contactSettingsSchema } from "@/features/settings/schema";
 
 import { contactMessageSchema } from "./schema";
@@ -37,6 +37,6 @@ describe("contactMessageSchema", () => {
 
 describe("contact settings fixture", () => {
   it("is valid", () => {
-    expect(contactSettingsSchema.parse(contactSettingsFixture)).toEqual(contactSettingsFixture);
+    expect(contactSettingsSchema.parse(contactSettingsDefaults)).toEqual(contactSettingsDefaults);
   });
 });

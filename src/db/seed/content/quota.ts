@@ -1,4 +1,4 @@
-import type { QuotaReservation } from "./schema";
+import type { QuotaReservation } from "@/features/quota/schema";
 
 /**
  * PLACEHOLDER reservations until the leads pipeline stores onboarding partners (Phase 4c/4d).
@@ -6,5 +6,5 @@ import type { QuotaReservation } from "./schema";
  * left (e.g. Sukamaju) and fully open ones (e.g. Tengah) to review every quota state.
  */
 export const quotaReservationFixtures: QuotaReservation[] = [
-  { villageCode: "32.01.01.1001", slots: 1 },
+  { villageCode: "32.01.01.1006", slots: 1 },
 ];

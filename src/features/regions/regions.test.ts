@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { regionFixtures } from "./fixtures";
+import { regionFixtures } from "@/db/seed/content/regions";
 import { regionCodeSchema } from "./schema";
 import { isWithinRegion, parentRegionCode, regionCodePath, regionLevel } from "./service";
 

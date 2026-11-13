@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 
-import { partnershipPackageFixtures } from "./fixtures";
+import { partnershipPackageDefaults } from "./defaults";
 import { partnerApplicationSchema, partnershipPackageSchema } from "./schema";
-import { createLeadReference } from "./service";
+import { createLeadReference } from "./reference";
 
 const valid = {
   fullName: "Rina Lestari",
@@ -65,9 +65,9 @@ describe("createLeadReference", () => {
   });
 });
 
-describe("partnership package fixtures", () => {
+describe("partnership package defaults", () => {
   it("are valid and aligned across locales", () => {
-    const { id, en } = partnershipPackageFixtures;
+    const { id, en } = partnershipPackageDefaults;
     expect(partnershipPackageSchema.parse(id)).toEqual(id);
     expect(partnershipPackageSchema.parse(en)).toEqual(en);
     expect(en.inclusions).toHaveLength(id.inclusions.length);

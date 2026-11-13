@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { unitFixtures } from "./fixtures";
+import { unitFixtures } from "@/db/seed/content/units";
 import {
   buildDirectionsUrl,
   distanceKm,

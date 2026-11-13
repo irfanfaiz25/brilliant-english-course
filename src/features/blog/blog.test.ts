@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { slugify } from "@/lib/slug";
 
 import { bold, doc, h2, h3, link, p, ul } from "./doc-builders";
-import { postFixtures } from "./fixtures";
+import { postFixtures } from "@/db/seed/content/blog";
 import { blogQuery, parseBlogParams } from "./index-params";
 import { postRecordSchema, type PostSummary } from "./schema";
 import {
@@ -13,6 +13,7 @@ import {
   readingMinutes,
   relatedPosts,
   toPost,
+  toPostRecord,
 } from "./service";
 
 const summary = (id: string, category: PostSummary["category"]): PostSummary =>
@@ -128,5 +129,37 @@ describe("blog index params", () => {
       kategori: "kemitraan",
       halaman: "3",
     });
+  });
+});
+
+describe("toPostRecord", () => {
+  const translation = {
+    slug: "judul",
+    title: "Judul artikel yang cukup panjang",
+    excerpt: "Ringkasan artikel yang cukup panjang untuk kartu.",
+    coverAlt: "Foto",
+    content: { type: "doc" as const, content: [{ type: "paragraph" as const }] },
+  };
+  const stored = {
+    id: "p1",
+    category: "parenting" as const,
+    cover: { src: "/placeholders/hero-girl-writing.webp", width: 1600, height: 1067 },
+    author: { name: "Tim BEC", role: "Kurikulum" },
+    // 23:30 UTC on Nov 5 is already Nov 6 in Jakarta (UTC+7).
+    publishedAt: new Date("2026-11-05T23:30:00Z"),
+    updatedAt: new Date("2026-11-06T02:00:00Z"),
+    translations: { id: translation, en: { ...translation, slug: "title" } },
+  };
+
+  it("uses Jakarta calendar days and hides same-day edits", () => {
+    const record = toPostRecord(stored);
+    expect(record.publishedAt).toBe("2026-11-06");
+    expect(record.updatedAt).toBeUndefined();
+    expect(record.translations.en.slug).toBe("title");
+  });
+
+  it("keeps a later update day", () => {
+    const record = toPostRecord({ ...stored, updatedAt: new Date("2026-11-09T03:00:00Z") });
+    expect(record.updatedAt).toBe("2026-11-09");
   });
 });

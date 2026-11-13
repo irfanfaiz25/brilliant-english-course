@@ -1,7 +1,7 @@
 import { placeholderImages } from "@/config/placeholder-images";
 import type { Locale } from "@/i18n/routing";
 
-import type { Activity } from "./schema";
+import type { Activity } from "@/features/activities/schema";
 
 /** PLACEHOLDER content from the Penpot design until the activities admin module (Phase 4b). */
 export const activityFixtures: Record<Locale, Activity[]> = {
