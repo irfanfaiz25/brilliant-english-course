@@ -14,6 +14,19 @@ export const limits = {
     rateLimit: 5,
     rateWindowMs: 10 * 60 * 1000,
   },
+  auth: {
+    passwordMin: 10,
+    passwordMax: 128,
+    /** Signed-in sessions last this long; each visit after a day extends them again. */
+    sessionDays: 7,
+    resetLinkMinutes: 60,
+    /** Sign-in attempts per IP and per email within `signInWindowMs`. */
+    signInRateLimit: 10,
+    signInWindowMs: 15 * 60 * 1000,
+    /** Password-reset requests per IP and per email within `resetWindowMs`. */
+    resetRateLimit: 5,
+    resetWindowMs: 60 * 60 * 1000,
+  },
   blog: {
     /** Cards per page on the blog index (the featured post on page 1 is extra). */
     pageSize: 6,

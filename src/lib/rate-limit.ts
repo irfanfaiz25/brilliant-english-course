@@ -30,7 +30,21 @@ export function createRateLimiter({ limit, windowMs }: RateLimiterOptions) {
       current.count += 1;
       return current.count <= limit;
     },
+    /** Whether `key` has used up its window, without counting a hit. */
+    isBlocked(key: string, now: number = Date.now()): boolean {
+      const current = windows.get(key);
+      return current !== undefined && current.resetAt > now && current.count >= limit;
+    },
+    /** Forgets `key`, e.g. after a successful sign-in so earlier typos do not count. */
+    reset(key: string): void {
+      windows.delete(key);
+    },
   };
+}
+
+/** Loopback or missing addresses: local runs without a proxy, where IP keys would be shared. */
+export function isLocalOrUnknownIp(ip: string): boolean {
+  return ip === "unknown" || ip === "::1" || ip === "127.0.0.1" || ip === "::ffff:127.0.0.1";
 }
 
 /** Client IP behind Cloudflare / a reverse proxy, or "unknown". */
