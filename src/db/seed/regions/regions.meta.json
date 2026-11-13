@@ -1,0 +1,594 @@
+{
+  "source": {
+    "repository": "cahyadsn/wilayah",
+    "path": "db/wilayah.sql",
+    "license": "MIT",
+    "commit": "c2eff0881e3c75b8822f8c84ea9d23affc11aadb",
+    "regulation": "Kepmendagri No. 300.2.2-2430 Tahun 2025",
+    "url": "https://raw.githubusercontent.com/cahyadsn/wilayah/c2eff0881e3c75b8822f8c84ea9d23affc11aadb/db/wilayah.sql",
+    "sha256": "c4c3396d9380d4edee072af1d9dff83573b574d7cd00a6562cf82e200e954031"
+  },
+  "generatedAt": "2026-11-13T22:39:06.210Z",
+  "counts": {
+    "province": 38,
+    "regency": 514,
+    "district": 7265,
+    "village": 83202
+  },
+  "total": 91019,
+  "skippedCount": 143,
+  "skipped": [
+    {
+      "code": "12.04.28.2001",
+      "name": "Balodano"
+    },
+    {
+      "code": "12.04.28.2002",
+      "name": "Lewuoguru II"
+    },
+    {
+      "code": "12.04.28.2005",
+      "name": "Lasara Siwalubanua"
+    },
+    {
+      "code": "12.04.28.2006",
+      "name": "Tuhemberua"
+    },
+    {
+      "code": "12.04.28.2007",
+      "name": "Atualuo"
+    },
+    {
+      "code": "12.04.28.2008",
+      "name": "Lewa-lewa"
+    },
+    {
+      "code": "12.04.28.2009",
+      "name": "Dekha"
+    },
+    {
+      "code": "12.04.35.2001",
+      "name": "Tuhembuasi"
+    },
+    {
+      "code": "12.04.35.2002",
+      "name": "Hilibadalu"
+    },
+    {
+      "code": "12.04.35.2004",
+      "name": "Hilimbana"
+    },
+    {
+      "code": "12.04.35.2005",
+      "name": "Saitagaramba"
+    },
+    {
+      "code": "12.04.35.2007",
+      "name": "Baruzo"
+    },
+    {
+      "code": "12.04.35.2008",
+      "name": "Tulumbaho"
+    },
+    {
+      "code": "12.14.21.2001",
+      "name": "Hilinamazihono"
+    },
+    {
+      "code": "12.14.21.2002",
+      "name": "Hilimbowo"
+    },
+    {
+      "code": "12.14.21.2003",
+      "name": "Simandraolo"
+    },
+    {
+      "code": "12.14.21.2005",
+      "name": "Hilimbuasi"
+    },
+    {
+      "code": "12.14.21.2007",
+      "name": "Lolomaya"
+    },
+    {
+      "code": "12.14.21.2008",
+      "name": "Suka Maju"
+    },
+    {
+      "code": "12.14.21.2009",
+      "name": "Hiliorudua"
+    },
+    {
+      "code": "12.14.21.2010",
+      "name": "Hilinamazihono Moale"
+    },
+    {
+      "code": "12.14.23.2001",
+      "name": "Maluo"
+    },
+    {
+      "code": "12.14.23.2002",
+      "name": "Hiliadulo"
+    },
+    {
+      "code": "12.14.23.2003",
+      "name": "Umbuasi"
+    },
+    {
+      "code": "12.14.23.2004",
+      "name": "Sisobahili Siwalawa"
+    },
+    {
+      "code": "12.14.23.2005",
+      "name": "Manawadano"
+    },
+    {
+      "code": "12.14.23.2006",
+      "name": "Talio"
+    },
+    {
+      "code": "12.14.23.2007",
+      "name": "Anaoma"
+    },
+    {
+      "code": "12.14.23.2008",
+      "name": "Berua Siwalawa"
+    },
+    {
+      "code": "12.14.23.2009",
+      "name": "Umbuasi Barat"
+    },
+    {
+      "code": "12.14.23.2010",
+      "name": "Hiligodu"
+    },
+    {
+      "code": "12.14.23.2011",
+      "name": "Bukit Burasi"
+    },
+    {
+      "code": "12.14.25.2001",
+      "name": "Mondrowe"
+    },
+    {
+      "code": "12.14.25.2002",
+      "name": "Hilidohona"
+    },
+    {
+      "code": "12.14.25.2003",
+      "name": "Hililaora"
+    },
+    {
+      "code": "12.14.25.2004",
+      "name": "Uluidanoduo"
+    },
+    {
+      "code": "12.14.25.2005",
+      "name": "Umbu Sohahau"
+    },
+    {
+      "code": "12.14.25.2007",
+      "name": "Taluzusua"
+    },
+    {
+      "code": "12.14.25.2008",
+      "name": "Hilizanuwo"
+    },
+    {
+      "code": "12.14.25.2009",
+      "name": "Hoya"
+    },
+    {
+      "code": "12.14.25.2011",
+      "name": "Olanori"
+    },
+    {
+      "code": "12.25.04.2001",
+      "name": "Hiliwaloo II"
+    },
+    {
+      "code": "12.25.04.2002",
+      "name": "Gunungbaru"
+    },
+    {
+      "code": "12.25.04.2003",
+      "name": "Hilisoromi"
+    },
+    {
+      "code": "12.25.04.2004",
+      "name": "Siduahili"
+    },
+    {
+      "code": "12.25.04.2005",
+      "name": "Sitolubanua Fadoro"
+    },
+    {
+      "code": "12.25.04.2006",
+      "name": "Halifadolo"
+    },
+    {
+      "code": "12.25.04.2007",
+      "name": "Lasara Bahili"
+    },
+    {
+      "code": "12.25.04.2008",
+      "name": "Hiliwaele"
+    },
+    {
+      "code": "12.25.04.2009",
+      "name": "Sitoluewali"
+    },
+    {
+      "code": "12.25.04.2010",
+      "name": "Onozalukhu You"
+    },
+    {
+      "code": "12.25.08.2001",
+      "name": "Bukit Tinggi"
+    },
+    {
+      "code": "12.25.08.2002",
+      "name": "Lawelu"
+    },
+    {
+      "code": "12.25.08.2003",
+      "name": "Saloo"
+    },
+    {
+      "code": "12.25.08.2004",
+      "name": "Hilisangawola"
+    },
+    {
+      "code": "12.25.08.2005",
+      "name": "Hilibadalu"
+    },
+    {
+      "code": "12.78.05.2003",
+      "name": "Iraonolase"
+    },
+    {
+      "code": "12.78.05.2005",
+      "name": "Tarakhaini"
+    },
+    {
+      "code": "12.78.05.2006",
+      "name": "Fadoro Hilimbowo"
+    },
+    {
+      "code": "12.78.05.2007",
+      "name": "Fadoro You"
+    },
+    {
+      "code": "12.78.05.2008",
+      "name": "Lololawa"
+    },
+    {
+      "code": "12.78.05.2009",
+      "name": "Nazalou Lolowua"
+    },
+    {
+      "code": "35.29.22.2001",
+      "name": "Ketupat"
+    },
+    {
+      "code": "35.29.22.2002",
+      "name": "Jungkat"
+    },
+    {
+      "code": "35.29.22.2003",
+      "name": "Kropoh"
+    },
+    {
+      "code": "35.29.22.2004",
+      "name": "Karangnangka"
+    },
+    {
+      "code": "35.29.22.2005",
+      "name": "Alas Malang"
+    },
+    {
+      "code": "35.29.22.2006",
+      "name": "Poteran"
+    },
+    {
+      "code": "35.29.22.2007",
+      "name": "Brakas"
+    },
+    {
+      "code": "35.29.22.2008",
+      "name": "Tonduk"
+    },
+    {
+      "code": "35.29.22.2009",
+      "name": "Guwa-Guwa"
+    },
+    {
+      "code": "52.05.03.2001",
+      "name": "Rasa Bou"
+    },
+    {
+      "code": "52.05.03.2002",
+      "name": "Daha"
+    },
+    {
+      "code": "52.05.03.2004",
+      "name": "Adu"
+    },
+    {
+      "code": "52.05.03.2005",
+      "name": "Cempi Jaya"
+    },
+    {
+      "code": "52.05.03.2006",
+      "name": "Merada"
+    },
+    {
+      "code": "52.05.03.2007",
+      "name": "Jala"
+    },
+    {
+      "code": "52.05.03.2008",
+      "name": "Sawe"
+    },
+    {
+      "code": "53.02.10.2001",
+      "name": "Pilli"
+    },
+    {
+      "code": "53.02.10.2002",
+      "name": "Falas"
+    },
+    {
+      "code": "53.02.10.2003",
+      "name": "Oenai"
+    },
+    {
+      "code": "53.02.10.2004",
+      "name": "Belle"
+    },
+    {
+      "code": "53.02.10.2005",
+      "name": "Napi"
+    },
+    {
+      "code": "53.02.10.2006",
+      "name": "Boti"
+    },
+    {
+      "code": "53.02.10.2007",
+      "name": "Fatuulan"
+    },
+    {
+      "code": "53.02.10.2008",
+      "name": "Tesiayofanu"
+    },
+    {
+      "code": "53.02.10.2009",
+      "name": "Oinlasi"
+    },
+    {
+      "code": "53.02.10.2010",
+      "name": "Nekmese"
+    },
+    {
+      "code": "53.02.10.2011",
+      "name": "Eno Napi"
+    },
+    {
+      "code": "53.02.10.2012",
+      "name": "Fatukusi"
+    },
+    {
+      "code": "71.04.10.2001",
+      "name": "Tuabatu"
+    },
+    {
+      "code": "71.04.10.2002",
+      "name": "Dapalan"
+    },
+    {
+      "code": "71.04.10.2003",
+      "name": "Riung"
+    },
+    {
+      "code": "71.04.10.2004",
+      "name": "Ammat"
+    },
+    {
+      "code": "71.04.10.2005",
+      "name": "Binalang"
+    },
+    {
+      "code": "71.04.10.2006",
+      "name": "Ganalo"
+    },
+    {
+      "code": "71.04.10.2007",
+      "name": "Dapihe"
+    },
+    {
+      "code": "71.04.10.2008",
+      "name": "Tuabatu Barat"
+    },
+    {
+      "code": "71.04.10.2009",
+      "name": "Ammat Selatan"
+    },
+    {
+      "code": "71.04.10.2010",
+      "name": "Binalang Timur"
+    },
+    {
+      "code": "71.04.10.2011",
+      "name": "Riung Utara"
+    },
+    {
+      "code": "73.10.10.1002",
+      "name": "Kalabbirang"
+    },
+    {
+      "code": "73.10.10.1003",
+      "name": "Biraeng"
+    },
+    {
+      "code": "73.10.10.1004",
+      "name": "Bonto Kio"
+    },
+    {
+      "code": "73.10.10.1005",
+      "name": "Bontoa"
+    },
+    {
+      "code": "73.10.10.1006",
+      "name": "Bonto Langkasa"
+    },
+    {
+      "code": "73.10.10.2007",
+      "name": "Kabba"
+    },
+    {
+      "code": "73.10.10.2008",
+      "name": "Panaikang"
+    },
+    {
+      "code": "73.18.13.1009",
+      "name": "Tongko Sarapung"
+    },
+    {
+      "code": "73.18.13.1010",
+      "name": "Buntu Masakke"
+    },
+    {
+      "code": "73.18.13.2006",
+      "name": "Kaero"
+    },
+    {
+      "code": "73.18.13.2008",
+      "name": "Turunan"
+    },
+    {
+      "code": "73.18.33.1005",
+      "name": "Rante Alang"
+    },
+    {
+      "code": "73.18.33.2001",
+      "name": "Batualu"
+    },
+    {
+      "code": "73.18.33.2002",
+      "name": "Tokesan"
+    },
+    {
+      "code": "73.18.33.2003",
+      "name": "Batualu Selatan"
+    },
+    {
+      "code": "73.18.33.2004",
+      "name": "Raru Sibunuan"
+    },
+    {
+      "code": "73.18.34.1001",
+      "name": "Leatung"
+    },
+    {
+      "code": "73.18.34.2003",
+      "name": "Leatung Matallo"
+    },
+    {
+      "code": "73.18.34.2004",
+      "name": "Saluallo"
+    },
+    {
+      "code": "73.18.34.2005",
+      "name": "Tumbang Datu"
+    },
+    {
+      "code": "73.18.35.1001",
+      "name": "Malimbong"
+    },
+    {
+      "code": "73.18.35.2002",
+      "name": "Leppan"
+    },
+    {
+      "code": "73.18.35.2003",
+      "name": "Kole Sawangan"
+    },
+    {
+      "code": "73.18.35.2004",
+      "name": "Kole Barebatu"
+    },
+    {
+      "code": "73.18.35.2005",
+      "name": "Lemo Menduruk"
+    },
+    {
+      "code": "73.26.12.1004",
+      "name": "Pasang"
+    },
+    {
+      "code": "73.26.12.2003",
+      "name": "Piongan"
+    },
+    {
+      "code": "73.26.12.2005",
+      "name": "Paku"
+    },
+    {
+      "code": "73.26.12.2006",
+      "name": "Kapolang"
+    },
+    {
+      "code": "73.26.12.2007",
+      "name": "Buntu Tagari"
+    },
+    {
+      "code": "73.26.12.2008",
+      "name": "Parinding"
+    },
+    {
+      "code": "94.05.16.2001",
+      "name": "Nigilome"
+    },
+    {
+      "code": "94.05.16.2002",
+      "name": "Weni"
+    },
+    {
+      "code": "94.05.16.2003",
+      "name": "Amuleme"
+    },
+    {
+      "code": "94.05.16.2004",
+      "name": "Jigunggi"
+    },
+    {
+      "code": "94.05.16.2005",
+      "name": "Kumikomo"
+    },
+    {
+      "code": "94.05.16.2006",
+      "name": "Rumagi"
+    },
+    {
+      "code": "94.05.16.2007",
+      "name": "Gelegi"
+    },
+    {
+      "code": "94.05.16.2008",
+      "name": "Wombru"
+    },
+    {
+      "code": "94.05.16.2009",
+      "name": "Kondokwe"
+    },
+    {
+      "code": "94.05.16.2010",
+      "name": "Tinibolu"
+    },
+    {
+      "code": "94.05.16.2011",
+      "name": "Winanggwi"
+    }
+  ]
+}

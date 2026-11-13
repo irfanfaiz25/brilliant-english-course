@@ -67,6 +67,8 @@ jobs:
       - run: pnpm db:migrate
       - name: Schema is in sync with migrations
         run: pnpm exec drizzle-kit check
+      - name: Region dataset imports and searches within budget
+        run: pnpm db:regions
 
   build-e2e:
     name: Build and E2E

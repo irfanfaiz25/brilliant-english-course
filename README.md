@@ -11,6 +11,7 @@ cp .env.example .env.local
 pnpm install
 pnpm db:up        # Postgres 17 on localhost:5433
 pnpm db:migrate
+pnpm db:regions   # Indonesian regions (Kemendagri codes), ~3 s
 pnpm dev          # http://localhost:3000
 ```
 
