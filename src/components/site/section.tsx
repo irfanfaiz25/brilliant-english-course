@@ -3,9 +3,13 @@ import type { ComponentProps } from "react";
 
 import { cn } from "@/lib/utils";
 
-const sectionVariants = cva("relative isolate overflow-hidden", {
+// `overflow-x-clip` (not `overflow-hidden`) lets decorative layers spill vertically into the
+// neighbouring sections, so backgrounds read as one continuous canvas (DESIGN.md § 1.1).
+const sectionVariants = cva("relative isolate overflow-x-clip", {
   variants: {
     tone: {
+      /** Transparent: shows the page canvas behind it (default). */
+      canvas: "",
       plain: "bg-background",
       soft: "bg-gradient-soft",
       warm: "bg-gradient-warm",
@@ -18,7 +22,7 @@ const sectionVariants = cva("relative isolate overflow-hidden", {
       none: "",
     },
   },
-  defaultVariants: { tone: "plain", spacing: "default" },
+  defaultVariants: { tone: "canvas", spacing: "default" },
 });
 
 type SectionProps = ComponentProps<"section"> &

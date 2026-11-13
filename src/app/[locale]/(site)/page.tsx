@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { hasLocale } from "next-intl";
 import { getTranslations } from "next-intl/server";
 
+import { PageCanvas } from "@/components/site/page-canvas";
 import { siteConfig } from "@/config/site";
 import { getActivities } from "@/features/activities/queries";
 import { getLevels } from "@/features/programs/queries";
@@ -37,11 +38,11 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
   ]);
 
   return (
-    <>
+    <PageCanvas>
       <HeroSection levels={levels} />
       <StatsSection stats={stats} />
       <ProgramsSection levels={levels} />
       <ActivitiesSection activities={activities} />
-    </>
+    </PageCanvas>
   );
 }

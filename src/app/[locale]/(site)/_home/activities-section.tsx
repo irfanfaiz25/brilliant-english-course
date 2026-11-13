@@ -15,11 +15,12 @@ export async function ActivitiesSection({ activities }: { activities: Activity[]
   const t = await getTranslations("Home.activities");
 
   return (
-    <Section
-      tone="warm"
-      aria-labelledby="activities-title"
-      className="-mt-10 rounded-t-3xl shadow-sheet md:-mt-16"
-    >
+    <Section aria-labelledby="activities-title">
+      {/* Warm wash that fades in from the canvas above, so there is no hard section edge. */}
+      <span
+        aria-hidden
+        className="absolute inset-0 -z-20 [mask-image:linear-gradient(to_bottom,transparent,black_35%)] bg-gradient-warm"
+      />
       <DecorBlob tone="highlight" className="parallax-strong -top-20 -left-24 size-80" />
       <DecorBlob tone="primary" className="parallax-soft right-0 bottom-0 size-96 opacity-40" />
       <Doodle

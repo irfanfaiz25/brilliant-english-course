@@ -31,10 +31,7 @@ export async function HeroSection({ levels }: { levels: Level[] }) {
   const t = await getTranslations("Home.hero");
 
   return (
-    <section
-      aria-labelledby="hero-title"
-      className="relative isolate overflow-hidden bg-gradient-soft"
-    >
+    <section aria-labelledby="hero-title" className="relative isolate overflow-x-clip">
       <DecorBlob tone="highlight" className="parallax-strong top-16 -right-24 size-80" />
       <DecorBlob tone="primary" className="parallax-soft -bottom-24 -left-32 size-96" />
       <Doodle
