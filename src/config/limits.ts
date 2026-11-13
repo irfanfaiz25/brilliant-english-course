@@ -14,4 +14,11 @@ export const limits = {
     rateLimit: 5,
     rateWindowMs: 10 * 60 * 1000,
   },
+  blog: {
+    /** Cards per page on the blog index (the featured post on page 1 is extra). */
+    pageSize: 6,
+    relatedPosts: 3,
+    /** Average reading speed used for "x min read". */
+    wordsPerMinute: 200,
+  },
 } as const;

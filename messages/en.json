@@ -565,5 +565,74 @@
       "almostFull": "{remaining} slot left",
       "full": "Full"
     }
+  },
+  "Blog": {
+    "metaTitle": "Blog — Tips for Kids Learning English",
+    "metaDescription": "English learning tips for kids, guides for parents, stories from unit activities and partnership news from Brilliant English Course.",
+    "hero": {
+      "overline": "BEC Blog",
+      "title": "Tips & Stories from BEC Classes",
+      "lead": "Simple ideas to support your child's English at home, stories from unit activities and news for prospective partners."
+    },
+    "categories": {
+      "label": "Article categories",
+      "all": "All",
+      "tips-belajar": "Learning tips",
+      "parenting": "Parenting",
+      "kegiatan": "Activities",
+      "kemitraan": "Partnership"
+    },
+    "readingTime": "{minutes} min read",
+    "readMore": "Read article",
+    "latest": "Latest article",
+    "count": "{count, plural, =0 {No articles yet} one {# article} other {# articles}}",
+    "listLabel": "Articles",
+    "loading": "Loading articles…",
+    "pagination": {
+      "label": "Article pages",
+      "previous": "Previous",
+      "next": "Next",
+      "page": "Page {page}",
+      "pageOf": "Page {page} of {total}"
+    },
+    "empty": {
+      "title": "No articles in this category yet",
+      "text": "New articles are on the way. Meanwhile, read other posts on the BEC blog.",
+      "cta": "See all articles"
+    },
+    "post": {
+      "toc": "Contents",
+      "share": "Share this article",
+      "shareWhatsApp": "WhatsApp",
+      "copyLink": "Copy link",
+      "copied": "Article link copied",
+      "copyFailed": "The link could not be copied",
+      "shareMessage": "{title} — read on BEC: {url}",
+      "writtenBy": "Written by",
+      "updated": "Updated {date}",
+      "backToBlog": "Back to the blog",
+      "related": {
+        "overline": "Read next",
+        "title": "More Articles for You"
+      },
+      "parentCta": {
+        "title": "Want your child in a fun English class?",
+        "text": "Try BEC's small classes with the same curriculum in every unit.",
+        "primary": "Find the Nearest Unit",
+        "secondary": "Ask on WhatsApp"
+      },
+      "partnerCta": {
+        "title": "Interested in opening a BEC unit?",
+        "text": "Check your village quota and apply as a partner in a few minutes.",
+        "primary": "Check Your Village Quota",
+        "secondary": "Chat the Partnership Team"
+      }
+    },
+    "cta": {
+      "title": "Ready to Learn with BEC?",
+      "lead": "Find the nearest unit or ask our admin on WhatsApp.",
+      "primary": "Find the Nearest Unit",
+      "secondary": "Chat on WhatsApp"
+    }
   }
 }
