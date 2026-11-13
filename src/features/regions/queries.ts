@@ -27,3 +27,12 @@ export async function getRegionPath(code: string): Promise<Region[]> {
   const path = regionCodePath(code).map((part) => byCode.get(part));
   return path.every((region): region is Region => region !== undefined) ? path : [];
 }
+
+/** Regions for the given codes (unknown codes are skipped). */
+export async function getRegionsByCodes(codes: readonly string[]): Promise<Region[]> {
+  "use cache";
+  cacheTag(cacheTags.regions);
+  cacheLife("days");
+  const wanted = new Set(codes);
+  return regionFixtures.filter((region) => wanted.has(region.code));
+}

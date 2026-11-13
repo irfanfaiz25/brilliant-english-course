@@ -10,6 +10,7 @@ const WEEKDAYS_AND_SATURDAY = [1, 2, 3, 4, 5, 6];
 export const unitFixtures: UnitSummary[] = [
   {
     code: "BEC-JB-0123",
+    slug: "sukamaju",
     name: "Unit Sukamaju",
     address: "Jl. Raya Sukamaju No. 12, Desa Sukamaju, Kec. Sukamaju, Kab. Bogor, Jawa Barat",
     district: "Sukamaju",
@@ -26,6 +27,7 @@ export const unitFixtures: UnitSummary[] = [
   },
   {
     code: "BEC-JB-0098",
+    slug: "cibinong",
     name: "Unit Cibinong",
     address: "Jl. Mayor Oking No. 45, Kel. Cibinong, Kec. Cibinong, Kab. Bogor, Jawa Barat",
     district: "Cibinong",
@@ -42,6 +44,7 @@ export const unitFixtures: UnitSummary[] = [
   },
   {
     code: "BEC-JB-0104",
+    slug: "pakansari",
     name: "Unit Pakansari",
     address:
       "Perum Pakansari Indah Blok C2 No. 7, Kel. Pakansari, Kec. Cibinong, Kab. Bogor, Jawa Barat",
@@ -59,6 +62,7 @@ export const unitFixtures: UnitSummary[] = [
   },
   {
     code: "BEC-JB-0111",
+    slug: "wanaherang",
     name: "Unit Wanaherang",
     address:
       "Jl. Raya Wanaherang No. 21, Desa Wanaherang, Kec. Gunung Putri, Kab. Bogor, Jawa Barat",
@@ -76,6 +80,7 @@ export const unitFixtures: UnitSummary[] = [
   },
   {
     code: "BEC-JB-0140",
+    slug: "depok-pancoran-mas",
     name: "Unit Depok Pancoran Mas",
     address: "Jl. Nusantara Raya No. 88, Kel. Depok, Kec. Pancoran Mas, Kota Depok, Jawa Barat",
     district: "Pancoran Mas",
@@ -92,6 +97,7 @@ export const unitFixtures: UnitSummary[] = [
   },
   {
     code: "BEC-JB-0152",
+    slug: "kukusan",
     name: "Unit Kukusan",
     address: "Jl. Kukusan Raya No. 5, Kel. Kukusan, Kec. Beji, Kota Depok, Jawa Barat",
     district: "Beji",
@@ -108,6 +114,7 @@ export const unitFixtures: UnitSummary[] = [
   },
   {
     code: "BEC-JB-0166",
+    slug: "karangasih",
     name: "Unit Karangasih",
     address:
       "Jl. Kapten Sumantri No. 14, Kel. Karangasih, Kec. Cikarang Utara, Kab. Bekasi, Jawa Barat",
@@ -125,6 +132,7 @@ export const unitFixtures: UnitSummary[] = [
   },
   {
     code: "BEC-JB-0171",
+    slug: "paledang",
     name: "Unit Paledang",
     address: "Jl. Kapten Muslihat No. 3, Kel. Paledang, Kec. Bogor Tengah, Kota Bogor, Jawa Barat",
     district: "Bogor Tengah",
