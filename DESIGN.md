@@ -99,6 +99,7 @@ Added beyond Penpot (Phase 2b), all in `globals.css`:
 - `*-strong` status shades (`success-strong` #157347, `warning-strong` #8A5A00, `destructive-strong` #B42318, `info-strong` #1D5FBF) for text on soft status backgrounds (AA).
 - Level identity: `level-kindy` (sunny), `level-intro` (teal), `level-secondary` (orange), each with `-soft` and `-strong`.
 - `whatsapp-hover` #1DA851, `overlay` (backdrop), `shadow-partner` (orange pop shadow).
+- `partner-strong` (`orange-700`) for small partner text on `partner-soft` surfaces (AA).
 - Layer tokens: `--z-sticky` 30, `--z-header` 40, `--z-overlay` 50, `--z-toast` 60 (use `z-(--z-overlay)`).
 
 **Roles**
@@ -199,16 +200,16 @@ Goal: smooth, light and meaningful. Motion explains hierarchy and feedback; it i
 
 ### 3.2 Patterns (reusable components in `src/components/motion`)
 
-| Pattern                                          | Component (file)                              | Where                                    | Behavior                                                                                                                                                                   |
-| ------------------------------------------------ | --------------------------------------------- | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Reveal** — fade + 24 px rise, once             | `Reveal` (`reveal.tsx`)                       | Section headers, single blocks           | `whileInView`, once, at 20% visible. Below the fold only.                                                                                                                  |
-| **Stagger** — children 70 ms apart, max ~6 items | `Stagger` + `StaggerItem` (`stagger.tsx`)     | Program cards, activities, steps         | Parent reveals children in sequence; use `as="ul"` / `as="li"` for lists.                                                                                                  |
-| **CountUp**                                      | `CountUp` (`count-up.tsx`)                    | Stats rows (partnership, about)          | Final number is in the HTML and the accessible name. Counts from 0 only if off screen at load; stays static if already visible or reduced motion. Locale-aware separators. |
-| **Scroll progress**                              | `ScrollProgress` (`scroll-progress.tsx`)      | Blog article top bar                     | CSS `animation-timeline: scroll()`, zero JS; hidden without support or with reduced motion.                                                                                |
-| **Page transition**                              | `PageTransition` (in `[locale]/template.tsx`) | Every public route                       | React `<ViewTransition>` cross-fade: old out 150 ms, new in 250 ms with 8 px settle. No-op in unsupported browsers.                                                        |
-| **Subtle parallax**                              | CSS only (when needed)                        | Hero decorative shapes only              | CSS `view()` timeline, ≤ 40 px travel; never on text.                                                                                                                      |
-| **Micro-interactions**                           | Built into `components/ui`                    | Buttons (press), cards (lift), accordion | CSS transitions with duration tokens; Motion only when physics is needed.                                                                                                  |
-| **Skeletons**                                    | `Skeleton` (`components/ui`)                  | Cek Unit results, admin tables           | Opacity pulse, static with reduced motion.                                                                                                                                 |
+| Pattern                                          | Component (file)                              | Where                                    | Behavior                                                                                                                                                                                                             |
+| ------------------------------------------------ | --------------------------------------------- | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Reveal** — fade + 24 px rise, once             | `Reveal` (`reveal.tsx`)                       | Section headers, single blocks           | `whileInView`, once, at 20% visible. Below the fold; pass `immediate` (also on `Stagger`) for blocks that can be in the first viewport.                                                                              |
+| **Stagger** — children 70 ms apart, max ~6 items | `Stagger` + `StaggerItem` (`stagger.tsx`)     | Program cards, activities, steps         | Parent reveals children in sequence; use `as="ul"` / `as="li"` for lists.                                                                                                                                            |
+| **CountUp**                                      | `CountUp` (`count-up.tsx`)                    | Stats rows (partnership, about)          | Final number is in the HTML and a screen-reader-only copy (animated digits are `aria-hidden`). Counts from 0 only if off screen at load; stays static if already visible or reduced motion. Locale-aware separators. |
+| **Scroll progress**                              | `ScrollProgress` (`scroll-progress.tsx`)      | Blog article top bar                     | CSS `animation-timeline: scroll()`, zero JS; hidden without support or with reduced motion.                                                                                                                          |
+| **Page transition**                              | `PageTransition` (in `[locale]/template.tsx`) | Every public route                       | React `<ViewTransition>` cross-fade: old out 150 ms, new in 250 ms with 8 px settle. No-op in unsupported browsers.                                                                                                  |
+| **Subtle parallax**                              | CSS only (when needed)                        | Hero decorative shapes only              | CSS `view()` timeline, ≤ 40 px travel; never on text.                                                                                                                                                                |
+| **Micro-interactions**                           | Built into `components/ui`                    | Buttons (press), cards (lift), accordion | CSS transitions with duration tokens; Motion only when physics is needed.                                                                                                                                            |
+| **Skeletons**                                    | `Skeleton` (`components/ui`)                  | Cek Unit results, admin tables           | Opacity pulse, static with reduced motion.                                                                                                                                                                           |
 
 JS motion values (seconds, easing arrays) come from `src/components/motion/tokens.ts`, which mirrors the CSS tokens in § 3.1.
 
@@ -219,6 +220,9 @@ JS motion values (seconds, easing arrays) come from `src/components/motion/token
   from `motion/react-m`, never the full `motion` component (it would bundle every feature).
 - Motion code lives in small client leaf components; sections stay Server Components and wrap content in `<Reveal>` / `<Stagger>`.
 - **Never reveal the LCP element** (hero headline or image). Hero content renders visible immediately.
+- **Nothing in the first viewport starts at opacity 0** (ADR-022): text painted invisible only counts for LCP after
+  hydration. Large hero text uses `animate-lift-in` (translate only); small hero items may use `animate-rise-in`;
+  `Reveal` / `Stagger` blocks right under the hero get `immediate`.
 - Without JS, `[data-reveal]` elements are forced visible by a `<noscript>` style in the root layout.
 - **No scroll-jacking**, no smooth-scroll libraries, no autoplaying carousels.
 - `prefers-reduced-motion: reduce` → `MotionConfig reducedMotion="user"` removes movement (opacity only), CountUp and
@@ -460,7 +464,11 @@ Baseline: Penpot `02 · Dashboard` (Ringkasan, Calon Mitra, Unit Mitra, Kuota Wi
 - Touch targets ≥ 44×44 px; spacing between adjacent targets ≥ 8 px.
 - Images: `next/image` with `sizes`, AVIF/WebP, explicit dimensions or aspect-ratio (CLS); hero image `priority`.
 - Forms: correct `inputmode` / `autocomplete` (`tel`, `name`, `email`), phone normalized to `62…`.
-- Keyboard: visible focus ring, skip-to-content link, focus trapped in dialogs and returned on close.
+- Keyboard: visible focus ring, skip-to-content link, focus trapped in dialogs and returned on close. Stretched card
+  links draw the ring on their `::after` overlay. `tests/e2e/accessibility.spec.ts` tabs through every page template.
+- Accessible names start with the visible text (WCAG 2.5.3); add context with an `sr-only` span, not `aria-label`.
+  Never put `aria-label` on a plain `span`/`p`.
+- Description lists: each row is a `div` holding only `dt` + `dd` (`FactRow` in `components/site`).
 - Language: `<html lang>` matches locale; content in the other language marked with `lang`.
 - Color is never the only signal (quota badges carry text).
 

@@ -12,7 +12,7 @@ Status legend: ⬜ not started · 🟨 in progress · ✅ done
 | 2   | Design system in code & site shell         | ✅         |
 | 3   | Data model, regions & auth                 | ⬜         |
 | 4   | Admin modules                              | ⬜         |
-| 5   | Public website                             | 🟨         |
+| 5   | Public website                             | ✅         |
 | 6   | Notifications                              | ⬜         |
 | 7   | SEO, performance & accessibility hardening | ⬜         |
 | 8   | Deployment & operations                    | ⬜         |
@@ -70,6 +70,12 @@ Sub-phases: 5a Beranda ✅ (5a-1 hero, stats, programs, activities · 5a-2 unit 
 
 - All content from the DB/settings, both locales, motion per `DESIGN.md` § 3.
 - **Done when:** Lighthouse mobile ≥ 90 on every page; journeys in `DESIGN.md` § 5.1 pass as E2E tests.
+- **Closed 2026-11-13:** Lighthouse mobile (Moto G Power profile, applied throttling, production build) on all 14
+  page templates: performance 97–100, accessibility 96–97, best practices 100, SEO 100; LCP 1.5–2.4 s, CLS 0.
+  Remaining accessibility deduction = the accepted brand contrast on orange/WhatsApp fills (ADR-010).
+  `tests/e2e/accessibility.spec.ts` checks keyboard focus and reduced motion on every template (ADR-022).
+  Re-measure with PageSpeed Insights on staging once deployed (Phase 8): simulated throttling on localhost
+  over-estimates LCP because every script finishes before the first paint.
 
 ## Phase 6 — Notifications
 
