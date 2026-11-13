@@ -27,6 +27,9 @@ Personality: _playful but trustworthy_ — fun for kids, credible for parents an
 - **Large radii, consistent.** Cards `xl`, controls `md`, chips `full` — never mixed within one component.
 - **Type does the hierarchy.** Big, tight headings (Poppins 700), relaxed body (160% line height), overline labels for section context.
 - **Depth is earned.** Shadows grow only on interaction (hover lift, open menu); the playful `pop` shadow is for one hero CTA per viewport.
+- **One continuous background.** Never let a gradient or blob stop at a section boundary: use `PageCanvas` + transparent
+  sections, `overflow-x-clip` (never `overflow-hidden`) on sections, and masked fades for surface changes. Hard edges
+  are only allowed for the dark footer.
 - **Never flat — layered depth.** Every page section sits on a surface with some dimension, using tokens only:
   - Backgrounds: `bg-gradient-soft` (teal haze), `bg-gradient-warm` (cream + sunny/teal glows), `bg-gradient-teal-deep`
     (dark bands, footer), optional `bg-dots` texture masked to fade out.
@@ -170,6 +173,9 @@ Buttons and inputs `md`; cards `xl`; badges/chips `full`; images inside cards `l
 
 ### 2.5 Iconography
 
+Pick icons that say what the item is (map pin for location, layers for levels, users for class size). Avoid the
+generic "sparkles"/AI-style icon; it reads as filler.
+
 24 px grid, 2 px stroke, rounded caps — use **Lucide** (matches the Penpot set: chevron-down, search,
 map-pin, phone, chat, arrow-right, check, users, book, calendar, star, menu). WhatsApp uses its official glyph (inline SVG).
 
@@ -218,6 +224,9 @@ JS motion values (seconds, easing arrays) come from `src/components/motion/token
 - `prefers-reduced-motion: reduce` → `MotionConfig reducedMotion="user"` removes movement (opacity only), CountUp and
   scroll progress stay static, view transitions are disabled, CSS transitions collapse to ~0 ms.
 - Each page: at most one "hero moment"; everything else is quiet reveals.
+- **Smooth scrolling** for in-page jumps (anchors, age chips, skip link): `scroll-behavior: smooth` on `<html>` with
+  `scroll-padding-top: var(--header-offset)` so targets land below the sticky header. Route changes stay instant
+  (`data-scroll-behavior="smooth"` lets Next.js disable it during navigation); reduced motion turns it off.
 - **Every show/hide animates both ways** (accordion, mobile menu, tabs, filters, collapsibles, toasts): 200–400 ms,
   ease-out, CSS first. For height use the grid-rows technique (`grid-rows-[0fr]` → `grid-rows-[1fr]`) on a wrapper,
   not JS measuring; pair it with a short opacity/translate on the content. Nothing should pop in or vanish abruptly.
@@ -241,6 +250,7 @@ Implementation rules:
 
 | Component                    | Variants / notes                                                                                                                                                                                                                                                                                                                                                   |
 | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Button pairs**             | Buttons shown side by side share one model: same size and, if one uses `pop`, the other does too (`secondary` + `pop` = outline with `shadow-soft-pop`). Colors may differ.                                                                                                                                                                                        |
 | **Button**                   | `primary` (teal), `partner` (orange), `whatsapp` (white text), `secondary` (outline teal), `ghost`, `link`; sizes `sm` 40 / `md` 48 / `lg` 56 px, `icon`; `pop` adds the pressable brand shadow; `loading` keeps the label for screen readers; `asChild` for links.                                                                                                |
 | **Badge**                    | Level: `Kindy` (sunny), `Intro` (teal), `Secondary` (orange). Quota: `Tersedia` (success), `Sisa N slot` (warning), `Penuh` (error), `Unit baru` (info). Always text + color, never color alone.                                                                                                                                                                   |
 | **Cascading region select**  | Province → Regency → District → Village. Each disabled with a hint until the parent is chosen ("Pilih kabupaten dulu"). Searchable (combobox) because lists can exceed 50 items. State synced to the URL.                                                                                                                                                          |
@@ -285,7 +295,27 @@ Implementation rules:
 | **Kontak**                    | Navbar link only                                                                       | Contact page: central WhatsApp, email, office address with map link, social links — all from settings.                                                                                                                                                                                                                             |
 | **404 / error** _(new)_       | —                                                                                      | Friendly illustration + search + links to Cek Unit and Program.                                                                                                                                                                                                                                                                    |
 
-### 5.3 WhatsApp deep links
+### 5.3 Implementation notes (Beranda, 5a-1)
+
+- **Hero motion:** copy, CTAs, chips and badges rise in on load with CSS (`animate-rise-in`, 90 ms steps); the
+  headline is static and the photo only settles from a slight zoom (`animate-settle`, transform only) so LCP is not delayed.
+  Badges then drift (`animate-float`). Decorative layers use `parallax-soft` / `parallax-strong` (CSS scroll-driven).
+- **Doodles** (`components/site/doodle.tsx`: ring, squiggle, plus, dots, blob) add playful depth — 2–4 per section,
+  away from text, some with parallax or float.
+- **Continuous canvas:** pages wrap their sections in `PageCanvas`; sections are transparent (`Section` tone `canvas`)
+  and clip only horizontally (`overflow-x-clip`), so blobs and gradients flow across section edges. A section that
+  needs its own color fades it in with a mask (e.g. Activities' warm wash) instead of starting at a hard line.
+
+- **Hero:** headline and photo render immediately (LCP, never animated in). Floating glass badges drift slowly (`animate-float`, off for reduced motion). "Fun" is highlighted with a hand-drawn underline.
+- **Age chips** are plain `#level-<slug>` anchors: the browser scrolls to the level card and CSS `:target` rings it in the level color. No JavaScript.
+- **Hero overline** is two short segments (label + age chip) on one line — never let a pill wrap on phones.
+- **Stats** sit on a card that overlaps the hero's bottom edge; numbers come from `getNetworkStats()` and count up
+  (`CountUp hiddenOnLoad`, safe because the card is inside a `Reveal`). Labels break into two balanced lines on phones
+  (`<br>` in the message, hidden from `md`) so columns stay aligned.
+- **Level cards:** photo, level color bar, age chip, skills with level-colored checks; whole card is one link to `/program#<slug>`.
+- **Activities:** photo-led cards with text on a dark gradient; CSS scroll-snap row on phones, grid from `md`.
+
+### 5.4 WhatsApp deep links
 
 All WhatsApp CTAs use `https://wa.me/<number>?text=<encoded template>`. Templates come from admin settings with
 variables (`{unit_name}`, `{child_age}`, `{lead_ref}`, `{page_title}`) and are localized. Every click is tracked

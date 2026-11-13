@@ -9,10 +9,6 @@
     "label": "Change language",
     "locale": "{locale, select, id {Bahasa Indonesia} en {English} other {{locale}}}"
   },
-  "HomePage": {
-    "overline": "English Courses for Kids · Ages 4–15",
-    "title": "A Fun Way to Learn English"
-  },
   "NotFound": {
     "title": "Page not found",
     "description": "The page you are looking for may have moved or never existed.",
@@ -63,5 +59,45 @@
   "WhatsApp": {
     "general": "Hi BEC, I'd like to ask about your English courses for kids.",
     "partner": "Hi BEC, I'm interested in opening a BEC unit (partnership). Could you share more information?"
+  },
+  "Home": {
+    "metaTitle": "English Courses for Kids Aged 4–15",
+    "hero": {
+      "overline": "English Courses for Kids",
+      "title": "A <hl>Fun</hl> Way to Learn English",
+      "lead": "Fun English classes for children — conversation and grammar from the basics, taught step by step at a BEC unit near your home.",
+      "primaryCta": "Find the Nearest Unit",
+      "secondaryCta": "See Programs",
+      "partnerPrompt": "Want to open a BEC unit in your area?",
+      "partnerLink": "Explore the partnership",
+      "agePrompt": "Child's age:",
+      "ageOption": "{min}–{max} yrs",
+      "ageOptionLabel": "Ages {min}–{max}: see the {level} level",
+      "badgeLevels": "3 levels by age",
+      "badgeNearby": "Units near you",
+      "badgeSmallClass": "Small, fun classes",
+      "imageAlt": "A smiling girl writing in class",
+      "ageBadge": "Ages 4–15"
+    },
+    "stats": {
+      "label": "BEC in numbers",
+      "activeUnits": "Active<br></br> BEC units",
+      "cities": "Cities &<br></br> regencies",
+      "students": "Students<br></br> learning"
+    },
+    "programs": {
+      "overline": "BEC Programs",
+      "title": "Three Levels, Matched to Your Child's Age",
+      "lead": "The BEC curriculum teaches conversation and grammar step by step — children learn through play, then move up a level with confidence.",
+      "ageRange": "Ages {min}–{max}",
+      "detailLink": "See level details"
+    },
+    "activities": {
+      "overline": "Fun Activities",
+      "title": "Learning Through Experience",
+      "lead": "Beyond regular classes, every BEC unit runs regular activities so children dare to use English in real life.",
+      "detailLink": "See program details",
+      "scrollHint": "Swipe to see more activities"
+    }
   }
 }

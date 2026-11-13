@@ -46,6 +46,11 @@ const buttonVariants = cva(
         pop: true,
         className: "shadow-partner active:translate-y-1 active:shadow-partner-pressed",
       },
+      {
+        variant: "secondary",
+        pop: true,
+        className: "shadow-soft-pop active:translate-y-1 active:shadow-soft-pop-pressed",
+      },
     ],
     defaultVariants: { variant: "primary", size: "md", pop: false },
   },

@@ -210,6 +210,8 @@
   /* ---------- Layout ---------- */
   --container-page: 78rem; /* 1248 px */
   --container-prose: 68ch;
+  /* Sticky header height + breathing room, used for anchor scroll offsets. */
+  --header-offset: 6.5rem;
 
   /* ---------- Radius ---------- */
   --radius-*: initial;
@@ -219,6 +221,8 @@
   --radius-lg: 1rem;
   --radius-xl: 1.5rem;
   --radius-2xl: 2rem;
+  /* Large "sheet" corners for sections that overlap the previous one. */
+  --radius-3xl: 3rem;
   --radius-full: 9999px;
 
   /* ---------- Shadow ---------- */
@@ -235,6 +239,11 @@
   --shadow-glow-primary: 0 18px 40px -14px rgb(27 110 126 / 0.5);
   --shadow-glow-partner: 0 18px 40px -14px rgb(221 101 16 / 0.45);
   --shadow-partner-pressed: 0 2px 0 var(--color-orange-700);
+  /* Pressable depth for outline buttons, so they match pop buttons next to them. */
+  --shadow-soft-pop: 0 6px 0 var(--color-teal-100);
+  --shadow-soft-pop-pressed: 0 2px 0 var(--color-teal-100);
+  /* Soft upward shadow for sections drawn as a sheet over the previous one. */
+  --shadow-sheet: 0 -24px 48px -32px rgb(10 41 48 / 0.25);
 
   /* ---------- Motion ---------- */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
@@ -243,6 +252,12 @@
   --duration-base: 250ms;
   --duration-slow: 400ms;
   --duration-reveal: 600ms;
+  /* Slow, small drift for decorative floating badges (disabled with reduced motion). */
+  --animate-float: float 7s var(--ease-in-out) infinite;
+  /* Page-load entrance for hero content (CSS only; set `animation-delay` per element). */
+  --animate-rise-in: rise-in var(--duration-reveal) var(--ease-out) both;
+  /* Hero photo settles from a slight zoom; transform only, so it never delays LCP. */
+  --animate-settle: settle 1.4s var(--ease-out) both;
 
   /* ---------- Layers (use as `z-(--z-overlay)`) ---------- */
   --z-sticky: 30;
@@ -311,6 +326,11 @@
 @layer base {
   html {
     -webkit-text-size-adjust: 100%;
+    /* In-page jumps (age chips, skip link, section anchors) glide; the reduced-motion rule below
+       turns this off, and Next.js keeps route changes instant (data-scroll-behavior on <html>). */
+    scroll-behavior: smooth;
+    /* Anchored sections land below the sticky header. */
+    scroll-padding-top: var(--header-offset);
   }
 
   body {
@@ -346,6 +366,63 @@
 
 ::view-transition-new(.page-fade) {
   animation: var(--duration-base) var(--ease-out) var(--duration-fast) both page-fade-in;
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    translate: 0 16px;
+  }
+}
+
+@keyframes settle {
+  from {
+    scale: 1.08;
+  }
+}
+
+/* Scroll-linked drift for decorative layers (CSS scroll-driven; static where unsupported). */
+@supports (animation-timeline: view()) {
+  .parallax-soft,
+  .parallax-strong {
+    animation: parallax linear both;
+    animation-timeline: view();
+    animation-range: cover;
+  }
+
+  .parallax-soft {
+    --parallax-distance: 24px;
+  }
+
+  .parallax-strong {
+    --parallax-distance: 56px;
+  }
+}
+
+@keyframes parallax {
+  from {
+    translate: 0 calc(var(--parallax-distance) * -1);
+  }
+  to {
+    translate: 0 var(--parallax-distance);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .parallax-soft,
+  .parallax-strong {
+    animation: none;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -8px;
+  }
 }
 
 @keyframes page-fade-out {
