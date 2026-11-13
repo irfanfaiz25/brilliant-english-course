@@ -340,7 +340,7 @@
       "statsLabel": "Kemitraan BEC dalam angka",
       "units": "unit sudah<br></br> bergabung",
       "cities": "kota &<br></br> kabupaten",
-      "quotaValue": "Maks. 2",
+      "quotaValue": "Maks. {max}",
       "quota": "unit per desa,<br></br> wilayah terlindungi",
       "imageBadge": "Kelas kecil, suasana rumah"
     },
@@ -481,7 +481,7 @@
       "askCta": "Chat tim kemitraan"
     },
     "cta": {
-      "title": "Amankan Slot di Desamu Sekarang",
+      "title": "Siap Membuka Unit BEC di Desamu?",
       "lead": "Kuota setiap desa terbatas. Daftar hari ini dan tim kemitraan BEC akan menghubungimu.",
       "primary": "Daftar Jadi Mitra",
       "secondary": "Chat Tim Kemitraan"
@@ -500,7 +500,8 @@
       "none": "Belum memilih desa",
       "noneHint": "Pilih desa di cek kuota agar slotnya bisa kami amankan.",
       "choose": "Pilih desa",
-      "change": "Ganti"
+      "change": "Ganti",
+      "fullHint": "Kuota desa ini sudah penuh. Pilih desa lain di cek kuota untuk mendaftar."
     },
     "fields": {
       "fullName": "Nama lengkap",
@@ -558,6 +559,11 @@
       "whatsappCta": "Lanjut chat di WhatsApp",
       "whatsappHint": "Kirim nomor pendaftaran agar tim bisa langsung membantu.",
       "again": "Isi pendaftaran lain"
+    },
+    "quota": {
+      "available": "Tersedia",
+      "almostFull": "Sisa {remaining} slot",
+      "full": "Penuh"
     }
   }
 }

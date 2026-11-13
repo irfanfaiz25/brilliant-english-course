@@ -33,7 +33,7 @@ export async function TestimonialsSection({
   const headingId = `${id}-title`;
 
   return (
-    <Section id={id} aria-labelledby={headingId}>
+    <Section id={id} aria-labelledby={headingId} className="scroll-mt-16">
       <span
         aria-hidden
         className="absolute inset-0 -z-20 [mask-image:linear-gradient(to_bottom,transparent,black_30%,black_70%,transparent)] bg-gradient-warm"

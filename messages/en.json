@@ -340,7 +340,7 @@
       "statsLabel": "BEC partnership in numbers",
       "units": "units have<br></br> joined",
       "cities": "cities &<br></br> regencies",
-      "quotaValue": "Max. 2",
+      "quotaValue": "Max. {max}",
       "quota": "units per village,<br></br> protected area",
       "imageBadge": "Small classes, homely feel"
     },
@@ -481,7 +481,7 @@
       "askCta": "Chat the partnership team"
     },
     "cta": {
-      "title": "Secure a Slot in Your Village Today",
+      "title": "Ready to Open a BEC Unit in Your Village?",
       "lead": "Every village has a limited quota. Apply today and the BEC partnership team will contact you.",
       "primary": "Apply as a Partner",
       "secondary": "Chat the Partnership Team"
@@ -500,7 +500,8 @@
       "none": "No village selected",
       "noneHint": "Choose a village in the quota checker so we can hold its slot.",
       "choose": "Choose a village",
-      "change": "Change"
+      "change": "Change",
+      "fullHint": "This village's quota is full. Choose another village in the quota checker to apply."
     },
     "fields": {
       "fullName": "Full name",
@@ -558,6 +559,11 @@
       "whatsappCta": "Continue on WhatsApp",
       "whatsappHint": "Send the application number so the team can help you right away.",
       "again": "Send another application"
+    },
+    "quota": {
+      "available": "Available",
+      "almostFull": "{remaining} slot left",
+      "full": "Full"
     }
   }
 }
