@@ -324,9 +324,10 @@ Implementation rules:
   localized weekdays and time notation), level badges, WhatsApp (pre-filled with the unit name) + Google Maps directions.
 - **Steps (interactive):** a vertical tab list (`steps-showcase.tsx`) beside a live preview of each step (search result,
   WhatsApp chat, placement result) built from tokens (`steps-previews.tsx`). The active step expands its text (grid-rows),
-  the rail fills to it, and previews cross-fade (`AnimatePresence`) while their parts rise/grow in with CSS. Auto-plays
-  every 5 s with a progress bar while on screen, pauses on hover/focus, stops after a manual choice, never with reduced
-  motion. Keyboard: arrows, Home, End.
+  per-step connectors (centered on the markers) fill as steps are reached, and previews cross-fade (`AnimatePresence`)
+  while their parts rise/grow in with CSS. Auto-play time per step comes from the amount of text (`stepDurationMs`:
+  3.5 s + 250 ms/word, clamped 6–10 s, ≈ 7 s now) with a progress bar; pauses on hover/focus, stops after a manual
+  choice, never with reduced motion. Keyboard: arrows, Home, End.
 - **Partnership teaser:** a dark rounded **panel** floating on the canvas (never a full-width band), `inverse` + `pop`
   outline button paired with the partner CTA, quota note, count-up of joined units.
 - **Testimonials:** quote cards with rating (`aria-label`), CSS scroll-snap row on phones, grid from `lg`.

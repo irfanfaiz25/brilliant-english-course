@@ -7,8 +7,7 @@ import { useId, useRef, useState, type KeyboardEvent, type ReactNode } from "rea
 import { motionDuration, motionEase } from "@/components/motion/tokens";
 import { cn } from "@/lib/utils";
 
-/** Time each step stays active while auto-playing. */
-const AUTOPLAY_MS = 5000;
+import { stepDurationMs } from "./steps-timing";
 
 export type ShowcaseStep = {
   title: string;
@@ -30,8 +29,9 @@ type StepsShowcaseProps = {
 /**
  * Interactive "how to join" stepper (DESIGN.md § 1.2: it shows the journey instead of describing it).
  * - Tabs pattern: click, or arrow keys / Home / End; the active step's text expands smoothly.
- * - Auto-plays while on screen; pauses on hover or focus and stops for good after a manual choice.
- *   No auto-play with reduced motion.
+ * - Auto-plays while on screen, staying on each step long enough to read it (`stepDurationMs`,
+ *   ~7 s); pauses on hover or focus and stops for good after a manual choice. No auto-play with
+ *   reduced motion.
  * - Previews cross-fade (AnimatePresence) and their inner parts animate in with CSS.
  */
 export function StepsShowcase({ steps, tabsLabel }: StepsShowcaseProps) {
@@ -82,99 +82,114 @@ export function StepsShowcase({ steps, tabsLabel }: StepsShowcaseProps) {
         role="tablist"
         aria-label={tabsLabel}
         aria-orientation="vertical"
-        className="relative flex flex-col gap-3"
+        className="flex flex-col gap-3"
       >
-        {/* Rail behind the markers, filled up to the active step. */}
-        <span
-          aria-hidden
-          className="absolute top-10 bottom-10 left-[2.4rem] w-0.5 rounded-full bg-border"
-        />
-        <span
-          aria-hidden
-          style={{ scale: `1 ${steps.length > 1 ? active / (steps.length - 1) : 1}` }}
-          className="absolute top-10 bottom-10 left-[2.4rem] w-0.5 origin-top rounded-full bg-primary transition-[scale] duration-(--duration-slow) ease-out"
-        />
-
         {steps.map((step, index) => {
           const selected = index === active;
+          const isLast = index === steps.length - 1;
+
           return (
-            <button
-              key={step.title}
-              ref={(node) => {
-                tabRefs.current[index] = node;
-              }}
-              type="button"
-              role="tab"
-              id={`${baseId}-tab-${index}`}
-              aria-selected={selected}
-              aria-controls={`${baseId}-panel`}
-              tabIndex={selected ? 0 : -1}
-              onClick={() => select(index)}
-              onKeyDown={(event) => onKeyDown(event, index)}
-              className={cn(
-                "group relative flex items-start gap-4 overflow-hidden rounded-2xl border p-4 text-left transition-[background-color,border-color,box-shadow,transform] duration-(--duration-base) ease-out sm:p-5",
-                selected
-                  ? "border-border/60 bg-card shadow-card"
-                  : "border-transparent hover:translate-x-1 hover:bg-card/60",
+            <div key={step.title} role="presentation" className="relative">
+              {/*
+               * Connector from this marker's center to the next one's. x/top = card padding + half the
+               * 48 px marker (40 px, 44 px from `sm`); it runs past the 12 px gap into the next card.
+               * It fills once the next step has been reached, so the path grows step by step.
+               */}
+              {!isLast && (
+                <span
+                  aria-hidden
+                  className="absolute top-10 -bottom-13 left-10 w-0.5 -translate-x-1/2 overflow-hidden rounded-full bg-border sm:top-11 sm:-bottom-14 sm:left-11"
+                >
+                  <span
+                    className={cn(
+                      "block size-full origin-top bg-primary transition-[scale] duration-(--duration-slow) ease-out",
+                      index < active ? "scale-y-100" : "scale-y-0",
+                    )}
+                  />
+                </span>
               )}
-            >
-              <span
+
+              <button
+                ref={(node) => {
+                  tabRefs.current[index] = node;
+                }}
+                type="button"
+                role="tab"
+                id={`${baseId}-tab-${index}`}
+                aria-selected={selected}
+                aria-controls={`${baseId}-panel`}
+                tabIndex={selected ? 0 : -1}
+                onClick={() => select(index)}
+                onKeyDown={(event) => onKeyDown(event, index)}
                 className={cn(
-                  "relative z-10 inline-flex size-12 shrink-0 items-center justify-center rounded-2xl ring-4 ring-background transition-[background-color,color,box-shadow,scale] duration-(--duration-base) ease-out [&_svg]:size-6",
+                  "group relative flex w-full items-start gap-4 overflow-hidden rounded-2xl border p-4 text-left transition-[background-color,border-color,box-shadow,transform] duration-(--duration-base) ease-out sm:p-5",
                   selected
-                    ? cn("scale-105", step.tone)
-                    : "bg-muted text-muted-foreground group-hover:text-foreground",
+                    ? "border-border/60 bg-card shadow-card"
+                    : "border-transparent hover:translate-x-1 hover:bg-card/60",
                 )}
               >
-                {step.icon}
-              </span>
-              <span className="flex min-w-0 flex-col gap-1">
-                <span className="text-caption font-semibold text-muted-foreground uppercase">
-                  {step.label}
-                </span>
-                <span
-                  className={cn("text-h5", selected ? "text-foreground" : "text-muted-foreground")}
-                >
-                  {step.title}
-                </span>
-                {/* Description expands only for the active step (grid-rows height animation). */}
                 <span
                   className={cn(
-                    "grid transition-[grid-template-rows,opacity] duration-(--duration-slow) ease-out",
-                    selected ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0",
+                    "relative z-10 inline-flex size-12 shrink-0 items-center justify-center rounded-2xl ring-4 ring-background transition-[background-color,color,box-shadow,scale] duration-(--duration-base) ease-out [&_svg]:size-6",
+                    selected
+                      ? cn("scale-105", step.tone)
+                      : "bg-muted text-muted-foreground group-hover:text-foreground",
                   )}
                 >
-                  <span className="min-h-0 overflow-hidden">
-                    <span className="block pt-1 text-body-sm text-muted-foreground">
-                      {step.text}
+                  {step.icon}
+                </span>
+                <span className="flex min-w-0 flex-col gap-1">
+                  <span className="text-caption font-semibold text-muted-foreground uppercase">
+                    {step.label}
+                  </span>
+                  <span
+                    className={cn(
+                      "text-h5",
+                      selected ? "text-foreground" : "text-muted-foreground",
+                    )}
+                  >
+                    {step.title}
+                  </span>
+                  {/* Description expands only for the active step (grid-rows height animation). */}
+                  <span
+                    className={cn(
+                      "grid transition-[grid-template-rows,opacity] duration-(--duration-slow) ease-out",
+                      selected ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0",
+                    )}
+                  >
+                    <span className="min-h-0 overflow-hidden">
+                      <span className="block pt-1 text-body-sm text-muted-foreground">
+                        {step.text}
+                      </span>
                     </span>
                   </span>
                 </span>
-              </span>
 
-              {selected && autoplay && !reduceMotion && (
-                <span
-                  key={`progress-${active}`}
-                  aria-hidden
-                  onAnimationEnd={() => setActive((current) => (current + 1) % steps.length)}
-                  style={{
-                    animationDuration: `${AUTOPLAY_MS}ms`,
-                    animationTimingFunction: "linear",
-                    animationPlayState: playing ? "running" : "paused",
-                  }}
-                  className="absolute inset-x-0 bottom-0 h-1 origin-left animate-grow-x bg-primary/70"
-                />
-              )}
-            </button>
+                {selected && autoplay && !reduceMotion && (
+                  <span
+                    key={`progress-${active}`}
+                    aria-hidden
+                    onAnimationEnd={() => setActive((current) => (current + 1) % steps.length)}
+                    style={{
+                      animationDuration: `${stepDurationMs(`${step.title} ${step.text}`)}ms`,
+                      animationTimingFunction: "linear",
+                      animationPlayState: playing ? "running" : "paused",
+                    }}
+                    className="absolute inset-x-0 bottom-0 h-1 origin-left animate-grow-x bg-primary/70"
+                  />
+                )}
+              </button>
+            </div>
           );
         })}
       </div>
 
+      {/* `grid-cols-1` gives the preview a shrinkable track, so wide previews never overflow on phones. */}
       <div
         id={`${baseId}-panel`}
         role="tabpanel"
         aria-labelledby={`${baseId}-tab-${active}`}
-        className="relative isolate grid min-h-80 place-items-center overflow-hidden rounded-3xl border border-border/60 p-6 shadow-glow-primary bg-gradient-soft sm:min-h-96 sm:p-10"
+        className="relative isolate grid min-h-80 grid-cols-1 place-items-center overflow-hidden rounded-3xl border border-border/60 p-5 shadow-glow-primary bg-gradient-soft sm:min-h-96 sm:p-10"
       >
         <AnimatePresence mode="wait" initial={false}>
           <m.div
@@ -183,7 +198,7 @@ export function StepsShowcase({ steps, tabsLabel }: StepsShowcaseProps) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -12, scale: 0.98 }}
             transition={{ duration: motionDuration.base, ease: motionEase.out }}
-            className="w-full max-w-sm"
+            className="w-full max-w-sm min-w-0"
           >
             {activeStep?.preview}
           </m.div>
