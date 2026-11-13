@@ -27,3 +27,49 @@ export function faqPageJsonLd(items: readonly { question: string; answer: string
     })),
   };
 }
+
+/** `BreadcrumbList` from absolute URLs, in order from the home page. */
+export function breadcrumbJsonLd(items: readonly { name: string; url: string }[]): JsonLdThing {
+  return {
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: item.url,
+    })),
+  };
+}
+
+type CourseInput = {
+  name: string;
+  description: string;
+  url: string;
+  teaches: readonly string[];
+  minAge: number;
+  maxAge: number;
+  inLanguage: string;
+  provider: { name: string; url: string };
+};
+
+/** `Course` for a program level (Google course rich results need name, description and provider). */
+export function courseJsonLd(course: CourseInput): JsonLdThing {
+  return {
+    "@type": "Course",
+    name: course.name,
+    description: course.description,
+    url: course.url,
+    inLanguage: course.inLanguage,
+    teaches: course.teaches,
+    audience: {
+      "@type": "PeopleAudience",
+      suggestedMinAge: course.minAge,
+      suggestedMaxAge: course.maxAge,
+    },
+    provider: {
+      "@type": "EducationalOrganization",
+      name: course.provider.name,
+      sameAs: course.provider.url,
+    },
+  };
+}
