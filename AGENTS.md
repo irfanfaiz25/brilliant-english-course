@@ -60,9 +60,10 @@ description; prefer what is already in the stack.
 │   ├── app/
 │   │   ├── [locale]/(site)/   # public pages (localized)
 │   │   ├── [locale]/(dev)/    # internal pages, e.g. /design-system (flag-gated, noindex)
-│   │   ├── admin/             # dashboard (Indonesian UI, not localized by URL)
-│   │   ├── (auth)/            # login, reset password
-│   │   ├── api/               # route handlers (auth, webhooks, public JSON)
+│   │   ├── admin/             # staff area, own root layout (Indonesian, noindex, not localized by URL)
+│   │   │   ├── (auth)/        # /admin/masuk, /admin/lupa-password, /admin/reset-password
+│   │   │   └── (dashboard)/   # signed-in pages
+│   │   ├── api/               # route handlers (webhooks, public JSON); auth has no route (ADR-025)
 │   │   ├── sitemap.ts, robots.ts
 │   ├── features/<domain>/     # domain modules (see below)
 │   ├── config/                # shared constants: navigation, cache tags, limits, enums (value lists)
@@ -154,6 +155,15 @@ Forms share one Zod schema between React Hook Form and the action; validation me
 
 Roles: `super_admin`, `admin`, `editor`, `mitra` (mitra is scoped to its `unit_id`; portal ships in a later phase).
 Permissions are defined in one place (`src/lib/permissions.ts`) and checked on the server — hiding UI is not authorization.
+A change to the matrix must be mirrored in `permissions.test.ts`, which lists every role × resource × action by hand.
+
+- Better Auth lives in `src/lib/auth.ts`; UI and actions never import it directly but go through `features/users`
+  (`actions.ts` for sign-in/out and reset, `session.ts` for the session). There is no `/api/auth` route (ADR-025).
+- Read the session with `getCurrentUser()` / `requireUser()` / `requirePermission()` from `features/users/session.ts`,
+  inside a component behind `<Suspense>`, never at the top of a layout. Every Server Action re-checks the session itself.
+- `src/proxy.ts` only redirects visitors without a session cookie away from `/admin`; it is not authorization.
+- Staff accounts are created with `pnpm auth:create-user` (self sign-up is disabled). Admin paths and the admin locale
+  live in `src/config/admin-routes.ts`; post-login redirects go through `safeAdminRedirect()`.
 
 ### Database
 
@@ -212,28 +222,31 @@ non-developer need to change it? If yes → admin field with a sensible default 
 
 ## 5. Commands
 
-First run: `cp .env.example .env.local && pnpm i && pnpm db:up && pnpm db:migrate && pnpm db:regions && pnpm dev`.
+First run: `cp .env.example .env.local` (set `BETTER_AUTH_SECRET`), then `pnpm i && pnpm db:up && pnpm db:migrate && pnpm db:regions && pnpm dev`.
+Create a local super admin with `pnpm auth:create-user --email you@example.com --role super_admin` and sign in at `/admin/masuk`.
 
-| Command                                | Purpose                                                                              |
-| -------------------------------------- | ------------------------------------------------------------------------------------ |
-| `pnpm dev`                             | Dev server (Turbopack) on http://localhost:3000                                      |
-| `pnpm build` / `pnpm start`            | Production build / run                                                               |
-| `pnpm lint` / `pnpm typecheck`         | ESLint (zero warnings) / route typegen + `tsc`                                       |
-| `pnpm format` / `pnpm format:check`    | Prettier (with Tailwind class sorting)                                               |
-| `pnpm test` / `pnpm test:watch`        | Vitest (`*.test.ts` → node, `*.test.tsx` → jsdom)                                    |
-| `pnpm test:e2e`                        | Playwright, desktop + mobile (Pixel 7); reuses a server on `E2E_PORT` (default 3000) |
-| `pnpm db:up` / `pnpm db:down`          | Local Postgres 17 in Docker (host port 5433)                                         |
-| `pnpm db:generate` / `pnpm db:migrate` | Drizzle: create migration from schema / apply (local only)                           |
-| `pnpm db:studio`                       | Drizzle Studio                                                                       |
-| `pnpm db:regions`                      | Upsert the Kemendagri region dataset (~3 s) and print search timings                 |
-| `pnpm db:regions:build [commit]`       | Refresh `src/db/seed/regions/*` from upstream `cahyadsn/wilayah`; review the diff    |
-| `pnpm db:seed` / `pnpm worker`         | Added in Phase 3c / Phase 6                                                          |
+| Command                                    | Purpose                                                                              |
+| ------------------------------------------ | ------------------------------------------------------------------------------------ |
+| `pnpm dev`                                 | Dev server (Turbopack) on http://localhost:3000                                      |
+| `pnpm build` / `pnpm start`                | Production build / run                                                               |
+| `pnpm lint` / `pnpm typecheck`             | ESLint (zero warnings) / route typegen + `tsc`                                       |
+| `pnpm format` / `pnpm format:check`        | Prettier (with Tailwind class sorting)                                               |
+| `pnpm test` / `pnpm test:watch`            | Vitest (`*.test.ts` → node, `*.test.tsx` → jsdom)                                    |
+| `pnpm test:e2e`                            | Playwright, desktop + mobile (Pixel 7); reuses a server on `E2E_PORT` (default 3000) |
+| `pnpm db:up` / `pnpm db:down`              | Local Postgres 17 in Docker (host port 5433)                                         |
+| `pnpm db:generate` / `pnpm db:migrate`     | Drizzle: create migration from schema / apply (local only)                           |
+| `pnpm db:studio`                           | Drizzle Studio                                                                       |
+| `pnpm db:regions`                          | Upsert the Kemendagri region dataset (~3 s) and print search timings                 |
+| `pnpm db:regions:build [commit]`           | Refresh `src/db/seed/regions/*` from upstream `cahyadsn/wilayah`; review the diff    |
+| `pnpm auth:create-user --email … --role …` | Create a staff account or, with `--reset-password`, set a new password (local/CI)    |
+| `pnpm db:seed` / `pnpm worker`             | Added in Phase 3c / Phase 6                                                          |
 
 Git hooks (Husky): pre-commit runs lint-staged and checks `AGENTS.md` == `CLAUDE.md`;
 commit-msg runs commitlint (Conventional Commits, rejects AI co-author trailers).
 
 CI (`.github/workflows/ci.yml`) on PRs/pushes to `staging` and `main`: quality checks, migrations
-applied to a throwaway Postgres 17, production build and E2E.
+applied to a throwaway Postgres 17, production build and E2E (also on a throwaway database; the E2E global setup creates
+the staff accounts the auth specs use, so `pnpm test:e2e` locally needs the migrated Docker database).
 
 ## 6. Workflow
 
