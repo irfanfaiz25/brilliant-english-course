@@ -100,6 +100,25 @@ export function can(
   return actor.unitId !== null && unitId !== undefined && unitId === actor.unitId;
 }
 
+/** Thrown by `assertCan`; data access functions use it so a missing check can never leak data. */
+export class PermissionError extends Error {
+  constructor(action: PermissionAction, resource: Resource) {
+    super(`Not allowed to ${action} ${resource}`);
+    this.name = "PermissionError";
+  }
+}
+
+/** `can()` for data access layers: throws instead of returning `false`. */
+export function assertCan(
+  actor: Actor,
+  action: PermissionAction,
+  target: Resource | ScopedResource,
+): void {
+  if (!can(actor, action, target)) {
+    throw new PermissionError(action, typeof target === "string" ? target : target.resource);
+  }
+}
+
 /** Whether the role may enter the staff dashboard at all. */
 export function canAccessAdmin(actor: Actor): boolean {
   return can(actor, "read", "dashboard");

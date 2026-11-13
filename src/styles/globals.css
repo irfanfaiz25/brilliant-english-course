@@ -318,6 +318,17 @@
   backdrop-filter: blur(14px) saturate(1.5);
 }
 
+/*
+ * Light frosted panel for the admin (DESIGN.md § 6): translucent white over the soft gradient,
+ * a hairline highlight and the card shadow. Readable on its own when blur is unsupported.
+ */
+@utility surface-glass-panel {
+  background-color: color-mix(in oklab, var(--color-background) 72%, transparent);
+  backdrop-filter: blur(16px) saturate(1.4);
+  border: 1px solid color-mix(in oklab, var(--color-white) 70%, transparent);
+  box-shadow: var(--shadow-card);
+}
+
 /* Subtle dot grid texture for large plain areas. */
 @utility bg-dots {
   background-image: radial-gradient(var(--color-neutral-200) 1px, transparent 1px);

@@ -817,6 +817,7 @@
   },
   "Admin": {
     "metaTitle": "Dashboard",
+    "area": "Admin BEC",
     "greeting": "Halo, {name}",
     "role": {
       "super_admin": "Super admin",
@@ -824,9 +825,82 @@
       "editor": "Editor",
       "mitra": "Mitra"
     },
-    "comingSoon": "Modul admin sedang disiapkan. Menu lengkap hadir di tahap berikutnya.",
     "noAccess": "Akun mitra belum bisa memakai dashboard ini. Portal mitra hadir di tahap berikutnya.",
     "signOut": "Keluar",
-    "loading": "Memuat dashboard…"
+    "loading": "Memuat…",
+    "skipToContent": "Langsung ke konten",
+    "viewSite": "Lihat situs",
+    "userMenu": "Menu akun",
+    "openMenu": "Buka menu",
+    "menuTitle": "Menu admin",
+    "menuDescription": "Navigasi modul dashboard",
+    "soon": "Segera",
+    "nav": {
+      "groups": {
+        "main": "Utama",
+        "partnership": "Kemitraan",
+        "content": "Konten",
+        "system": "Sistem"
+      },
+      "items": {
+        "overview": "Ringkasan",
+        "leads": "Calon Mitra",
+        "units": "Unit Mitra",
+        "quota": "Kuota Wilayah",
+        "programs": "Program",
+        "activities": "Kegiatan",
+        "blog": "Artikel Blog",
+        "testimonials": "Testimoni",
+        "faq": "FAQ",
+        "media": "Media",
+        "users": "Pengguna",
+        "settings": "Pengaturan",
+        "seo": "SEO"
+      }
+    },
+    "overview": {
+      "title": "Ringkasan",
+      "description": "Kondisi jaringan BEC hari ini.",
+      "kpi": {
+        "newLeads": "Calon mitra baru",
+        "newLeadsHint": "7 hari terakhir",
+        "activeUnits": "Unit aktif",
+        "activeUnitsHint": "di {cities} kab/kota",
+        "students": "Siswa aktif",
+        "studentsHint": "di semua unit",
+        "posts": "Artikel terbit",
+        "postsHint": "{draft} draf menunggu"
+      },
+      "latestLeads": "Calon mitra terbaru",
+      "latestLeadsEmpty": "Belum ada pendaftaran calon mitra. Pendaftaran dari halaman Kemitraan akan muncul di sini.",
+      "leadColumns": {
+        "name": "Nama",
+        "village": "Desa",
+        "status": "Status",
+        "date": "Masuk"
+      },
+      "shortcuts": "Pintasan",
+      "shortcutsDescription": "Modul yang bisa kamu kelola."
+    },
+    "leadStatus": {
+      "new": "Baru",
+      "contacted": "Dihubungi",
+      "qualified": "Survei",
+      "onboarding": "Persiapan",
+      "converted": "Jadi mitra",
+      "rejected": "Ditolak",
+      "lost": "Batal"
+    },
+    "module": {
+      "description": "Modul ini sedang dibangun.",
+      "title": "Segera hadir di tahap {phase}",
+      "body": "Kamu punya akses ke modul ini. Fitur kelola data ditambahkan bertahap sesuai roadmap; sementara itu datanya tetap aman di database.",
+      "back": "Kembali ke Ringkasan"
+    },
+    "notFound": {
+      "title": "Halaman tidak ditemukan",
+      "body": "Halaman ini tidak ada atau tidak tersedia untuk akunmu.",
+      "back": "Kembali ke Ringkasan"
+    }
   }
 }

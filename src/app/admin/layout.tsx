@@ -35,7 +35,8 @@ export default async function AdminRootLayout({ children }: { children: ReactNod
   const messages = await getMessages({ locale: adminLocale });
 
   return (
-    <html lang={adminLocale} className={poppins.variable}>
+    // Scroll padding keeps headings clear of the sticky top bar when Next scrolls to a new page.
+    <html lang={adminLocale} className={`${poppins.variable} scroll-pt-24`}>
       <body className="flex min-h-dvh flex-col bg-surface">
         <NextIntlClientProvider
           locale={adminLocale}
