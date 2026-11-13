@@ -121,15 +121,17 @@ Rules:
 - No magic values for design: colors, radii, shadows, durations and z-indexes come from tokens in
   `src/styles/globals.css` (JS mirror: `src/lib/design-tokens.ts`). Never a raw hex or arbitrary
   `bg-[#…]` class. A new special color is added once as a variable and reused (`DESIGN.md` § 2, ADR-010).
-- Shared constants (routes, cache tags, limits, roles) live in one named module, not repeated literals.
+- Shared constants (routes, cache tags, limits, roles) live in one named module, not repeated literals
+  (`src/config/cache-tags.ts`, `src/config/limits.ts`, …).
 - UI: compose from `src/components/ui` and merge classes with `cn()` from `@/lib/utils` (token-aware). Add a
   primitive with the shadcn CLI only to get the source, then restyle it with tokens and show it on `/design-system`.
 - Interactivity is deliberate: follow `DESIGN.md` § 1.2 before turning static content into a Client Component.
 - Page-specific sections are colocated in a private folder next to the page (e.g. `app/[locale]/(site)/_home/`);
   reusable section building blocks (`Section`, `SectionHeader`, `DecorBlob`, `Doodle`, `PageCanvas`) live in `components/site`.
   Wrap a page's sections in `PageCanvas` so backgrounds stay continuous (`DESIGN.md` § 1.1).
-  Sections used by more than one page are shared and prop-driven: `FaqSection`, `ClosingCtaSection`, `Breadcrumbs`
-  (`components/site`) and `ActivitiesSection` (`features/activities/components`). Promote a section the moment a
+  Sections used by more than one page are shared and prop-driven: `FaqSection`, `ClosingCtaSection`, `Breadcrumbs`,
+  `SectionTabs`, `UrlStateShell` (`components/site`), `ActivitiesSection`, `TestimonialsSection` and `RegionFilter`
+  (`features/<domain>/components`). Promote a section the moment a
   second page needs it; don't copy it.
 - Until the database exists, `queries.ts` returns typed fixtures from `features/<domain>/fixtures.ts` (marked
   PLACEHOLDER), cached with `"use cache"` + `cacheTag(cacheTags.x)` from `src/config/cache-tags.ts`. Placeholder photos
@@ -144,7 +146,8 @@ Rules:
 ### Server Actions & API
 
 Every mutation follows: **validate (Zod) → authorize (`can(user, action, resource)`) → mutate in a transaction when touching >1 table → write audit log → `revalidateTag`**.
-Return a typed result `{ ok: true, data } | { ok: false, error }`; never throw raw errors to the client.
+Return a typed result `{ ok: true, data } | { ok: false, error }` (`ActionResult` in `src/lib/action-result.ts`); never throw raw errors to the client.
+Forms share one Zod schema between React Hook Form and the action; validation messages are codes translated in the UI.
 
 ### Authorization
 

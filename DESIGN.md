@@ -337,7 +337,7 @@ Implementation rules:
 **Program, 5b:**
 
 - **Header:** breadcrumb (`Breadcrumbs`, with `BreadcrumbList` JSON-LD), overline, title, lead, two fact chips.
-- **Sticky level tabs** (`level-tabs.tsx`): plain `#kindy`/`#intro`/`#secondary` anchors under the header, glass bar;
+- **Sticky level tabs** (shared `SectionTabs`, `components/site/section-tabs.tsx`): plain `#kindy`/`#intro`/`#secondary` anchors under the header, glass bar;
   a pill slides to the current tab (measured offsets) and the bar scrolls horizontally on phones. Scroll-spy with
   IntersectionObserver: the current level is the last one whose top passed the top 40% of the viewport. Level sections
   add `scroll-mt-16` so anchors land below header + tabs.
@@ -367,6 +367,27 @@ Implementation rules:
 - **Empty area → partnership:** "Belum ada unit BEC di {area}" with "Jadi mitra pertama di sini"
   (`/kemitraan?wilayah=…#daftar`), "search the wider area" and WhatsApp; empty text search suggests other words.
 - **Structured data:** results as an `ItemList` of `LocalBusiness`. The mobile action bar drops its "Cek Unit" button here.
+
+**Kemitraan, 5d:**
+
+- **Order follows the partner's questions:** promise (hero) → what BEC provides (6 benefits) → "is this for me?"
+  (profiles + what to prepare, beside the package card) → the 5 steps → **quota check + form** → partner stories →
+  FAQ → closing CTA. Sticky `SectionTabs` jump between sections (scroll-spy as on Program).
+- **Hero:** partner-colored CTA pair "Cek Kuota Desamu" (`#kuota`) + "Daftar Jadi Mitra" (`#daftar`), stats card with
+  CountUp (joined units, cities) and the quota rule "Maks. 2 unit per desa". Photo + floating badge from `lg` only.
+- **Package card:** inclusions on a dark teal panel; the investment shows only when admins publish it, otherwise
+  "explained during the consultation" + WhatsApp. Sticky beside the profiles on desktop.
+- **Quota checker (`#kuota`):** the shared region cascade with `?wilayah=` in the URL (same `UrlStateShell` as Cek Unit),
+  so "Jadi mitra pertama di sini" arrives pre-filled. Result card: status badge with text (Tersedia / Sisa N slot /
+  Penuh), a slot meter, active units and partners joining, and the next step (apply, or see existing units when full).
+  Honest urgency only: numbers come from data.
+- **Form (`#daftar`):** two steps with a progress bar — contact (name, WhatsApp, optional email), then background (radio
+  cards), room (segmented), optional plan (counter) and consent. The village comes from the checker and is summarised at
+  the top ("Ganti" jumps back); typed answers survive a village change. Errors appear on Lanjut/submit and clear while
+  typing — never on blur, so buttons don't shift under the pointer. Enter on step 1 advances. Focus moves to each new
+  step and to the success heading.
+- **Success:** application number (`MTR-YYMMDD-XXXX`) + "continue on WhatsApp" with a pre-filled message quoting it.
+- **Mobile:** checker and form stack (checker first); the action bar shows "Cek Kuota" + "Daftar Mitra".
 
 ### 5.4 WhatsApp deep links
 
