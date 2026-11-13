@@ -29,3 +29,11 @@ export const siteConfig = {
 } as const;
 
 export type SocialNetwork = keyof typeof siteConfig.social;
+
+/** Display names of the social networks (brand names, not translated). */
+export const socialNetworkNames: Record<SocialNetwork, string> = {
+  instagram: "Instagram",
+  facebook: "Facebook",
+  youtube: "YouTube",
+  tiktok: "TikTok",
+};
