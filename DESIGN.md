@@ -170,6 +170,9 @@ Buttons and inputs `md`; cards `xl`; badges/chips `full`; images inside cards `l
 
 ### 2.5 Iconography
 
+Pick icons that say what the item is (map pin for location, layers for levels, users for class size). Avoid the
+generic "sparkles"/AI-style icon; it reads as filler.
+
 24 px grid, 2 px stroke, rounded caps — use **Lucide** (matches the Penpot set: chevron-down, search,
 map-pin, phone, chat, arrow-right, check, users, book, calendar, star, menu). WhatsApp uses its official glyph (inline SVG).
 
@@ -241,6 +244,7 @@ Implementation rules:
 
 | Component                    | Variants / notes                                                                                                                                                                                                                                                                                                                                                   |
 | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Button pairs**             | Buttons shown side by side share one model: same size and, if one uses `pop`, the other does too (`secondary` + `pop` = outline with `shadow-soft-pop`). Colors may differ.                                                                                                                                                                                        |
 | **Button**                   | `primary` (teal), `partner` (orange), `whatsapp` (white text), `secondary` (outline teal), `ghost`, `link`; sizes `sm` 40 / `md` 48 / `lg` 56 px, `icon`; `pop` adds the pressable brand shadow; `loading` keeps the label for screen readers; `asChild` for links.                                                                                                |
 | **Badge**                    | Level: `Kindy` (sunny), `Intro` (teal), `Secondary` (orange). Quota: `Tersedia` (success), `Sisa N slot` (warning), `Penuh` (error), `Unit baru` (info). Always text + color, never color alone.                                                                                                                                                                   |
 | **Cascading region select**  | Province → Regency → District → Village. Each disabled with a hint until the parent is chosen ("Pilih kabupaten dulu"). Searchable (combobox) because lists can exceed 50 items. State synced to the URL.                                                                                                                                                          |
@@ -286,6 +290,14 @@ Implementation rules:
 | **404 / error** _(new)_       | —                                                                                      | Friendly illustration + search + links to Cek Unit and Program.                                                                                                                                                                                                                                                                    |
 
 ### 5.3 Implementation notes (Beranda, 5a-1)
+
+- **Hero motion:** copy, CTAs, chips and badges rise in on load with CSS (`animate-rise-in`, 90 ms steps); the
+  headline is static and the photo only settles from a slight zoom (`animate-settle`, transform only) so LCP is not delayed.
+  Badges then drift (`animate-float`). Decorative layers use `parallax-soft` / `parallax-strong` (CSS scroll-driven).
+- **Doodles** (`components/site/doodle.tsx`: ring, squiggle, plus, dots, blob) add playful depth — 2–4 per section,
+  away from text, some with parallax or float.
+- **Sheet sections:** a section may overlap the previous one with `rounded-t-3xl`, negative top margin and `shadow-sheet`
+  (Activities does this) to avoid hard horizontal cuts.
 
 - **Hero:** headline and photo render immediately (LCP, never animated in). Floating glass badges drift slowly (`animate-float`, off for reduced motion). "Fun" is highlighted with a hand-drawn underline.
 - **Age chips** are plain `#level-<slug>` anchors: the browser scrolls to the level card and CSS `:target` rings it in the level color. No JavaScript.
