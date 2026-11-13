@@ -58,7 +58,8 @@
   },
   "WhatsApp": {
     "general": "Hi BEC, I'd like to ask about your English courses for kids.",
-    "partner": "Hi BEC, I'm interested in opening a BEC unit (partnership). Could you share more information?"
+    "partner": "Hi BEC, I'm interested in opening a BEC unit (partnership). Could you share more information?",
+    "unit": "Hi {unit}, I'd like to ask about English classes for my child."
   },
   "Home": {
     "metaTitle": "English Courses for Kids Aged 4–15",
@@ -97,6 +98,73 @@
       "lead": "Beyond regular classes, every BEC unit runs regular activities so children dare to use English in real life.",
       "detailLink": "See program details",
       "scrollHint": "Swipe to see more activities"
+    },
+    "unitFinder": {
+      "overline": "Find a BEC Unit",
+      "title": "Find the Nearest BEC Unit in Your Area",
+      "lead": "Search by district, city or unit name to see active units with their schedule and contacts.",
+      "searchLabel": "Search units",
+      "searchPlaceholder": "Search district, city or unit name…",
+      "submit": "Search",
+      "useLocation": "Use my location",
+      "previewTitle": "Active units around Bogor Regency",
+      "seeAll": "See all units",
+      "note": "Region data follows the Ministry of Home Affairs codes"
+    },
+    "steps": {
+      "overline": "How to Join",
+      "title": "Start Learning in 3 Steps",
+      "lead": "No long forms — find a unit, say hi to the admin, and your child can join a class right away.",
+      "step1Title": "Find the nearest unit",
+      "step1Text": "Look up a BEC unit in your district or city and check its class schedule.",
+      "step2Title": "Chat with the unit admin",
+      "step2Text": "Contact the admin on WhatsApp to ask about fees, schedules and a trial class.",
+      "step3Title": "Placement test & start",
+      "step3Text": "Your child takes a relaxed placement test, then joins the level that fits best.",
+      "cta": "Find a Unit Now"
+    },
+    "partnership": {
+      "overline": "BEC Partnership",
+      "title": "Open a BEC Unit at Home",
+      "lead": "Turn your living room into a fun place to learn. BEC provides the curriculum, training and support to get your unit running quickly.",
+      "benefit1": "Ready-to-use curriculum & modules",
+      "benefit2": "Teacher training and mentoring",
+      "benefit3": "Marketing materials and systems",
+      "quotaNote": "Max. 2 units per village — secure your area first.",
+      "primaryCta": "Become a Partner",
+      "secondaryCta": "Explore the Partnership",
+      "joinedLabel": "units have joined"
+    },
+    "testimonials": {
+      "overline": "What Parents Say",
+      "title": "Kids Who Dare to Speak English",
+      "lead": "Stories from parents whose children learn at BEC units.",
+      "rating": "Rated {rating} out of 5"
+    },
+    "faq": {
+      "overline": "FAQ",
+      "title": "Questions Parents Often Ask",
+      "lead": "Can't find your answer? Our admin is happy to help.",
+      "askTitle": "Still have questions?",
+      "askText": "The BEC team usually replies within minutes during working hours.",
+      "askCta": "Ask on WhatsApp"
+    },
+    "cta": {
+      "title": "Ready to learn English the fun way?",
+      "lead": "Find the nearest unit or chat with the BEC team first — free, no commitment.",
+      "primary": "Find the Nearest Unit",
+      "secondary": "Chat on WhatsApp"
     }
+  },
+  "Units": {
+    "code": "Unit code {code}",
+    "manager": "Manager: {name}",
+    "enrollment": "{status, select, open {Open} limited {Few seats left} full {Full} other {—}}",
+    "chat": "Chat on WhatsApp",
+    "directions": "Get Directions",
+    "levels": "Levels offered",
+    "schedule": "Schedule",
+    "address": "Address",
+    "managerLabel": "Manager"
   }
 }
