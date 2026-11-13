@@ -9,10 +9,6 @@
     "label": "Ganti bahasa",
     "locale": "{locale, select, id {Bahasa Indonesia} en {English} other {{locale}}}"
   },
-  "HomePage": {
-    "overline": "Kursus Bahasa Inggris Anak · Usia 4–15 tahun",
-    "title": "A Fun Way to Learn English"
-  },
   "NotFound": {
     "title": "Halaman tidak ditemukan",
     "description": "Halaman yang kamu cari mungkin sudah dipindahkan atau tidak pernah ada.",
@@ -63,5 +59,44 @@
   "WhatsApp": {
     "general": "Halo BEC, saya ingin bertanya tentang kursus bahasa Inggris anak.",
     "partner": "Halo BEC, saya tertarik membuka unit BEC (kemitraan). Boleh minta informasinya?"
+  },
+  "Home": {
+    "metaTitle": "Kursus Bahasa Inggris Anak Usia 4–15 Tahun",
+    "hero": {
+      "overline": "Kursus Bahasa Inggris Anak · Usia 4–15 tahun",
+      "title": "A <hl>Fun</hl> Way to Learn English",
+      "lead": "Kelas bahasa Inggris yang seru untuk anak — conversation dan grammar dari dasar, diajarkan bertahap di unit BEC dekat rumahmu.",
+      "primaryCta": "Cek Unit Terdekat",
+      "secondaryCta": "Lihat Program",
+      "partnerPrompt": "Ingin membuka unit BEC di daerahmu?",
+      "partnerLink": "Pelajari kemitraan",
+      "agePrompt": "Usia anak:",
+      "ageOption": "{min}–{max} th",
+      "ageOptionLabel": "Usia {min}–{max} tahun: lihat level {level}",
+      "badgeLevels": "3 level sesuai usia",
+      "badgeNearby": "Unit dekat rumah",
+      "badgeSmallClass": "Kelas kecil & seru",
+      "imageAlt": "Anak perempuan tersenyum sambil menulis di kelas"
+    },
+    "stats": {
+      "label": "BEC dalam angka",
+      "activeUnits": "Unit BEC aktif",
+      "cities": "Kota & kabupaten",
+      "students": "Siswa belajar"
+    },
+    "programs": {
+      "overline": "Program BEC",
+      "title": "Tiga Level, Sesuai Usia Anak",
+      "lead": "Kurikulum BEC mengajarkan conversation dan grammar bertahap — anak belajar sambil bermain, lalu naik level dengan percaya diri.",
+      "ageRange": "{min}–{max} tahun",
+      "detailLink": "Lihat detail level"
+    },
+    "activities": {
+      "overline": "Kegiatan Seru",
+      "title": "Belajar Lewat Pengalaman",
+      "lead": "Selain kelas rutin, setiap unit BEC mengadakan kegiatan berkala supaya anak berani memakai bahasa Inggris di dunia nyata.",
+      "detailLink": "Lihat detail program",
+      "scrollHint": "Geser untuk melihat kegiatan lain"
+    }
   }
 }

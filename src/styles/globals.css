@@ -243,6 +243,8 @@
   --duration-base: 250ms;
   --duration-slow: 400ms;
   --duration-reveal: 600ms;
+  /* Slow, small drift for decorative floating badges (disabled with reduced motion). */
+  --animate-float: float 7s var(--ease-in-out) infinite;
 
   /* ---------- Layers (use as `z-(--z-overlay)`) ---------- */
   --z-sticky: 30;
@@ -346,6 +348,16 @@
 
 ::view-transition-new(.page-fade) {
   animation: var(--duration-base) var(--ease-out) var(--duration-fast) both page-fade-in;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -8px;
+  }
 }
 
 @keyframes page-fade-out {

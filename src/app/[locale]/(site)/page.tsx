@@ -2,31 +2,46 @@ import type { Metadata } from "next";
 import { hasLocale } from "next-intl";
 import { getTranslations } from "next-intl/server";
 
-import { DecorBlob } from "@/components/site/decor-blob";
 import { siteConfig } from "@/config/site";
+import { getActivities } from "@/features/activities/queries";
+import { getLevels } from "@/features/programs/queries";
+import { getNetworkStats } from "@/features/units/queries";
 import { routing } from "@/i18n/routing";
 import { localizedAlternates } from "@/lib/seo/alternates";
+
+import { ActivitiesSection } from "./_home/activities-section";
+import { HeroSection } from "./_home/hero-section";
+import { ProgramsSection } from "./_home/programs-section";
+import { StatsSection } from "./_home/stats-section";
 
 export async function generateMetadata({ params }: PageProps<"/[locale]">): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
+  const t = await getTranslations({ locale, namespace: "Home" });
 
-  return { alternates: localizedAlternates("/", locale) };
+  return {
+    title: { absolute: `${siteConfig.name} — ${t("metaTitle")}` },
+    alternates: localizedAlternates("/", locale),
+  };
 }
 
-// Temporary placeholder until the home page sections are built (Phase 5a).
-export default async function HomePage() {
-  const t = await getTranslations("HomePage");
+/** Home page, built section by section (Phase 5a). Remaining sections arrive in 5a-2. */
+export default async function HomePage({ params }: PageProps<"/[locale]">) {
+  const { locale } = await params;
+  if (!hasLocale(routing.locales, locale)) return null;
+
+  const [levels, activities, stats] = await Promise.all([
+    getLevels(locale),
+    getActivities(locale),
+    getNetworkStats(),
+  ]);
 
   return (
-    <section className="relative isolate flex flex-1 overflow-hidden bg-gradient-soft">
-      <DecorBlob tone="highlight" className="top-10 -right-20 size-72" />
-      <DecorBlob tone="primary" className="bottom-0 -left-24 size-80" />
-      <div className="mx-auto flex w-full max-w-page flex-col justify-center gap-4 px-5 py-24 md:px-8">
-        <p className="text-overline text-partner uppercase">{t("overline")}</p>
-        <h1 className="text-display text-primary">{t("title")}</h1>
-        <p className="text-body-lg text-muted-foreground">{siteConfig.name}</p>
-      </div>
-    </section>
+    <>
+      <HeroSection levels={levels} />
+      <StatsSection stats={stats} />
+      <ProgramsSection levels={levels} />
+      <ActivitiesSection activities={activities} />
+    </>
   );
 }
