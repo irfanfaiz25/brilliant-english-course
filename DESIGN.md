@@ -322,7 +322,11 @@ Implementation rules:
   "Use my location" links to `?dekat=1`. Preview of active units uses the shared `UnitCard` (`features/units/components`).
 - **Unit card:** initials avatar, enrollment badge (text + color), address / manager / schedule (`formatUnitSchedule`,
   localized weekdays and time notation), level badges, WhatsApp (pre-filled with the unit name) + Google Maps directions.
-- **Steps:** three numbered icon markers joined by a dashed path — horizontal from `md`, vertical timeline on phones.
+- **Steps (interactive):** a vertical tab list (`steps-showcase.tsx`) beside a live preview of each step (search result,
+  WhatsApp chat, placement result) built from tokens (`steps-previews.tsx`). The active step expands its text (grid-rows),
+  the rail fills to it, and previews cross-fade (`AnimatePresence`) while their parts rise/grow in with CSS. Auto-plays
+  every 5 s with a progress bar while on screen, pauses on hover/focus, stops after a manual choice, never with reduced
+  motion. Keyboard: arrows, Home, End.
 - **Partnership teaser:** a dark rounded **panel** floating on the canvas (never a full-width band), `inverse` + `pop`
   outline button paired with the partner CTA, quota note, count-up of joined units.
 - **Testimonials:** quote cards with rating (`aria-label`), CSS scroll-snap row on phones, grid from `lg`.

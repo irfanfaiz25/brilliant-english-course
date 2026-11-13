@@ -29,7 +29,7 @@ test.describe("home page — bottom sections", () => {
     await page.goto("/");
 
     await expect(
-      page.getByRole("region", { name: "Mulai Belajar dalam 3 Langkah" }).getByRole("listitem"),
+      page.getByRole("region", { name: "Mulai Belajar dalam 3 Langkah" }).getByRole("tab"),
     ).toHaveCount(3);
     await expect(page.getByRole("link", { name: "Gabung Mitra" }).last()).toHaveAttribute(
       "href",
@@ -41,6 +41,23 @@ test.describe("home page — bottom sections", () => {
     await expect(
       page.getByRole("heading", { name: "Siap mulai belajar bahasa Inggris dengan seru?" }),
     ).toBeAttached();
+  });
+
+  test("join steps work as tabs with a live preview", async ({ page }) => {
+    await page.goto("/");
+    const steps = page.getByRole("tablist", { name: "Langkah pendaftaran" });
+    const tabs = steps.getByRole("tab");
+    const panel = page.getByRole("tabpanel");
+
+    await tabs.nth(1).click();
+    await expect(tabs.nth(1)).toHaveAttribute("aria-selected", "true");
+    await expect(panel).toContainText("Admin BEC Cibinong");
+    await expect(tabs.nth(1).getByText("Hubungi admin lewat WhatsApp")).toBeVisible();
+
+    await page.keyboard.press("ArrowDown");
+    await expect(tabs.nth(2)).toBeFocused();
+    await expect(tabs.nth(2)).toHaveAttribute("aria-selected", "true");
+    await expect(panel).toContainText("Hasil placement");
   });
 
   test("FAQ answers toggle and are published as FAQPage structured data", async ({ page }) => {
