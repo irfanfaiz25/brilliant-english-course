@@ -389,6 +389,22 @@ Implementation rules:
 - **Success:** application number (`MTR-YYMMDD-XXXX`) + "continue on WhatsApp" with a pre-filled message quoting it.
 - **Mobile:** checker and form stack (checker first); the action bar shows "Cek Kuota" + "Daftar Mitra".
 
+**Blog, 5e:**
+
+- **Index:** header, then category chips (one sideways-scrolling row on phones) with the article count, the newest
+  post as a wide featured card (unfiltered page 1 only), a 1/2/3-column card grid and numbered pagination. State lives
+  in the URL (`?kategori=`, `?halaman=`); chips and pages are plain links, so filters are shareable and crawlable.
+  Empty categories show a friendly empty state. The listing streams in behind a shape-matched skeleton.
+- **Card:** cover with category badge (color per category, always with text), date + reading time, title (the only
+  link, stretched over the card), excerpt and "read article"; lifts on hover, cover zooms gently.
+- **Post:** reading progress bar, breadcrumb (long titles truncate), category, title, lead, author + meta, a wide cover,
+  then the article (max ~68 characters per line) beside a sticky sidebar with the table of contents and share links on
+  desktop. On phones the table of contents is a collapsible panel above the text and sharing sits under it.
+- **After reading:** a next-step card (partnership posts → quota check; others → Cek Unit + WhatsApp) and three related
+  posts (same category first). Sharing: WhatsApp share link (no JS) + copy link.
+- **Content** is the editor's rich-text JSON rendered on the server (paragraphs, H2/H3, lists, quotes, bold/italic,
+  links); heading anchors are generated once and shared with the table of contents.
+
 ### 5.4 WhatsApp deep links
 
 All WhatsApp CTAs use `https://wa.me/<number>?text=<encoded template>`. Templates come from admin settings with
