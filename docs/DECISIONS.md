@@ -154,3 +154,11 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
 - **Why:** Safe, small and SEO-friendly rendering; localized URLs for both audiences; shareable filters without client JS.
 - **Alternatives:** Storing HTML (XSS risk, styling drift); rendering with `@tiptap/html` (extra dependency for a subset we control); the same slug in both languages (weaker English SEO).
 - **Known limitation:** Because pages stream, an unknown slug or a cross-language redirect is resolved after the shell is sent (404 page with `noindex`, client redirect). Real 404/308 status codes for these can move into `src/proxy.ts` during Phase 7.
+
+### ADR-021 — Unit and area pages from a unit directory
+
+2026-11-13 · Accepted
+
+- **Decision:** Local SEO pages live under `/unit` (EN `/units`) as one catch-all route resolved against a unit directory (`features/units/directory.ts`): province → regency → unit, built from active units and Kemendagri regions. Slugs are `slugify(name)`, made unique among siblings by appending the code. Units get an explicit `slug` field (admin-editable later). Only provinces and regencies with at least one active unit exist, so there are no thin or empty pages. All paths are prerendered; unknown paths render the 404 page with `noindex`. Cards link to unit pages, and finder results' `LocalBusiness` data points at them. Districts and villages stay in the Cek Unit filter, not separate pages.
+- **Why:** Matches how parents search ("kursus bahasa inggris anak kab bogor"); human-readable, stable URLs; content on every indexed page; one place to compute paths, so links, JSON-LD and static params agree.
+- **Alternatives:** Code-based URLs (`/unit/32.01`, unreadable); a page per district or village (thousands of thin pages); separate route files per level (duplicated resolution logic).

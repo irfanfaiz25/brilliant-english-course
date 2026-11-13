@@ -66,7 +66,7 @@ Sub-phases (separate PRs): 4a Settings & SEO defaults · 4b Programs & Activitie
 
 Built UI-first with typed fixtures behind `features/<domain>/queries.ts` (ADR-016); Phases 3–4 swap the fixtures for the database without touching components.
 
-Sub-phases: 5a Beranda ✅ (5a-1 hero, stats, programs, activities · 5a-2 unit finder, steps, partnership, testimonials, FAQ, closing CTA) · 5b Program ✅ · 5c Cek Unit (5c-1 finder ✅ · 5c-2 unit/area SEO pages) · 5d Kemitraan + partner form ✅ (leads stored from Phase 3/4d) · 5e Blog + detail ✅ · 5f Kontak.
+Sub-phases: 5a Beranda ✅ (5a-1 hero, stats, programs, activities · 5a-2 unit finder, steps, partnership, testimonials, FAQ, closing CTA) · 5b Program ✅ · 5c Cek Unit ✅ (5c-1 finder · 5c-2 unit/area SEO pages) · 5d Kemitraan + partner form ✅ (leads stored from Phase 3/4d) · 5e Blog + detail ✅ · 5f Kontak.
 
 - All content from the DB/settings, both locales, motion per `DESIGN.md` § 3.
 - **Done when:** Lighthouse mobile ≥ 90 on every page; journeys in `DESIGN.md` § 5.1 pass as E2E tests.
