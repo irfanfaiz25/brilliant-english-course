@@ -405,6 +405,18 @@ Implementation rules:
 - **Content** is the editor's rich-text JSON rendered on the server (paragraphs, H2/H3, lists, quotes, bold/italic,
   links); heading anchors are generated once and shared with the table of contents.
 
+**Kontak, 5f:**
+
+- **Route first, then contact:** three cards — parents (schedules and fees belong to the unit → Cek Unit, or ask the
+  head office on WhatsApp), prospective partners (→ Kemitraan, or chat the partnership team) and media/collaboration
+  (→ email, or the message form). Saves the head office from questions only a unit can answer.
+- **Message composer (`#pesan`):** topic (segmented), name and message, validated like the partner form, then the
+  tidy text ("Halo BEC, saya {name} ({topic}) …") opens in WhatsApp in a new tab, with a fallback link if it was
+  blocked. Nothing is stored on our side; a note says so.
+- **Details panel:** dark teal card with WhatsApp, email, address + directions, office hours and socials, all from
+  contact settings (sticky beside the form on desktop, below it on phones). The hero shows the reply window.
+- **Structured data:** `EducationalOrganization` with a customer-service `ContactPoint` and opening hours.
+
 ### 5.4 WhatsApp deep links
 
 All WhatsApp CTAs use `https://wa.me/<number>?text=<encoded template>`. Templates come from admin settings with
