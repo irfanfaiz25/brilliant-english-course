@@ -334,6 +334,22 @@ Implementation rules:
 - **FAQ:** sticky intro + "ask on WhatsApp" card beside the accordion; `FAQPage` JSON-LD via `src/lib/seo/json-ld.tsx`.
 - **Closing CTA:** warm panel with the two parent actions (find a unit / WhatsApp), both `pop`.
 
+**Program, 5b:**
+
+- **Header:** breadcrumb (`Breadcrumbs`, with `BreadcrumbList` JSON-LD), overline, title, lead, two fact chips.
+- **Sticky level tabs** (`level-tabs.tsx`): plain `#kindy`/`#intro`/`#secondary` anchors under the header, glass bar;
+  a pill slides to the current tab (measured offsets) and the bar scrolls horizontally on phones. Scroll-spy with
+  IntersectionObserver: the current level is the last one whose top passed the top 40% of the viewport. Level sections
+  add `scroll-mt-16` so anchors land below header + tabs.
+- **Level detail** (one per level, photo side alternates): level-colored blob, frame, badge and checks; curriculum as
+  small cards (stagger); fact chips (classes/week, class size, modules); "find a unit" + level-specific WhatsApp
+  (`pop` pair); `Course` JSON-LD per level.
+- **Activities** reuse the shared section with `id="kegiatan"` (target of "see program details") and no card links.
+- **Why BEC:** four benefit cards with tinted icons that tilt on hover.
+- **Comparison:** a real `<table>` (caption, row/column headers) from `md`, stacked definition-list cards on phones —
+  both generated from the same level data.
+- **FAQ** (`topic: "program"`) and **closing CTA** use the shared `FaqSection` / `ClosingCtaSection`.
+
 ### 5.4 WhatsApp deep links
 
 All WhatsApp CTAs use `https://wa.me/<number>?text=<encoded template>`. Templates come from admin settings with
