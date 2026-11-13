@@ -49,14 +49,15 @@ export function LocaleSwitcher({
               locale={locale}
               hrefLang={locale}
               lang={locale}
-              aria-label={t("locale", { locale })}
               aria-current={locale === activeLocale ? "true" : undefined}
               className={cn(
                 "inline-flex h-8 min-w-11 items-center justify-center rounded-full px-3 text-caption font-semibold uppercase transition-[background-color,color,box-shadow] duration-(--duration-base) ease-out",
                 tones[tone].item,
               )}
             >
+              {/* The accessible name starts with the visible code so voice control ("click EN") works. */}
               {locale}
+              <span className="sr-only"> · {t("locale", { locale })}</span>
             </Link>
           </li>
         ))}

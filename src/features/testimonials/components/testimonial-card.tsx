@@ -26,7 +26,8 @@ export function TestimonialCard({ testimonial, ratingLabel, index }: Testimonial
         aria-hidden
         className="absolute -top-2 -right-2 size-24 rotate-180 text-primary-soft"
       />
-      <p aria-label={ratingLabel} className="flex gap-0.5 text-highlight">
+      <p className="flex gap-0.5 text-highlight">
+        <span className="sr-only">{ratingLabel}</span>
         {Array.from({ length: testimonial.rating }, (_, i) => (
           <StarIcon key={i} aria-hidden className="size-4 fill-current" />
         ))}

@@ -63,7 +63,7 @@ export async function HeroSection({ levels }: { levels: Level[] }) {
           >
             <span aria-hidden className="size-1.5 rounded-full bg-partner" />
             {t("overline")}
-            <span className="rounded-full bg-partner-soft px-2.5 py-1 tracking-normal normal-case">
+            <span className="rounded-full bg-partner-soft px-2.5 py-1 tracking-normal text-partner-strong normal-case">
               {t("ageBadge")}
             </span>
           </p>
@@ -94,7 +94,7 @@ export async function HeroSection({ levels }: { levels: Level[] }) {
 
           <p
             style={enterDelay(1)}
-            className="max-w-xl animate-rise-in text-body-lg text-muted-foreground"
+            className="max-w-xl animate-lift-in text-body-lg text-muted-foreground"
           >
             {t("lead")}
           </p>
@@ -128,11 +128,6 @@ export async function HeroSection({ levels }: { levels: Level[] }) {
               <a
                 key={level.slug}
                 href={`#level-${level.slug}`}
-                aria-label={t("ageOptionLabel", {
-                  min: level.ageMin,
-                  max: level.ageMax,
-                  level: level.name,
-                })}
                 className={cn(
                   "inline-flex h-10 items-center justify-center rounded-full border border-border bg-background px-4 text-label text-foreground shadow-sm",
                   "transition-[transform,border-color,background-color,box-shadow] duration-(--duration-fast) ease-out hover:-translate-y-0.5 hover:shadow-md",
@@ -140,6 +135,8 @@ export async function HeroSection({ levels }: { levels: Level[] }) {
                 )}
               >
                 {t("ageOption", { min: level.ageMin, max: level.ageMax })}
+                {/* Extra context for screen readers; the name still starts with the visible text. */}
+                <span className="sr-only"> — {t("ageOptionHint", { level: level.name })}</span>
               </a>
             ))}
           </div>

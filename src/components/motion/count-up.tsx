@@ -25,7 +25,7 @@ type CountUpProps = {
 /**
  * Counts from 0 to `value` the first time it scrolls into view.
  *
- * The final number is always in the server HTML (SEO, no-JS) and in the accessible name.
+ * The final number is always in the server HTML (SEO, no-JS) and in a screen-reader-only copy.
  * If the number is already on screen when the page hydrates (e.g. above the fold), it stays
  * static — resetting a visible number to 0 would look like a glitch — unless `hiddenOnLoad` says
  * nothing is painted yet. Reduced motion always stays static.
@@ -73,12 +73,16 @@ export function CountUp({
   }, [phase, isInView, value, duration, locale]);
 
   return (
-    <span className={className} aria-label={`${prefix}${finalText}${suffix}`}>
-      <span aria-hidden>{prefix}</span>
-      <span ref={ref} aria-hidden className="tabular-nums">
-        {finalText}
+    <span className={className}>
+      {/* Screen readers get the final value once, not every animated frame. */}
+      <span className="sr-only">{`${prefix}${finalText}${suffix}`}</span>
+      <span aria-hidden>
+        {prefix}
+        <span ref={ref} className="tabular-nums">
+          {finalText}
+        </span>
+        {suffix}
       </span>
-      <span aria-hidden>{suffix}</span>
     </span>
   );
 }

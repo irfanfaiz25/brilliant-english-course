@@ -76,7 +76,7 @@
       "partnerLink": "Pelajari kemitraan",
       "agePrompt": "Usia anak:",
       "ageOption": "{min}–{max} th",
-      "ageOptionLabel": "Usia {min}–{max} tahun: lihat level {level}",
+      "ageOptionHint": "lihat level {level}",
       "badgeLevels": "3 level sesuai usia",
       "badgeNearby": "Unit dekat rumah",
       "badgeSmallClass": "Kelas kecil & seru",

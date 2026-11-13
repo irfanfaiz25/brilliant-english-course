@@ -18,7 +18,7 @@ test.describe("home page — top sections", () => {
 
   test("age chips jump to and highlight the matching level", async ({ page }) => {
     await page.goto("/");
-    await page.getByRole("link", { name: /Usia 7–9 tahun/ }).click();
+    await page.getByRole("link", { name: "7–9 th — lihat level Intro" }).click();
 
     await expect(page).toHaveURL(/#level-intro$/);
     const card = page.locator("#level-intro");
@@ -30,7 +30,7 @@ test.describe("home page — top sections", () => {
     await page.goto("/");
     const stats = page.getByRole("region", { name: "BEC dalam angka" });
 
-    await expect(stats.getByLabel("128+")).toBeVisible();
+    await expect(stats).toMatchAriaSnapshot(`- definition: "128+"`);
     await expect(stats.getByText("Siswa belajar")).toBeVisible();
   });
 

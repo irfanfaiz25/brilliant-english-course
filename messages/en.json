@@ -76,7 +76,7 @@
       "partnerLink": "Explore the partnership",
       "agePrompt": "Child's age:",
       "ageOption": "{min}–{max} yrs",
-      "ageOptionLabel": "Ages {min}–{max}: see the {level} level",
+      "ageOptionHint": "see the {level} level",
       "badgeLevels": "3 levels by age",
       "badgeNearby": "Units near you",
       "badgeSmallClass": "Small, fun classes",

@@ -74,7 +74,7 @@ export async function PostCard({
         >
           <Link
             href={{ pathname: "/blog/[slug]", params: { slug: post.slug } }}
-            className="rounded-sm outline-none after:absolute after:inset-0 after:z-10 after:rounded-3xl focus-visible:after:ring-4 focus-visible:after:ring-primary-soft"
+            className="rounded-sm after:absolute after:inset-0 after:z-10 after:rounded-3xl focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:outline-offset-2 focus-visible:after:outline-ring"
           >
             {post.title}
           </Link>
