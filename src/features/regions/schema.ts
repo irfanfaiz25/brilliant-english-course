@@ -1,12 +1,17 @@
 import { z } from "zod";
 
+import { regionLevels } from "@/config/enums";
+
+/** Kemendagri code format, shared with the `regions` table check constraint. */
+export const REGION_CODE_PATTERN = /^\d{2}(\.\d{2}(\.\d{2}(\.\d{4})?)?)?$/;
+
 /**
  * Kemendagri region code: "32" (province) · "32.01" (regency/city) · "32.01.01" (district) ·
  * "32.01.01.2001" (village/kelurahan). The code itself encodes the hierarchy.
  */
-export const regionCodeSchema = z.string().regex(/^\d{2}(\.\d{2}(\.\d{2}(\.\d{4})?)?)?$/);
+export const regionCodeSchema = z.string().regex(REGION_CODE_PATTERN);
 
-export const regionLevels = ["province", "regency", "district", "village"] as const;
+export { regionLevels };
 export type RegionLevel = (typeof regionLevels)[number];
 
 export const regionSchema = z.object({

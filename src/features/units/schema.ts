@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { enrollmentStatuses } from "@/config/enums";
 import { levelSlugs } from "@/features/programs/schema";
 import { regionCodeSchema } from "@/features/regions/schema";
 import { slugSchemaPattern } from "@/lib/slug";
@@ -14,7 +15,7 @@ export const networkStatsSchema = z.object({
 export type NetworkStats = z.infer<typeof networkStatsSchema>;
 
 /** Whether a unit is taking new students. */
-export const enrollmentStatuses = ["open", "limited", "full"] as const;
+export { enrollmentStatuses };
 export type EnrollmentStatus = (typeof enrollmentStatuses)[number];
 
 const timeSchema = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/);

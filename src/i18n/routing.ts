@@ -1,5 +1,7 @@
 import { defineRouting } from "next-intl/routing";
 
+import { locales } from "@/config/enums";
+
 /**
  * Locale routing for the public site (ADR-005, ADR-012).
  *
@@ -9,7 +11,7 @@ import { defineRouting } from "next-intl/routing";
  * - Internal route folders use the Indonesian path; `pathnames` maps them to localized URLs.
  */
 export const routing = defineRouting({
-  locales: ["id", "en"],
+  locales,
   defaultLocale: "id",
   localePrefix: "as-needed",
   localeDetection: false,
