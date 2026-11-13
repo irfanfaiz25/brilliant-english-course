@@ -350,6 +350,24 @@ Implementation rules:
   both generated from the same level data.
 - **FAQ** (`topic: "program"`) and **closing CTA** use the shared `FaqSection` / `ClosingCtaSection`.
 
+**Cek Unit, 5c:**
+
+- **URL is the state:** `?q=` text, `?wilayah=` deepest selected region code, `?lat=&lng=` (rounded to ~100 m),
+  `?dekat=1` (came from "use my location"). Every result is shareable ("copy results link") and works without JS
+  (GET forms; native selects; `noscript` Apply button).
+- **Layout:** desktop — sticky side panel (search, location, region cascade) beside the results; phones — a compact panel
+  (search, location, "Filter wilayah" bottom sheet with an active-count badge), results first.
+- **Smooth, no flashing:** filters call `router.replace` inside a transition; current results stay and dim
+  (`PendingRegion`) until the new ones arrive; new cards rise in with a short CSS stagger. First load streams behind
+  a shape-matched skeleton (Cache Components + `Suspense`).
+- **Search** is live (450 ms debounce), accent/case-insensitive, all words must match.
+- **Location** is requested only on tap (never on load); `?dekat=1` highlights the button instead. Denied/unavailable →
+  toast with a manual fallback. Results then sort by distance and each card shows "x,y km".
+- **Active filters** are removable chips (plain links) + "clear all"; result count is an `aria-live` heading.
+- **Empty area → partnership:** "Belum ada unit BEC di {area}" with "Jadi mitra pertama di sini"
+  (`/kemitraan?wilayah=…#daftar`), "search the wider area" and WhatsApp; empty text search suggests other words.
+- **Structured data:** results as an `ItemList` of `LocalBusiness`. The mobile action bar drops its "Cek Unit" button here.
+
 ### 5.4 WhatsApp deep links
 
 All WhatsApp CTAs use `https://wa.me/<number>?text=<encoded template>`. Templates come from admin settings with

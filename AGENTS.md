@@ -207,18 +207,18 @@ non-developer need to change it? If yes → admin field with a sensible default 
 
 First run: `cp .env.example .env.local && pnpm i && pnpm db:up && pnpm db:migrate && pnpm dev`.
 
-| Command                                | Purpose                                                    |
-| -------------------------------------- | ---------------------------------------------------------- |
-| `pnpm dev`                             | Dev server (Turbopack) on http://localhost:3000            |
-| `pnpm build` / `pnpm start`            | Production build / run                                     |
-| `pnpm lint` / `pnpm typecheck`         | ESLint (zero warnings) / route typegen + `tsc`             |
-| `pnpm format` / `pnpm format:check`    | Prettier (with Tailwind class sorting)                     |
-| `pnpm test` / `pnpm test:watch`        | Vitest (`*.test.ts` → node, `*.test.tsx` → jsdom)          |
-| `pnpm test:e2e`                        | Playwright, desktop + mobile (Pixel 7)                     |
-| `pnpm db:up` / `pnpm db:down`          | Local Postgres 17 in Docker (host port 5433)               |
-| `pnpm db:generate` / `pnpm db:migrate` | Drizzle: create migration from schema / apply (local only) |
-| `pnpm db:studio`                       | Drizzle Studio                                             |
-| `pnpm db:seed` / `pnpm worker`         | Added in Phase 3 / Phase 6                                 |
+| Command                                | Purpose                                                                              |
+| -------------------------------------- | ------------------------------------------------------------------------------------ |
+| `pnpm dev`                             | Dev server (Turbopack) on http://localhost:3000                                      |
+| `pnpm build` / `pnpm start`            | Production build / run                                                               |
+| `pnpm lint` / `pnpm typecheck`         | ESLint (zero warnings) / route typegen + `tsc`                                       |
+| `pnpm format` / `pnpm format:check`    | Prettier (with Tailwind class sorting)                                               |
+| `pnpm test` / `pnpm test:watch`        | Vitest (`*.test.ts` → node, `*.test.tsx` → jsdom)                                    |
+| `pnpm test:e2e`                        | Playwright, desktop + mobile (Pixel 7); reuses a server on `E2E_PORT` (default 3000) |
+| `pnpm db:up` / `pnpm db:down`          | Local Postgres 17 in Docker (host port 5433)                                         |
+| `pnpm db:generate` / `pnpm db:migrate` | Drizzle: create migration from schema / apply (local only)                           |
+| `pnpm db:studio`                       | Drizzle Studio                                                                       |
+| `pnpm db:seed` / `pnpm worker`         | Added in Phase 3 / Phase 6                                                           |
 
 Git hooks (Husky): pre-commit runs lint-staged and checks `AGENTS.md` == `CLAUDE.md`;
 commit-msg runs commitlint (Conventional Commits, rejects AI co-author trailers).
