@@ -242,6 +242,9 @@
   /* Pressable depth for outline buttons, so they match pop buttons next to them. */
   --shadow-soft-pop: 0 6px 0 var(--color-teal-100);
   --shadow-soft-pop-pressed: 0 2px 0 var(--color-teal-100);
+  /* Pressable depth for outline buttons on dark surfaces. */
+  --shadow-inverse-pop: 0 6px 0 rgb(255 255 255 / 0.14);
+  --shadow-inverse-pop-pressed: 0 2px 0 rgb(255 255 255 / 0.14);
   /* Soft upward shadow for sections drawn as a sheet over the previous one. */
   --shadow-sheet: 0 -24px 48px -32px rgb(10 41 48 / 0.25);
 
