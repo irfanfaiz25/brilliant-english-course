@@ -156,3 +156,43 @@ export function articleJsonLd(article: ArticleInput): JsonLdThing {
     },
   };
 }
+
+type OrganizationInput = {
+  name: string;
+  url: string;
+  logo: string;
+  email: string;
+  telephone: string;
+  address: string;
+  sameAs: readonly string[];
+  /** schema.org `OpeningHoursSpecification` values (day names + `HH:MM`). */
+  hours: readonly { days: readonly string[]; opens: string; closes: string }[];
+  availableLanguage: readonly string[];
+};
+
+/** `EducationalOrganization` with a customer-service `ContactPoint` (Kontak page). */
+export function organizationJsonLd(org: OrganizationInput): JsonLdThing {
+  return {
+    "@type": "EducationalOrganization",
+    name: org.name,
+    url: org.url,
+    logo: org.logo,
+    email: org.email,
+    telephone: org.telephone,
+    address: { "@type": "PostalAddress", streetAddress: org.address, addressCountry: "ID" },
+    sameAs: org.sameAs,
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "customer service",
+      telephone: org.telephone,
+      email: org.email,
+      availableLanguage: org.availableLanguage,
+      hoursAvailable: org.hours.map((entry) => ({
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: entry.days,
+        opens: entry.opens,
+        closes: entry.closes,
+      })),
+    },
+  };
+}

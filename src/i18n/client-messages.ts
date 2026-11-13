@@ -8,6 +8,7 @@ export const clientNamespaces = [
   "LocaleSwitcher",
   "UI",
   "PartnerForm",
+  "ContactForm",
 ] as const satisfies readonly (keyof Messages)[];
 
 export function pickClientMessages(messages: Messages): Partial<Messages> {
