@@ -13,4 +13,19 @@ export const siteConfig = {
     width: 384,
     height: 371,
   },
+  // PLACEHOLDER contact details until admin settings land (Phase 4a). Replace with real values.
+  contact: {
+    whatsapp: "6281200000000",
+    email: "halo@beccourses.com",
+    address: "Kab. Bogor, Jawa Barat",
+  },
+  // PLACEHOLDER social profiles (Phase 4a).
+  social: {
+    instagram: "https://www.instagram.com/",
+    facebook: "https://www.facebook.com/",
+    youtube: "https://www.youtube.com/",
+    tiktok: "https://www.tiktok.com/",
+  },
 } as const;
+
+export type SocialNetwork = keyof typeof siteConfig.social;
