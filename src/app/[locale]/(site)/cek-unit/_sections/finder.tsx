@@ -11,19 +11,20 @@ import { getRegionPath } from "@/features/regions/queries";
 import type { Region } from "@/features/regions/schema";
 import { UnitCard } from "@/features/units/components/unit-card";
 import { finderQuery, parseFinderParams, type FinderParams } from "@/features/units/finder-params";
-import { getActiveUnits } from "@/features/units/queries";
+import { unitPathsByCode } from "@/features/units/directory";
+import { getActiveUnits, getUnitDirectory } from "@/features/units/queries";
+import { unitJsonLd } from "@/features/units/seo";
 import { searchUnits } from "@/features/units/service";
 import { getPathname, Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { absoluteUrl } from "@/lib/seo/absolute-url";
-import { itemListJsonLd, JsonLd, localBusinessJsonLd } from "@/lib/seo/json-ld";
+import { itemListJsonLd, JsonLd } from "@/lib/seo/json-ld";
 
 import { FinderEmptyState } from "./finder-empty-state";
 import { LocationButton } from "./location-button";
 import { MobileFilterSheet } from "./mobile-filter-sheet";
 import { SearchBox } from "./search-box";
 
-const SCHEMA_DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 /** Delay between result cards rising in (CSS), capped so long lists don't drag. */
 const CARD_STAGGER_MS = 60;
 const MAX_STAGGERED_CARDS = 6;
@@ -41,13 +42,15 @@ export async function Finder({
   const locale = (await getLocale()) as Locale;
   const params = parseFinderParams(await searchParams);
 
-  const [units, path] = await Promise.all([
+  const [units, directory, path] = await Promise.all([
     getActiveUnits(),
+    getUnitDirectory(),
     params.regionCode ? getRegionPath(params.regionCode) : Promise.resolve([] as Region[]),
   ]);
   // Unknown region codes are ignored rather than producing an empty, confusing result.
   const regionCode = path.length > 0 ? params.regionCode : undefined;
   const region = path.at(-1);
+  const unitPaths = unitPathsByCode(directory);
   const results = searchUnits(units, { query: params.query, regionCode, near: params.near });
 
   const [fields, regionLabels] = await Promise.all([
@@ -169,17 +172,19 @@ export async function Finder({
                 <JsonLd
                   data={itemListJsonLd(
                     results.map((unit) =>
-                      localBusinessJsonLd({
-                        name: `Brilliant English Course — ${unit.name}`,
-                        url: absoluteUrl(getPathname({ href: "/cek-unit", locale })),
-                        telephone: `+${unit.whatsapp}`,
-                        streetAddress: unit.address,
-                        locality: unit.regency,
+                      unitJsonLd(unit, {
+                        url: absoluteUrl(
+                          unitPaths[unit.code]
+                            ? getPathname({
+                                href: {
+                                  pathname: "/unit/[...path]",
+                                  params: { path: unitPaths[unit.code] ?? [] },
+                                },
+                                locale,
+                              })
+                            : getPathname({ href: "/cek-unit", locale }),
+                        ),
                         region: path[0]?.name,
-                        geo: unit.location,
-                        openDays: unit.openDays.map((day) => SCHEMA_DAYS[day - 1] ?? "Monday"),
-                        opens: unit.opensAt,
-                        closes: unit.closesAt,
                       }),
                     ),
                   )}
@@ -197,6 +202,7 @@ export async function Finder({
                     >
                       <UnitCard
                         unit={unit}
+                        path={unitPaths[unit.code]}
                         distanceLabel={
                           unit.distanceKm === undefined
                             ? undefined

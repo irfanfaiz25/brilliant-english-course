@@ -34,7 +34,8 @@
     "openMenu": "Open menu",
     "menuTitle": "Menu",
     "menuDescription": "Explore programs, find the nearest unit, or become a partner.",
-    "homeLabel": "Brilliant English Course, go to home"
+    "homeLabel": "Brilliant English Course, go to home",
+    "allUnits": "All units"
   },
   "Footer": {
     "tagline": "Fun English courses for children aged 4–15, available at BEC units across Indonesia.",
@@ -633,6 +634,58 @@
       "lead": "Find the nearest unit or ask our admin on WhatsApp.",
       "primary": "Find the Nearest Unit",
       "secondary": "Chat on WhatsApp"
+    }
+  },
+  "UnitPages": {
+    "directory": {
+      "metaTitle": "BEC Units by Area",
+      "metaDescription": "Brilliant English Course units for kids by province and city/regency. See each unit's address, schedule and WhatsApp contact.",
+      "overline": "BEC units",
+      "title": "BEC Units Across the Regions",
+      "lead": "Choose a province or city/regency to see its BEC units with their address, schedule and contact.",
+      "unitCount": "{count, plural, one {# unit} other {# units}}",
+      "regencies": "Cities & regencies in {province}",
+      "finder": "Search by location"
+    },
+    "area": {
+      "metaTitle": "Kids' English Courses in {area}",
+      "metaDescription": "{count} BEC units in {area} for children aged 4–15: Kindy, Intro and Secondary classes. See addresses and schedules, and chat with the nearest unit on WhatsApp.",
+      "overline": "BEC units · {area}",
+      "title": "Kids' English Courses in {area}",
+      "lead": "{count, plural, one {# active BEC unit} other {# active BEC units}} in {area} for children aged 4–15. Pick the nearest one and ask about schedules on WhatsApp.",
+      "units": "{count, plural, one {# active unit} other {# active units}}",
+      "regencyCount": "{count, plural, one {# city/regency} other {# cities/regencies}}",
+      "districtCount": "{count, plural, one {# district} other {# districts}}",
+      "levels": "Kindy · Intro · Secondary",
+      "regenciesTitle": "Cities & Regencies in {area}",
+      "unitsTitle": "BEC Units in {area}",
+      "unitsLead": "Open a unit for details, or chat with its admin straight away.",
+      "finder": "Find the unit nearest to you",
+      "finderText": "Sort the units in {area} by distance from your home.",
+      "partner": {
+        "title": "No BEC unit in your village in {area} yet?",
+        "text": "Each village has at most 2 units. Check your village quota and become its first partner.",
+        "cta": "Check your village quota"
+      },
+      "unitsOverline": "Unit list",
+      "finderCta": "Sort by my location"
+    },
+    "unit": {
+      "metaTitle": "{unit} — Kids' English Course in {district}, {regency}",
+      "metaDescription": "{unit} in {district}, {regency}: {levels} classes for children aged 4–15. See the address and schedule, and chat with the unit admin on WhatsApp.",
+      "overline": "BEC unit · {regency}",
+      "lead": "Kids' English course in {district}, {regency}. Ask about schedules and enrolment directly with the unit admin on WhatsApp.",
+      "detailsTitle": "Unit details",
+      "mapLink": "Open in Google Maps",
+      "levelsTitle": "Classes available",
+      "levelsLead": "The same curriculum in every BEC unit.",
+      "levelAge": "Ages {min}–{max}",
+      "levelLink": "See the {level} program",
+      "enrollmentNote": "{status, select, open {This unit is taking new students.} limited {Seats are limited — ask about schedules on WhatsApp first.} full {Classes are full. Ask about the waiting list or see other nearby units.} other {}}",
+      "nearbyOverline": "Nearby",
+      "nearbyTitle": "Other Units Nearby",
+      "distance": "{distance} km from this unit",
+      "allInArea": "See all units in {area}"
     }
   }
 }
