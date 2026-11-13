@@ -27,6 +27,9 @@ Personality: _playful but trustworthy_ — fun for kids, credible for parents an
 - **Large radii, consistent.** Cards `xl`, controls `md`, chips `full` — never mixed within one component.
 - **Type does the hierarchy.** Big, tight headings (Poppins 700), relaxed body (160% line height), overline labels for section context.
 - **Depth is earned.** Shadows grow only on interaction (hover lift, open menu); the playful `pop` shadow is for one hero CTA per viewport.
+- **One continuous background.** Never let a gradient or blob stop at a section boundary: use `PageCanvas` + transparent
+  sections, `overflow-x-clip` (never `overflow-hidden`) on sections, and masked fades for surface changes. Hard edges
+  are only allowed for the dark footer.
 - **Never flat — layered depth.** Every page section sits on a surface with some dimension, using tokens only:
   - Backgrounds: `bg-gradient-soft` (teal haze), `bg-gradient-warm` (cream + sunny/teal glows), `bg-gradient-teal-deep`
     (dark bands, footer), optional `bg-dots` texture masked to fade out.
@@ -221,6 +224,9 @@ JS motion values (seconds, easing arrays) come from `src/components/motion/token
 - `prefers-reduced-motion: reduce` → `MotionConfig reducedMotion="user"` removes movement (opacity only), CountUp and
   scroll progress stay static, view transitions are disabled, CSS transitions collapse to ~0 ms.
 - Each page: at most one "hero moment"; everything else is quiet reveals.
+- **Smooth scrolling** for in-page jumps (anchors, age chips, skip link): `scroll-behavior: smooth` on `<html>` with
+  `scroll-padding-top: var(--header-offset)` so targets land below the sticky header. Route changes stay instant
+  (`data-scroll-behavior="smooth"` lets Next.js disable it during navigation); reduced motion turns it off.
 - **Every show/hide animates both ways** (accordion, mobile menu, tabs, filters, collapsibles, toasts): 200–400 ms,
   ease-out, CSS first. For height use the grid-rows technique (`grid-rows-[0fr]` → `grid-rows-[1fr]`) on a wrapper,
   not JS measuring; pair it with a short opacity/translate on the content. Nothing should pop in or vanish abruptly.
@@ -296,8 +302,9 @@ Implementation rules:
   Badges then drift (`animate-float`). Decorative layers use `parallax-soft` / `parallax-strong` (CSS scroll-driven).
 - **Doodles** (`components/site/doodle.tsx`: ring, squiggle, plus, dots, blob) add playful depth — 2–4 per section,
   away from text, some with parallax or float.
-- **Sheet sections:** a section may overlap the previous one with `rounded-t-3xl`, negative top margin and `shadow-sheet`
-  (Activities does this) to avoid hard horizontal cuts.
+- **Continuous canvas:** pages wrap their sections in `PageCanvas`; sections are transparent (`Section` tone `canvas`)
+  and clip only horizontally (`overflow-x-clip`), so blobs and gradients flow across section edges. A section that
+  needs its own color fades it in with a mask (e.g. Activities' warm wash) instead of starting at a hard line.
 
 - **Hero:** headline and photo render immediately (LCP, never animated in). Floating glass badges drift slowly (`animate-float`, off for reduced motion). "Fun" is highlighted with a hand-drawn underline.
 - **Age chips** are plain `#level-<slug>` anchors: the browser scrolls to the level card and CSS `:target` rings it in the level color. No JavaScript.
