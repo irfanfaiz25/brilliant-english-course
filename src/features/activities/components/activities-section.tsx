@@ -5,21 +5,35 @@ import { DecorBlob } from "@/components/site/decor-blob";
 import { Doodle } from "@/components/site/doodle";
 import { Section } from "@/components/site/section";
 import { SectionHeader } from "@/components/site/section-header";
-import { ActivityCard } from "@/features/activities/components/activity-card";
-import type { Activity } from "@/features/activities/schema";
+import type { Activity } from "../schema";
+
+import { ActivityCard } from "./activity-card";
+
+type ActivitiesSectionProps = {
+  activities: readonly Activity[];
+  /** Anchor id (the Program page uses "kegiatan", the target of "see program details" links). */
+  id?: string;
+  /** Show the "see program details" link on cards (off on the Program page itself). */
+  linkToProgram?: boolean;
+};
 
 /**
  * Activities: a CSS scroll-snap row on phones (no carousel JS), a grid from `md` up.
+ * Shared by Home and Program.
  */
-export async function ActivitiesSection({ activities }: { activities: Activity[] }) {
-  const t = await getTranslations("Home.activities");
+export async function ActivitiesSection({
+  activities,
+  id,
+  linkToProgram = true,
+}: ActivitiesSectionProps) {
+  const t = await getTranslations("Activities");
 
   return (
-    <Section aria-labelledby="activities-title">
+    <Section id={id} aria-labelledby="activities-title" className="scroll-mt-(--header-offset)">
       {/* Warm wash that fades in from the canvas above, so there is no hard section edge. */}
       <span
         aria-hidden
-        className="absolute inset-0 -z-20 [mask-image:linear-gradient(to_bottom,transparent,black_35%)] bg-gradient-warm"
+        className="absolute inset-0 -z-20 [mask-image:linear-gradient(to_bottom,transparent,black_35%,black_75%,transparent)] bg-gradient-warm"
       />
       <DecorBlob tone="highlight" className="parallax-strong -top-20 -left-24 size-80" />
       <DecorBlob tone="primary" className="parallax-soft right-0 bottom-0 size-96 opacity-40" />
@@ -50,7 +64,10 @@ export async function ActivitiesSection({ activities }: { activities: Activity[]
             as="li"
             className="w-[78%] shrink-0 snap-start sm:w-[46%] md:w-auto"
           >
-            <ActivityCard activity={activity} detailLabel={t("detailLink")} />
+            <ActivityCard
+              activity={activity}
+              detailLabel={linkToProgram ? t("detailLink") : undefined}
+            />
           </StaggerItem>
         ))}
       </Stagger>
