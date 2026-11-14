@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 
 import { adminRoutes, safeAdminRedirect } from "@/config/admin-routes";
 import { limits } from "@/config/limits";
-import type { ActionResult } from "@/lib/action-result";
+import { fieldErrorsOf, type ActionResult } from "@/lib/action-result";
 import { auth } from "@/lib/auth";
 import { clientIp, createRateLimiter, isLocalOrUnknownIp } from "@/lib/rate-limit";
 
@@ -26,10 +26,6 @@ const resetLimiter = createRateLimiter({
   limit: limits.auth.resetRateLimit,
   windowMs: limits.auth.resetWindowMs,
 });
-
-function fieldErrorsOf(issues: readonly { path: PropertyKey[]; message: string }[]) {
-  return Object.fromEntries(issues.map((issue) => [String(issue.path[0]), issue.message]));
-}
 
 /**
  * Limiter keys for a request: per email and, behind a proxy, per client IP. Local runs have only a
