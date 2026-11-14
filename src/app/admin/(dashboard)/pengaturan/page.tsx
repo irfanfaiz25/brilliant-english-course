@@ -32,7 +32,7 @@ export default async function SettingsPage() {
   ]);
   return (
     <>
-      <AdminPageHeader title={tNav("settings")} description={t("description")} />
+      <AdminPageHeader breadcrumbs={[]} title={tNav("settings")} description={t("description")} />
       <Suspense fallback={<SettingsSkeleton />}>
         <SettingsContent />
       </Suspense>

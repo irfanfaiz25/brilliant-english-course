@@ -34,6 +34,7 @@ export default async function UnitsPage({ searchParams }: PageProps<"/admin/unit
   return (
     <>
       <AdminPageHeader
+        breadcrumbs={[]}
         title={tNav("units")}
         description={t("description")}
         actions={

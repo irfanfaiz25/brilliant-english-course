@@ -5,7 +5,6 @@ import { Suspense } from "react";
 import { z } from "zod";
 
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
-import { BackLink } from "@/components/admin/back-link";
 import { LastSaved } from "@/components/admin/last-saved";
 import { DeleteButton } from "@/components/admin/row-actions";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -24,15 +23,11 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 /** Edit one activity (Phase 4b). The id is read inside the boundary: it is request data. */
-export default async function EditActivityPage({ params }: PageProps<"/admin/kegiatan/[id]">) {
-  const t = await getTranslations({ locale: adminLocale, namespace: "AdminActivities" });
+export default function EditActivityPage({ params }: PageProps<"/admin/kegiatan/[id]">) {
   return (
-    <>
-      <BackLink href={adminRoutes.activities} label={t("backToList")} />
-      <Suspense fallback={<EditSkeleton />}>
-        <EditActivity params={params} />
-      </Suspense>
-    </>
+    <Suspense fallback={<EditSkeleton />}>
+      <EditActivity params={params} />
+    </Suspense>
   );
 }
 
@@ -54,6 +49,7 @@ async function EditActivity({ params }: { params: Promise<{ id: string }> }) {
   return (
     <>
       <AdminPageHeader
+        breadcrumbs={["activities"]}
         title={t("editTitle", { name })}
         description={
           <>

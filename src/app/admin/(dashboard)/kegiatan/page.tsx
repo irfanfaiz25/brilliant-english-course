@@ -34,6 +34,7 @@ export default async function ActivitiesPage() {
   return (
     <>
       <AdminPageHeader
+        breadcrumbs={[]}
         title={tNav("activities")}
         description={t("description")}
         actions={

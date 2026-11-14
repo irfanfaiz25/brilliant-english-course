@@ -483,6 +483,10 @@ Baseline: Penpot `02 · Dashboard` (Ringkasan, Calon Mitra, Unit Mitra, Kuota Wi
   previous/next paging. Regions are picked with `RegionPicker`: four native selects (the OS picker is best for long
   lists on phones), each level loading the next. Components that sit in panels of varying width (the form footer,
   the unit card's buttons) lay out by container queries, not by viewport breakpoints.
+- **Breadcrumbs:** every admin page except Ringkasan starts with a trail above its title: Ringkasan › parent
+  pages › the page itself (bold, not a link, cut with an ellipsis when long). Phones show only "‹ parent" in the
+  primary color, which replaces the old "← Semua …" back links; the full trail starts at `sm`. Parents are named
+  by their sidebar module, so labels and URLs come from `admin-navigation.ts`.
 - **Record pages (Phase 4d):** a record that is worked over time (a lead) opens on its own page: the record's data
   and its history in the main column, the controls that change it (status, assignee) and related context (quota,
   linked unit) in a sticky side column from `xl`, stacked below the data on smaller screens. The history is one

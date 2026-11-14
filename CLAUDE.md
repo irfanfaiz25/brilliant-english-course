@@ -142,7 +142,7 @@ Rules:
   `features/<domain>/defaults.ts`. Placeholder photos are referenced only through `src/config/placeholder-images.ts`
   (credits in `public/placeholders/CREDITS.md`) and stored as `media_assets` rows by the seed.
 - Admin pages render inside the shell (`app/admin/(dashboard)/layout.tsx`); a page provides an `AdminPageHeader` (its
-  only `h1`) and content, never another `<main>`. Modules are listed once in `src/config/admin-navigation.ts` with the
+  only `h1` and its `breadcrumbs`: parent modules by nav key, `false` only on Ringkasan) and content, never another `<main>`. Modules are listed once in `src/config/admin-navigation.ts` with the
   resource that guards them; admin data functions live in `features/<domain>/admin-queries.ts`, take the `SessionUser`
   and call `assertCan()` before reading. Admin surfaces use `surface-glass-panel` (`DESIGN.md` § 6). Each form sits in an
   `AdminPanel` (its `h2`, description and `LastSaved` line) and submits with `useSaveForm()` + `FormFooter`

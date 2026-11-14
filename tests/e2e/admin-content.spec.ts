@@ -81,14 +81,15 @@ test.describe("admin programs", () => {
   test("asks before leaving a form with unsaved changes", async ({ page }, testInfo) => {
     await signInTo(page, "/admin/program/intro", e2eUsers(testInfo.project.name).admin.email);
     await page.getByLabel(/^Pertemuan per minggu/).fill("3");
-    await page.getByRole("link", { name: "Semua level" }).click();
+    const trail = page.getByRole("navigation", { name: "Jejak navigasi" });
+    await trail.getByRole("link", { name: "Program" }).click();
     const dialog = page.getByRole("alertdialog", { name: "Tinggalkan halaman ini?" });
     await expect(dialog).toBeVisible();
     await dialog.getByRole("button", { name: "Batal" }).click();
     await expect(page).toHaveURL(/\/admin\/program\/intro$/);
     await expect(page.getByLabel(/^Pertemuan per minggu/)).toHaveValue("3");
 
-    await page.getByRole("link", { name: "Semua level" }).click();
+    await trail.getByRole("link", { name: "Program" }).click();
     await page.getByRole("alertdialog").getByRole("button", { name: "Tinggalkan" }).click();
     await expect(page).toHaveURL(/\/admin\/program$/);
   });

@@ -830,6 +830,7 @@
     "signOut": "Sign out",
     "loading": "Loading…",
     "skipToContent": "Skip to content",
+    "breadcrumbs": "Breadcrumb",
     "viewSite": "View site",
     "userMenu": "Account menu",
     "openMenu": "Open menu",
@@ -1109,7 +1110,6 @@
     "edit": "Edit",
     "editLabel": "Edit the {name} level",
     "showLabel": "Show the {name} level on the site",
-    "backToList": "All levels",
     "editTitle": "{name} level",
     "editDescription": "Once saved, changes show on Home and the Programs page right away.",
     "sections": {
@@ -1169,7 +1169,6 @@
     "deleteBody": "This activity disappears from the site and cannot be restored.",
     "deleteConfirm": "Delete activity",
     "deleted": "Activity deleted.",
-    "backToList": "All activities",
     "createTitle": "Add activity",
     "createDescription": "New activities go to the end of the list.",
     "editTitle": "{name}",
@@ -1243,7 +1242,6 @@
     "deleteBody": "The unit disappears from the site and its village quota slot is free again. Its code and history stay on record.",
     "deleteConfirm": "Delete unit",
     "deleted": "Unit deleted.",
-    "backToList": "All units",
     "createTitle": "Add unit",
     "createDescription": "The unit code is generated from its province once saved.",
     "editDescription": "Once saved, changes show on Find a Unit and the unit page right away.",
@@ -1393,7 +1391,6 @@
       "label": "Lead list pages",
       "count": "{count, plural, =0 {No leads} one {# lead} other {# leads}}"
     },
-    "backToList": "All leads",
     "received": "Received {date}",
     "sections": {
       "applicant": {

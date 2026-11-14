@@ -26,7 +26,11 @@ export default async function AdminOverviewPage() {
   const t = await getTranslations({ locale: adminLocale, namespace: "Admin" });
   return (
     <>
-      <AdminPageHeader title={t("overview.title")} description={t("overview.description")} />
+      <AdminPageHeader
+        breadcrumbs={false}
+        title={t("overview.title")}
+        description={t("overview.description")}
+      />
       <Suspense fallback={<OverviewSkeleton />}>
         <OverviewContent />
       </Suspense>

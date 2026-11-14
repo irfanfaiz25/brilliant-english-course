@@ -40,6 +40,7 @@ export default async function PlannedModulePage({ params }: PageProps<"/admin/[s
   return (
     <>
       <AdminPageHeader
+        breadcrumbs={[]}
         title={t(`nav.items.${planned.key}`)}
         description={t("module.description")}
       />

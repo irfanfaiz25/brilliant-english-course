@@ -30,7 +30,7 @@ export default async function LeadsPage({ searchParams }: PageProps<"/admin/calo
   ]);
   return (
     <>
-      <AdminPageHeader title={tNav("leads")} description={t("description")} />
+      <AdminPageHeader breadcrumbs={[]} title={tNav("leads")} description={t("description")} />
       <Suspense fallback={<Skeleton aria-hidden className="h-[32rem] rounded-2xl" />}>
         <Pipeline searchParams={searchParams} />
       </Suspense>

@@ -3,7 +3,6 @@ import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
-import { BackLink } from "@/components/admin/back-link";
 import { Skeleton } from "@/components/ui/skeleton";
 import { adminLocale, adminRoutes } from "@/config/admin-routes";
 import { activityCardLabels } from "@/features/activities/admin-labels";
@@ -30,8 +29,11 @@ export default async function NewActivityPage() {
   const t = await getTranslations({ locale: adminLocale, namespace: "AdminActivities" });
   return (
     <>
-      <BackLink href={adminRoutes.activities} label={t("backToList")} />
-      <AdminPageHeader title={t("createTitle")} description={t("createDescription")} />
+      <AdminPageHeader
+        breadcrumbs={["activities"]}
+        title={t("createTitle")}
+        description={t("createDescription")}
+      />
       <Suspense fallback={<Skeleton aria-hidden className="h-[32rem] rounded-2xl" />}>
         <NewActivity />
       </Suspense>

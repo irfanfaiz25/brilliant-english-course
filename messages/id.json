@@ -830,6 +830,7 @@
     "signOut": "Keluar",
     "loading": "Memuat…",
     "skipToContent": "Langsung ke konten",
+    "breadcrumbs": "Jejak navigasi",
     "viewSite": "Lihat situs",
     "userMenu": "Menu akun",
     "openMenu": "Buka menu",
@@ -1109,7 +1110,6 @@
     "edit": "Ubah",
     "editLabel": "Ubah level {name}",
     "showLabel": "Tampilkan level {name} di situs",
-    "backToList": "Semua level",
     "editTitle": "Level {name}",
     "editDescription": "Setelah disimpan, perubahan langsung tampil di Beranda dan halaman Program.",
     "sections": {
@@ -1169,7 +1169,6 @@
     "deleteBody": "Kegiatan ini hilang dari situs dan tidak bisa dikembalikan.",
     "deleteConfirm": "Hapus kegiatan",
     "deleted": "Kegiatan dihapus.",
-    "backToList": "Semua kegiatan",
     "createTitle": "Tambah kegiatan",
     "createDescription": "Kegiatan baru ditaruh di akhir daftar.",
     "editTitle": "{name}",
@@ -1243,7 +1242,6 @@
     "deleteBody": "Unit hilang dari situs dan slot kuota desanya kembali tersedia. Kode unit dan riwayatnya tetap tercatat.",
     "deleteConfirm": "Hapus unit",
     "deleted": "Unit dihapus.",
-    "backToList": "Semua unit",
     "createTitle": "Tambah unit",
     "createDescription": "Kode unit dibuat otomatis dari provinsinya setelah disimpan.",
     "editDescription": "Setelah disimpan, perubahan langsung tampil di Cek Unit dan halaman unit.",
@@ -1393,7 +1391,6 @@
       "label": "Halaman daftar calon mitra",
       "count": "{count, plural, =0 {Tidak ada calon mitra} other {# calon mitra}}"
     },
-    "backToList": "Semua calon mitra",
     "received": "Masuk {date}",
     "sections": {
       "applicant": {

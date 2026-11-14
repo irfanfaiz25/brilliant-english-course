@@ -44,7 +44,7 @@ export default async function QuotaPage({ searchParams }: PageProps<"/admin/kuot
   ]);
   return (
     <>
-      <AdminPageHeader title={tNav("quota")} description={t("description")} />
+      <AdminPageHeader breadcrumbs={[]} title={tNav("quota")} description={t("description")} />
       <Suspense fallback={<QuotaSkeleton />}>
         <QuotaContent searchParams={searchParams} />
       </Suspense>

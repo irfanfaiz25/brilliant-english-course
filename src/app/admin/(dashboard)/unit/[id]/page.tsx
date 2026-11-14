@@ -6,7 +6,6 @@ import { Suspense } from "react";
 import { z } from "zod";
 
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
-import { BackLink } from "@/components/admin/back-link";
 import { LastSaved } from "@/components/admin/last-saved";
 import { DeleteButton } from "@/components/admin/row-actions";
 import { Badge } from "@/components/ui/badge";
@@ -30,15 +29,11 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 /** Edit one unit (Phase 4c). The id is read inside the boundary: it is request data. */
-export default async function EditUnitPage({ params }: PageProps<"/admin/unit/[id]">) {
-  const t = await getTranslations({ locale: adminLocale, namespace: "AdminUnits" });
+export default function EditUnitPage({ params }: PageProps<"/admin/unit/[id]">) {
   return (
-    <>
-      <BackLink href={adminRoutes.units} label={t("backToList")} />
-      <Suspense fallback={<Skeleton aria-hidden className="h-[40rem] rounded-2xl" />}>
-        <EditUnit params={params} />
-      </Suspense>
-    </>
+    <Suspense fallback={<Skeleton aria-hidden className="h-[40rem] rounded-2xl" />}>
+      <EditUnit params={params} />
+    </Suspense>
   );
 }
 
@@ -61,6 +56,7 @@ async function EditUnit({ params }: { params: Promise<{ id: string }> }) {
   return (
     <>
       <AdminPageHeader
+        breadcrumbs={["units"]}
         title={name}
         description={
           <span className="flex flex-wrap items-center gap-x-3 gap-y-1">
