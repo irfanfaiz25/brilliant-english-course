@@ -4,7 +4,7 @@ import { getTranslations } from "next-intl/server";
 import { BrandIcon } from "@/components/icons/brand-icon";
 import { DecorBlob } from "@/components/site/decor-blob";
 import { Button } from "@/components/ui/button";
-import { siteConfig } from "@/config/site";
+import { getContactSettings } from "@/features/settings/queries";
 import type { Region } from "@/features/regions/schema";
 import { Link } from "@/i18n/navigation";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
@@ -19,6 +19,7 @@ type FinderEmptyStateProps =
 export async function FinderEmptyState(props: FinderEmptyStateProps) {
   const t = await getTranslations("Finder.empty");
   const tWhatsApp = await getTranslations("WhatsApp");
+  const contact = await getContactSettings();
   const isRegion = props.kind === "region";
 
   return (
@@ -68,7 +69,7 @@ export async function FinderEmptyState(props: FinderEmptyStateProps) {
         </Button>
       </div>
       <a
-        href={buildWhatsAppUrl(siteConfig.contact.whatsapp, tWhatsApp("general"))}
+        href={buildWhatsAppUrl(contact.whatsapp, tWhatsApp("general"))}
         target="_blank"
         rel="noopener noreferrer"
         className="inline-flex items-center gap-2 text-label text-primary underline-offset-4 hover:underline"

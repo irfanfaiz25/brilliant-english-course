@@ -3,7 +3,7 @@ import { getTranslations } from "next-intl/server";
 
 import { Button } from "@/components/ui/button";
 import { mainNav } from "@/config/navigation";
-import { siteConfig } from "@/config/site";
+import { getContactSettings } from "@/features/settings/queries";
 import { Link } from "@/i18n/navigation";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
@@ -23,6 +23,7 @@ export async function SiteHeader() {
   const t = await getTranslations("Nav");
   const tWhatsApp = await getTranslations("WhatsApp");
   const tFooter = await getTranslations("Footer");
+  const contact = await getContactSettings();
   const items = mainNav.map((item) => ({ href: item.href, label: t(item.label) }));
 
   return (
@@ -60,7 +61,7 @@ export async function SiteHeader() {
             <div className="lg:hidden">
               <MobileMenu
                 items={items}
-                whatsappUrl={buildWhatsAppUrl(siteConfig.contact.whatsapp, tWhatsApp("general"))}
+                whatsappUrl={buildWhatsAppUrl(contact.whatsapp, tWhatsApp("general"))}
                 labels={{
                   open: t("openMenu"),
                   title: t("menuTitle"),

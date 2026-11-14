@@ -20,6 +20,7 @@ import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
 import { levelTheme } from "@/features/programs/level-theme";
 import type { Level } from "@/features/programs/schema";
+import { getContactSettings } from "@/features/settings/queries";
 import { getPathname, Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { absoluteUrl } from "@/lib/seo/absolute-url";
@@ -46,6 +47,7 @@ export async function LevelDetail({
 }: LevelDetailProps) {
   const t = await getTranslations("Program.level");
   const tWhatsApp = await getTranslations("WhatsApp");
+  const contact = await getContactSettings();
   const locale = (await getLocale()) as Locale;
   const theme = levelTheme[level.slug];
   const headingId = `${level.slug}-title`;
@@ -137,7 +139,7 @@ export async function LevelDetail({
               <Button asChild size="lg" variant="secondary" pop>
                 <a
                   href={buildWhatsAppUrl(
-                    siteConfig.contact.whatsapp,
+                    contact.whatsapp,
                     tWhatsApp("level", { level: level.name }),
                   )}
                   target="_blank"

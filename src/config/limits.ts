@@ -27,6 +27,20 @@ export const limits = {
     resetRateLimit: 5,
     resetWindowMs: 60 * 60 * 1000,
   },
+  settings: {
+    addressMax: 200,
+    /** Rows in the office-hours editor (one per group of days). */
+    officeHoursMax: 7,
+    inclusionsMin: 3,
+    inclusionsMax: 10,
+    inclusionMax: 120,
+  },
+  seo: {
+    /** Search results cut titles and descriptions around these lengths. */
+    titleMax: 70,
+    descriptionMin: 50,
+    descriptionMax: 160,
+  },
   blog: {
     /** Cards per page on the blog index (the featured post on page 1 is extra). */
     pageSize: 6,

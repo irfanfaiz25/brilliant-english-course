@@ -16,7 +16,7 @@ import { Doodle } from "@/components/site/doodle";
 import { Section } from "@/components/site/section";
 import { SectionHeader } from "@/components/site/section-header";
 import { Button } from "@/components/ui/button";
-import { siteConfig } from "@/config/site";
+import { getContactSettings } from "@/features/settings/queries";
 import type { PartnershipPackage } from "@/features/partners/schema";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
@@ -39,6 +39,7 @@ export async function FitSection({
 }) {
   const t = await getTranslations("Partnership");
   const tWhatsApp = await getTranslations("WhatsApp");
+  const contact = await getContactSettings();
   const format = await getFormatter();
   const { investment, inclusions } = partnershipPackage;
 
@@ -135,7 +136,7 @@ export async function FitSection({
             </div>
             <Button asChild variant="inverse" size="lg" className="mt-6 w-full">
               <a
-                href={buildWhatsAppUrl(siteConfig.contact.whatsapp, tWhatsApp("partner"))}
+                href={buildWhatsAppUrl(contact.whatsapp, tWhatsApp("partner"))}
                 target="_blank"
                 rel="noopener noreferrer"
               >

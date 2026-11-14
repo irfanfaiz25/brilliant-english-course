@@ -5,7 +5,8 @@ import { getTranslations } from "next-intl/server";
 import { BrandIcon } from "@/components/icons/brand-icon";
 import { Button } from "@/components/ui/button";
 import { mainNav } from "@/config/navigation";
-import { siteConfig, socialNetworkNames, type SocialNetwork } from "@/config/site";
+import { socialNetworkNames, type SocialNetwork } from "@/config/site";
+import { getContactSettings } from "@/features/settings/queries";
 import { Link } from "@/i18n/navigation";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
@@ -27,6 +28,7 @@ export async function SiteFooter() {
   const t = await getTranslations("Footer");
   const tNav = await getTranslations("Nav");
   const tWhatsApp = await getTranslations("WhatsApp");
+  const contact = await getContactSettings();
   const year = await getCopyrightYear();
 
   const levels = [t("levelKindy"), t("levelIntro"), t("levelSecondary")];
@@ -43,10 +45,10 @@ export async function SiteFooter() {
           </span>
           <p className="max-w-sm text-body-sm text-inverse-muted">{t("tagline")}</p>
           <ul className="flex gap-2">
-            {(Object.keys(siteConfig.social) as SocialNetwork[]).map((network) => (
+            {(Object.keys(contact.social) as SocialNetwork[]).map((network) => (
               <li key={network}>
                 <a
-                  href={siteConfig.social[network]}
+                  href={contact.social[network]}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={t("followUs", { network: socialNetworkNames[network] })}
@@ -98,7 +100,7 @@ export async function SiteFooter() {
           <h2 className="text-overline text-inverse-subtle uppercase">{t("contactUs")}</h2>
           <Button asChild variant="whatsapp" size="sm" className="w-fit">
             <a
-              href={buildWhatsAppUrl(siteConfig.contact.whatsapp, tWhatsApp("general"))}
+              href={buildWhatsAppUrl(contact.whatsapp, tWhatsApp("general"))}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -107,15 +109,15 @@ export async function SiteFooter() {
             </a>
           </Button>
           <a
-            href={`mailto:${siteConfig.contact.email}`}
+            href={`mailto:${contact.email}`}
             className={`${footerLinkClass} inline-flex items-center gap-2`}
           >
             <MailIcon aria-hidden className="size-4" />
-            {siteConfig.contact.email}
+            {contact.email}
           </a>
           <p className="inline-flex items-center gap-2 text-body-sm text-inverse-muted">
             <MapPinIcon aria-hidden className="size-4 shrink-0" />
-            {siteConfig.contact.address}
+            {contact.address}
           </p>
         </div>
       </div>
