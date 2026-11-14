@@ -3,23 +3,21 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusIcon, Trash2Icon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Controller, useFieldArray, useForm, type Control } from "react-hook-form";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 
 import { FormFooter } from "@/components/admin/form-footer";
 import { useFormErrorText } from "@/components/admin/use-form-error-text";
 import { useSaveForm } from "@/components/admin/use-save-form";
+import { WeekdayPicker } from "@/components/admin/weekday-picker";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { limits } from "@/config/limits";
 import { socialNetworkNames, socialNetworks } from "@/config/site";
-import { cn } from "@/lib/utils";
 
 import { updateContactSettings } from "../actions";
 import { contactSettingsSchema, type ContactSettings, type ContactSettingsInput } from "../schema";
-
-const WEEKDAYS = [1, 2, 3, 4, 5, 6, 7] as const;
 
 type ContactSettingsFormProps = {
   defaultValues: ContactSettingsInput;
@@ -95,7 +93,17 @@ export function ContactSettingsForm({ defaultValues, canEdit }: ContactSettingsF
                     key={row.id}
                     className="flex flex-col gap-4 rounded-xl border border-border/70 bg-background/60 p-4 md:flex-row md:items-start"
                   >
-                    <DayPicker control={form.control} index={index} />
+                    <Controller
+                      control={form.control}
+                      name={`officeHours.${index}.days`}
+                      render={({ field }) => (
+                        <WeekdayPicker
+                          value={field.value}
+                          onChange={field.onChange}
+                          label={t("days")}
+                        />
+                      )}
+                    />
                     <div className="grid flex-1 grid-cols-2 gap-3 md:max-w-72">
                       <Field label={t("opens")} error={errorText(rowErrors?.opens?.message)}>
                         {(control) => (
@@ -187,53 +195,5 @@ export function ContactSettingsForm({ defaultValues, canEdit }: ContactSettingsF
         )}
       </fieldset>
     </form>
-  );
-}
-
-/** Toggle buttons for the weekdays of one office-hours row. */
-function DayPicker({ control, index }: { control: Control<ContactSettingsInput>; index: number }) {
-  const t = useTranslations("AdminSettings");
-  return (
-    <Controller
-      control={control}
-      name={`officeHours.${index}.days`}
-      render={({ field }) => (
-        <div role="group" aria-label={t("contact.days")} className="flex flex-col gap-2">
-          <span aria-hidden className="text-label text-foreground">
-            {t("contact.days")}
-          </span>
-          <div className="flex flex-wrap gap-1.5">
-            {WEEKDAYS.map((day) => {
-              const selected = field.value.includes(day);
-              return (
-                <button
-                  key={day}
-                  type="button"
-                  aria-pressed={selected}
-                  aria-label={t(`weekdaysLong.${day}`)}
-                  onClick={() =>
-                    field.onChange(
-                      selected
-                        ? field.value.filter((value) => value !== day)
-                        : [...field.value, day].sort((a, b) => a - b),
-                    )
-                  }
-                  className={cn(
-                    "h-11 min-w-11 rounded-lg border px-2 text-body-sm font-semibold transition-colors duration-(--duration-fast)",
-                    "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
-                    "disabled:cursor-not-allowed disabled:opacity-60",
-                    selected
-                      ? "border-primary bg-primary text-primary-foreground"
-                      : "border-border bg-background text-foreground hover:border-primary/60",
-                  )}
-                >
-                  {t(`weekdays.${day}`)}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      )}
-    />
   );
 }

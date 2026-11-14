@@ -30,24 +30,27 @@ export function FormFooter({
   return (
     <div
       className={cn(
-        "flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-end",
+        "@container",
         // The bar follows the viewport only while there is something to save.
         sticky && isDirty
           ? "sticky bottom-3 z-(--z-sticky) rounded-2xl surface-glass-panel p-3 sm:pl-5"
           : "border-t border-border/60 pt-5",
       )}
     >
-      <p aria-live="polite" className="text-body-sm text-muted-foreground sm:mr-auto">
-        {isDirty ? t("unsaved") : null}
-      </p>
-      {isDirty && (
-        <Button type="button" variant="ghost" onClick={onReset} disabled={isPending}>
-          {t("reset")}
+      {/* Side by side only when the footer itself is wide enough (forms also sit in narrow panels). */}
+      <div className="flex flex-col-reverse gap-3 @lg:flex-row @lg:items-center @lg:justify-end">
+        <p aria-live="polite" className="text-body-sm text-muted-foreground @lg:mr-auto">
+          {isDirty ? t("unsaved") : null}
+        </p>
+        {isDirty && (
+          <Button type="button" variant="ghost" onClick={onReset} disabled={isPending}>
+            {t("reset")}
+          </Button>
+        )}
+        <Button type="submit" loading={isPending} disabled={!isDirty && !saveWhenClean}>
+          {saveLabel ?? t("save")}
         </Button>
-      )}
-      <Button type="submit" loading={isPending} disabled={!isDirty && !saveWhenClean}>
-        {saveLabel ?? t("save")}
-      </Button>
+      </div>
     </div>
   );
 }
