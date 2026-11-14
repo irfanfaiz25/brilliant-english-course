@@ -59,6 +59,3 @@ export const contactSettingsSchema = z.object({
 export type OfficeHours = z.infer<typeof officeHoursSchema>;
 export type ContactSettings = z.infer<typeof contactSettingsSchema>;
 export type ContactSettingsInput = z.input<typeof contactSettingsSchema>;
-
-export const settingsActionErrors = ["invalid", "forbidden", "unknown"] as const;
-export type SettingsActionError = (typeof settingsActionErrors)[number];

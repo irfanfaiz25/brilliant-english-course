@@ -74,6 +74,3 @@ export type DerivedSeo = {
   /** The title is complete (home page), so the site-name template is not added. */
   absoluteTitle: boolean;
 };
-
-export const seoActionErrors = ["invalid", "forbidden", "unknown"] as const;
-export type SeoActionError = (typeof seoActionErrors)[number];
