@@ -151,7 +151,9 @@ Rules:
   Long content forms add `LocaleTabs` + `useLocaleTabs()`, `StringListField`, `MediaPicker`, a sticky `FormFooter` and
   `UnsavedChangesGuard`; list rows use `VisibilitySwitch`, `ActionIconButton` and `DeleteButton` (`row-actions.tsx`).
   Data lists render a table from `md` and cards below, keep filters in the URL with `listHref()` and page with
-  `ListPagination` (`components/admin`); CSV files are built with `toCsv()` (`lib/csv.ts`, formula-safe); selects use `NativeSelect`, weekdays `WeekdayPicker`, and a
+  `ListPagination` (`components/admin`); CSV files are built with `toCsv()` (`lib/csv.ts`, formula-safe);
+  uploads use `MediaUploader` (`features/media/components`, browser → storage with progress) and files are stored only
+  through `storage` (`lib/storage`: R2, or `.storage/` when the `R2_*` variables are unset); image URLs come from `mediaUrl()`; selects use `NativeSelect`, weekdays `WeekdayPicker`, and a
   village is chosen with `RegionPicker` (`features/regions/components`, initial state from `getRegionPickerLevels()`).
   Public cards an admin edits are pure views (`LevelCard`, `ActivityCard`, `UnitCardView`) so forms can preview them.
 - Public pages render inside `SiteShell` (`src/app/[locale]/(site)/layout.tsx`); page content starts below the header,

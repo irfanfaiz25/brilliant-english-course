@@ -79,6 +79,7 @@ async function EditActivity({ params }: { params: Promise<{ id: string }> }) {
         id={id}
         defaultValues={activity.values}
         mediaOptions={mediaOptions}
+        canUploadMedia={can(user, "create", "media")}
         canPublish={can(user, "publish", "activities")}
         previewLabels={previewLabels}
       />

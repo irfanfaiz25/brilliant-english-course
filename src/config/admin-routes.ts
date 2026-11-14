@@ -17,6 +17,7 @@ export const adminRoutes = {
   newActivity: "/admin/kegiatan/baru",
   settings: "/admin/pengaturan",
   seo: "/admin/seo",
+  media: "/admin/media",
 } as const;
 
 /** Admin pages reachable without a session. */

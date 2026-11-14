@@ -304,3 +304,31 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
   XLSX export (a dependency for what spreadsheets already open as CSV).
 - **Follow-up:** Phase 6 notifies the assignee and the applicant through the worker; the mitra portal (later phase)
   sees only its own unit, never leads.
+
+### ADR-031 — Media uploads and storage
+
+2026-11-14 · Accepted
+
+- **Decision:** Images are uploaded from the browser straight to storage with a short-lived signed PUT URL, not
+  through the app server: `startUploadAction` returns the URL for a raw object under `tmp/<uuid>`, the browser PUTs
+  the file with `XMLHttpRequest` (real byte progress, cancellable), and `finishUploadAction` reads it back, turns it
+  into a WebP (`sharp`: rotated upright, metadata stripped, longest side at most `limits.media.maxDimension` = 2400 px,
+  quality 82), stores it under `media/<yyyy>/<mm>/<uuid>.webp` (cached for a year, keys never change), adds the
+  `media_assets` row with its audit entry and removes the raw object. Storage is Cloudflare R2 when all four `R2_*`
+  variables are set (then `NEXT_PUBLIC_MEDIA_URL`, the bucket's public custom domain, is required); otherwise the
+  local driver writes to the git-ignored `.storage/` folder, takes uploads at `/api/media/upload` with an HMAC-signed
+  token (the local stand-in for a presigned URL) and serves `media/…` at `/api/media/files/…`. JPEG, PNG and WebP up
+  to 5 MB, 10 files per batch, two uploading at a time. `media_assets` gains `name` (searchable, editable) and
+  `uploaded_by_id`. An image used anywhere (programs, activities, unit photos, posts, SEO images; deleted units and
+  posts do not count) cannot be deleted; `usage.ts` lists every referencing table once for counts, the image page
+  and the delete guard. New dependencies: `@aws-sdk/client-s3` and `@aws-sdk/s3-request-presigner` (R2's S3 API and
+  presigned URLs) and `sharp` (image processing; already used by `next/image`).
+- **Why:** Uploads do not load the small VPS, progress is real, and the same code path runs with or without R2, so CI
+  and local development need no credentials. Storing only resized WebP keeps the bucket small and pages fast. Blocking
+  deletion of used images means no page ever loses its picture.
+- **Alternatives:** Uploading through a Server Action or route (server memory and bandwidth, no browser progress);
+  resizing in the browser with canvas (uneven quality, EXIF orientation issues); keeping originals (storage cost for
+  files the site never shows); soft delete for media (no restore UI; the audit row keeps the name and key).
+- **Follow-up:** The bucket needs a CORS rule allowing `PUT` from the admin origins and a lifecycle rule deleting
+  `tmp/` objects after one day (abandoned uploads). The temporary media domain can change by updating
+  `NEXT_PUBLIC_MEDIA_URL` and rebuilding: rows store keys, not URLs. Blog cover images use the same picker (4e-2).

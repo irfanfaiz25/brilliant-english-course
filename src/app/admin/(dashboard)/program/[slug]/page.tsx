@@ -72,6 +72,7 @@ async function EditLevel({ slug }: { slug: LevelSlug }) {
       <LevelForm
         defaultValues={level.values}
         mediaOptions={mediaOptions}
+        canUploadMedia={can(user, "create", "media")}
         canEdit
         canPublish={can(user, "publish", "programs")}
         previewLabels={previewLabels}

@@ -44,4 +44,20 @@ describe("parseServerEnv", () => {
       /BETTER_AUTH_SECRET/,
     );
   });
+
+  it("takes R2 as a set of four with the bucket's public URL", () => {
+    const r2 = {
+      R2_ACCOUNT_ID: "account",
+      R2_ACCESS_KEY_ID: "key",
+      R2_SECRET_ACCESS_KEY: "secret",
+      R2_BUCKET: "bec-media",
+    };
+    expect(parseServerEnv({ ...valid, R2_BUCKET: "" }).R2_BUCKET).toBeUndefined();
+    expect(() => parseServerEnv({ ...valid, R2_BUCKET: "bec-media" })).toThrow(/R2_ACCOUNT_ID/);
+    expect(() => parseServerEnv({ ...valid, ...r2 })).toThrow(/NEXT_PUBLIC_MEDIA_URL/);
+    expect(
+      parseServerEnv({ ...valid, ...r2, NEXT_PUBLIC_MEDIA_URL: "https://media.example.com" })
+        .R2_BUCKET,
+    ).toBe("bec-media");
+  });
 });

@@ -23,6 +23,7 @@ export const adminClientNamespaces = [
   "AdminUnits",
   "AdminQuota",
   "AdminLeads",
+  "AdminMedia",
   "Regions",
 ] as const satisfies readonly (keyof Messages)[];
 

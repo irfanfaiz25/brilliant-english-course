@@ -960,7 +960,8 @@
       "quotaFull": "This village's quota is full, so the unit cannot be active yet. Release a reservation in Regional Quota (if it was made for this unit) or choose another status.",
       "quotaExceeded": "Only {limit} slots are left in this village.",
       "dateInvalid": "This date is not valid.",
-      "almostFullTooHigh": "The \"almost full\" threshold must be lower than the maximum units per village."
+      "almostFullTooHigh": "The \"almost full\" threshold must be lower than the maximum units per village.",
+      "inUse": "This image is still in use, so it cannot be deleted yet."
     },
     "back": "Back",
     "removeItem": "Remove {item}",
@@ -986,12 +987,14 @@
       "pick": "Pick an image",
       "change": "Change image",
       "title": "Media library",
-      "description": "Pick one image. Uploading new images comes with the Media module (phase 4e).",
+      "description": "Pick one image, or upload a new one from your computer.",
       "empty": "The library has no images yet.",
       "use": "Use this image",
       "none": "No image picked yet.",
       "selected": "Selected image",
-      "cancelPick": "Cancel"
+      "cancelPick": "Cancel",
+      "upload": "Upload a new image",
+      "backToLibrary": "Back to the library"
     },
     "preview": {
       "title": "Preview on the site",
@@ -1484,6 +1487,91 @@
       "status": "Status",
       "assignee": "Assignee",
       "received": "Received"
+    }
+  },
+  "AdminMedia": {
+    "description": "Every image on the site in one place. Uploads are resized automatically and stored as WebP.",
+    "libraryLabel": "Image library",
+    "upload": {
+      "title": "Upload images",
+      "description": "JPG, PNG or WebP, up to {maxMb} MB per file and {maxFiles} files at once. Stored as WebP with the longest side at most {maxPx} px.",
+      "drop": "Drag images here",
+      "or": "or",
+      "choose": "Choose files",
+      "dropActive": "Drop to upload",
+      "queueTitle": "{done} of {total} done",
+      "clear": "Clear list",
+      "queued": "Waiting",
+      "uploading": "{loaded} of {total}",
+      "processing": "Processing image…",
+      "done": "Done · {width} × {height} px",
+      "cancelled": "Cancelled",
+      "cancel": "Cancel uploading {name}",
+      "retry": "Retry uploading {name}",
+      "remove": "Remove {name} from the list",
+      "open": "Open {name}",
+      "tooMany": "Only the first {max} files are uploaded. Upload the rest once these finish.",
+      "allDone": "{count, plural, one {# image} other {# images}} uploaded.",
+      "errors": {
+        "fileType": "Unsupported format. Use JPG, PNG or WebP.",
+        "fileTooLarge": "The file is larger than {maxMb} MB. Make it smaller, then upload again.",
+        "fileEmpty": "The file is empty or damaged.",
+        "uploadFailed": "The upload was interrupted. Check the connection and retry.",
+        "uploadMissing": "The file did not reach the storage. Retry the upload.",
+        "invalidImage": "This file is not a readable image.",
+        "forbidden": "Your account may not upload images.",
+        "unknown": "The upload failed. Try again in a moment."
+      }
+    },
+    "search": "Search images",
+    "searchPlaceholder": "Image name",
+    "searchSubmit": "Search",
+    "filters": {
+      "label": "Filter images",
+      "all": "All",
+      "unused": "Not used yet"
+    },
+    "count": "{count, plural, =0 {No images} one {# image} other {# images}}",
+    "empty": "No images yet. Upload the first one above.",
+    "noResults": "No images match this filter.",
+    "pagination": {
+      "label": "Media library pages"
+    },
+    "usedCount": "Used {count}×",
+    "unused": "Not used yet",
+    "bundled": "Bundled",
+    "detail": {
+      "preview": "Preview",
+      "info": "Image details",
+      "dimensions": "Dimensions",
+      "fileSize": "File size",
+      "type": "Format",
+      "uploaded": "Uploaded",
+      "uploadedBy": "by {name}",
+      "bundledNote": "A sample image shipped with the site. Replace it with a real photo by uploading.",
+      "openOriginal": "Open image",
+      "usagesTitle": "Used in",
+      "usagesDescription": "An image that is still in use cannot be deleted.",
+      "noUsages": "Not used anywhere, so it is safe to delete.",
+      "usageKinds": {
+        "program": "Program",
+        "activity": "Activity",
+        "unit": "Unit",
+        "post": "Article",
+        "seo": "SEO"
+      },
+      "renameTitle": "Image name",
+      "renameDescription": "Only for searching the library; alt text is written where the image is used.",
+      "name": "Name",
+      "saved": "Image name saved."
+    },
+    "delete": {
+      "label": "Delete image",
+      "title": "Delete {name}?",
+      "body": "The image is removed from the library and the storage. This cannot be undone.",
+      "confirm": "Delete image",
+      "deleted": "Image deleted.",
+      "inUse": "This image is still in use, so it cannot be deleted yet. Replace it in those places first."
     }
   }
 }

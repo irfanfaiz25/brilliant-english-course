@@ -19,6 +19,9 @@ test-results/
 .env.*
 !.env.example
 
+# local media uploads (when R2 is not configured)
+.storage/
+
 # misc
 .DS_Store
 *.log

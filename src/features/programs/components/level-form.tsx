@@ -29,6 +29,8 @@ const L = limits.programs;
 type LevelFormProps = {
   defaultValues: LevelFormInput;
   mediaOptions: readonly MediaOption[];
+  /** Shows "upload a new image" in the picker (`media` create permission). */
+  canUploadMedia: boolean;
   canEdit: boolean;
   /** Only publishers see the visibility checkbox (the switch on the list does the same). */
   canPublish: boolean;
@@ -40,6 +42,7 @@ type LevelFormProps = {
 export function LevelForm({
   defaultValues,
   mediaOptions,
+  canUploadMedia,
   canEdit,
   canPublish,
   previewLabels,
@@ -145,6 +148,7 @@ export function LevelForm({
                   value={field.value}
                   onChange={field.onChange}
                   options={mediaOptions}
+                  canUpload={canUploadMedia}
                   label={t("fields.image")}
                   error={errorText(fieldState.error?.message)}
                   disabled={!canEdit}

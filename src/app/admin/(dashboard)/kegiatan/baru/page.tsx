@@ -48,6 +48,7 @@ async function NewActivity() {
     <ActivityForm
       defaultValues={emptyActivity}
       mediaOptions={mediaOptions}
+      canUploadMedia={can(user, "create", "media")}
       canPublish={can(user, "publish", "activities")}
       previewLabels={await activityCardLabels()}
     />

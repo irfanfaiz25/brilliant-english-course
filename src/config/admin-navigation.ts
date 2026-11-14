@@ -70,7 +70,7 @@ export const adminNavigation: readonly AdminNavGroup[] = [
         phase: "4f",
       },
       { key: "faq", href: "/admin/faq", icon: "faq", resource: "faq", phase: "4f" },
-      { key: "media", href: "/admin/media", icon: "media", resource: "media", phase: "4e" },
+      { key: "media", href: adminRoutes.media, icon: "media", resource: "media" },
     ],
   },
   {
