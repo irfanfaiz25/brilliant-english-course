@@ -11,21 +11,15 @@ import { Section } from "@/components/site/section";
 import { Button } from "@/components/ui/button";
 import { getUnitDirectory } from "@/features/units/queries";
 import { Link } from "@/i18n/navigation";
+import { pageMetadata } from "@/features/seo/pages";
 import { routing } from "@/i18n/routing";
-import { localizedAlternates } from "@/lib/seo/alternates";
 
 import { RegencyCards } from "./_sections/regency-cards";
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/unit">): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
-  const t = await getTranslations({ locale, namespace: "UnitPages.directory" });
-
-  return {
-    title: t("metaTitle"),
-    description: t("metaDescription"),
-    alternates: localizedAlternates("/unit", locale),
-  };
+  return pageMetadata("units", locale);
 }
 
 /**

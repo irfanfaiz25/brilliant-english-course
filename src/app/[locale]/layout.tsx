@@ -6,6 +6,8 @@ import { getMessages, getTranslations } from "next-intl/server";
 import { MotionProvider } from "@/components/motion/motion-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { siteConfig } from "@/config/site";
+import { titleTemplate } from "@/features/seo/format";
+import { getSeoDefaults } from "@/features/seo/queries";
 import { pickClientMessages } from "@/i18n/client-messages";
 import { localeRegion, routing } from "@/i18n/routing";
 import { brandColors } from "@/lib/design-tokens";
@@ -22,12 +24,16 @@ export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Pr
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
 
-  const t = await getTranslations({ locale, namespace: "Metadata" });
+  const [t, seoDefaults] = await Promise.all([
+    getTranslations({ locale, namespace: "Metadata" }),
+    getSeoDefaults(),
+  ]);
 
   return {
     metadataBase: new URL(publicEnv.NEXT_PUBLIC_SITE_URL),
-    title: { default: siteConfig.name, template: `%s · ${siteConfig.shortName}` },
-    description: t("description"),
+    title: { default: siteConfig.name, template: titleTemplate },
+    // Global default (ADR-008): pages without a description of their own inherit this one.
+    description: seoDefaults?.description[locale] ?? t("description"),
     applicationName: siteConfig.name,
     openGraph: {
       type: "website",

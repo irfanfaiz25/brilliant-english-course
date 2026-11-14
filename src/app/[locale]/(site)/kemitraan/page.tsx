@@ -11,8 +11,8 @@ import { getPartnershipPackage } from "@/features/partners/queries";
 import { TestimonialsSection } from "@/features/testimonials/components/testimonials-section";
 import { getTestimonials } from "@/features/testimonials/queries";
 import { getNetworkStats } from "@/features/units/queries";
+import { pageMetadata } from "@/features/seo/pages";
 import { routing } from "@/i18n/routing";
-import { localizedAlternates } from "@/lib/seo/alternates";
 
 import { ApplySection } from "./_sections/apply-section";
 import { BenefitsSection } from "./_sections/benefits-section";
@@ -25,14 +25,7 @@ export async function generateMetadata({
 }: PageProps<"/[locale]/kemitraan">): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
-  const t = await getTranslations({ locale, namespace: "Partnership" });
-
-  // `?wilayah=` only pre-selects the quota checker: every variant shares the page's canonical.
-  return {
-    title: t("metaTitle"),
-    description: t("metaDescription"),
-    alternates: localizedAlternates("/kemitraan", locale),
-  };
+  return pageMetadata("partnership", locale);
 }
 
 /**

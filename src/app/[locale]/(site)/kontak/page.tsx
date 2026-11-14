@@ -9,9 +9,9 @@ import { siteConfig } from "@/config/site";
 import { getContactSettings } from "@/features/settings/queries";
 import { formatUnitSchedule } from "@/features/units/service";
 import { getPathname } from "@/i18n/navigation";
+import { pageMetadata } from "@/features/seo/pages";
 import { routing } from "@/i18n/routing";
 import { absoluteUrl } from "@/lib/seo/absolute-url";
-import { localizedAlternates } from "@/lib/seo/alternates";
 import { JsonLd, organizationJsonLd } from "@/lib/seo/json-ld";
 
 import { ContactDetails } from "./_sections/contact-details";
@@ -26,13 +26,7 @@ export async function generateMetadata({
 }: PageProps<"/[locale]/kontak">): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
-  const t = await getTranslations({ locale, namespace: "Contact" });
-
-  return {
-    title: t("metaTitle"),
-    description: t("metaDescription"),
-    alternates: localizedAlternates("/kontak", locale),
-  };
+  return pageMetadata("contact", locale);
 }
 
 /**
