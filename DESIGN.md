@@ -98,6 +98,9 @@ Added beyond Penpot (Phase 2b), all in `globals.css`:
 
 - `*-strong` status shades (`success-strong` #157347, `warning-strong` #8A5A00, `destructive-strong` #B42318, `info-strong` #1D5FBF) for text on soft status backgrounds (AA).
 - Level identity: `level-kindy` (sunny), `level-intro` (teal), `level-secondary` (orange), each with `-soft` and `-strong`.
+  Admins add levels and pick one of six themes (ADR-038): `sunny`, `teal` and `orange` use those tokens; `blue`, `green`
+  and `berry` use `level-blue`, `level-green` and `level-berry` (berry is a new `berry-50/500/700` scale; strong on soft ≥ 4.5:1).
+  Theme classes live in `features/programs/level-theme.ts`; never pick a level color by slug.
 - `whatsapp-hover` #1DA851, `overlay` (backdrop), `shadow-partner` (orange pop shadow).
 - `partner-strong` (`orange-700`) for small partner text on `partner-soft` surfaces (AA).
 - Layer tokens: `--z-sticky` 30, `--z-header` 40, `--z-overlay` 50, `--z-toast` 60 (use `z-(--z-overlay)`).
@@ -259,7 +262,7 @@ Implementation rules:
 | **Button · inverse**         | Outline button for dark panels (`variant="inverse"`, white/30 border); with `pop` uses `shadow-inverse-pop`.                                                                                                                                                                                                                                                       |
 | **Button pairs**             | Buttons shown side by side share one model: same size and, if one uses `pop`, the other does too (`secondary` + `pop` = outline with `shadow-soft-pop`). Colors may differ.                                                                                                                                                                                        |
 | **Button**                   | `primary` (teal), `partner` (orange), `whatsapp` (white text), `secondary` (outline teal), `ghost`, `link`; sizes `sm` 40 / `md` 48 / `lg` 56 px, `icon`; `pop` adds the pressable brand shadow; `loading` keeps the label for screen readers; `asChild` for links.                                                                                                |
-| **Badge**                    | Level: `Kindy` (sunny), `Intro` (teal), `Secondary` (orange). Quota: `Tersedia` (success), `Sisa N slot` (warning), `Penuh` (error), `Unit baru` (info). Always text + color, never color alone.                                                                                                                                                                   |
+| **Badge**                    | Level: the level's theme (`Kindy` sunny, `Intro` teal, `Secondary` orange, added levels their picked theme). Quota: `Tersedia` (success), `Sisa N slot` (warning), `Penuh` (error), `Unit baru` (info). Always text + color, never color alone.                                                                                                                    |
 | **Cascading region select**  | Province → Regency → District → Village. Each disabled with a hint until the parent is chosen ("Pilih kabupaten dulu"). Searchable (combobox) because lists can exceed 50 items. State synced to the URL.                                                                                                                                                          |
 | **Search**                   | "Cari nama unit, kecamatan, atau kota…" — combobox with grouped results (Units / Areas), debounced 250 ms, server-side `pg_trgm`.                                                                                                                                                                                                                                  |
 | **Card · Program**           | Image, level badge, age range, 3 bullet skills, link. Whole card clickable (one link, stretched).                                                                                                                                                                                                                                                                  |
@@ -270,6 +273,7 @@ Implementation rules:
 | **Sticky mobile action bar** | Floating frosted bar below `lg`: parents → "Cek Unit" + WhatsApp; partnership pages (`partnerPaths`) → "Cek Kuota" + "Daftar Mitra". Slides in on load. Footer reserves space for it.                                                                                                                                                                              |
 | **Accordion (FAQ)**          | Radix Accordion, panels force-mounted so answers stay in the HTML for `FAQPage` schema. Opens and closes smoothly (grid-rows height + fade); hidden from AT when closed.                                                                                                                                                                                           |
 | **Testimonial**              | Quote, name, role ("Orang tua siswa Kindy", "Mitra Kab. Bogor"), optional photo and rating. Horizontal scroll-snap list on mobile, grid on desktop (no auto carousel).                                                                                                                                                                                             |
+| **Scroll rail**              | `ScrollRail` (`components/site`): a row of cards that overflows (Beranda levels from five). CSS scroll-snap; round arrow buttons move one view and hide at each end; the edge where more cards wait fades. The list is focusable (arrow keys), the arrows are pointer shortcuts. Below `md` callers pass their own layout (stacked).                               |
 | **Form field**               | Label above, helper/error text below, error announced via `aria-describedby`; inline validation on blur, not on every keystroke.                                                                                                                                                                                                                                   |
 | **Footer**                   | Dark `bg-gradient-teal-deep` band with decor blobs: logo chip, tagline, social icons (simple-icons), Program / Explore link groups, WhatsApp + email + address, copyright and ID/EN switch. Uses `inverse-*` tokens.                                                                                                                                               |
 | **Locale switch**            | Segmented ID / EN pill (`tone="light"` or `"dark"`); plain links to the same page in each language.                                                                                                                                                                                                                                                                |
@@ -315,11 +319,14 @@ Implementation rules:
 
 - **Hero:** headline and photo render immediately (LCP, never animated in). Floating glass badges drift slowly (`animate-float`, off for reduced motion). "Fun" is highlighted with a hand-drawn underline.
 - **Age chips** are plain `#level-<slug>` anchors: the browser scrolls to the level card and CSS `:target` rings it in the level color. No JavaScript.
+  Only levels in the age finder get a chip (`inAgeFinder`, ADR-038); chips wrap three to a row on phones.
 - **Hero overline** is two short segments (label + age chip) on one line — never let a pill wrap on phones.
 - **Stats** sit on a card that overlaps the hero's bottom edge; numbers come from `getNetworkStats()` and count up
   (`CountUp hiddenOnLoad`, safe because the card is inside a `Reveal`). Labels break into two balanced lines on phones
   (`<br>` in the message, hidden from `md`) so columns stay aligned.
 - **Level cards:** photo, level color bar, age chip, skills with level-colored checks; whole card is one link to `/program#<slug>`.
+  One to four levels sit in a balanced grid (one centered, two side by side, four in a row from `xl`); five or more
+  scroll in a `ScrollRail` from `md` (about 3.2 cards per view, so the next one peeks) and stay stacked on phones.
 - **Activities:** photo-led cards with text on a dark gradient; CSS scroll-snap row on phones, grid from `md`.
 
 **Beranda, 5a-2:**
@@ -343,8 +350,9 @@ Implementation rules:
 **Program, 5b:**
 
 - **Header:** breadcrumb (`Breadcrumbs`, with `BreadcrumbList` JSON-LD), overline, title, lead, two fact chips.
-- **Sticky level tabs** (shared `SectionTabs`, `components/site/section-tabs.tsx`): plain `#kindy`/`#intro`/`#secondary` anchors under the header, glass bar;
-  a pill slides to the current tab (measured offsets) and the bar scrolls horizontally on phones. Scroll-spy with
+- **Sticky level tabs** (shared `SectionTabs`, `components/site/section-tabs.tsx`): plain `#<slug>` anchors under the header, glass bar;
+  a pill slides to the current tab (measured offsets); when the tabs do not fit the bar scrolls, keeps the current tab
+  in view and fades the edge where more tabs wait. Scroll-spy with
   IntersectionObserver: the current level is the last one whose top passed the top 40% of the viewport. Level sections
   add `scroll-mt-16` so anchors land below header + tabs.
 - **Level detail** (one per level, photo side alternates): level-colored blob, frame, badge and checks; curriculum as
@@ -353,7 +361,8 @@ Implementation rules:
 - **Activities** reuse the shared section with `id="kegiatan"` (target of "see program details") and no card links.
 - **Why BEC:** four benefit cards with tinted icons that tilt on hover.
 - **Comparison:** a real `<table>` (caption, row/column headers) from `md`, stacked definition-list cards on phones —
-  both generated from the same level data.
+  both generated from the same level data. Beyond three levels the table keeps readable columns, scrolls sideways in a
+  focusable region and pins the feature column (no row hover then, the pinned cell could not follow it).
 - **FAQ** (`topic: "program"`) and **closing CTA** use the shared `FaqSection` / `ClosingCtaSection`.
 
 **Cek Unit, 5c:**
