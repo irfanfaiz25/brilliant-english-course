@@ -961,7 +961,11 @@
       "quotaExceeded": "Slot yang tersisa di desa ini hanya {limit}.",
       "dateInvalid": "Tanggal belum benar.",
       "almostFullTooHigh": "Batas \"hampir penuh\" harus lebih kecil dari maksimal unit per desa.",
-      "inUse": "Gambar ini masih dipakai, jadi belum bisa dihapus."
+      "inUse": "Gambar ini masih dipakai, jadi belum bisa dihapus.",
+      "postSlugTaken": "Slug ini sudah dipakai artikel lain dalam bahasa yang sama.",
+      "translationIncomplete": "Lengkapi kolom ini atau kosongkan semua kolom versi Inggris.",
+      "contentRequired": "Tulis isi artikel.",
+      "publishForbidden": "Akunmu tidak bisa menerbitkan atau mengarsipkan artikel."
     },
     "back": "Kembali",
     "removeItem": "Hapus {item}",
@@ -1023,6 +1027,9 @@
       "page": "Halaman {page} dari {pages}",
       "previous": "Sebelumnya",
       "next": "Berikutnya"
+    },
+    "search": {
+      "clear": "Hapus pencarian"
     }
   },
   "AdminSettings": {
@@ -1204,7 +1211,6 @@
     "add": "Tambah unit",
     "search": "Cari unit",
     "searchPlaceholder": "Nama, kode, atau slug",
-    "searchSubmit": "Cari",
     "filters": {
       "label": "Saring status",
       "all": "Semua"
@@ -1235,7 +1241,6 @@
     "studentsCount": "{count} siswa",
     "empty": "Belum ada unit. Tambahkan unit pertama saat mitra mulai bersiap.",
     "noResults": "Tidak ada unit yang cocok dengan pencarian ini.",
-    "clearSearch": "Hapus pencarian",
     "pagination": {
       "label": "Halaman daftar unit"
     },
@@ -1371,7 +1376,6 @@
     "description": "Pendaftar program kemitraan dari halaman Kemitraan, dari masuk sampai jadi mitra.",
     "search": "Cari calon mitra",
     "searchPlaceholder": "Nama, kode referensi, atau WhatsApp",
-    "searchSubmit": "Cari",
     "filters": {
       "label": "Saring status",
       "all": "Semua",
@@ -1525,7 +1529,6 @@
     },
     "search": "Cari gambar",
     "searchPlaceholder": "Nama gambar",
-    "searchSubmit": "Cari",
     "filters": {
       "label": "Saring gambar",
       "all": "Semua",
@@ -1572,6 +1575,194 @@
       "confirm": "Hapus gambar",
       "deleted": "Gambar dihapus.",
       "inUse": "Gambar ini masih dipakai, jadi belum bisa dihapus. Ganti dulu gambarnya di tempat-tempat tersebut."
+    }
+  },
+  "AdminBlog": {
+    "description": "Artikel untuk orang tua dan calon mitra. Tulis dalam bahasa Indonesia; versi Inggris opsional.",
+    "listLabel": "Daftar artikel",
+    "add": "Tulis artikel",
+    "search": "Cari artikel",
+    "searchPlaceholder": "Judul artikel",
+    "filters": {
+      "label": "Saring status",
+      "all": "Semua"
+    },
+    "status": {
+      "draft": "Draf",
+      "published": "Terbit",
+      "archived": "Arsip",
+      "scheduled": "Terjadwal"
+    },
+    "columns": {
+      "post": "Artikel",
+      "category": "Kategori",
+      "status": "Status",
+      "languages": "Bahasa",
+      "updated": "Diubah",
+      "actions": "Aksi"
+    },
+    "count": "{count, plural, =0 {Tidak ada artikel} other {# artikel}}",
+    "empty": "Belum ada artikel. Mulai dengan menulis artikel pertama.",
+    "noResults": "Tidak ada artikel yang cocok dengan saringan ini.",
+    "pagination": {
+      "label": "Halaman daftar artikel"
+    },
+    "englishMissing": "Belum ada versi Inggris",
+    "editLabel": "Ubah {title}",
+    "createTitle": "Tulis artikel",
+    "createDescription": "Simpan sebagai draf dulu; terbitkan saat sudah siap dibaca.",
+    "viewOnSite": "Lihat di situs",
+    "saved": "Artikel tersimpan.",
+    "sections": {
+      "content": {
+        "title": "Isi artikel",
+        "description": "Judul, ringkasan, dan isi per bahasa. Bahasa Indonesia wajib; versi Inggris opsional."
+      },
+      "publish": {
+        "title": "Penerbitan",
+        "description": "Draf hanya terlihat di admin. Artikel terbit tampil di blog mulai tanggal terbitnya."
+      },
+      "details": {
+        "title": "Detail",
+        "description": "Kategori, gambar sampul, dan penulis."
+      }
+    },
+    "fields": {
+      "title": "Judul",
+      "slug": "Slug halaman",
+      "slugHint": "Bagian akhir alamat artikel. Mengikuti judul sampai kamu mengubahnya.",
+      "excerpt": "Ringkasan",
+      "excerptHint": "Tampil di kartu artikel dan hasil pencarian Google (20–200 karakter).",
+      "coverAlt": "Teks alternatif sampul",
+      "coverAltHint": "Jelaskan gambar sampul untuk pembaca layar.",
+      "content": "Isi artikel",
+      "category": "Kategori",
+      "cover": "Gambar sampul",
+      "authorName": "Nama penulis",
+      "authorRole": "Peran penulis",
+      "authorRolePlaceholder": "Contoh: Tim Kurikulum BEC",
+      "status": "Status",
+      "publishedAt": "Tanggal terbit",
+      "publishedAtHint": "Kosongkan untuk memakai waktu saat diterbitkan. Tanggal di masa depan membuat artikel terjadwal.",
+      "englishOptional": "Versi Inggris opsional. Kosongkan semua kolom bila belum ada (artikel tidak tampil di /en), atau isi semuanya.",
+      "englishClear": "Kosongkan versi Inggris"
+    },
+    "publishLocked": "Akunmu bisa menulis dan menyimpan draf; penerbitan dilakukan oleh admin.",
+    "delete": {
+      "label": "Hapus artikel",
+      "title": "Hapus {title}?",
+      "body": "Artikel hilang dari blog dan daftar admin. Gambarnya tetap ada di pustaka media.",
+      "confirm": "Hapus artikel",
+      "deleted": "Artikel dihapus.",
+      "rowLabel": "Hapus {title}"
+    },
+    "editor": {
+      "toolbar": "Format teks",
+      "placeholder": "Mulai menulis isi artikel di sini…",
+      "undo": "Urungkan",
+      "redo": "Ulangi",
+      "heading": "Heading {level}",
+      "bold": "Tebal",
+      "italic": "Miring",
+      "underline": "Garis bawah",
+      "strike": "Coret",
+      "highlight": "Stabilo",
+      "textColor": "Warna teks",
+      "bulletList": "Daftar berpoin",
+      "orderedList": "Daftar bernomor",
+      "blockquote": "Kutipan",
+      "code": "Kode",
+      "codeBlock": "Blok kode",
+      "align": {
+        "left": "Rata kiri",
+        "center": "Rata tengah",
+        "right": "Rata kanan",
+        "justify": "Rata kiri-kanan"
+      },
+      "link": "Tautan",
+      "imageLibrary": "Gambar dari pustaka",
+      "imageUrl": "Gambar dari URL",
+      "imageDetails": "Teks alternatif & keterangan gambar",
+      "youtube": "Video YouTube",
+      "horizontalRule": "Garis pemisah",
+      "importHtml": "Impor HTML",
+      "colors": {
+        "none": "Tanpa warna",
+        "text": {
+          "primary": "Teal",
+          "partner": "Oranye",
+          "kindy": "Merah muda",
+          "intro": "Ungu",
+          "secondary": "Cokelat",
+          "red": "Merah",
+          "green": "Hijau",
+          "blue": "Biru",
+          "gray": "Abu-abu"
+        },
+        "highlight": {
+          "yellow": "Kuning",
+          "partner": "Oranye",
+          "kindy": "Merah muda",
+          "intro": "Ungu",
+          "green": "Hijau",
+          "blue": "Biru"
+        }
+      },
+      "table": {
+        "insert": "Sisipkan tabel",
+        "menu": "Atur tabel",
+        "addRowBefore": "Tambah baris di atas",
+        "addRowAfter": "Tambah baris di bawah",
+        "addColumnBefore": "Tambah kolom di kiri",
+        "addColumnAfter": "Tambah kolom di kanan",
+        "toggleHeaderRow": "Baris judul on/off",
+        "mergeOrSplit": "Gabung / pisah sel",
+        "deleteRow": "Hapus baris",
+        "deleteColumn": "Hapus kolom",
+        "deleteTable": "Hapus tabel"
+      },
+      "counts": {
+        "words": "{count, plural, other {# kata}}",
+        "characters": "{count, plural, other {# karakter}}"
+      },
+      "dialogs": {
+        "cancel": "Batal",
+        "apply": "Terapkan",
+        "insert": "Sisipkan",
+        "invalidUrl": "Masukkan alamat lengkap, misalnya https://contoh.com.",
+        "link": {
+          "title": "Tautan",
+          "description": "Tautan ke situs lain dibuka di tab baru.",
+          "url": "Alamat tautan",
+          "remove": "Hapus tautan"
+        },
+        "imageUrl": {
+          "title": "Gambar dari URL",
+          "description": "Gambar dari situs lain tidak diperkecil otomatis. Untuk foto sendiri, pakai pustaka media.",
+          "url": "Alamat gambar",
+          "invalid": "Gunakan alamat gambar yang diawali https://."
+        },
+        "image": {
+          "title": "Teks alternatif & keterangan",
+          "alt": "Teks alternatif",
+          "altHint": "Jelaskan isi gambar untuk pembaca layar dan mesin pencari.",
+          "altRequired": "Teks alternatif wajib diisi.",
+          "caption": "Keterangan (opsional)"
+        },
+        "youtube": {
+          "title": "Video YouTube",
+          "description": "Tempel alamat video. Diputar lewat mode privasi YouTube.",
+          "url": "Alamat video",
+          "invalid": "Alamat ini bukan video YouTube."
+        },
+        "importHtml": {
+          "title": "Impor HTML",
+          "description": "Tempel HTML dari dokumen lain. Format yang tidak didukung otomatis dibuang.",
+          "label": "Kode HTML",
+          "submit": "Impor",
+          "empty": "Tempel kode HTML dulu."
+        }
+      }
     }
   }
 }

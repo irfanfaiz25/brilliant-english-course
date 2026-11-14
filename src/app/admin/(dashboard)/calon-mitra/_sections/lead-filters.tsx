@@ -1,9 +1,7 @@
-import { SearchIcon } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { ListSearch } from "@/components/admin/list-search";
 import { adminLocale, adminRoutes } from "@/config/admin-routes";
 import type { LeadFilter, PipelineList } from "@/features/partners/admin-queries";
 import { leadStatuses } from "@/features/partners/schema";
@@ -51,35 +49,17 @@ export async function LeadFilters({
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <form
-          role="search"
+        <ListSearch
           action={adminRoutes.leads}
-          method="get"
-          className="flex w-full gap-2 sm:max-w-md"
-        >
-          {filter.status && <input type="hidden" name="status" value={filter.status} />}
-          {filter.mine && <input type="hidden" name="mine" value="1" />}
-          <label htmlFor="lead-search" className="sr-only">
-            {t("search")}
-          </label>
-          <div className="relative flex-1">
-            <SearchIcon
-              aria-hidden
-              className="pointer-events-none absolute top-1/2 left-3.5 size-5 -translate-y-1/2 text-muted-foreground"
-            />
-            <Input
-              id="lead-search"
-              type="search"
-              name="q"
-              defaultValue={filter.query}
-              placeholder={t("searchPlaceholder")}
-              className="pl-11"
-            />
-          </div>
-          <Button type="submit" variant="secondary">
-            {t("searchSubmit")}
-          </Button>
-        </form>
+          defaultValue={filter.query}
+          label={t("search")}
+          placeholder={t("searchPlaceholder")}
+          hiddenParams={{
+            ...(filter.status ? { status: filter.status } : {}),
+            ...(filter.mine ? { mine: "1" } : {}),
+          }}
+          className="sm:max-w-md"
+        />
         <Link
           href={leadListHref({ ...filter, mine: !filter.mine, page: 1 })}
           aria-pressed={filter.mine}

@@ -1,10 +1,8 @@
-import { SearchIcon, XIcon } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 
+import { ListSearch } from "@/components/admin/list-search";
 import { listHref } from "@/components/admin/list-href";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { adminLocale, adminRoutes } from "@/config/admin-routes";
 import type { AdminUnitFilter, AdminUnitList } from "@/features/units/admin-queries";
 import { unitStatuses } from "@/features/units/schema";
@@ -31,34 +29,14 @@ export async function UnitFilters({
 
   return (
     <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-      <form
-        role="search"
+      <ListSearch
         action={adminRoutes.units}
-        method="get"
-        className="flex w-full gap-2 lg:max-w-md"
-      >
-        {filter.status && <input type="hidden" name="status" value={filter.status} />}
-        <label htmlFor="unit-search" className="sr-only">
-          {t("search")}
-        </label>
-        <div className="relative flex-1">
-          <SearchIcon
-            aria-hidden
-            className="pointer-events-none absolute top-1/2 left-3.5 size-5 -translate-y-1/2 text-muted-foreground"
-          />
-          <Input
-            id="unit-search"
-            type="search"
-            name="q"
-            defaultValue={filter.query}
-            placeholder={t("searchPlaceholder")}
-            className="pl-11"
-          />
-        </div>
-        <Button type="submit" variant="secondary">
-          {t("searchSubmit")}
-        </Button>
-      </form>
+        defaultValue={filter.query}
+        label={t("search")}
+        placeholder={t("searchPlaceholder")}
+        hiddenParams={filter.status ? { status: filter.status } : {}}
+        className="lg:max-w-md"
+      />
 
       <nav aria-label={t("filters.label")} className="-mx-1 overflow-x-auto px-1 pb-1">
         <ul className="flex w-max gap-2">
@@ -93,16 +71,6 @@ export async function UnitFilters({
           })}
         </ul>
       </nav>
-
-      {filter.query && (
-        <Link
-          href={unitListHref({ status: filter.status })}
-          className="inline-flex w-fit items-center gap-1.5 rounded-md text-body-sm font-semibold text-primary lg:hidden"
-        >
-          <XIcon aria-hidden className="size-4" />
-          {t("clearSearch")}
-        </Link>
-      )}
     </div>
   );
 }

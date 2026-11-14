@@ -62,7 +62,8 @@ test.describe("admin units", () => {
       await expect(row).toContainText("Persiapan");
 
       await page.getByRole("searchbox", { name: "Cari unit" }).fill(name);
-      await page.getByRole("button", { name: "Cari" }).click();
+      // Results follow the typing; no button.
+      await expect(page).toHaveURL(/[?&]q=/);
       await expect(page.getByRole("main").getByRole("row")).toHaveCount(2);
     } finally {
       await page.goto("/admin/unit");

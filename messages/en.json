@@ -961,7 +961,11 @@
       "quotaExceeded": "Only {limit} slots are left in this village.",
       "dateInvalid": "This date is not valid.",
       "almostFullTooHigh": "The \"almost full\" threshold must be lower than the maximum units per village.",
-      "inUse": "This image is still in use, so it cannot be deleted yet."
+      "inUse": "This image is still in use, so it cannot be deleted yet.",
+      "postSlugTaken": "Another article already uses this slug in the same language.",
+      "translationIncomplete": "Fill this in, or leave every English field empty.",
+      "contentRequired": "Write the article's body.",
+      "publishForbidden": "Your account cannot publish or archive articles."
     },
     "back": "Back",
     "removeItem": "Remove {item}",
@@ -1023,6 +1027,9 @@
       "page": "Page {page} of {pages}",
       "previous": "Previous",
       "next": "Next"
+    },
+    "search": {
+      "clear": "Clear search"
     }
   },
   "AdminSettings": {
@@ -1204,7 +1211,6 @@
     "add": "Add unit",
     "search": "Search units",
     "searchPlaceholder": "Name, code or slug",
-    "searchSubmit": "Search",
     "filters": {
       "label": "Filter by status",
       "all": "All"
@@ -1235,7 +1241,6 @@
     "studentsCount": "{count} students",
     "empty": "No units yet. Add the first one when a partner starts onboarding.",
     "noResults": "No units match this search.",
-    "clearSearch": "Clear search",
     "pagination": {
       "label": "Unit list pages"
     },
@@ -1371,7 +1376,6 @@
     "description": "Applicants to the partnership programme from the Partnership page, from first contact to partner.",
     "search": "Search leads",
     "searchPlaceholder": "Name, reference or WhatsApp",
-    "searchSubmit": "Search",
     "filters": {
       "label": "Filter by status",
       "all": "All",
@@ -1525,7 +1529,6 @@
     },
     "search": "Search images",
     "searchPlaceholder": "Image name",
-    "searchSubmit": "Search",
     "filters": {
       "label": "Filter images",
       "all": "All",
@@ -1572,6 +1575,194 @@
       "confirm": "Delete image",
       "deleted": "Image deleted.",
       "inUse": "This image is still in use, so it cannot be deleted yet. Replace it in those places first."
+    }
+  },
+  "AdminBlog": {
+    "description": "Articles for parents and prospective partners. Write in Indonesian; the English version is optional.",
+    "listLabel": "Articles",
+    "add": "Write an article",
+    "search": "Search articles",
+    "searchPlaceholder": "Article title",
+    "filters": {
+      "label": "Filter by status",
+      "all": "All"
+    },
+    "status": {
+      "draft": "Draft",
+      "published": "Published",
+      "archived": "Archived",
+      "scheduled": "Scheduled"
+    },
+    "columns": {
+      "post": "Article",
+      "category": "Category",
+      "status": "Status",
+      "languages": "Languages",
+      "updated": "Updated",
+      "actions": "Actions"
+    },
+    "count": "{count, plural, =0 {No articles} one {# article} other {# articles}}",
+    "empty": "No articles yet. Start by writing the first one.",
+    "noResults": "No articles match this filter.",
+    "pagination": {
+      "label": "Article list pages"
+    },
+    "englishMissing": "No English version yet",
+    "editLabel": "Edit {title}",
+    "createTitle": "Write an article",
+    "createDescription": "Save it as a draft first; publish it when it is ready to read.",
+    "viewOnSite": "View on site",
+    "saved": "Article saved.",
+    "sections": {
+      "content": {
+        "title": "Article",
+        "description": "Title, summary and body per language. Indonesian is required; English is optional."
+      },
+      "publish": {
+        "title": "Publishing",
+        "description": "Drafts are only visible in admin. Published articles appear on the blog from their publish date."
+      },
+      "details": {
+        "title": "Details",
+        "description": "Category, cover image and author."
+      }
+    },
+    "fields": {
+      "title": "Title",
+      "slug": "Page slug",
+      "slugHint": "The end of the article's address. Follows the title until you edit it.",
+      "excerpt": "Summary",
+      "excerptHint": "Shown on article cards and in Google results (20–200 characters).",
+      "coverAlt": "Cover alt text",
+      "coverAltHint": "Describe the cover image for screen readers.",
+      "content": "Article body",
+      "category": "Category",
+      "cover": "Cover image",
+      "authorName": "Author name",
+      "authorRole": "Author role",
+      "authorRolePlaceholder": "For example: BEC Curriculum Team",
+      "status": "Status",
+      "publishedAt": "Publish date",
+      "publishedAtHint": "Leave empty to use the moment it is published. A future date schedules the article.",
+      "englishOptional": "The English version is optional. Leave every field empty if there is none yet (the article is not shown on /en), or fill them all.",
+      "englishClear": "Clear the English version"
+    },
+    "publishLocked": "Your account can write and save drafts; an admin publishes them.",
+    "delete": {
+      "label": "Delete article",
+      "title": "Delete {title}?",
+      "body": "The article disappears from the blog and the admin list. Its images stay in the media library.",
+      "confirm": "Delete article",
+      "deleted": "Article deleted.",
+      "rowLabel": "Delete {title}"
+    },
+    "editor": {
+      "toolbar": "Text formatting",
+      "placeholder": "Start writing the article here…",
+      "undo": "Undo",
+      "redo": "Redo",
+      "heading": "Heading {level}",
+      "bold": "Bold",
+      "italic": "Italic",
+      "underline": "Underline",
+      "strike": "Strikethrough",
+      "highlight": "Highlight",
+      "textColor": "Text color",
+      "bulletList": "Bulleted list",
+      "orderedList": "Numbered list",
+      "blockquote": "Quote",
+      "code": "Code",
+      "codeBlock": "Code block",
+      "align": {
+        "left": "Align left",
+        "center": "Align center",
+        "right": "Align right",
+        "justify": "Justify"
+      },
+      "link": "Link",
+      "imageLibrary": "Image from the library",
+      "imageUrl": "Image from a URL",
+      "imageDetails": "Image alt text & caption",
+      "youtube": "YouTube video",
+      "horizontalRule": "Divider",
+      "importHtml": "Import HTML",
+      "colors": {
+        "none": "No color",
+        "text": {
+          "primary": "Teal",
+          "partner": "Orange",
+          "kindy": "Pink",
+          "intro": "Purple",
+          "secondary": "Brown",
+          "red": "Red",
+          "green": "Green",
+          "blue": "Blue",
+          "gray": "Gray"
+        },
+        "highlight": {
+          "yellow": "Yellow",
+          "partner": "Orange",
+          "kindy": "Pink",
+          "intro": "Purple",
+          "green": "Green",
+          "blue": "Blue"
+        }
+      },
+      "table": {
+        "insert": "Insert table",
+        "menu": "Table options",
+        "addRowBefore": "Add row above",
+        "addRowAfter": "Add row below",
+        "addColumnBefore": "Add column left",
+        "addColumnAfter": "Add column right",
+        "toggleHeaderRow": "Toggle header row",
+        "mergeOrSplit": "Merge / split cells",
+        "deleteRow": "Delete row",
+        "deleteColumn": "Delete column",
+        "deleteTable": "Delete table"
+      },
+      "counts": {
+        "words": "{count, plural, one {# word} other {# words}}",
+        "characters": "{count, plural, one {# character} other {# characters}}"
+      },
+      "dialogs": {
+        "cancel": "Cancel",
+        "apply": "Apply",
+        "insert": "Insert",
+        "invalidUrl": "Enter a full address, for example https://example.com.",
+        "link": {
+          "title": "Link",
+          "description": "Links to other sites open in a new tab.",
+          "url": "Link address",
+          "remove": "Remove link"
+        },
+        "imageUrl": {
+          "title": "Image from a URL",
+          "description": "Images from other sites are not resized automatically. For your own photos, use the media library.",
+          "url": "Image address",
+          "invalid": "Use an image address that starts with https://."
+        },
+        "image": {
+          "title": "Alt text & caption",
+          "alt": "Alt text",
+          "altHint": "Describe the image for screen readers and search engines.",
+          "altRequired": "Alt text is required.",
+          "caption": "Caption (optional)"
+        },
+        "youtube": {
+          "title": "YouTube video",
+          "description": "Paste the video's address. It plays in YouTube's privacy mode.",
+          "url": "Video address",
+          "invalid": "This address is not a YouTube video."
+        },
+        "importHtml": {
+          "title": "Import HTML",
+          "description": "Paste HTML from another document. Unsupported formatting is removed automatically.",
+          "label": "HTML code",
+          "submit": "Import",
+          "empty": "Paste some HTML first."
+        }
+      }
     }
   }
 }
