@@ -74,21 +74,25 @@ async function OverviewContent({
       {readsLeads && (
         <>
           <LeadTrendPanel user={user} range={parseTrendRange(firstParam(params.range))} />
-          <div className="grid grid-cols-1 items-start gap-6 xl:grid-cols-2">
-            <LeadPipeline user={user} />
-            <RegionDemandPanel user={user} />
+          {/* Side by side from `xl`, the two panels share one height and scroll inside. */}
+          <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
+            <LeadPipeline user={user} className={pairedHeight} />
+            <RegionDemandPanel user={user} className={pairedHeight} />
           </div>
         </>
       )}
       {(readsLeads || readsActivity) && (
-        <div className="grid grid-cols-1 items-start gap-6 xl:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
-          {readsLeads && <LatestLeads user={user} />}
-          {readsActivity && <RecentActivity user={user} />}
+        <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+          {readsLeads && <LatestLeads user={user} className={pairedHeight} />}
+          {readsActivity && <RecentActivity user={user} className={pairedHeight} />}
         </div>
       )}
     </div>
   );
 }
+
+/** Panels that sit side by side from `xl` share this height; their bodies scroll. */
+const pairedHeight = "xl:h-120";
 
 function OverviewSkeleton() {
   return (

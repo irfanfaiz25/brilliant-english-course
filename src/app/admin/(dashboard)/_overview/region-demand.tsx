@@ -11,7 +11,14 @@ import { cn } from "@/lib/utils";
  * "Peluang wilayah": the regencies with the most applications in 12 months beside their active
  * units, so a place with demand and no unit stands out (in words, not colour alone).
  */
-export async function RegionDemandPanel({ user }: { user: SessionUser }) {
+export async function RegionDemandPanel({
+  user,
+  className,
+}: {
+  user: SessionUser;
+  /** Sets the height when it sits beside another panel (the body then scrolls). */
+  className?: string;
+}) {
   const [t, rows] = await Promise.all([
     getTranslations({ locale: adminLocale, namespace: "Admin.overview.regions" }),
     getRegionDemand(user),
@@ -19,7 +26,7 @@ export async function RegionDemandPanel({ user }: { user: SessionUser }) {
   const max = Math.max(1, ...rows.map((row) => row.leads));
 
   return (
-    <AdminPanel title={t("title")} description={t("description")}>
+    <AdminPanel scrollable className={className} title={t("title")} description={t("description")}>
       {rows.length === 0 ? (
         <p className="rounded-xl bg-surface px-4 py-6 text-body-sm text-muted-foreground">
           {t("empty")}

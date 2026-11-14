@@ -37,7 +37,14 @@ function linkFor(user: SessionUser, entry: ActivityEntry): string | null {
  * "Aktivitas terbaru": the latest audit-log entries in words ("Rina mengubah unit"), newest first,
  * each linking to what changed when the viewer may open it.
  */
-export async function RecentActivity({ user }: { user: SessionUser }) {
+export async function RecentActivity({
+  user,
+  className,
+}: {
+  user: SessionUser;
+  /** Sets the height when it sits beside another panel (the body then scrolls). */
+  className?: string;
+}) {
   const [t, format, entries] = await Promise.all([
     getTranslations({ locale: adminLocale, namespace: "Admin.overview.activity" }),
     getFormatter({ locale: adminLocale }),
@@ -51,7 +58,7 @@ export async function RecentActivity({ user }: { user: SessionUser }) {
   };
 
   return (
-    <AdminPanel title={t("title")} description={t("description")}>
+    <AdminPanel scrollable className={className} title={t("title")} description={t("description")}>
       {entries.length === 0 ? (
         <p className="rounded-xl bg-surface px-4 py-6 text-body-sm text-muted-foreground">
           {t("empty")}

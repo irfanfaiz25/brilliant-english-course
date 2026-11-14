@@ -458,7 +458,13 @@ Baseline: Penpot `02 · Dashboard` (Ringkasan, Calon Mitra, Unit Mitra, Kuota Wi
   the filtered list; hidden at 0, "nothing waiting" when all are), four KPI cards (new partner leads in 30 days with the
   change against the 30 days before as an arrow plus words, conversion over 12 months, active units, students; articles
   for roles without partnership data), the partner-lead trend, the pipeline beside regional demand, then the latest
-  leads beside the activity log. Every section shows only to roles that may read its data.
+  leads beside the activity log. Every section shows only to roles that may read its data. Panels side by side share
+  one height from `xl` (`AdminPanel scrollable`): a longer body scrolls inside, its bottom fades out and a round arrow
+  scrolls one view on; both go at the end (`ScrollFade`). Stacked below `xl`, panels keep their natural height. KPI
+  cards share one layout so a row lines up: a tinted icon chip and the label (the whole card links to its module),
+  the value with a change pill (arrow and number, green up / red down / grey same, the full sentence on hover and for
+  screen readers), one truncated caption line, and an optional visual at the bottom (a decorative sparkline, a
+  conversion bar).
 - **Charts (ADR-037):** hand-built SVG, no chart library, one axis. Series colours are the `chart-1` (teal) and
   `chart-2` (orange) tokens in that order, validated for colour-blind separation; text never wears them. Lines are 2px
   monotone curves (no overshoot below zero) over a light vertical gradient wash; gridlines are hairlines. A legend with

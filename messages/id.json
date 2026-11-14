@@ -879,14 +879,15 @@
         "deltaDown": "{count} lebih sedikit dari 30 hari sebelumnya",
         "deltaSame": "Sama dengan 30 hari sebelumnya",
         "conversion": "Konversi",
-        "conversionHint": "{converted} dari {total} calon mitra jadi mitra (12 bulan)",
+        "conversionHint": "{converted} dari {total} calon mitra · 12 bulan",
         "conversionEmpty": "Belum ada calon mitra dalam 12 bulan",
         "activeUnits": "Unit aktif",
         "activeUnitsHint": "di {cities} kab/kota",
         "students": "Siswa aktif",
         "studentsHint": "di semua unit",
         "posts": "Artikel terbit",
-        "postsHint": "{draft} draf menunggu"
+        "postsHint": "{draft} draf menunggu",
+        "open": "Buka {label}"
       },
       "actions": {
         "title": "Perlu tindakan",
@@ -1173,7 +1174,8 @@
       "dropped": "{item} diletakkan di posisi {position} dari {total}.",
       "cancelled": "Pemindahan {item} dibatalkan.",
       "saved": "Urutan disimpan."
-    }
+    },
+    "scrollMore": "Lihat lebih banyak di bawah"
   },
   "AdminSettings": {
     "description": "Kontak kantor pusat dan paket kemitraan yang tampil di situs.",

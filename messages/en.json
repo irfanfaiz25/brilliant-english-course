@@ -879,14 +879,15 @@
         "deltaDown": "{count} fewer than the 30 days before",
         "deltaSame": "Same as the 30 days before",
         "conversion": "Conversion",
-        "conversionHint": "{converted} of {total} leads became partners (12 months)",
+        "conversionHint": "{converted} of {total} leads · 12 months",
         "conversionEmpty": "No partner leads in 12 months",
         "activeUnits": "Active units",
         "activeUnitsHint": "in {cities} regencies/cities",
         "students": "Active students",
         "studentsHint": "across all units",
         "posts": "Published articles",
-        "postsHint": "{draft} drafts waiting"
+        "postsHint": "{draft} drafts waiting",
+        "open": "Open {label}"
       },
       "actions": {
         "title": "Needs action",
@@ -1173,7 +1174,8 @@
       "dropped": "{item} dropped at position {position} of {total}.",
       "cancelled": "Moving {item} cancelled.",
       "saved": "Order saved."
-    }
+    },
+    "scrollMore": "See more below"
   },
   "AdminSettings": {
     "description": "Head-office contact details and the partnership package shown on the site.",

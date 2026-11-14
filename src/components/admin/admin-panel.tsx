@@ -2,6 +2,8 @@ import { useId, type ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
 
+import { ScrollFade } from "./scroll-fade";
+
 type AdminPanelProps = {
   title: string;
   description?: ReactNode;
@@ -10,6 +12,11 @@ type AdminPanelProps = {
   /** Actions on the right of the title (buttons, links). */
   actions?: ReactNode;
   className?: string;
+  /**
+   * The body fills the panel's height and scrolls inside it, fading out while more follows (set
+   * a height on the panel, e.g. to match the panel beside it).
+   */
+  scrollable?: boolean;
   children: ReactNode;
 };
 
@@ -23,6 +30,7 @@ export function AdminPanel({
   meta,
   actions,
   className,
+  scrollable = false,
   children,
 }: AdminPanelProps) {
   const titleId = useId();
@@ -41,7 +49,7 @@ export function AdminPanel({
         </div>
         {actions && <div className="flex shrink-0 flex-wrap gap-2">{actions}</div>}
       </header>
-      {children}
+      {scrollable ? <ScrollFade className="flex-1">{children}</ScrollFade> : children}
     </section>
   );
 }

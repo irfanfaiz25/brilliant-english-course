@@ -11,7 +11,14 @@ import { leadStatusBadge } from "@/features/partners/lead-status";
 import type { SessionUser } from "@/features/users/schema";
 
 /** The newest partner applications: a table from `md`, cards below; each opens its lead. */
-export async function LatestLeads({ user }: { user: SessionUser }) {
+export async function LatestLeads({
+  user,
+  className,
+}: {
+  user: SessionUser;
+  /** Sets the height when it sits beside another panel (the body then scrolls). */
+  className?: string;
+}) {
   const [leads, t, format] = await Promise.all([
     getLatestLeads(user),
     getTranslations({ locale: adminLocale, namespace: "Admin" }),
@@ -38,6 +45,8 @@ export async function LatestLeads({ user }: { user: SessionUser }) {
 
   return (
     <AdminPanel
+      scrollable
+      className={className}
       title={t("overview.latestLeads")}
       actions={
         leads.length > 0 && (
