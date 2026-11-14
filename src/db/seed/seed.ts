@@ -79,6 +79,7 @@ async function main() {
       .values(
         Object.values(placeholderImages).map((image) => ({
           key: image.src,
+          name: image.src.replace(/^.*\/|\.[a-z0-9]+$/g, ""),
           mimeType: "image/webp",
           width: image.width,
           height: image.height,

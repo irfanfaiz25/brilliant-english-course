@@ -81,6 +81,22 @@ export const limits = {
   },
   /** Alt text of a content image (localized, stored with the content). */
   imageAltMax: 200,
+  media: {
+    /** Largest file accepted for upload, before processing. */
+    maxUploadBytes: 5 * 1024 * 1024,
+    /** Longest side after processing; larger images are scaled down, smaller ones kept. */
+    maxDimension: 2400,
+    /** WebP quality of stored images. */
+    webpQuality: 82,
+    /** Files one upload batch may hold. */
+    maxFilesPerBatch: 10,
+    /** Minutes a signed upload URL stays valid. */
+    uploadUrlMinutes: 10,
+    /** Display name (the original file name, editable later). */
+    nameMax: 120,
+    /** Images per page of the media library. */
+    pageSize: 24,
+  },
   seo: {
     /** Search results cut titles and descriptions around these lengths. */
     titleMax: 70,
