@@ -56,9 +56,18 @@ test.describe("admin blog", () => {
     await expect(panel.getByRole("textbox", { name: "Slug halaman" })).toHaveValue(slug);
 
     const bar = panel.getByRole("toolbar", { name: "Format teks" });
-    await panel.getByRole("textbox", { name: "Isi artikel (ID)" }).click();
-    await bar.getByRole("button", { name: "Heading 2" }).click();
+    const body = panel.getByRole("textbox", { name: "Isi artikel (ID)" });
+    await body.click();
+    await expect(body).toBeFocused();
+    // On a slow runner the first toolbar command can land before the editor has its selection:
+    // toggle until the button reports the heading, then check the node itself.
+    const h2 = bar.getByRole("button", { name: "Heading 2" });
+    await expect(async () => {
+      if ((await h2.getAttribute("aria-pressed")) !== "true") await h2.click();
+      await expect(h2).toHaveAttribute("aria-pressed", "true", { timeout: 1000 });
+    }).toPass();
     await page.keyboard.type("Bagian pertama");
+    await expect(body.locator("h2", { hasText: "Bagian pertama" })).toBeVisible();
     await page.keyboard.press("Enter");
     await page.keyboard.type("Kalimat dengan kata ");
     // Bold on, type, bold off: the toolbar toggles the mark at the caret.
@@ -69,13 +78,18 @@ test.describe("admin blog", () => {
     await bold.click();
     await expect(bold).toHaveAttribute("aria-pressed", "false");
     await page.keyboard.press("Enter");
-    await bar.getByRole("button", { name: "Daftar berpoin" }).click();
+    const bulletList = bar.getByRole("button", { name: "Daftar berpoin" });
+    await bulletList.click();
+    await expect(bulletList).toHaveAttribute("aria-pressed", "true");
     await page.keyboard.type("Poin satu");
     await page.keyboard.press("Enter");
     await page.keyboard.press("Enter");
     // Formatting stored as attributes: heading level, alignment and a link.
-    await bar.getByRole("button", { name: "Heading 3" }).click();
+    const h3 = bar.getByRole("button", { name: "Heading 3" });
+    await h3.click();
+    await expect(h3).toHaveAttribute("aria-pressed", "true");
     await page.keyboard.type("Sub bagian");
+    await expect(body.locator("h3", { hasText: "Sub bagian" })).toBeVisible();
     await page.keyboard.press("Enter");
     await bar.getByRole("button", { name: "Rata tengah" }).click();
     await page.keyboard.type("Teks di tengah ");
