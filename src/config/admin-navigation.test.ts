@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { resources } from "@/lib/permissions";
 
-import { activeAdminItem, adminNavigation, plannedAdminModules } from "./admin-navigation";
+import { activeAdminItem, adminNavigation } from "./admin-navigation";
 
 describe("admin navigation", () => {
   const items = adminNavigation.flatMap((group) => group.items);
@@ -14,14 +14,6 @@ describe("admin navigation", () => {
       expect(item.href.startsWith("/admin")).toBe(true);
       expect(resources).toContain(item.resource);
     }
-  });
-
-  it("lists placeholder modules by URL segment", () => {
-    expect(plannedAdminModules.get("pengguna")?.resource).toBe("users");
-    // Built modules leave the placeholder list.
-    expect(plannedAdminModules.has("blog")).toBe(false);
-    expect(plannedAdminModules.has("testimoni")).toBe(false);
-    expect(plannedAdminModules.has("")).toBe(false);
   });
 
   it("finds the active item by the longest matching prefix", () => {

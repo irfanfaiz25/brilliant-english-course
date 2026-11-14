@@ -43,7 +43,7 @@ const ALL = permissionActions;
 const READ_WRITE = ["read", "create", "update", "delete"] as const;
 const CONTENT = ["read", "create", "update", "delete", "publish"] as const;
 
-type Grants = Partial<Record<Resource, readonly PermissionAction[]>>;
+export type Grants = Partial<Record<Resource, readonly PermissionAction[]>>;
 
 /** Global grants per role. `mitra` grants apply only to records of its own unit (see below). */
 const grants: Record<UserRole, Grants> = {
@@ -82,6 +82,16 @@ const grants: Record<UserRole, Grants> = {
 
 /** Roles whose grants hold only inside their own unit. */
 const unitScopedRoles: ReadonlySet<UserRole> = new Set(["mitra"]);
+
+/** What `role` may do per resource, for the read-only matrix in the Users module. */
+export function grantsFor(role: UserRole): Grants {
+  return grants[role];
+}
+
+/** Whether `role`'s grants hold only inside its own unit (`mitra`). */
+export function isUnitScoped(role: UserRole): boolean {
+  return unitScopedRoles.has(role);
+}
 
 export function can(
   actor: Actor,

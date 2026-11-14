@@ -25,8 +25,6 @@ export type AdminNavItem = {
   icon: AdminIcon;
   /** Shown only to users who may `read` this resource (`src/lib/permissions.ts`). */
   resource: Resource;
-  /** Roadmap sub-phase that builds the module; absent once the module exists. */
-  phase?: string;
 };
 
 export type AdminNavGroup = {
@@ -75,20 +73,12 @@ export const adminNavigation: readonly AdminNavGroup[] = [
   {
     key: "system",
     items: [
-      { key: "users", href: "/admin/pengguna", icon: "users", resource: "users", phase: "4g" },
+      { key: "users", href: adminRoutes.users, icon: "users", resource: "users" },
       { key: "settings", href: adminRoutes.settings, icon: "settings", resource: "settings" },
       { key: "seo", href: adminRoutes.seo, icon: "seo", resource: "seo" },
     ],
   },
 ];
-
-/** Module pages that are still placeholders, by URL segment ("calon-mitra" → its nav item). */
-export const plannedAdminModules: ReadonlyMap<string, AdminNavItem> = new Map(
-  adminNavigation
-    .flatMap((group) => group.items)
-    .filter((item) => item.phase !== undefined)
-    .map((item) => [item.href.slice(`${adminRoutes.home}/`.length), item]),
-);
 
 /** The nav item a path belongs to (longest matching prefix), for the active state and title. */
 export function activeAdminItem(pathname: string): AdminNavItem | undefined {

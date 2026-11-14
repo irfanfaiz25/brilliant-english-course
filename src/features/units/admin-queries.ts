@@ -173,3 +173,15 @@ export async function getUnitForEdit(actor: SessionUser, id: string): Promise<Un
     },
   };
 }
+
+export type UnitOption = { id: string; name: string; code: string };
+
+/** Live units for a picker (a `mitra` account's unit), by name. */
+export async function getUnitOptions(actor: SessionUser): Promise<UnitOption[]> {
+  assertCan(actor, "read", "units");
+  return db
+    .select({ id: units.id, name: units.name, code: units.code })
+    .from(units)
+    .where(isLive)
+    .orderBy(asc(units.name));
+}

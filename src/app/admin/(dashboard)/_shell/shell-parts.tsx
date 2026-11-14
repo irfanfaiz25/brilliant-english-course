@@ -44,7 +44,12 @@ export async function UserMenu() {
       name={user.name}
       email={user.email}
       roleLabel={t(`role.${user.role}`)}
-      labels={{ menu: t("userMenu"), viewSite: t("viewSite"), signOut: t("signOut") }}
+      labels={{
+        menu: t("userMenu"),
+        account: t("account"),
+        viewSite: t("viewSite"),
+        signOut: t("signOut"),
+      }}
     />
   );
 }
