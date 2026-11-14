@@ -148,6 +148,8 @@ Rules:
   `AdminPanel` (its `h2`, description and `LastSaved` line) and submits with `useSaveForm()` + `FormFooter`
   (`components/admin`): browser validation with the shared schema, the raw values to the action, field errors back
   on their fields, a toast, `router.refresh()`. Error codes are translated by `useFormErrorText()` (`AdminForms.errors`).
+  Long content forms add `LocaleTabs` + `useLocaleTabs()`, `StringListField`, `MediaPicker`, a sticky `FormFooter` and
+  `UnsavedChangesGuard`; list rows use `VisibilitySwitch`, `ActionIconButton` and `DeleteButton` (`row-actions.tsx`).
 - Public pages render inside `SiteShell` (`src/app/[locale]/(site)/layout.tsx`); page content starts below the header,
   so a page provides its sections, not another `<main>`. Navigation items live in `src/config/navigation.ts`.
 - WhatsApp links are always built with `buildWhatsAppUrl()` (`src/lib/whatsapp.ts`); message templates live in the
@@ -159,6 +161,10 @@ Rules:
 ### Server Actions & API
 
 Every mutation follows: **validate (Zod) → authorize (`can(user, action, resource)`) → mutate in a transaction when touching >1 table → write audit log → `revalidateTag`**.
+Admin actions run this pipeline through `guardedAction()` (`features/users/guarded-action.ts`, expires tags with `updateTag`);
+the service does the transaction and audit row and throws `ActionFailure` (`lib/action-result.ts`) for rule failures such as
+`notFound` or a field error. Build form schemas from `lib/form-schemas.ts` (`textField`, `integerField`, `rowListField`,
+`imageIdField`): their messages are codes with limits (`tooLong:120`) that `useFormErrorText()` translates.
 Return a typed result `{ ok: true, data } | { ok: false, error }` (`ActionResult` in `src/lib/action-result.ts`); never throw raw errors to the client.
 Forms share one Zod schema between React Hook Form and the action; validation messages are codes translated in the UI.
 

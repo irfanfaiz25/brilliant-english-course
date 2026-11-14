@@ -464,8 +464,15 @@ Baseline: Penpot `02 · Dashboard` (Ringkasan, Calon Mitra, Unit Mitra, Kuota Wi
   the panel description. Short localized fields (SEO texts, partnership inclusions) show **both locales stacked**
   (fieldset per locale) instead of tabs, so admins compare ID and EN at a glance; long content (blog, programs) keeps
   the `ID | EN` tabs. Per-item editors on a list open in a right sheet (full width on phones). The SEO editor shows
-  the default text as placeholder, character counters and a live search-result preview. A navigation guard for
-  unsaved changes comes with the long forms (4b, 4e).
+  the default text as placeholder, character counters and a live search-result preview.
+- **Content forms (Phase 4b):** an edit page per record with a back link, `AdminPanel`s for structured fields
+  (numbers, photo, visibility) above the localized copy in `LocaleTabs` (`ID | EN`; a red dot marks a tab with
+  errors, and a failed save opens the first invalid tab and focuses its field). Lists of short texts use
+  `StringListField`; images come from `MediaPicker` (library grid, uploads arrive in 4e). Once the form is dirty the
+  save bar sticks to the bottom of the viewport, and `UnsavedChangesGuard` asks before leaving (browser prompt for
+  reload/close, a dialog for in-app links). Lists use row controls: a visibility switch with a visible state label,
+  up/down buttons for order, and delete behind a confirm dialog that names the item; every control's accessible name
+  names its item ("Hapus Book Day").
 
 ---
 
