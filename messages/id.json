@@ -902,5 +902,139 @@
       "body": "Halaman ini tidak ada atau tidak tersedia untuk akunmu.",
       "back": "Kembali ke Ringkasan"
     }
+  },
+  "AdminForms": {
+    "save": "Simpan perubahan",
+    "reset": "Batalkan perubahan",
+    "saved": "Perubahan tersimpan dan sudah tampil di situs.",
+    "unsaved": "Ada perubahan yang belum disimpan.",
+    "lastSaved": "Terakhir diubah {date} oleh {name}",
+    "lastSavedUnknown": "Terakhir diubah {date}",
+    "neverSaved": "Belum pernah diubah: situs memakai nilai bawaan.",
+    "readOnly": "Kamu hanya bisa melihat bagian ini.",
+    "add": "Tambah",
+    "remove": "Hapus",
+    "characters": "{count}/{max} karakter",
+    "errors": {
+      "invalid": "Periksa lagi kolom yang ditandai.",
+      "forbidden": "Akunmu tidak punya izin mengubah bagian ini.",
+      "unknown": "Perubahan gagal disimpan. Coba lagi sebentar lagi.",
+      "whatsappInvalid": "Masukkan nomor HP Indonesia, misalnya 0812-3456-7890.",
+      "emailInvalid": "Format email belum benar.",
+      "addressRequired": "Alamat wajib diisi (minimal 5 karakter).",
+      "addressTooLong": "Alamat maksimal {max} karakter.",
+      "timeInvalid": "Isi jam dengan format JJ:MM.",
+      "closesBeforeOpens": "Jam tutup harus setelah jam buka.",
+      "daysRequired": "Pilih minimal satu hari.",
+      "daysOverlap": "Setiap hari hanya boleh ada di satu baris jam kantor.",
+      "officeHoursRequired": "Tambahkan minimal satu baris jam kantor.",
+      "urlInvalid": "Masukkan tautan lengkap yang diawali https://.",
+      "investmentInvalid": "Isi angka rupiah tanpa titik, atau kosongkan.",
+      "inclusionRequired": "Isi poin ini (minimal 3 karakter) atau hapus barisnya.",
+      "inclusionTooLong": "Satu poin maksimal {max} karakter.",
+      "inclusionsTooFew": "Tulis minimal {min} poin.",
+      "inclusionsTooMany": "Maksimal {max} poin.",
+      "titleTooLong": "Judul maksimal {max} karakter.",
+      "descriptionTooShort": "Deskripsi minimal {min} karakter supaya jelas di hasil pencarian.",
+      "descriptionTooLong": "Deskripsi maksimal {max} karakter."
+    }
+  },
+  "AdminSettings": {
+    "description": "Kontak kantor pusat dan paket kemitraan yang tampil di situs.",
+    "contact": {
+      "title": "Kontak kantor pusat",
+      "description": "Dipakai di header, footer, halaman Kontak, dan semua tombol WhatsApp umum.",
+      "whatsapp": "Nomor WhatsApp",
+      "whatsappHint": "Nomor yang menerima chat dari tombol WhatsApp di situs.",
+      "email": "Email",
+      "address": "Alamat",
+      "hoursTitle": "Jam kantor",
+      "hoursDescription": "Ditampilkan di halaman Kontak. Satu baris untuk hari-hari dengan jam yang sama.",
+      "days": "Hari",
+      "opens": "Buka",
+      "closes": "Tutup",
+      "addHours": "Tambah baris jam",
+      "removeHours": "Hapus baris jam {index}",
+      "socialTitle": "Media sosial",
+      "socialDescription": "Tautan profil di footer dan halaman Kontak."
+    },
+    "weekdays": {
+      "1": "Sen",
+      "2": "Sel",
+      "3": "Rab",
+      "4": "Kam",
+      "5": "Jum",
+      "6": "Sab",
+      "7": "Min"
+    },
+    "weekdaysLong": {
+      "1": "Senin",
+      "2": "Selasa",
+      "3": "Rabu",
+      "4": "Kamis",
+      "5": "Jumat",
+      "6": "Sabtu",
+      "7": "Minggu"
+    },
+    "partnership": {
+      "title": "Paket kemitraan",
+      "description": "Investasi awal dan isi paket yang tampil di halaman Kemitraan.",
+      "investment": "Investasi awal (Rp)",
+      "investmentHint": "Kosongkan jika angka investasi dijelaskan saat konsultasi.",
+      "inclusions": "Yang didapat mitra",
+      "inclusionsHint": "Satu poin per baris, {min}–{max} poin.",
+      "addInclusion": "Tambah poin",
+      "removeInclusion": "Hapus poin {index}",
+      "inclusionLabel": "Poin {index}"
+    },
+    "locales": {
+      "id": "Bahasa Indonesia",
+      "en": "English"
+    }
+  },
+  "AdminSeo": {
+    "description": "Judul dan deskripsi yang muncul di Google dan saat tautan dibagikan.",
+    "defaults": {
+      "title": "Deskripsi default situs",
+      "description": "Dipakai halaman yang tidak punya deskripsi sendiri, misalnya Beranda.",
+      "field": "Deskripsi ({locale})"
+    },
+    "pages": {
+      "title": "Metadata halaman",
+      "description": "Kosongkan kolom untuk memakai teks bawaan halaman. Halaman program, artikel, dan unit diatur di modulnya masing-masing.",
+      "columns": {
+        "page": "Halaman",
+        "status": "Status",
+        "action": "Aksi"
+      },
+      "statusDefault": "Bawaan",
+      "statusCustom": "Diubah",
+      "statusNoindex": "Tidak diindeks",
+      "edit": "Ubah",
+      "editLabel": "Ubah SEO halaman {page}",
+      "names": {
+        "home": "Beranda",
+        "program": "Program",
+        "finder": "Cek Unit",
+        "units": "Daftar Unit",
+        "partnership": "Kemitraan",
+        "blog": "Blog",
+        "contact": "Kontak"
+      }
+    },
+    "editor": {
+      "title": "SEO · {page}",
+      "description": "Kolom kosong memakai teks bawaan yang terlihat sebagai contoh.",
+      "pageTitle": "Judul",
+      "pageTitleHint": "Nama situs ditambahkan otomatis di belakang judul.",
+      "pageTitleHintAbsolute": "Judul ini tampil utuh, tanpa tambahan nama situs.",
+      "pageDescription": "Deskripsi",
+      "pageDescriptionHint": "Kosongkan untuk memakai deskripsi bawaan halaman atau deskripsi default situs.",
+      "preview": "Pratinjau di Google",
+      "noindex": "Sembunyikan halaman ini dari mesin pencari (noindex)",
+      "noindexHint": "Halaman tetap bisa dibuka, tetapi tidak muncul di Google. Hanya super admin yang bisa mengubahnya.",
+      "noindexLocked": "Hanya super admin yang bisa mengubah pengaturan ini.",
+      "cancel": "Batal"
+    }
   }
 }

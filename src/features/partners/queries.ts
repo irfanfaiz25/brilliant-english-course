@@ -1,25 +1,21 @@
 import "server-only";
 
-import { z } from "zod";
-
 import { readSetting } from "@/features/settings/queries";
 import type { Locale } from "@/i18n/routing";
 
 import { partnershipPackageDefaults } from "./defaults";
-import { partnershipPackageSchema, type PartnershipPackage } from "./schema";
+import {
+  partnershipSettingSchema,
+  type PartnershipPackage,
+  type PartnershipSetting,
+} from "./schema";
 
-/** The `partnership` setting: one package per locale, admin-editable from Phase 4a. */
-const partnershipSettingSchema = z.object({
-  id: partnershipPackageSchema,
-  en: partnershipPackageSchema,
-});
+/** Both locales of the `partnership` setting: the saved one or the code defaults. */
+export async function getPartnershipSetting(): Promise<PartnershipSetting> {
+  return readSetting("partnership", partnershipSettingSchema, partnershipPackageDefaults);
+}
 
 /** The partnership package in `locale`: the saved setting or the code defaults. */
 export async function getPartnershipPackage(locale: Locale): Promise<PartnershipPackage> {
-  const packages = await readSetting(
-    "partnership",
-    partnershipSettingSchema,
-    partnershipPackageDefaults,
-  );
-  return packages[locale];
+  return (await getPartnershipSetting())[locale];
 }

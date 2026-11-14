@@ -6,7 +6,7 @@ import { DecorBlob } from "@/components/site/decor-blob";
 import { Doodle } from "@/components/site/doodle";
 import { Section } from "@/components/site/section";
 import { Button } from "@/components/ui/button";
-import { siteConfig } from "@/config/site";
+import { getContactSettings } from "@/features/settings/queries";
 import { Link } from "@/i18n/navigation";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
@@ -21,7 +21,7 @@ type ClosingCtaSectionProps = {
 };
 
 /** Closing call to action: one last nudge towards the page's main action, or WhatsApp. */
-export function ClosingCtaSection({
+export async function ClosingCtaSection({
   title,
   lead,
   primaryLabel,
@@ -30,6 +30,7 @@ export function ClosingCtaSection({
   audience = "parent",
 }: ClosingCtaSectionProps) {
   const forPartners = audience === "partner";
+  const { whatsapp } = await getContactSettings();
 
   return (
     <Section aria-labelledby="closing-cta-title" spacing="compact" className="pb-20 md:pb-28">
@@ -62,7 +63,7 @@ export function ClosingCtaSection({
               </Button>
               <Button asChild size="lg" variant="secondary" pop>
                 <a
-                  href={buildWhatsAppUrl(siteConfig.contact.whatsapp, whatsappMessage)}
+                  href={buildWhatsAppUrl(whatsapp, whatsappMessage)}
                   target="_blank"
                   rel="noopener noreferrer"
                 >

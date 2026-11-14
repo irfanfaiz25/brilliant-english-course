@@ -7,6 +7,8 @@ export const adminRoutes = {
   signIn: "/admin/masuk",
   forgotPassword: "/admin/lupa-password",
   resetPassword: "/admin/reset-password",
+  settings: "/admin/pengaturan",
+  seo: "/admin/seo",
 } as const;
 
 /** Admin pages reachable without a session. */

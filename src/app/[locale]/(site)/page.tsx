@@ -5,7 +5,6 @@ import { getTranslations } from "next-intl/server";
 import { ClosingCtaSection } from "@/components/site/closing-cta-section";
 import { FaqSection } from "@/components/site/faq-section";
 import { PageCanvas } from "@/components/site/page-canvas";
-import { siteConfig } from "@/config/site";
 import { ActivitiesSection } from "@/features/activities/components/activities-section";
 import { getActivities } from "@/features/activities/queries";
 import { getFaqItems } from "@/features/faq/queries";
@@ -14,8 +13,8 @@ import { TestimonialsSection } from "@/features/testimonials/components/testimon
 import { getTestimonials } from "@/features/testimonials/queries";
 import { unitPathsByCode } from "@/features/units/directory";
 import { getFeaturedUnits, getNetworkStats, getUnitDirectory } from "@/features/units/queries";
+import { pageMetadata } from "@/features/seo/pages";
 import { routing } from "@/i18n/routing";
-import { localizedAlternates } from "@/lib/seo/alternates";
 
 import { HeroSection } from "./_home/hero-section";
 import { PartnershipSection } from "./_home/partnership-section";
@@ -27,12 +26,7 @@ import { UnitFinderSection } from "./_home/unit-finder-section";
 export async function generateMetadata({ params }: PageProps<"/[locale]">): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
-  const t = await getTranslations({ locale, namespace: "Home" });
-
-  return {
-    title: { absolute: `${siteConfig.name} — ${t("metaTitle")}` },
-    alternates: localizedAlternates("/", locale),
-  };
+  return pageMetadata("home", locale);
 }
 
 /**

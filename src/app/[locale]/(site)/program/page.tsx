@@ -10,8 +10,8 @@ import { ActivitiesSection } from "@/features/activities/components/activities-s
 import { getActivities } from "@/features/activities/queries";
 import { getFaqItems } from "@/features/faq/queries";
 import { getLevels } from "@/features/programs/queries";
+import { pageMetadata } from "@/features/seo/pages";
 import { routing } from "@/i18n/routing";
-import { localizedAlternates } from "@/lib/seo/alternates";
 
 import { CompareSection } from "./_sections/compare-section";
 import { LevelDetail } from "./_sections/level-detail";
@@ -23,13 +23,7 @@ export async function generateMetadata({
 }: PageProps<"/[locale]/program">): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
-  const t = await getTranslations({ locale, namespace: "Program" });
-
-  return {
-    title: t("metaTitle"),
-    description: t("metaDescription"),
-    alternates: localizedAlternates("/program", locale),
-  };
+  return pageMetadata("program", locale);
 }
 
 /**

@@ -6,8 +6,8 @@ import { Suspense } from "react";
 import { PageCanvas } from "@/components/site/page-canvas";
 import { PartnerBanner } from "@/components/site/partner-banner";
 import { Section } from "@/components/site/section";
+import { pageMetadata } from "@/features/seo/pages";
 import { routing } from "@/i18n/routing";
-import { localizedAlternates } from "@/lib/seo/alternates";
 
 import { Finder } from "./_sections/finder";
 import { FinderHero } from "./_sections/finder-hero";
@@ -18,14 +18,7 @@ export async function generateMetadata({
 }: PageProps<"/[locale]/cek-unit">): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
-  const t = await getTranslations({ locale, namespace: "Finder" });
-
-  // Filtered URLs share one canonical: the page itself, not each search.
-  return {
-    title: t("metaTitle"),
-    description: t("metaDescription"),
-    alternates: localizedAlternates("/cek-unit", locale),
-  };
+  return pageMetadata("finder", locale);
 }
 
 /**

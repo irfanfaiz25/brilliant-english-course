@@ -65,11 +65,34 @@ export const partnerApplicationErrors = [
 ] as const;
 export type PartnerApplicationError = (typeof partnerApplicationErrors)[number];
 
-/** Partnership package shown on Kemitraan (admin-editable from Phase 4a, ADR-008). */
+/**
+ * Partnership package shown on Kemitraan, edited in admin settings (ADR-008). Messages are codes
+ * from `AdminSettings.errors`.
+ */
 export const partnershipPackageSchema = z.object({
   /** Starting investment in IDR; `null` keeps it for the consultation. */
-  investment: z.number().int().positive().nullable(),
-  inclusions: z.array(z.string().min(3)).min(3),
+  investment: z
+    .number("investmentInvalid")
+    .int("investmentInvalid")
+    .positive("investmentInvalid")
+    .nullable(),
+  inclusions: z
+    .array(
+      z
+        .string()
+        .trim()
+        .min(3, "inclusionRequired")
+        .max(limits.settings.inclusionMax, "inclusionTooLong"),
+    )
+    .min(limits.settings.inclusionsMin, "inclusionsTooFew")
+    .max(limits.settings.inclusionsMax, "inclusionsTooMany"),
+});
+
+/** The `partnership` setting: one package per locale. */
+export const partnershipSettingSchema = z.object({
+  id: partnershipPackageSchema,
+  en: partnershipPackageSchema,
 });
 
 export type PartnershipPackage = z.infer<typeof partnershipPackageSchema>;
+export type PartnershipSetting = z.infer<typeof partnershipSettingSchema>;

@@ -74,6 +74,11 @@ Sub-phases (separate PRs): 4a Settings & SEO defaults · 4b Programs & Activitie
 4d Leads (Calon Mitra) pipeline · 4e Blog (Tiptap) & Media (R2) · 4f Testimonials & FAQ · 4g Users & roles · 4h Ringkasan (overview).
 
 - **Done when:** each module has CRUD, validation, authorization, audit log, revalidation, and an E2E happy path.
+- 4a Settings & SEO defaults ✅ (ADR-027): Pengaturan edits the head-office contact (WhatsApp, email, address, office
+  hours, social links) and the partnership package (investment, inclusions per locale); every public WhatsApp button,
+  the header, footer and Kontak read it. SEO edits the site-wide default description and the title/description of the
+  7 static pages per locale, with a search-result preview; `noindex` is super-admin only. Every save validates with
+  the shared schema, checks the permission, writes an audit row in the same transaction and expires the cache tag.
 
 ## Phase 5 — Public website
 

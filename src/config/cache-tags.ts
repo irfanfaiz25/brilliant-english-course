@@ -12,4 +12,5 @@ export const cacheTags = {
   quota: "quota",
   blog: "blog",
   settings: "settings",
+  seo: "seo",
 } as const;

@@ -6,8 +6,8 @@ import { Suspense } from "react";
 import { ClosingCtaSection } from "@/components/site/closing-cta-section";
 import { PageCanvas } from "@/components/site/page-canvas";
 import { Section } from "@/components/site/section";
+import { pageMetadata } from "@/features/seo/pages";
 import { routing } from "@/i18n/routing";
-import { localizedAlternates } from "@/lib/seo/alternates";
 
 import { BlogHero } from "./_sections/blog-hero";
 import { BlogListing } from "./_sections/blog-listing";
@@ -16,14 +16,7 @@ import { BlogSkeleton } from "./_sections/blog-skeleton";
 export async function generateMetadata({ params }: PageProps<"/[locale]/blog">): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
-  const t = await getTranslations({ locale, namespace: "Blog" });
-
-  // Category and page variants share the index canonical.
-  return {
-    title: t("metaTitle"),
-    description: t("metaDescription"),
-    alternates: localizedAlternates("/blog", locale),
-  };
+  return pageMetadata("blog", locale);
 }
 
 /**

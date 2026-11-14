@@ -2,6 +2,7 @@
 export const settingKeys = {
   contact: "contact",
   partnership: "partnership",
+  seo: "seo",
 } as const;
 
 export type SettingKey = (typeof settingKeys)[keyof typeof settingKeys];

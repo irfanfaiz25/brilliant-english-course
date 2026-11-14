@@ -4,7 +4,7 @@ import { getTranslations } from "next-intl/server";
 import { BrandIcon } from "@/components/icons/brand-icon";
 import { DecorBlob } from "@/components/site/decor-blob";
 import { Button } from "@/components/ui/button";
-import { siteConfig } from "@/config/site";
+import { getContactSettings } from "@/features/settings/queries";
 import type { PostCategory } from "@/features/blog/schema";
 import { Link } from "@/i18n/navigation";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
@@ -14,6 +14,7 @@ export async function PostCta({ category }: { category: PostCategory }) {
   const forPartners = category === "kemitraan";
   const t = await getTranslations(forPartners ? "Blog.post.partnerCta" : "Blog.post.parentCta");
   const tWhatsApp = await getTranslations("WhatsApp");
+  const contact = await getContactSettings();
 
   return (
     <aside
@@ -36,7 +37,7 @@ export async function PostCta({ category }: { category: PostCategory }) {
           <Button asChild variant="secondary" pop>
             <a
               href={buildWhatsAppUrl(
-                siteConfig.contact.whatsapp,
+                contact.whatsapp,
                 tWhatsApp(forPartners ? "partner" : "general"),
               )}
               target="_blank"

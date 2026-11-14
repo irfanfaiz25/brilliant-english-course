@@ -12,7 +12,13 @@ export const clientNamespaces = [
 ] as const satisfies readonly (keyof Messages)[];
 
 /** Namespaces for the admin area's root layout; never sent with public pages. */
-export const adminClientNamespaces = ["UI", "Auth"] as const satisfies readonly (keyof Messages)[];
+export const adminClientNamespaces = [
+  "UI",
+  "Auth",
+  "AdminForms",
+  "AdminSettings",
+  "AdminSeo",
+] as const satisfies readonly (keyof Messages)[];
 
 export function pickClientMessages(
   messages: Messages,

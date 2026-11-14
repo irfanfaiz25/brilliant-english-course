@@ -5,9 +5,9 @@ import { getTranslations } from "next-intl/server";
 import { headers } from "next/headers";
 
 import { limits } from "@/config/limits";
-import { siteConfig } from "@/config/site";
 import { getVillageQuota } from "@/features/quota/queries";
 import { getRegionPath } from "@/features/regions/queries";
+import { getContactSettings } from "@/features/settings/queries";
 import { routing } from "@/i18n/routing";
 import type { ActionResult } from "@/lib/action-result";
 import { hashIp } from "@/lib/audit";
@@ -48,15 +48,16 @@ export async function submitPartnerApplication(
   }
   const application = parsed.data;
 
-  const [path, tWhatsApp] = await Promise.all([
+  const [path, tWhatsApp, contact] = await Promise.all([
     getRegionPath(application.villageCode),
     getTranslations({ locale, namespace: "WhatsApp" }),
+    getContactSettings(),
   ]);
   const village = path.at(-1)?.name;
   if (!village) return { ok: false, error: "villageRequired" };
   const whatsappFor = (reference: string) =>
     buildWhatsAppUrl(
-      siteConfig.contact.whatsapp,
+      contact.whatsapp,
       tWhatsApp("partnerApplication", { name: application.fullName, village, reference }),
     );
 

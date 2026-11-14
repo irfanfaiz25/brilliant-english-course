@@ -10,7 +10,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { siteConfig } from "@/config/site";
+import { getContactSettings } from "@/features/settings/queries";
 import type { FaqItem } from "@/features/faq/schema";
 import { faqPageJsonLd, JsonLd } from "@/lib/seo/json-ld";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
@@ -30,8 +30,16 @@ type FaqSectionProps = {
  * FAQ with a sticky intro + WhatsApp help card beside the accordion, and `FAQPage` structured
  * data. Answers stay in the HTML (force-mounted accordion). Shared by Home and Program.
  */
-export function FaqSection({ id = "faq", overline, title, lead, items, help }: FaqSectionProps) {
+export async function FaqSection({
+  id = "faq",
+  overline,
+  title,
+  lead,
+  items,
+  help,
+}: FaqSectionProps) {
   const headingId = `${id}-title`;
+  const { whatsapp } = await getContactSettings();
 
   return (
     <Section id={id} aria-labelledby={headingId} className="scroll-mt-16">
@@ -46,7 +54,7 @@ export function FaqSection({ id = "faq", overline, title, lead, items, help }: F
             <p className="text-body-sm text-muted-foreground">{help.text}</p>
             <Button asChild variant="whatsapp" className="w-fit">
               <a
-                href={buildWhatsAppUrl(siteConfig.contact.whatsapp, help.whatsappMessage)}
+                href={buildWhatsAppUrl(whatsapp, help.whatsappMessage)}
                 target="_blank"
                 rel="noopener noreferrer"
               >

@@ -1,27 +1,64 @@
 import { z } from "zod";
 
-const timeSchema = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/);
+import { limits } from "@/config/limits";
+import { normalizeWhatsAppNumber } from "@/lib/whatsapp";
+
+/*
+ * Setting schemas validate both the stored JSON (public reads) and the admin forms. Messages are
+ * stable codes translated by the forms (`AdminSettings.errors.<code>`).
+ */
+
+const timeSchema = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, "timeInvalid");
 
 /** Opening hours for a set of ISO weekdays (1 = Monday … 7 = Sunday). */
-export const officeHoursSchema = z.object({
-  days: z.array(z.number().int().min(1).max(7)).min(1),
-  opens: timeSchema,
-  closes: timeSchema,
-});
+export const officeHoursSchema = z
+  .object({
+    days: z.array(z.number().int().min(1).max(7)).min(1, "daysRequired"),
+    opens: timeSchema,
+    closes: timeSchema,
+  })
+  // "HH:MM" strings compare correctly as text.
+  .refine((entry) => entry.closes > entry.opens, { message: "closesBeforeOpens", path: ["closes"] })
+  .refine((entry) => new Set(entry.days).size === entry.days.length, {
+    message: "daysRequired",
+    path: ["days"],
+  });
 
-/** Head-office contact details, editable in admin settings from Phase 4a (ADR-008). */
+const socialUrlSchema = z.url({ protocol: /^https$/, message: "urlInvalid" });
+
+/** Head-office contact details, edited in admin settings (ADR-008). */
 export const contactSettingsSchema = z.object({
-  whatsapp: z.string().regex(/^62\d{8,13}$/),
-  email: z.email(),
-  address: z.string().min(5),
-  officeHours: z.array(officeHoursSchema).min(1),
+  // Admins may type "0812…" or "+62 812…"; it is stored as "62812…" like WhatsApp expects.
+  whatsapp: z
+    .string()
+    .trim()
+    .transform(normalizeWhatsAppNumber)
+    .pipe(z.string().regex(/^628\d{7,11}$/, "whatsappInvalid")),
+  email: z.string().trim().toLowerCase().pipe(z.email("emailInvalid")),
+  address: z
+    .string()
+    .trim()
+    .min(5, "addressRequired")
+    .max(limits.settings.addressMax, "addressTooLong"),
+  officeHours: z
+    .array(officeHoursSchema)
+    .min(1, "officeHoursRequired")
+    .max(limits.settings.officeHoursMax)
+    .refine((rows) => {
+      const days = rows.flatMap((row) => row.days);
+      return new Set(days).size === days.length;
+    }, "daysOverlap"),
   social: z.object({
-    instagram: z.url(),
-    facebook: z.url(),
-    youtube: z.url(),
-    tiktok: z.url(),
+    instagram: socialUrlSchema,
+    facebook: socialUrlSchema,
+    youtube: socialUrlSchema,
+    tiktok: socialUrlSchema,
   }),
 });
 
 export type OfficeHours = z.infer<typeof officeHoursSchema>;
 export type ContactSettings = z.infer<typeof contactSettingsSchema>;
+export type ContactSettingsInput = z.input<typeof contactSettingsSchema>;
+
+export const settingsActionErrors = ["invalid", "forbidden", "unknown"] as const;
+export type SettingsActionError = (typeof settingsActionErrors)[number];

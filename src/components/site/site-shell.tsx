@@ -1,7 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
 
-import { siteConfig } from "@/config/site";
+import { getContactSettings } from "@/features/settings/queries";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 import { MobileActionBar } from "./mobile-action-bar";
@@ -16,6 +16,7 @@ export async function SiteShell({ children }: { children: ReactNode }) {
   const t = await getTranslations("Common");
   const tBar = await getTranslations("MobileBar");
   const tWhatsApp = await getTranslations("WhatsApp");
+  const contact = await getContactSettings();
 
   return (
     <>
@@ -26,7 +27,7 @@ export async function SiteShell({ children }: { children: ReactNode }) {
       </main>
       <SiteFooter />
       <MobileActionBar
-        whatsappUrl={buildWhatsAppUrl(siteConfig.contact.whatsapp, tWhatsApp("general"))}
+        whatsappUrl={buildWhatsAppUrl(contact.whatsapp, tWhatsApp("general"))}
         labels={{
           region: tBar("label"),
           findUnit: tBar("findUnit"),
