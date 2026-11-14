@@ -893,11 +893,11 @@
         "title": "Needs action",
         "description": "Things waiting to be followed up. Click to open the list.",
         "allClear": "Nothing is waiting for action right now.",
-        "staleLeads": "{count, plural, one {# new partner lead} other {# new partner leads}} not contacted for over {days} days",
-        "myLeads": "{count, plural, one {# partner lead} other {# partner leads}} assigned to you",
-        "invitedUsers": "{count, plural, one {# account} other {# accounts}} awaiting activation",
-        "scheduledPosts": "{count, plural, one {# article} other {# articles}} scheduled",
-        "almostFullVillages": "{count, plural, one {# village} other {# villages}} almost full"
+        "staleLeads": "{count, plural, one {new partner lead} other {new partner leads}} not contacted for over {days} days",
+        "myLeads": "{count, plural, one {partner lead} other {partner leads}} assigned to you",
+        "invitedUsers": "{count, plural, one {account} other {accounts}} awaiting activation",
+        "scheduledPosts": "{count, plural, one {article} other {articles}} scheduled",
+        "almostFullVillages": "{count, plural, one {village} other {villages}} almost full"
       },
       "trend": {
         "title": "Partner lead trend",

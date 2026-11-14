@@ -455,7 +455,9 @@ Baseline: Penpot `02 · Dashboard` (Ringkasan, Calon Mitra, Unit Mitra, Kuota Wi
 - **SEO panel:** collapsible section on every content form — title/description with character counters, Google result preview, OG image, (super admin only) `noindex`.
 - **Empty, loading and error states** are designed for every list.
 - **Dashboard home (Ringkasan, Phase 4h):** top to bottom: "Perlu tindakan" (counts waiting on staff, each a link to
-  the filtered list; hidden at 0, "nothing waiting" when all are), four KPI cards (new partner leads in 30 days with the
+  the filtered list; hidden at 0, "nothing waiting" when all are; each item shows its count large beside a short label,
+  in an `auto-fit` grid so one item fills the row and several share it; overdue or at-capacity items lead and use the
+  partner accent), four KPI cards (new partner leads in 30 days with the
   change against the 30 days before as an arrow plus words, conversion over 12 months, active units, students; articles
   for roles without partnership data), the partner-lead trend, the pipeline beside regional demand, then the latest
   leads beside the activity log. Every section shows only to roles that may read its data. Panels side by side share

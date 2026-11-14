@@ -893,11 +893,11 @@
         "title": "Perlu tindakan",
         "description": "Hal yang menunggu ditindaklanjuti. Klik untuk membuka daftarnya.",
         "allClear": "Tidak ada yang menunggu tindakan saat ini.",
-        "staleLeads": "{count, plural, other {# calon mitra baru}} belum dihubungi lebih dari {days} hari",
-        "myLeads": "{count, plural, other {# calon mitra}} ditugaskan ke Anda",
-        "invitedUsers": "{count, plural, other {# akun}} menunggu aktivasi",
-        "scheduledPosts": "{count, plural, other {# artikel}} terjadwal terbit",
-        "almostFullVillages": "{count, plural, other {# desa}} hampir penuh"
+        "staleLeads": "calon mitra baru belum dihubungi lebih dari {days} hari",
+        "myLeads": "calon mitra ditugaskan ke Anda",
+        "invitedUsers": "akun menunggu aktivasi",
+        "scheduledPosts": "artikel terjadwal terbit",
+        "almostFullVillages": "desa hampir penuh"
       },
       "trend": {
         "title": "Tren calon mitra",
