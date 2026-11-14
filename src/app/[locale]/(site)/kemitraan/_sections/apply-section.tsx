@@ -6,8 +6,7 @@ import { DecorBlob } from "@/components/site/decor-blob";
 import { Doodle } from "@/components/site/doodle";
 import { Section } from "@/components/site/section";
 import { SectionHeader } from "@/components/site/section-header";
-import { limits } from "@/config/limits";
-import { getVillageQuota } from "@/features/quota/queries";
+import { getQuotaRules, getVillageQuota } from "@/features/quota/queries";
 import { RegionFilter } from "@/features/regions/components/region-filter";
 import { buildRegionFields, getRegionFilterLabels } from "@/features/regions/fields";
 import { getRegionPath } from "@/features/regions/queries";
@@ -66,10 +65,11 @@ async function QuotaAndForm({ searchParams }: { searchParams: SearchParams }) {
 
   const path = code ? await getRegionPath(code) : ([] as Region[]);
   const village = path.length === 4 ? path[3] : undefined;
-  const [fields, labels, quota] = await Promise.all([
+  const [fields, labels, quota, rules] = await Promise.all([
     buildRegionFields(path),
     getRegionFilterLabels(),
     village ? getVillageQuota(village.code) : Promise.resolve(null),
+    getQuotaRules(),
   ]);
   const area = path
     .slice(1, 3)
@@ -107,7 +107,7 @@ async function QuotaAndForm({ searchParams }: { searchParams: SearchParams }) {
             {village && quota ? (
               <QuotaResult key={village.code} village={village} area={area} quota={quota} />
             ) : (
-              <QuotaResult village={null} max={limits.unitsPerVillage} />
+              <QuotaResult village={null} max={rules.unitsPerVillage} />
             )}
           </PendingRegion>
         </div>

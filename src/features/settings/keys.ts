@@ -2,6 +2,7 @@
 export const settingKeys = {
   contact: "contact",
   partnership: "partnership",
+  quota: "quota",
   seo: "seo",
 } as const;
 

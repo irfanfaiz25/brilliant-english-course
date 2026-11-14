@@ -7,7 +7,7 @@ import { Breadcrumbs } from "@/components/site/breadcrumbs";
 import { DecorBlob } from "@/components/site/decor-blob";
 import { Doodle } from "@/components/site/doodle";
 import { Button } from "@/components/ui/button";
-import { limits } from "@/config/limits";
+import { getQuotaRules } from "@/features/quota/queries";
 import { placeholderImages } from "@/config/placeholder-images";
 import type { NetworkStats } from "@/features/units/schema";
 
@@ -16,6 +16,7 @@ import type { NetworkStats } from "@/features/units/schema";
  * numbers that make it credible. Photo with a floating badge from `lg`, stats card below the copy.
  */
 export async function PartnershipHero({ stats }: { stats: NetworkStats }) {
+  const rules = await getQuotaRules();
   const t = await getTranslations("Partnership.hero");
   const tNav = await getTranslations("Nav");
   // Two balanced label lines on phones, one line from `md` (same rule as the home stats).
@@ -34,7 +35,7 @@ export async function PartnershipHero({ stats }: { stats: NetworkStats }) {
     },
     {
       key: "quota",
-      value: t("quotaValue", { max: limits.unitsPerVillage }),
+      value: t("quotaValue", { max: rules.unitsPerVillage }),
       label: t.rich("quota", { br: lineBreak }),
     },
   ];
