@@ -1,4 +1,4 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test, type Locator, type Page } from "@playwright/test";
 
 import { e2eUsers, signIn } from "../auth-users";
 
@@ -17,6 +17,20 @@ async function signInTo(page: Page, path: string) {
   await signIn(page, admin.email);
   await page.waitForURL((url) => `${url.pathname}${url.search}` === path);
   await page.waitForLoadState("networkidle");
+}
+
+/** Drags a row by its grip onto the top half of `target` (Motion listens to pointer events). */
+async function dragRow(page: Page, grip: Locator, target: Locator) {
+  // The mouse does not scroll: bring both rows on screen first (the target sits right above).
+  await target.scrollIntoViewIfNeeded();
+  await grip.scrollIntoViewIfNeeded();
+  const from = await grip.boundingBox();
+  const to = await target.boundingBox();
+  if (!from || !to) throw new Error("Row to drag is not on screen");
+  await page.mouse.move(from.x + from.width / 2, from.y + from.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(from.x + from.width / 2, to.y + to.height / 4, { steps: 15 });
+  await page.mouse.up();
 }
 
 const panel = (page: Page, locale: "id" | "en") => page.locator(`[data-locale-panel="${locale}"]`);
@@ -52,14 +66,21 @@ test.describe("admin testimonials", () => {
 
     // Back on the partner list, at the end.
     await expect(page).toHaveURL(/\/admin\/testimoni\?audience=partner$/);
-    // The ordered list itself, not the filter chips above it.
-    const rows = page.getByRole("main").locator("ol").getByRole("listitem");
+    // The sortable list itself, not the breadcrumbs or the filter chips above it.
+    const rows = page.getByRole("main").locator("ol[data-sortable] > li");
     await expect(rows.last()).toContainText(name);
 
     try {
-      // Moving up swaps it with the row above.
-      await page.getByRole("button", { name: `Naikkan testimoni ${name}` }).click();
-      await expect(rows.nth((await rows.count()) - 2)).toContainText(name);
+      // Dragging its grip onto the row above swaps the two, and the order is saved. A fresh list
+      // first: no refresh from the save in flight, and the drag engine (loaded lazily) is ready.
+      await page.reload();
+      await page.waitForLoadState("networkidle");
+      const count = await rows.count();
+      await dragRow(page, page.getByTitle(`Seret untuk memindah ${name}`), rows.nth(count - 2));
+      await expect(page.getByText("Urutan disimpan.")).toBeVisible();
+      await expect(rows.nth(count - 2)).toContainText(name);
+      await page.reload();
+      await expect(rows.nth(count - 2)).toContainText(name);
 
       await page.goto("/kemitraan");
       await expect(page.getByText(quote)).toBeVisible();
@@ -107,11 +128,22 @@ test.describe("admin FAQ", () => {
     await page.getByRole("button", { name: "Tambah pertanyaan" }).click();
 
     await expect(page).toHaveURL(/\/admin\/faq\?topic=program$/);
-    await expect(page.getByRole("main").locator("ol").getByRole("listitem").last()).toContainText(
-      question,
-    );
+    const rows = page.getByRole("main").locator("ol[data-sortable] > li");
+    await expect(rows.last()).toContainText(question);
 
     try {
+      // Keyboard reordering: Space picks the row up, an arrow moves it, Space drops and saves it.
+      await page.reload();
+      await page.waitForLoadState("networkidle");
+      const count = await rows.count();
+      await rows.last().focus();
+      await page.keyboard.press("Space");
+      await page.keyboard.press("ArrowUp");
+      await page.keyboard.press("Space");
+      await expect(page.getByText("Urutan disimpan.")).toBeVisible();
+      await page.reload();
+      await expect(rows.nth(count - 2)).toContainText(question);
+
       // The answer keeps its line break on the site.
       await page.goto("/program");
       await page.getByRole("button", { name: question }).click();
@@ -130,11 +162,8 @@ test.describe("admin FAQ", () => {
       await expect(page.getByRole("button", { name: edited })).toBeVisible();
     } finally {
       await page.goto("/admin/faq?topic=program");
-      const row = page
-        .getByRole("main")
-        .locator("ol")
-        .getByRole("listitem")
-        .filter({ hasText: "Pertanyaan uji E2E" });
+      // This run's question only (before or after the edit): the stem both share.
+      const row = rows.filter({ hasText: question.slice(0, -1) });
       await row.getByRole("button", { name: /^Hapus pertanyaan/ }).click();
       await page.getByRole("alertdialog").getByRole("button", { name: "Hapus pertanyaan" }).click();
       await expect(page.getByText("Pertanyaan dihapus.")).toBeVisible();

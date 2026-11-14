@@ -144,7 +144,7 @@ test.describe("admin activities", () => {
     await saved(page);
     await expect(page).toHaveURL(/\/admin\/kegiatan$/);
 
-    const rows = page.getByRole("main").getByRole("listitem");
+    const rows = page.getByRole("main").locator("ol[data-sortable] > li");
     const row = rows.filter({ hasText: name });
     try {
       await expect(rows.last()).toContainText(name);
@@ -155,7 +155,12 @@ test.describe("admin activities", () => {
       // A fresh list: no refresh from the save in flight and no toast over the row actions.
       await page.reload();
       await page.waitForLoadState("networkidle");
-      await row.getByRole("button", { name: `Naikkan ${name}` }).click();
+      // Keyboard reordering (dragging is covered in the publishing specs): pick up, move, drop.
+      await row.focus();
+      await page.keyboard.press("Space");
+      await page.keyboard.press("ArrowUp");
+      await page.keyboard.press("Space");
+      await expect(page.getByText("Urutan disimpan.")).toBeVisible();
       await expect(rows.last()).not.toContainText(name);
 
       await page.goto("/");
