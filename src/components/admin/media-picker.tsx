@@ -42,21 +42,22 @@ export function MediaPicker({
     options.find((option) => option.id === value) ?? (picked?.id === value ? picked : undefined);
 
   return (
-    <div className="flex flex-col gap-2">
+    // A container, not the viewport, decides the layout: the picker also sits in narrow side columns.
+    <div className="@container flex flex-col gap-2">
       <span className="text-label text-foreground">{label}</span>
       <div
         className={cn(
-          "flex flex-col gap-4 rounded-xl border bg-background/60 p-3 sm:flex-row sm:items-center",
+          "flex flex-col gap-4 rounded-xl border bg-background/60 p-3 @sm:flex-row @sm:items-center",
           error ? "border-destructive" : "border-border/70",
         )}
       >
-        <div className="relative aspect-[3/2] w-full shrink-0 overflow-hidden rounded-lg bg-muted sm:w-48">
+        <div className="relative aspect-[3/2] w-full shrink-0 overflow-hidden rounded-lg bg-muted @sm:w-48">
           {selected ? (
             <Image
               src={selected.src}
               alt=""
               fill
-              sizes="(min-width: 640px) 192px, 100vw"
+              sizes="(min-width: 640px) 352px, 100vw"
               className="object-cover"
             />
           ) : (
@@ -66,7 +67,7 @@ export function MediaPicker({
           )}
         </div>
         <div className="flex min-w-0 flex-1 flex-col items-start gap-2">
-          <p className="truncate text-body-sm text-muted-foreground" aria-live="polite">
+          <p className="max-w-full truncate text-body-sm text-muted-foreground" aria-live="polite">
             {selected ? selected.name : t("none")}
           </p>
           <Button
