@@ -236,3 +236,25 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
   old value right after saving); per-locale `noindex` (no use case, easy to misconfigure).
 - **Follow-up:** Programs, posts and units reuse `applySeoOverride()` with their own editor in 4b, 4c and 4e;
   WhatsApp message templates and hero texts stay in messages until a module needs them editable.
+
+### ADR-028 — Program levels and activities in admin
+
+2026-11-14 · Accepted
+
+- **Decision:** The three program levels are fixed (`levelSlugs` drive URLs, anchors and the level colors): admins edit
+  a level's ages, sessions, class size, photo, visibility and bilingual copy, but cannot add, rename or delete one. A
+  level's age range may not overlap another level's (`overlapsAgeRange`), so the home age finder stays unambiguous.
+  Activities have full CRUD: the slug is derived once from the Indonesian name (`uniqueSlug`), new ones go to the end,
+  order changes with up/down (the list is renumbered 0…n in one transaction), and deletion is hard (no soft delete for
+  activities) with the names kept in the audit row. Both locales are required for levels and activities (short copy,
+  fully bilingual site). Images are picked from `media_assets` until uploads land in 4e. Visibility is a separate
+  `publish` permission: the switch on the list and the checkbox in the form are shown only to publishers, and the
+  services keep the stored value for others. Admin actions share `guardedAction()`; settings and SEO actions from 4a
+  moved onto it. Levels have no own URL, so their SEO stays with the Program page in the SEO module.
+- **Why:** Free-form levels would break the level theme and the URLs; the fields that change (ages, copy, photos) are
+  editable. Up/down buttons are keyboard- and screen-reader-friendly without a drag-and-drop dependency. One action
+  pipeline keeps validation, authorization, audit and cache expiry identical across modules.
+- **Alternatives:** Drag-and-drop ordering (new dependency, weaker accessibility); optional English translations with a
+  fallback (half-translated pages and harder validation for little gain); soft delete for activities (no restore UI is
+  planned, the audit row keeps what was removed).
+- **Follow-up:** 4e adds uploads to the media picker; blog posts may allow a missing English translation (ADR then).

@@ -936,7 +936,55 @@
       "inclusionsTooMany": "At most {max} items.",
       "titleTooLong": "The title can be at most {max} characters.",
       "descriptionTooShort": "Write at least {min} characters so search results stay clear.",
-      "descriptionTooLong": "The description can be at most {max} characters."
+      "descriptionTooLong": "The description can be at most {max} characters.",
+      "required": "This field is required.",
+      "tooShort": "At least {limit} characters.",
+      "tooLong": "At most {limit} characters.",
+      "tooFew": "Add at least {limit} items.",
+      "tooMany": "At most {limit} items.",
+      "numberRequired": "Enter a whole number.",
+      "numberMin": "At least {limit}.",
+      "numberMax": "At most {limit}.",
+      "imageRequired": "Pick an image from the media library.",
+      "ageRange": "The maximum age cannot be lower than the minimum age.",
+      "ageOverlap": "This age range overlaps another level.",
+      "notFound": "This item no longer exists. Reload the page."
+    },
+    "back": "Back",
+    "removeItem": "Remove {item}",
+    "locales": {
+      "label": "Content language",
+      "id": "Indonesian",
+      "en": "English",
+      "hasErrors": "has fields to fix"
+    },
+    "unsavedGuard": {
+      "title": "Leave this page?",
+      "body": "Changes you have not saved will be lost.",
+      "stay": "Stay here",
+      "leave": "Leave"
+    },
+    "cancel": "Cancel",
+    "visibility": {
+      "published": "Shown",
+      "hidden": "Hidden",
+      "changed": "Visibility updated."
+    },
+    "media": {
+      "pick": "Pick an image",
+      "change": "Change image",
+      "title": "Media library",
+      "description": "Pick one image. Uploading new images comes with the Media module (phase 4e).",
+      "empty": "The library has no images yet.",
+      "use": "Use this image",
+      "none": "No image picked yet.",
+      "selected": "Selected image",
+      "cancelPick": "Cancel"
+    },
+    "preview": {
+      "title": "Preview on the site",
+      "note": "The card as shown on {placement} ({locale}). It updates as you type.",
+      "needsImage": "Pick a photo to see the card preview."
     }
   },
   "AdminSettings": {
@@ -984,7 +1032,6 @@
       "inclusions": "What partners get",
       "inclusionsHint": "One item per row, {min}–{max} items.",
       "addInclusion": "Add item",
-      "removeInclusion": "Remove item {index}",
       "inclusionLabel": "Item {index}"
     },
     "locales": {
@@ -1036,5 +1083,102 @@
       "noindexLocked": "Only super admins can change this setting.",
       "cancel": "Cancel"
     }
+  },
+  "AdminPrograms": {
+    "description": "The three course levels shown on Home, the Programs page and the age finder.",
+    "fixedNote": "Kindy, Intro and Secondary are fixed levels. Here you edit each level's copy, ages, schedule and photo.",
+    "ages": "Ages {min}–{max}",
+    "schedule": "{sessions}× a week · max. {students} students",
+    "noImage": "No photo yet",
+    "edit": "Edit",
+    "editLabel": "Edit the {name} level",
+    "showLabel": "Show the {name} level on the site",
+    "backToList": "All levels",
+    "editTitle": "{name} level",
+    "editDescription": "Once saved, changes show on Home and the Programs page right away.",
+    "sections": {
+      "details": {
+        "title": "Class details",
+        "description": "Numbers on the level card and the comparison table."
+      },
+      "photo": {
+        "title": "Photo",
+        "description": "The level photo on Home and the Programs page."
+      },
+      "content": {
+        "title": "Content",
+        "description": "The level's copy in both languages. A tab with a red dot has fields to fix."
+      }
+    },
+    "fields": {
+      "ageMin": "Minimum age",
+      "ageMax": "Maximum age",
+      "sessionsPerWeek": "Sessions per week",
+      "maxStudentsPerClass": "Max. students per class",
+      "image": "Level photo",
+      "isPublished": "Show this level on the site",
+      "isPublishedHint": "Hidden levels do not appear on Home, the Programs page or the age finder.",
+      "name": "Level name",
+      "tagline": "Tagline",
+      "summary": "Summary",
+      "summaryHint": "Shown on the level card on Home.",
+      "skills": "Card highlights",
+      "skillsHint": "Short points on the level card on Home.",
+      "skillLabel": "Highlight {index}",
+      "addSkill": "Add highlight",
+      "description": "Description",
+      "descriptionHint": "Shown in the level section of the Programs page.",
+      "curriculum": "What children learn",
+      "curriculumHint": "Topic list on the Programs page.",
+      "curriculumLabel": "Topic {index}",
+      "addCurriculum": "Add topic",
+      "imageAlt": "Photo alt text",
+      "imageAltHint": "Describe the photo for screen readers and search engines."
+    },
+    "previewPlacement": "Home"
+  },
+  "AdminActivities": {
+    "description": "Recurring unit activities shown on Home and the Programs page.",
+    "orderHint": "The order of this list is the order on the site.",
+    "add": "Add activity",
+    "empty": "No activities yet. Add the first one to show it on the site.",
+    "noImage": "No photo yet",
+    "edit": "Edit",
+    "editLabel": "Edit {name}",
+    "showLabel": "Show {name} on the site",
+    "moveUp": "Move {name} up",
+    "moveDown": "Move {name} down",
+    "deleteLabel": "Delete {name}",
+    "deleteTitle": "Delete {name}?",
+    "deleteBody": "This activity disappears from the site and cannot be restored.",
+    "deleteConfirm": "Delete activity",
+    "deleted": "Activity deleted.",
+    "backToList": "All activities",
+    "createTitle": "Add activity",
+    "createDescription": "New activities go to the end of the list.",
+    "editTitle": "{name}",
+    "editDescription": "Once saved, changes show on Home and the Programs page right away.",
+    "sections": {
+      "photo": {
+        "title": "Photo",
+        "description": "The photo on the activity card."
+      },
+      "content": {
+        "title": "Content",
+        "description": "The activity's copy in both languages. A tab with a red dot has fields to fix."
+      }
+    },
+    "fields": {
+      "image": "Activity photo",
+      "isPublished": "Show this activity on the site",
+      "isPublishedHint": "Hidden activities stay saved but do not appear on the site.",
+      "name": "Activity name",
+      "summary": "Summary",
+      "audience": "For whom",
+      "audienceHint": "E.g. All levels, Kindy & Intro.",
+      "imageAlt": "Photo alt text",
+      "imageAltHint": "Describe the photo for screen readers and search engines."
+    },
+    "previewPlacement": "Home and the Programs page"
   }
 }

@@ -79,6 +79,10 @@ Sub-phases (separate PRs): 4a Settings & SEO defaults · 4b Programs & Activitie
   the header, footer and Kontak read it. SEO edits the site-wide default description and the title/description of the
   7 static pages per locale, with a search-result preview; `noindex` is super-admin only. Every save validates with
   the shared schema, checks the permission, writes an audit row in the same transaction and expires the cache tag.
+- 4b Programs & Activities ✅ (ADR-028): Program lists the three fixed levels (show/hide switch, edit page with class
+  details, photo from the media library, bilingual copy incl. card highlights and curriculum lists; overlapping age
+  ranges are refused). Kegiatan adds, edits, hides, reorders (up/down) and deletes activities (confirm dialog). Long
+  forms use `ID | EN` tabs with an error dot, a sticky save bar once dirty and an unsaved-changes guard.
 
 ## Phase 5 — Public website
 

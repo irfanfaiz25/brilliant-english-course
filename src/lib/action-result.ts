@@ -12,3 +12,17 @@ export function fieldErrorsOf(
 ) {
   return Object.fromEntries(issues.map((issue) => [issue.path.join("."), issue.message]));
 }
+
+/**
+ * Thrown by a service when a rule fails that the action should report as a typed result (a record
+ * that disappeared, an age range that overlaps another level). Actions turn it into `{ ok: false }`.
+ */
+export class ActionFailure<TError extends string = string> extends Error {
+  constructor(
+    readonly code: TError,
+    readonly fieldErrors?: Partial<Record<string, string>>,
+  ) {
+    super(code);
+    this.name = "ActionFailure";
+  }
+}

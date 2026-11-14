@@ -20,12 +20,14 @@ type ErrorCode = Parameters<ReturnType<typeof useTranslations<"AdminForms.errors
 /**
  * Translates a validation or action code from `AdminForms.errors`. Codes come from the shared Zod
  * schemas, so an unknown one (e.g. a built-in Zod message) falls back to the generic "invalid".
+ * Generic codes carry their limit after a colon (`tooLong:120` → "… {limit} …", `lib/form-schemas`).
  */
 export function useFormErrorText() {
   const t = useTranslations("AdminForms.errors");
   return (code: string | undefined): string | undefined => {
     if (!code) return undefined;
-    if (!t.has(code as ErrorCode)) return t("invalid");
-    return t(code as ErrorCode, errorValues[code]);
+    const [key = "", limit] = code.split(":");
+    if (!t.has(key as ErrorCode)) return t("invalid");
+    return t(key as ErrorCode, limit === undefined ? errorValues[key] : { limit: Number(limit) });
   };
 }
