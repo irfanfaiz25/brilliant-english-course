@@ -54,19 +54,12 @@ export const adminNavigation: readonly AdminNavGroup[] = [
   {
     key: "content",
     items: [
-      {
-        key: "programs",
-        href: "/admin/program",
-        icon: "programs",
-        resource: "programs",
-        phase: "4b",
-      },
+      { key: "programs", href: adminRoutes.programs, icon: "programs", resource: "programs" },
       {
         key: "activities",
-        href: "/admin/kegiatan",
+        href: adminRoutes.activities,
         icon: "activities",
         resource: "activities",
-        phase: "4b",
       },
       { key: "blog", href: "/admin/blog", icon: "blog", resource: "blog", phase: "4e" },
       {

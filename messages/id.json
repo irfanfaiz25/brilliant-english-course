@@ -936,7 +936,50 @@
       "inclusionsTooMany": "Maksimal {max} poin.",
       "titleTooLong": "Judul maksimal {max} karakter.",
       "descriptionTooShort": "Deskripsi minimal {min} karakter supaya jelas di hasil pencarian.",
-      "descriptionTooLong": "Deskripsi maksimal {max} karakter."
+      "descriptionTooLong": "Deskripsi maksimal {max} karakter.",
+      "required": "Kolom ini wajib diisi.",
+      "tooShort": "Minimal {limit} karakter.",
+      "tooLong": "Maksimal {limit} karakter.",
+      "tooFew": "Tambahkan minimal {limit} poin.",
+      "tooMany": "Maksimal {limit} poin.",
+      "numberRequired": "Isi dengan angka bulat.",
+      "numberMin": "Minimal {limit}.",
+      "numberMax": "Maksimal {limit}.",
+      "imageRequired": "Pilih gambar dari pustaka media.",
+      "ageRange": "Usia maksimal tidak boleh lebih kecil dari usia minimal.",
+      "ageOverlap": "Rentang usia ini bertabrakan dengan level lain.",
+      "notFound": "Data ini sudah tidak ada. Muat ulang halaman."
+    },
+    "back": "Kembali",
+    "removeItem": "Hapus {item}",
+    "locales": {
+      "label": "Bahasa konten",
+      "id": "Indonesia",
+      "en": "English",
+      "hasErrors": "ada isian yang perlu diperbaiki"
+    },
+    "unsavedGuard": {
+      "title": "Tinggalkan halaman ini?",
+      "body": "Perubahan yang belum disimpan akan hilang.",
+      "stay": "Tetap di sini",
+      "leave": "Tinggalkan"
+    },
+    "cancel": "Batal",
+    "visibility": {
+      "published": "Tampil",
+      "hidden": "Disembunyikan",
+      "changed": "Status tampil diperbarui."
+    },
+    "media": {
+      "pick": "Pilih gambar",
+      "change": "Ganti gambar",
+      "title": "Pustaka media",
+      "description": "Pilih satu gambar. Unggah gambar baru tersedia di modul Media (tahap 4e).",
+      "empty": "Belum ada gambar di pustaka.",
+      "use": "Pakai gambar ini",
+      "none": "Belum ada gambar dipilih.",
+      "selected": "Gambar terpilih",
+      "cancelPick": "Batal"
     }
   },
   "AdminSettings": {
@@ -984,7 +1027,6 @@
       "inclusions": "Yang didapat mitra",
       "inclusionsHint": "Satu poin per baris, {min}–{max} poin.",
       "addInclusion": "Tambah poin",
-      "removeInclusion": "Hapus poin {index}",
       "inclusionLabel": "Poin {index}"
     },
     "locales": {
@@ -1035,6 +1077,101 @@
       "noindexHint": "Halaman tetap bisa dibuka, tetapi tidak muncul di Google. Hanya super admin yang bisa mengubahnya.",
       "noindexLocked": "Hanya super admin yang bisa mengubah pengaturan ini.",
       "cancel": "Batal"
+    }
+  },
+  "AdminPrograms": {
+    "description": "Tiga level kursus yang tampil di Beranda, halaman Program, dan pencari usia.",
+    "fixedNote": "Level Kindy, Intro, dan Secondary sudah tetap. Di sini kamu mengubah isi, usia, jadwal, dan foto setiap level.",
+    "ages": "Usia {min}–{max} tahun",
+    "schedule": "{sessions}× seminggu · maks. {students} siswa",
+    "noImage": "Belum ada foto",
+    "edit": "Ubah",
+    "editLabel": "Ubah level {name}",
+    "showLabel": "Tampilkan level {name} di situs",
+    "backToList": "Semua level",
+    "editTitle": "Level {name}",
+    "editDescription": "Setelah disimpan, perubahan langsung tampil di Beranda dan halaman Program.",
+    "sections": {
+      "details": {
+        "title": "Detail kelas",
+        "description": "Angka di kartu level dan tabel perbandingan."
+      },
+      "photo": {
+        "title": "Foto",
+        "description": "Foto level di Beranda dan halaman Program."
+      },
+      "content": {
+        "title": "Isi",
+        "description": "Teks level dalam dua bahasa. Tab bertanda titik merah berisi kolom yang perlu diperbaiki."
+      }
+    },
+    "fields": {
+      "ageMin": "Usia minimal",
+      "ageMax": "Usia maksimal",
+      "sessionsPerWeek": "Pertemuan per minggu",
+      "maxStudentsPerClass": "Maks. siswa per kelas",
+      "image": "Foto level",
+      "isPublished": "Tampilkan level ini di situs",
+      "isPublishedHint": "Level yang disembunyikan tidak muncul di Beranda, halaman Program, dan pencari usia.",
+      "name": "Nama level",
+      "tagline": "Tagline",
+      "summary": "Ringkasan",
+      "summaryHint": "Tampil di kartu level Beranda.",
+      "skills": "Sorotan kartu",
+      "skillsHint": "Poin singkat di kartu level Beranda.",
+      "skillLabel": "Sorotan {index}",
+      "addSkill": "Tambah sorotan",
+      "description": "Deskripsi",
+      "descriptionHint": "Tampil di bagian level pada halaman Program.",
+      "curriculum": "Yang dipelajari",
+      "curriculumHint": "Daftar materi di halaman Program.",
+      "curriculumLabel": "Materi {index}",
+      "addCurriculum": "Tambah materi",
+      "imageAlt": "Teks alternatif foto",
+      "imageAltHint": "Jelaskan isi foto untuk pembaca layar dan mesin pencari."
+    }
+  },
+  "AdminActivities": {
+    "description": "Kegiatan rutin unit yang tampil di Beranda dan halaman Program.",
+    "orderHint": "Urutan di daftar ini sama dengan urutan di situs.",
+    "add": "Tambah kegiatan",
+    "empty": "Belum ada kegiatan. Tambahkan kegiatan pertama supaya tampil di situs.",
+    "noImage": "Belum ada foto",
+    "edit": "Ubah",
+    "editLabel": "Ubah {name}",
+    "showLabel": "Tampilkan {name} di situs",
+    "moveUp": "Naikkan {name}",
+    "moveDown": "Turunkan {name}",
+    "deleteLabel": "Hapus {name}",
+    "deleteTitle": "Hapus {name}?",
+    "deleteBody": "Kegiatan ini hilang dari situs dan tidak bisa dikembalikan.",
+    "deleteConfirm": "Hapus kegiatan",
+    "deleted": "Kegiatan dihapus.",
+    "backToList": "Semua kegiatan",
+    "createTitle": "Tambah kegiatan",
+    "createDescription": "Kegiatan baru ditaruh di akhir daftar.",
+    "editTitle": "{name}",
+    "editDescription": "Setelah disimpan, perubahan langsung tampil di Beranda dan halaman Program.",
+    "sections": {
+      "photo": {
+        "title": "Foto",
+        "description": "Foto kartu kegiatan."
+      },
+      "content": {
+        "title": "Isi",
+        "description": "Teks kegiatan dalam dua bahasa. Tab bertanda titik merah berisi kolom yang perlu diperbaiki."
+      }
+    },
+    "fields": {
+      "image": "Foto kegiatan",
+      "isPublished": "Tampilkan kegiatan ini di situs",
+      "isPublishedHint": "Kegiatan yang disembunyikan tetap tersimpan, tapi tidak muncul di situs.",
+      "name": "Nama kegiatan",
+      "summary": "Ringkasan",
+      "audience": "Untuk siapa",
+      "audienceHint": "Contoh: Semua level, Kindy & Intro.",
+      "imageAlt": "Teks alternatif foto",
+      "imageAltHint": "Jelaskan isi foto untuk pembaca layar dan mesin pencari."
     }
   }
 }

@@ -7,6 +7,9 @@ export const adminRoutes = {
   signIn: "/admin/masuk",
   forgotPassword: "/admin/lupa-password",
   resetPassword: "/admin/reset-password",
+  programs: "/admin/program",
+  activities: "/admin/kegiatan",
+  newActivity: "/admin/kegiatan/baru",
   settings: "/admin/pengaturan",
   seo: "/admin/seo",
 } as const;
