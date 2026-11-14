@@ -47,8 +47,8 @@ export const adminNavigation: readonly AdminNavGroup[] = [
     key: "partnership",
     items: [
       { key: "leads", href: "/admin/calon-mitra", icon: "leads", resource: "leads", phase: "4d" },
-      { key: "units", href: "/admin/unit", icon: "units", resource: "units", phase: "4c" },
-      { key: "quota", href: "/admin/kuota", icon: "quota", resource: "quota", phase: "4c" },
+      { key: "units", href: adminRoutes.units, icon: "units", resource: "units" },
+      { key: "quota", href: adminRoutes.quota, icon: "quota", resource: "quota" },
     ],
   },
   {

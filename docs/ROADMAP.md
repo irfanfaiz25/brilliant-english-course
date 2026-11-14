@@ -83,6 +83,11 @@ Sub-phases (separate PRs): 4a Settings & SEO defaults · 4b Programs & Activitie
   details, photo from the media library, bilingual copy incl. card highlights and curriculum lists; overlapping age
   ranges are refused). Kegiatan adds, edits, hides, reorders (up/down) and deletes activities (confirm dialog). Long
   forms use `ID | EN` tabs with an error dot, a sticky save bar once dirty and an unsaved-changes guard.
+- 4c Units & Quota ✅ (ADR-029): Unit Mitra lists units with search, status chips with counts and paging (table from
+  `md`, cards on phones); add/edit with a province → village picker, coordinates with a map check, schedule, levels
+  and a live preview of the public unit card; soft delete. Codes are generated per province (`BEC-JB-0124`), slugs are
+  unique per regency, and activating a unit in a full village is refused. Kuota Wilayah edits the quota rules (now a
+  setting read by Kemitraan), checks one village, lists occupied villages and creates/releases reservations.
 
 ## Phase 5 — Public website
 

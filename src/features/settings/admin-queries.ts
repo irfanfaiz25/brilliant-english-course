@@ -14,11 +14,11 @@ export type SettingMeta = { updatedAt: Date; updatedBy: string | null };
 
 /**
  * Last-saved info of `keys`, for the "last changed" line on admin forms. Uncached, and checks
- * that the caller may read the module the keys belong to (`settings`, or `seo` for the SEO keys).
+ * that the caller may read the module the keys belong to (`settings`, `seo` or `quota`).
  */
 export async function getSettingMeta(
   actor: SessionUser,
-  resource: Extract<Resource, "settings" | "seo">,
+  resource: Extract<Resource, "settings" | "seo" | "quota">,
   keys: readonly SettingKey[],
 ): Promise<Partial<Record<SettingKey, SettingMeta>>> {
   assertCan(actor, "read", resource);

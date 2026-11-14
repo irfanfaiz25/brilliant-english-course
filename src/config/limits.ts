@@ -1,6 +1,6 @@
 /**
- * Business and abuse limits used as code defaults. Values admins can tune (quota rules) move to
- * the `settings` domain in Phase 4 and fall back to these.
+ * Business and abuse limits used as code defaults. Values admins tune (the quota rules) live in
+ * the `settings` table and fall back to these.
  */
 export const limits = {
   /** Partner units allowed per village (desa/kelurahan), active and in onboarding together. */
@@ -48,6 +48,24 @@ export const limits = {
     skillMax: 60,
     curriculumMax: 8,
     curriculumItemMax: 120,
+  },
+  quota: {
+    /** Upper bound of the per-village maximum an admin can set. */
+    unitsPerVillageMax: 10,
+    reservationSlotsMax: 10,
+    reservationNoteMax: 200,
+  },
+  units: {
+    nameMax: 120,
+    slugMax: 80,
+    addressMax: 300,
+    managerMax: 120,
+    studentsMax: 5000,
+    /** Indonesia's bounding box, to catch swapped or mistyped coordinates. */
+    latitude: { min: -11.5, max: 6.5 },
+    longitude: { min: 94.5, max: 141.5 },
+    /** Rows per page of the admin unit list. */
+    pageSize: 20,
   },
   activities: {
     nameMax: 80,

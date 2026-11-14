@@ -11,6 +11,11 @@ export const REGION_CODE_PATTERN = /^\d{2}(\.\d{2}(\.\d{2}(\.\d{4})?)?)?$/;
  */
 export const regionCodeSchema = z.string().regex(REGION_CODE_PATTERN);
 
+/** A village-level code ("32.01.05.2001") picked in an admin form; the message is a form code. */
+export const villageCodeField = z
+  .string("villageRequired")
+  .regex(/^\d{2}\.\d{2}\.\d{2}\.\d{4}$/, "villageRequired");
+
 export { regionLevels };
 export type RegionLevel = (typeof regionLevels)[number];
 

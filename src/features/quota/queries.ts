@@ -1,45 +1,26 @@
 import "server-only";
 
-import { and, eq, gt, isNull, or, sql } from "drizzle-orm";
 import { cacheLife, cacheTag } from "next/cache";
 
 import { cacheTags } from "@/config/cache-tags";
 import { db } from "@/db/client";
-import { quotaReservations, units } from "@/db/schema";
+import { readSetting } from "@/features/settings/queries";
 
-import type { VillageQuota } from "./schema";
-import { quotaFromCounts } from "./service";
+import { quotaRulesDefaults } from "./defaults";
+import { quotaRulesSchema, type QuotaRules, type VillageQuota } from "./schema";
+import { quotaFromCounts, villageUsage } from "./service";
 
-/**
- * Partnership quota of one village: active units located in it plus open reservations. The
- * per-village maximum becomes an admin setting in Phase 4c (`limits.unitsPerVillage` until then).
- */
+/** The admin-set quota rules, or the code defaults (`limits`) until someone saves them. */
+export async function getQuotaRules(): Promise<QuotaRules> {
+  return readSetting("quota", quotaRulesSchema, quotaRulesDefaults);
+}
+
+/** Partnership quota of one village: active units located in it plus open reservations. */
 export async function getVillageQuota(villageCode: string): Promise<VillageQuota> {
   "use cache";
-  cacheTag(cacheTags.quota, cacheTags.units);
+  cacheTag(cacheTags.quota, cacheTags.units, cacheTags.settings);
   cacheLife("minutes");
 
-  const [[unitRow], [reservationRow]] = await Promise.all([
-    db
-      .select({ count: sql<number>`count(*)::int` })
-      .from(units)
-      .where(
-        and(
-          eq(units.villageCode, villageCode),
-          eq(units.status, "active"),
-          isNull(units.deletedAt),
-        ),
-      ),
-    db
-      .select({ slots: sql<number>`coalesce(sum(${quotaReservations.slots}), 0)::int` })
-      .from(quotaReservations)
-      .where(
-        and(
-          eq(quotaReservations.villageCode, villageCode),
-          or(isNull(quotaReservations.expiresAt), gt(quotaReservations.expiresAt, sql`now()`)),
-        ),
-      ),
-  ]);
-
-  return quotaFromCounts(villageCode, unitRow?.count ?? 0, reservationRow?.slots ?? 0);
+  const [usage, rules] = await Promise.all([villageUsage(db, villageCode), getQuotaRules()]);
+  return quotaFromCounts(villageCode, usage.activeUnits, usage.reserved, rules);
 }

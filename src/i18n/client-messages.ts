@@ -20,6 +20,9 @@ export const adminClientNamespaces = [
   "AdminSeo",
   "AdminPrograms",
   "AdminActivities",
+  "AdminUnits",
+  "AdminQuota",
+  "Regions",
 ] as const satisfies readonly (keyof Messages)[];
 
 export function pickClientMessages(

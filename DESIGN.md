@@ -478,6 +478,11 @@ Baseline: Penpot `02 · Dashboard` (Ringkasan, Calon Mitra, Unit Mitra, Kuota Wi
   the open language tab and updates while typing; empty fields show their field label. From `xl` it is a sticky side
   column; below that a collapsed "Pratinjau di situs" panel above the copy. The card is `inert` (not clickable or
   focusable) and labels come from the public messages of that locale.
+- **Lists and region data (Phase 4c):** data lists are a semantic table from `md` and stacked cards below (no sideways
+  scrolling on phones), with a plain GET search form, status chips that show counts and keep the search, and
+  previous/next paging. Regions are picked with `RegionPicker`: four native selects (the OS picker is best for long
+  lists on phones), each level loading the next. Components that sit in panels of varying width (the form footer,
+  the unit card's buttons) lay out by container queries, not by viewport breakpoints.
 
 ---
 

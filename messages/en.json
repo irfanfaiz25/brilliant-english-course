@@ -205,7 +205,8 @@
     "all": "All",
     "chooseParentFirst": "Choose a {parent} first",
     "apply": "Apply",
-    "reset": "Reset"
+    "reset": "Reset",
+    "choose": "Choose a {level}"
   },
   "Program": {
     "metaTitle": "English Programs for Kids: Kindy, Intro, Secondary",
@@ -948,7 +949,17 @@
       "imageRequired": "Pick an image from the media library.",
       "ageRange": "The maximum age cannot be lower than the minimum age.",
       "ageOverlap": "This age range overlaps another level.",
-      "notFound": "This item no longer exists. Reload the page."
+      "notFound": "This item no longer exists. Reload the page.",
+      "villageRequired": "Choose a village / kelurahan down to the last level.",
+      "slugInvalid": "Use lowercase letters, numbers and hyphens only (e.g. sukamaju-indah).",
+      "slugTaken": "Another unit in the same regency already uses this slug.",
+      "latitudeInvalid": "Latitude must be between -11.5 and 6.5 (Indonesia). Check that latitude and longitude are not swapped.",
+      "longitudeInvalid": "Longitude must be between 94.5 and 141.5 (Indonesia).",
+      "levelsRequired": "Choose at least one level this unit offers.",
+      "quotaFull": "This village's quota is full, so the unit cannot be active yet. Release a reservation in Regional Quota (if it was made for this unit) or choose another status.",
+      "quotaExceeded": "Only {limit} slots are left in this village.",
+      "dateInvalid": "This date is not valid.",
+      "almostFullTooHigh": "The \"almost full\" threshold must be lower than the maximum units per village."
     },
     "back": "Back",
     "removeItem": "Remove {item}",
@@ -985,6 +996,24 @@
       "title": "Preview on the site",
       "note": "The card as shown on {placement} ({locale}). It updates as you type.",
       "needsImage": "Pick a photo to see the card preview."
+    },
+    "weekdays": {
+      "1": "Mon",
+      "2": "Tue",
+      "3": "Wed",
+      "4": "Thu",
+      "5": "Fri",
+      "6": "Sat",
+      "7": "Sun"
+    },
+    "weekdaysLong": {
+      "1": "Monday",
+      "2": "Tuesday",
+      "3": "Wednesday",
+      "4": "Thursday",
+      "5": "Friday",
+      "6": "Saturday",
+      "7": "Sunday"
     }
   },
   "AdminSettings": {
@@ -1005,24 +1034,6 @@
       "removeHours": "Remove hours row {index}",
       "socialTitle": "Social media",
       "socialDescription": "Profile links in the footer and on the Contact page."
-    },
-    "weekdays": {
-      "1": "Mon",
-      "2": "Tue",
-      "3": "Wed",
-      "4": "Thu",
-      "5": "Fri",
-      "6": "Sat",
-      "7": "Sun"
-    },
-    "weekdaysLong": {
-      "1": "Monday",
-      "2": "Tuesday",
-      "3": "Wednesday",
-      "4": "Thursday",
-      "5": "Friday",
-      "6": "Saturday",
-      "7": "Sunday"
     },
     "partnership": {
       "title": "Partnership package",
@@ -1180,5 +1191,177 @@
       "imageAltHint": "Describe the photo for screen readers and search engines."
     },
     "previewPlacement": "Home and the Programs page"
+  },
+  "AdminUnits": {
+    "description": "Partner-owned units: details, schedules and whether they show on the site.",
+    "add": "Add unit",
+    "search": "Search units",
+    "searchPlaceholder": "Name, code or slug",
+    "searchSubmit": "Search",
+    "filters": {
+      "label": "Filter by status",
+      "all": "All"
+    },
+    "status": {
+      "onboarding": "Onboarding",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "statusHint": {
+      "onboarding": "Not on the site yet and not using a village quota slot.",
+      "active": "Shown on the site and uses one village quota slot.",
+      "inactive": "Hidden from the site; the village quota slot is free again."
+    },
+    "enrollment": {
+      "open": "Enrolment open",
+      "limited": "Limited places",
+      "full": "Classes full"
+    },
+    "columns": {
+      "unit": "Unit",
+      "location": "Location",
+      "status": "Status",
+      "enrollment": "Enrolment",
+      "students": "Students",
+      "actions": "Actions"
+    },
+    "studentsCount": "{count} students",
+    "empty": "No units yet. Add the first one when a partner starts onboarding.",
+    "noResults": "No units match this search.",
+    "clearSearch": "Clear search",
+    "pagination": {
+      "label": "Unit list pages",
+      "page": "Page {page} of {pages}",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "editLabel": "Edit {name}",
+    "deleteLabel": "Delete {name}",
+    "deleteTitle": "Delete {name}?",
+    "deleteBody": "The unit disappears from the site and its village quota slot is free again. Its code and history stay on record.",
+    "deleteConfirm": "Delete unit",
+    "deleted": "Unit deleted.",
+    "backToList": "All units",
+    "createTitle": "Add unit",
+    "createDescription": "The unit code is generated from its province once saved.",
+    "editDescription": "Once saved, changes show on Find a Unit and the unit page right away.",
+    "viewOnSite": "View on the site",
+    "previewPlacement": "Find a Unit and the area pages",
+    "sections": {
+      "identity": {
+        "title": "Identity",
+        "description": "Name, page address and status of the unit."
+      },
+      "location": {
+        "title": "Location",
+        "description": "The village sets the quota and area page; coordinates power distances on Find a Unit."
+      },
+      "contact": {
+        "title": "Contact & schedule",
+        "description": "Manager, WhatsApp and opening hours shown on the unit card."
+      },
+      "program": {
+        "title": "Programs & students",
+        "description": "Levels offered and active students (used in the site's statistics)."
+      }
+    },
+    "fields": {
+      "name": "Unit name",
+      "code": "Unit code",
+      "codeHint": "Generated automatically and never changes.",
+      "slug": "Page slug",
+      "slugHint": "Last part of the unit page address: {path}",
+      "status": "Status",
+      "enrollment": "Enrolment",
+      "address": "Full address",
+      "latitude": "Latitude",
+      "longitude": "Longitude",
+      "coordinatesHint": "Copy them from Google Maps: right-click the spot, then click the coordinates.",
+      "checkOnMap": "Check the spot on a map",
+      "managerName": "Manager name",
+      "whatsapp": "Unit WhatsApp number",
+      "whatsappHint": "Parents reach the unit on this number.",
+      "openDays": "Open on",
+      "opensAt": "Opens",
+      "closesAt": "Closes",
+      "levels": "Levels offered",
+      "studentsCount": "Active students",
+      "studentsHint": "Added up into the student count on Home.",
+      "openedAt": "First day of operation",
+      "openedAtHint": "Leave empty if not known yet."
+    }
+  },
+  "AdminQuota": {
+    "description": "Units allowed per village, open slots per village and slots held for prospective partners.",
+    "status": {
+      "available": "Available",
+      "almostFull": "Almost full",
+      "full": "Full"
+    },
+    "rules": {
+      "title": "Quota rules",
+      "description": "Apply to every village, including the quota checker on the Partnership page.",
+      "unitsPerVillage": "Maximum units per village",
+      "unitsPerVillageHint": "Active units and reserved slots count together.",
+      "almostFullAt": "Show \"almost full\" at open slots",
+      "almostFullAtHint": "E.g. 1 means a village shows as almost full with one slot left."
+    },
+    "check": {
+      "title": "Check a village",
+      "description": "Choose a village to see its open slots with the units and reservations behind them.",
+      "max": "Maximum",
+      "active": "Active units",
+      "reserved": "Reserved slots",
+      "remaining": "Open slots",
+      "units": "Units in this village",
+      "noUnits": "No units in this village yet.",
+      "reservations": "Reservations in this village",
+      "noReservations": "No open reservations.",
+      "reserveHere": "Reserve a slot here",
+      "clear": "Choose another village"
+    },
+    "occupied": {
+      "title": "Occupied villages",
+      "description": "Villages with active units or reserved slots, fullest first.",
+      "empty": "No village is occupied yet.",
+      "columns": {
+        "village": "Village",
+        "active": "Active units",
+        "reserved": "Reserved",
+        "remaining": "Open",
+        "status": "Status"
+      },
+      "view": "View",
+      "viewLabel": "View the quota of {village}"
+    },
+    "reservations": {
+      "title": "Reserved slots",
+      "description": "Slots held for prospective partners who are onboarding. Reservations past their end date stop counting.",
+      "add": "Reserve a slot",
+      "empty": "No open reservations.",
+      "slots": "{count} slots",
+      "until": "Until {date}",
+      "untilReleased": "Until released",
+      "by": "Made {date} by {name}",
+      "byUnknown": "Made {date}",
+      "lead": "Lead {reference}",
+      "expiredHint": "{count, plural, one {# reservation} other {# reservations}} ended in the last 30 days and no longer count.",
+      "releaseLabel": "Release the reservation in {village}",
+      "releaseTitle": "Release the reservation in {village}?",
+      "releaseBody": "The reserved slots become available to other prospective partners.",
+      "releaseConfirm": "Release",
+      "released": "Reservation released."
+    },
+    "reserveForm": {
+      "title": "Reserve a slot",
+      "description": "Hold slots in one village for a prospective partner who is onboarding.",
+      "slots": "Slots",
+      "expiresOn": "Valid until",
+      "expiresOnHint": "Leave empty to hold the slots until an admin releases them.",
+      "note": "Note",
+      "notePlaceholder": "E.g. Ms Sari, site survey on 20 Nov",
+      "submit": "Reserve slot",
+      "saved": "Slot reserved."
+    }
   }
 }
