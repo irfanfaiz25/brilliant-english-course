@@ -42,6 +42,8 @@ const U = limits.units;
 type UnitFormProps = {
   /** The unit being edited; absent when adding a new one. */
   id?: string;
+  /** Lead the new unit is created from: it is converted on save (Phase 4d). */
+  leadId?: string;
   /** Assigned code, or a sample shown in the preview of a new unit. */
   code: string;
   defaultValues: UnitFormInput;
@@ -55,6 +57,7 @@ type UnitFormProps = {
 /** Add or edit a unit: identity, location, contact and schedule, levels and students. */
 export function UnitForm({
   id,
+  leadId,
   code,
   defaultValues,
   regionLevels,
@@ -78,8 +81,11 @@ export function UnitForm({
     name: ["status", "slug", "latitude", "longitude"],
   });
   const { onSubmit, isPending } = useSaveForm(form, id ? updateUnitAction : createUnitAction, {
-    toInput: (values) => (id ? { ...values, id } : values),
-    onSaved: id ? undefined : () => router.push(adminRoutes.units),
+    toInput: (values) => (id ? { ...values, id } : { ...values, leadId }),
+    // From a lead, go back to it: it now shows as converted with its new unit.
+    onSaved: id
+      ? undefined
+      : () => router.push(leadId ? `${adminRoutes.leads}/${leadId}` : adminRoutes.units),
   });
   const number = { valueAsNumber: true } as const;
   const hasCoordinates = Number.isFinite(latitude) && Number.isFinite(longitude);
