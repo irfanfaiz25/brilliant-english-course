@@ -1,89 +1,119 @@
-import { InboxIcon } from "lucide-react";
+import { ArrowRightIcon, InboxIcon } from "lucide-react";
 import { getFormatter, getTranslations } from "next-intl/server";
 import Link from "next/link";
 
+import { AdminPanel } from "@/components/admin/admin-panel";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { adminLocale, adminRoutes } from "@/config/admin-routes";
-import { getLatestLeads } from "@/features/partners/admin-queries";
+import { getLatestLeads, type LeadListItem } from "@/features/partners/admin-queries";
 import { leadStatusBadge } from "@/features/partners/lead-status";
 import type { SessionUser } from "@/features/users/schema";
-import { can } from "@/lib/permissions";
 
-/** The newest partner applications (read-only until the leads module, Phase 4d). */
-export async function LatestLeads({ user }: { user: SessionUser }) {
-  if (!can(user, "read", "leads")) return null;
+/** The newest partner applications: a table from `md`, cards below; each opens its lead. */
+export async function LatestLeads({
+  user,
+  className,
+}: {
+  user: SessionUser;
+  /** Sets the height when it sits beside another panel (the body then scrolls). */
+  className?: string;
+}) {
   const [leads, t, format] = await Promise.all([
     getLatestLeads(user),
     getTranslations({ locale: adminLocale, namespace: "Admin" }),
     getFormatter({ locale: adminLocale }),
   ]);
+  const now = new Date();
+  const name = (lead: LeadListItem) => (
+    <span className="flex min-w-0 flex-col">
+      <Link
+        href={`${adminRoutes.leads}/${lead.id}`}
+        className="truncate rounded-sm font-semibold text-foreground underline-offset-4 hover:text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+      >
+        {lead.fullName}
+      </Link>
+      <span className="text-caption text-muted-foreground">{lead.reference}</span>
+    </span>
+  );
+  const status = (lead: LeadListItem) => (
+    <Badge variant={leadStatusBadge[lead.status]}>{t(`leadStatus.${lead.status}`)}</Badge>
+  );
+  const received = (lead: LeadListItem) => (
+    <time dateTime={lead.createdAt.toISOString()}>{format.relativeTime(lead.createdAt, now)}</time>
+  );
 
   return (
-    <section
-      aria-labelledby="latest-leads"
-      className="flex flex-col gap-4 rounded-2xl surface-glass-panel p-5 sm:p-6"
+    <AdminPanel
+      scrollable
+      className={className}
+      title={t("overview.latestLeads")}
+      actions={
+        leads.length > 0 && (
+          <Button asChild variant="ghost" size="sm">
+            <Link href={adminRoutes.leads}>
+              {t("overview.viewAll")}
+              <ArrowRightIcon aria-hidden />
+            </Link>
+          </Button>
+        )
+      }
     >
-      <h2 id="latest-leads" className="text-h4 text-foreground">
-        {t("overview.latestLeads")}
-      </h2>
       {leads.length === 0 ? (
         <p className="flex items-start gap-3 rounded-xl bg-surface px-4 py-6 text-body-sm text-muted-foreground">
           <InboxIcon aria-hidden className="size-5 shrink-0" />
           {t("overview.latestLeadsEmpty")}
         </p>
       ) : (
-        <div className="-mx-2 overflow-x-auto">
-          <table className="w-full min-w-xl text-left text-body-sm">
-            <thead className="text-label text-muted-foreground">
-              <tr>
-                <th scope="col" className="px-2 py-2 font-medium">
+        <>
+          <table className="hidden w-full text-left text-body-sm md:table">
+            <thead>
+              <tr className="border-b border-border/60 text-caption font-semibold text-muted-foreground">
+                <th scope="col" className="py-2 pr-4 font-semibold">
                   {t("overview.leadColumns.name")}
                 </th>
-                <th scope="col" className="px-2 py-2 font-medium">
+                <th scope="col" className="py-2 pr-4 font-semibold">
                   {t("overview.leadColumns.village")}
                 </th>
-                <th scope="col" className="px-2 py-2 font-medium">
+                <th scope="col" className="py-2 pr-4 font-semibold">
                   {t("overview.leadColumns.status")}
                 </th>
-                <th scope="col" className="px-2 py-2 text-right font-medium">
+                <th scope="col" className="py-2 text-right font-semibold">
                   {t("overview.leadColumns.date")}
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-border/70">
+            <tbody className="divide-y divide-border/60">
               {leads.map((lead) => (
                 <tr key={lead.id}>
-                  <td className="px-2 py-3">
-                    <Link
-                      href={`${adminRoutes.leads}/${lead.id}`}
-                      className="block rounded-sm font-medium text-foreground underline-offset-4 hover:text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-                    >
-                      {lead.fullName}
-                    </Link>
-                    <span className="block text-caption text-muted-foreground">
-                      {lead.reference}
-                    </span>
-                  </td>
-                  <td className="px-2 py-3 text-foreground">
+                  <td className="max-w-56 py-3 pr-4">{name(lead)}</td>
+                  <td className="py-3 pr-4 text-foreground">
                     {lead.village}
                     <span className="block text-caption text-muted-foreground">{lead.regency}</span>
                   </td>
-                  <td className="px-2 py-3">
-                    <Badge variant={leadStatusBadge[lead.status]}>
-                      {t(`leadStatus.${lead.status}`)}
-                    </Badge>
-                  </td>
-                  <td className="px-2 py-3 text-right whitespace-nowrap text-muted-foreground">
-                    <time dateTime={lead.createdAt.toISOString()}>
-                      {format.relativeTime(lead.createdAt, new Date())}
-                    </time>
+                  <td className="py-3 pr-4">{status(lead)}</td>
+                  <td className="py-3 text-right whitespace-nowrap text-muted-foreground">
+                    {received(lead)}
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
-        </div>
+          <ul className="flex flex-col divide-y divide-border/60 text-body-sm md:hidden">
+            {leads.map((lead) => (
+              <li key={lead.id} className="flex flex-col gap-2 py-3 first:pt-0 last:pb-0">
+                <div className="flex items-start justify-between gap-3">
+                  {name(lead)}
+                  {status(lead)}
+                </div>
+                <p className="text-caption text-muted-foreground">
+                  {lead.village}, {lead.regency} · {received(lead)}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </>
       )}
-    </section>
+    </AdminPanel>
   );
 }

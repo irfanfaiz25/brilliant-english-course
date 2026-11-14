@@ -186,3 +186,13 @@ export async function getOwnAccount(user: SessionUser): Promise<OwnAccount | nul
     updatedAt: row.user.updatedAt,
   };
 }
+
+/** Active accounts that have not set a password yet (Ringkasan's "Perlu tindakan"). */
+export async function countInvitedUsers(actor: SessionUser): Promise<number> {
+  assertCan(actor, "read", "users");
+  const [row] = await db
+    .select({ total: count() })
+    .from(users)
+    .where(and(eq(users.isActive, true), sql`not ${hasPasswordSql}`));
+  return row?.total ?? 0;
+}

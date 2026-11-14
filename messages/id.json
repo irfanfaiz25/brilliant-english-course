@@ -874,24 +874,148 @@
       "description": "Kondisi jaringan BEC hari ini.",
       "kpi": {
         "newLeads": "Calon mitra baru",
-        "newLeadsHint": "7 hari terakhir",
+        "newLeadsHint": "30 hari terakhir",
+        "deltaUp": "{count} lebih banyak dari 30 hari sebelumnya",
+        "deltaDown": "{count} lebih sedikit dari 30 hari sebelumnya",
+        "deltaSame": "Sama dengan 30 hari sebelumnya",
+        "conversion": "Konversi",
+        "conversionHint": "{converted} dari {total} calon mitra · 12 bulan",
+        "conversionEmpty": "Belum ada calon mitra dalam 12 bulan",
         "activeUnits": "Unit aktif",
         "activeUnitsHint": "di {cities} kab/kota",
         "students": "Siswa aktif",
         "studentsHint": "di semua unit",
         "posts": "Artikel terbit",
-        "postsHint": "{draft} draf menunggu"
+        "postsHint": "{draft} draf menunggu",
+        "open": "Buka {label}"
+      },
+      "actions": {
+        "title": "Perlu tindakan",
+        "description": "Hal yang menunggu ditindaklanjuti. Klik untuk membuka daftarnya.",
+        "allClear": "Tidak ada yang menunggu tindakan saat ini.",
+        "staleLeads": "calon mitra baru belum dihubungi lebih dari {days} hari",
+        "myLeads": "calon mitra ditugaskan ke Anda",
+        "invitedUsers": "akun menunggu aktivasi",
+        "scheduledPosts": "artikel terjadwal terbit",
+        "almostFullVillages": "desa hampir penuh"
+      },
+      "trend": {
+        "title": "Tren calon mitra",
+        "description": "Pendaftaran yang masuk dan yang jadi mitra (unitnya sudah dibuat).",
+        "received": "Masuk",
+        "converted": "Jadi mitra",
+        "total": "{count} total",
+        "rangeLabel": "Rentang waktu",
+        "ranges": {
+          "30d": "30 hari",
+          "12w": "12 minggu",
+          "12m": "12 bulan"
+        },
+        "plot": "Grafik tren calon mitra, {range}. Gunakan panah kiri dan kanan untuk membaca tiap periode.",
+        "period": "Periode",
+        "showTable": "Lihat sebagai tabel",
+        "empty": "Belum ada calon mitra di rentang ini.",
+        "week": "Minggu {start} – {end}"
+      },
+      "pipeline": {
+        "title": "Pipeline calon mitra",
+        "description": "Jumlah calon mitra per status. Klik untuk membuka daftarnya.",
+        "open": "Sedang diproses",
+        "closed": "Selesai",
+        "bar": "{status}: {count} calon mitra"
+      },
+      "regions": {
+        "title": "Peluang wilayah",
+        "description": "Kabupaten/kota dengan calon mitra terbanyak dalam 12 bulan, dibandingkan unit aktifnya.",
+        "leads": "{count, plural, other {# calon mitra}}",
+        "units": "{count, plural, =0 {Belum ada unit} other {# unit aktif}}",
+        "empty": "Belum ada calon mitra dalam 12 bulan terakhir."
       },
       "latestLeads": "Calon mitra terbaru",
       "latestLeadsEmpty": "Belum ada pendaftaran calon mitra. Pendaftaran dari halaman Kemitraan akan muncul di sini.",
+      "viewAll": "Lihat semua",
       "leadColumns": {
         "name": "Nama",
         "village": "Desa",
         "status": "Status",
         "date": "Masuk"
       },
-      "shortcuts": "Pintasan",
-      "shortcutsDescription": "Modul yang bisa kamu kelola."
+      "activity": {
+        "title": "Aktivitas terbaru",
+        "description": "Perubahan terakhir di admin, dari log audit.",
+        "empty": "Belum ada aktivitas.",
+        "system": "Sistem",
+        "fallback": "{actor} melakukan perubahan",
+        "actions": {
+          "lead": {
+            "create": "Calon mitra baru mendaftar lewat situs",
+            "update": "{actor} memperbarui calon mitra",
+            "note": "{actor} menambah catatan calon mitra",
+            "delete": "{actor} menghapus calon mitra",
+            "convert": "{actor} membuat unit dari calon mitra",
+            "export": "{actor} mengekspor daftar calon mitra"
+          },
+          "unit": {
+            "create": "{actor} menambah unit",
+            "update": "{actor} mengubah unit",
+            "delete": "{actor} menghapus unit"
+          },
+          "quota": {
+            "reserve": "{actor} memesan slot kuota",
+            "release": "{actor} melepas pesanan kuota"
+          },
+          "post": {
+            "create": "{actor} menulis artikel",
+            "update": "{actor} mengubah artikel",
+            "delete": "{actor} menghapus artikel"
+          },
+          "media": {
+            "upload": "{actor} mengunggah gambar",
+            "rename": "{actor} mengganti nama gambar",
+            "delete": "{actor} menghapus gambar"
+          },
+          "activity": {
+            "create": "{actor} menambah kegiatan",
+            "update": "{actor} mengubah kegiatan",
+            "delete": "{actor} menghapus kegiatan",
+            "publish": "{actor} mengubah tampilan kegiatan",
+            "reorder": "{actor} mengubah urutan kegiatan"
+          },
+          "testimonial": {
+            "create": "{actor} menambah testimoni",
+            "update": "{actor} mengubah testimoni",
+            "delete": "{actor} menghapus testimoni",
+            "publish": "{actor} mengubah tampilan testimoni",
+            "reorder": "{actor} mengubah urutan testimoni"
+          },
+          "faq": {
+            "create": "{actor} menambah pertanyaan FAQ",
+            "update": "{actor} mengubah pertanyaan FAQ",
+            "delete": "{actor} menghapus pertanyaan FAQ",
+            "publish": "{actor} mengubah tampilan pertanyaan FAQ",
+            "reorder": "{actor} mengubah urutan pertanyaan FAQ"
+          },
+          "program": {
+            "update": "{actor} mengubah program",
+            "publish": "{actor} mengubah tampilan program"
+          },
+          "settings": {
+            "update": "{actor} mengubah pengaturan"
+          },
+          "seo": {
+            "update": "{actor} mengubah SEO"
+          },
+          "user": {
+            "create": "{actor} menambah pengguna",
+            "update": "{actor} mengubah pengguna",
+            "activate": "{actor} mengaktifkan akun",
+            "deactivate": "{actor} menonaktifkan akun",
+            "link": "{actor} membuat tautan akses akun",
+            "profile": "{actor} mengubah profilnya",
+            "password": "{actor} mengganti kata sandinya"
+          }
+        }
+      }
     },
     "leadStatus": {
       "new": "Baru",
@@ -1050,7 +1174,8 @@
       "dropped": "{item} diletakkan di posisi {position} dari {total}.",
       "cancelled": "Pemindahan {item} dibatalkan.",
       "saved": "Urutan disimpan."
-    }
+    },
+    "scrollMore": "Lihat lebih banyak di bawah"
   },
   "AdminSettings": {
     "description": "Kontak kantor pusat dan paket kemitraan yang tampil di situs.",

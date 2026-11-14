@@ -456,3 +456,29 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
   rails keep the mistakes the app could not undo (lock-out, privilege escalation, data of other units) impossible.
 - **Alternatives:** The fixed matrix of ADR-035 (less flexible); fully custom roles (more than a small team needs);
   per-account overrides (hard to oversee, and roles already group people).
+
+### ADR-037 — Ringkasan: what needs action, partner-lead charts, hand-built SVG
+
+2026-11-15 · Accepted
+
+- **Decision:** Ringkasan shows only what staff act on or steer by, each section to roles that may read its data:
+  "Perlu tindakan" (new leads not contacted for `limits.overview.staleLeadDays` = 2 days, open leads assigned to me,
+  accounts awaiting activation, scheduled articles, villages almost full; each links to the filtered list), KPI cards
+  (new leads in 30 days against the 30 days before, conversion over 12 months, active units, students), the
+  partner-lead trend, the pipeline per status, regional demand (the 5 regencies with most leads in 12 months beside
+  their active units), the latest leads and the activity log (`features/audit`, `auditLog` read). "Became a partner"
+  means a unit was created from the lead: the trend counts `lead.convert` audit rows by the day they were written,
+  only while the lead is still converted; conversion = converted ÷ leads of the last 12 months. Trend buckets are
+  calendar days, ISO weeks or months in `adminTimeZone` (`features/partners/trend.ts`), the range in the URL
+  (`?range=30d|12w|12m`, default 12 weeks). Charts are hand-built SVG (`AreaTrendChart`, `lib/chart.ts`: nice scale,
+  monotone curve) with the validated `chart-1`/`chart-2` tokens, a hover and keyboard tooltip and a table view. Not
+  charted: student numbers (no history; needs monthly snapshots, Phase 6), site visits, WhatsApp clicks and lead
+  sources (not recorded yet). Shortcuts were dropped (the sidebar already lists the modules). The dev seed adds a
+  deterministic year of sample applications and conversions (`seed/content/lead-history.ts`), none newer than two
+  weeks so earlier specs keep their numbers.
+- **Why:** The overview should answer "what do I do today" and "is the network growing"; the partner pipeline is
+  the business's main flow and the only one with history. Hand-built SVG keeps the admin bundle small, matches the
+  design tokens exactly and stays accessible; a library would add weight for one area chart.
+- **Alternatives:** Recharts or another chart library (heavier, harder to theme and to make keyboard-accessible);
+  more charts (unit growth, articles per month: little to act on); counting conversions from the lead's
+  `updated_at` (moves with any later edit).

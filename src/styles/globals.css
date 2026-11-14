@@ -114,6 +114,14 @@
   --color-partner-strong: var(--color-orange-700);
   --color-partner-foreground: var(--color-white);
 
+  /*
+   * Chart series (ADR-037), in this order. Checked as a pair for colour-blind separation, chroma
+   * and contrast on the admin surface; the teal is a step more saturated than `primary`, which
+   * reads grey as a thin line. Text never wears these colours (labels use text tokens).
+   */
+  --color-chart-1: #00879c;
+  --color-chart-2: var(--color-orange-500);
+
   /* Badges, illustrations, decoration (never text on light surfaces). */
   --color-highlight: var(--color-sunny-500);
   --color-highlight-soft: var(--color-sunny-50);

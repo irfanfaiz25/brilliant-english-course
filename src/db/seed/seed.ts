@@ -13,7 +13,7 @@
 import { parseArgs } from "node:util";
 
 import nextEnv from "@next/env";
-import { inArray, like, sql } from "drizzle-orm";
+import { and, eq, inArray, like, sql } from "drizzle-orm";
 
 nextEnv.loadEnvConfig(process.cwd());
 
@@ -68,6 +68,15 @@ async function main() {
         await tx.delete(table);
       }
       await tx.delete(schema.mediaAssets).where(like(schema.mediaAssets.key, "/placeholders/%"));
+      // The sample conversions' audit rows go with their leads.
+      await tx
+        .delete(schema.auditLog)
+        .where(
+          and(
+            eq(schema.auditLog.action, "lead.convert"),
+            sql`${schema.auditLog.changes} ->> 'sample' = 'true'`,
+          ),
+        );
       await tx
         .delete(schema.partnerLeads)
         .where(like(schema.partnerLeads.reference, `${plan.SAMPLE_LEAD_PREFIX}%`));
@@ -151,6 +160,7 @@ async function main() {
 
     // Units, newest first in the sample list (the home page features the most recent ones).
     const today = Date.now();
+    const unitIds: string[] = [];
     for (const [index, unit] of content.unitFixtures.entries()) {
       const [row] = await tx
         .insert(schema.units)
@@ -174,6 +184,7 @@ async function main() {
         })
         .returning({ id: schema.units.id });
       if (!row) throw new Error(`Unit ${unit.code} was not inserted`);
+      unitIds.push(row.id);
       await tx.insert(schema.unitLevels).values(
         unit.levels.map((slug) => {
           const levelId = levelIds.get(slug);
@@ -237,6 +248,50 @@ async function main() {
         createdAt: new Date(today - lead.daysAgo * 86_400_000),
       })),
     );
+
+    // A year of applications for Ringkasan's charts; conversions get their audit row, dated the
+    // day the sample unit opened (the trend counts `lead.convert` rows).
+    const history = content.leadHistory();
+    const historyRows = await tx
+      .insert(schema.partnerLeads)
+      .values(
+        history.map((lead, index) => ({
+          fullName: lead.fullName,
+          whatsapp: lead.whatsapp,
+          background: lead.background,
+          space: lead.space,
+          villageCode: lead.villageCode,
+          status: lead.status,
+          locale: "id" as const,
+          motivation: "Sample application (dev seed)",
+          unitId: lead.conversion ? unitIds[lead.conversion.unitIndex] : null,
+          reference: `${plan.SAMPLE_LEAD_PREFIX}${String(1000 + index + 1).padStart(4, "0")}`,
+          createdAt: new Date(today - lead.daysAgo * 86_400_000),
+          updatedAt: new Date(
+            today - (lead.conversion?.convertedDaysAgo ?? lead.daysAgo) * 86_400_000,
+          ),
+        })),
+      )
+      .returning({ id: schema.partnerLeads.id });
+    const conversions = history.flatMap((lead, index) => {
+      const row = historyRows[index];
+      if (!lead.conversion || !row) return [];
+      return [
+        {
+          actorId: null,
+          action: "lead.convert",
+          entityType: "partner_lead",
+          entityId: row.id,
+          changes: {
+            status: { from: "onboarding", to: "converted" },
+            unitId: unitIds[lead.conversion.unitIndex],
+            sample: true,
+          },
+          createdAt: new Date(today - lead.conversion.convertedDaysAgo * 86_400_000),
+        },
+      ];
+    });
+    if (conversions.length > 0) await tx.insert(schema.auditLog).values(conversions);
 
     // Blog posts.
     for (const record of content.postFixtures) {

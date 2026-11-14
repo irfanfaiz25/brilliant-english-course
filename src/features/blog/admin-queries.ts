@@ -177,3 +177,19 @@ export async function getPostForEdit(actor: SessionUser, id: string): Promise<Po
     updatedAt: post.updatedAt,
   };
 }
+
+/** Published posts whose publish date is still ahead (scheduled). */
+export async function countScheduledPosts(actor: SessionUser): Promise<number> {
+  assertCan(actor, "read", "blog");
+  const [row] = await db
+    .select({ count: sql<number>`count(*)::int` })
+    .from(posts)
+    .where(
+      and(
+        isNull(posts.deletedAt),
+        eq(posts.status, "published"),
+        sql`${posts.publishedAt} > now()`,
+      ),
+    );
+  return row?.count ?? 0;
+}

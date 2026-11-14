@@ -112,6 +112,11 @@ Sub-phases (separate PRs): 4a Settings & SEO defaults · 4b Programs & Activitie
   the account (ending its sessions and links). Nobody changes their own role or status, and the last active super
   admin stays. Akun saya lets every account change its own name and password. Hak akses (ADR-036) lets super admins tick
   what Admin and Editor may do, within fixed guard rails.
+- 4h Ringkasan ✅ (ADR-037): "Perlu tindakan" (stale new leads, leads assigned to me, accounts awaiting activation,
+  scheduled articles, villages almost full), KPI cards with a 30-day comparison and 12-month conversion, the partner-lead
+  trend (received vs became partners, 30 days / 12 weeks / 12 months, hover and keyboard tooltip, table view), the
+  pipeline per status, regional demand against active units, the latest leads and the activity log. The dev seed adds
+  a year of sample applications so the charts have data.
 
 ## Phase 5 — Public website
 

@@ -1,7 +1,9 @@
 import "server-only";
 
-import { and, asc, desc, eq, gt, ilike, inArray, isNull, ne, or, sql } from "drizzle-orm";
-import { alias } from "drizzle-orm/pg-core";
+import { and, asc, desc, eq, ilike, inArray, isNull, ne, or, sql, type SQL } from "drizzle-orm";
+import { alias, type AnyPgColumn } from "drizzle-orm/pg-core";
+
+import { adminTimeZone } from "@/config/admin-routes";
 
 import { limits } from "@/config/limits";
 import {
@@ -28,6 +30,7 @@ import {
   type PartnerBackground,
   type PartnerSpace,
 } from "./schema";
+import { fillBuckets, trendBuckets, type TrendBuckets, type TrendRange } from "./trend";
 
 /*
  * Admin reads of partner leads. Never cached across users: every call checks the caller's
@@ -47,16 +50,6 @@ export type LeadListItem = {
 const village = alias(regions, "village");
 const regency = alias(regions, "regency");
 const isLive = isNull(partnerLeads.deletedAt);
-
-/** Leads created in the last `days` days. */
-export async function countRecentLeads(actor: SessionUser, days = 7): Promise<number> {
-  assertCan(actor, "read", "leads");
-  const [row] = await db
-    .select({ count: sql<number>`count(*)::int` })
-    .from(partnerLeads)
-    .where(and(isLive, gt(partnerLeads.createdAt, sql`now() - make_interval(days => ${days})`)));
-  return row?.count ?? 0;
-}
 
 /** The newest leads with their village and regency names. */
 export async function getLatestLeads(actor: SessionUser, limit = 5): Promise<LeadListItem[]> {
@@ -402,4 +395,171 @@ export async function getLeadAssignees(actor: SessionUser): Promise<StaffOption[
     .from(users)
     .where(and(eq(users.isActive, true), inArray(users.role, roles)))
     .orderBy(asc(users.name));
+}
+
+/*
+ * Ringkasan (Phase 4h, ADR-037): aggregates of the pipeline. Counted in the database, live leads
+ * only; dates are calendar dates in the admin time zone.
+ */
+
+const localDate = (column: SQL | AnyPgColumn) => sql`(${column} at time zone ${adminTimeZone})`;
+
+export type LeadTrend = TrendBuckets & {
+  /** New applications per bucket. */
+  received: number[];
+  /** Leads that became a partner (a unit was created from them) per bucket. */
+  converted: number[];
+};
+
+/**
+ * Applications received and partners won per day, week or month of `range`. A conversion counts
+ * when its `lead.convert` audit row was written, and only while the lead is still converted.
+ */
+export async function getLeadTrend(
+  actor: SessionUser,
+  range: TrendRange,
+  now: Date = new Date(),
+): Promise<LeadTrend> {
+  assertCan(actor, "read", "leads");
+  const buckets = trendBuckets(range, now);
+  // `unit` comes from a fixed list (`trendBuckets`), never from the request.
+  const unit = sql.raw(`'${buckets.unit}'`);
+  const bucketKey = (column: AnyPgColumn) =>
+    sql<string>`to_char(date_trunc(${unit}, ${localDate(column)}), 'YYYY-MM-DD')`;
+  const since = (column: AnyPgColumn) => sql`${localDate(column)}::date >= ${buckets.from}::date`;
+
+  const [received, converted] = await Promise.all([
+    db
+      .select({ key: bucketKey(partnerLeads.createdAt), count: sql<number>`count(*)::int` })
+      .from(partnerLeads)
+      .where(and(isLive, since(partnerLeads.createdAt)))
+      .groupBy(sql`1`),
+    db
+      .select({
+        key: bucketKey(auditLog.createdAt),
+        count: sql<number>`count(distinct ${auditLog.entityId})::int`,
+      })
+      .from(auditLog)
+      .innerJoin(partnerLeads, sql`${partnerLeads.id}::text = ${auditLog.entityId}`)
+      .where(
+        and(
+          eq(auditLog.action, "lead.convert"),
+          isLive,
+          eq(partnerLeads.status, "converted"),
+          since(auditLog.createdAt),
+        ),
+      )
+      .groupBy(sql`1`),
+  ]);
+  return {
+    ...buckets,
+    received: fillBuckets(buckets.keys, received),
+    converted: fillBuckets(buckets.keys, converted),
+  };
+}
+
+export type LeadKpis = {
+  /** Applications in the last 30 days, and in the 30 days before. */
+  last30: number;
+  previous30: number;
+  /** Applications of the last 12 months, and how many of them became a partner. */
+  year: number;
+  yearConverted: number;
+};
+
+export async function getLeadKpis(actor: SessionUser): Promise<LeadKpis> {
+  assertCan(actor, "read", "leads");
+  const within = (days: number) =>
+    sql`${partnerLeads.createdAt} > now() - make_interval(days => ${days})`;
+  const [row] = await db
+    .select({
+      last30: sql<number>`count(*) filter (where ${within(30)})::int`,
+      previous30: sql<number>`count(*) filter (where ${within(60)} and not ${within(30)})::int`,
+      year: sql<number>`count(*) filter (where ${within(365)})::int`,
+      yearConverted: sql<number>`count(*) filter (where ${within(365)} and ${partnerLeads.status} = 'converted')::int`,
+    })
+    .from(partnerLeads)
+    .where(isLive);
+  return row ?? { last30: 0, previous30: 0, year: 0, yearConverted: 0 };
+}
+
+/** Live leads per status, every status listed (0 when none). */
+export async function countLeadsByStatus(actor: SessionUser): Promise<Record<LeadStatus, number>> {
+  assertCan(actor, "read", "leads");
+  const rows = await db
+    .select({ status: partnerLeads.status, count: sql<number>`count(*)::int` })
+    .from(partnerLeads)
+    .where(isLive)
+    .groupBy(partnerLeads.status);
+  return Object.fromEntries(
+    leadStatuses.map((status) => [status, rows.find((row) => row.status === status)?.count ?? 0]),
+  ) as Record<LeadStatus, number>;
+}
+
+/** Leads waiting on staff: new ones nobody contacted in time, and open ones assigned to `actor`. */
+export async function getLeadFollowUps(
+  actor: SessionUser,
+): Promise<{ staleNew: number; mine: number }> {
+  assertCan(actor, "read", "leads");
+  const [row] = await db
+    .select({
+      staleNew: sql<number>`count(*) filter (where ${partnerLeads.status} = 'new' and ${partnerLeads.createdAt} < now() - make_interval(days => ${limits.overview.staleLeadDays}))::int`,
+      mine: sql<number>`count(*) filter (where ${partnerLeads.assignedToId} = ${actor.id} and ${inArray(partnerLeads.status, [...openLeadStatuses])})::int`,
+    })
+    .from(partnerLeads)
+    .where(isLive);
+  return row ?? { staleNew: 0, mine: 0 };
+}
+
+export type RegionDemand = {
+  code: string;
+  regency: string;
+  /** Applications of the last 12 months from this regency. */
+  leads: number;
+  /** Active units in it today. */
+  activeUnits: number;
+};
+
+/**
+ * The regencies most applications came from in the last 12 months, with how many active units
+ * they already have: where demand is and the network is not (yet).
+ */
+export async function getRegionDemand(actor: SessionUser): Promise<RegionDemand[]> {
+  assertCan(actor, "read", "leads");
+  const regencyCode = sql<string>`left(${partnerLeads.villageCode}, 5)`;
+  const top = await db
+    .select({ code: regencyCode, leads: sql<number>`count(*)::int` })
+    .from(partnerLeads)
+    .where(and(isLive, sql`${partnerLeads.createdAt} > now() - make_interval(days => 365)`))
+    .groupBy(sql`1`)
+    .orderBy(desc(sql`2`), asc(sql`1`))
+    .limit(limits.overview.regions);
+  if (top.length === 0) return [];
+  const codes = top.map((row) => row.code);
+  const [names, unitCounts] = await Promise.all([
+    db
+      .select({ code: regions.code, name: regions.name })
+      .from(regions)
+      .where(inArray(regions.code, codes)),
+    db
+      .select({
+        code: sql<string>`left(${units.villageCode}, 5)`,
+        count: sql<number>`count(*)::int`,
+      })
+      .from(units)
+      .where(
+        and(
+          eq(units.status, "active"),
+          isNull(units.deletedAt),
+          inArray(sql`left(${units.villageCode}, 5)`, codes),
+        ),
+      )
+      .groupBy(sql`1`),
+  ]);
+  return top.map((row) => ({
+    code: row.code,
+    regency: shortRegionName(names.find((name) => name.code === row.code)?.name ?? row.code),
+    leads: row.leads,
+    activeUnits: unitCounts.find((unit) => unit.code === row.code)?.count ?? 0,
+  }));
 }

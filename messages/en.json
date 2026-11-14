@@ -871,27 +871,151 @@
     },
     "overview": {
       "title": "Overview",
-      "description": "How the BEC network looks today.",
+      "description": "The BEC network today.",
       "kpi": {
-        "newLeads": "New prospective partners",
-        "newLeadsHint": "last 7 days",
+        "newLeads": "New partner leads",
+        "newLeadsHint": "Last 30 days",
+        "deltaUp": "{count} more than the 30 days before",
+        "deltaDown": "{count} fewer than the 30 days before",
+        "deltaSame": "Same as the 30 days before",
+        "conversion": "Conversion",
+        "conversionHint": "{converted} of {total} leads · 12 months",
+        "conversionEmpty": "No partner leads in 12 months",
         "activeUnits": "Active units",
         "activeUnitsHint": "in {cities} regencies/cities",
         "students": "Active students",
         "studentsHint": "across all units",
-        "posts": "Published posts",
-        "postsHint": "{draft} drafts waiting"
+        "posts": "Published articles",
+        "postsHint": "{draft} drafts waiting",
+        "open": "Open {label}"
       },
-      "latestLeads": "Latest prospective partners",
+      "actions": {
+        "title": "Needs action",
+        "description": "Things waiting to be followed up. Click to open the list.",
+        "allClear": "Nothing is waiting for action right now.",
+        "staleLeads": "{count, plural, one {new partner lead} other {new partner leads}} not contacted for over {days} days",
+        "myLeads": "{count, plural, one {partner lead} other {partner leads}} assigned to you",
+        "invitedUsers": "{count, plural, one {account} other {accounts}} awaiting activation",
+        "scheduledPosts": "{count, plural, one {article} other {articles}} scheduled",
+        "almostFullVillages": "{count, plural, one {village} other {villages}} almost full"
+      },
+      "trend": {
+        "title": "Partner lead trend",
+        "description": "Applications received and those that became partners (their unit was created).",
+        "received": "Received",
+        "converted": "Became partners",
+        "total": "{count} total",
+        "rangeLabel": "Time range",
+        "ranges": {
+          "30d": "30 days",
+          "12w": "12 weeks",
+          "12m": "12 months"
+        },
+        "plot": "Partner lead trend chart, {range}. Use the left and right arrows to read each period.",
+        "period": "Period",
+        "showTable": "Show as a table",
+        "empty": "No partner leads in this range.",
+        "week": "Week {start} – {end}"
+      },
+      "pipeline": {
+        "title": "Partner lead pipeline",
+        "description": "Partner leads per status. Click to open the list.",
+        "open": "In progress",
+        "closed": "Closed",
+        "bar": "{status}: {count} partner leads"
+      },
+      "regions": {
+        "title": "Regional opportunities",
+        "description": "Regencies/cities with the most partner leads in 12 months, against their active units.",
+        "leads": "{count, plural, one {# partner lead} other {# partner leads}}",
+        "units": "{count, plural, =0 {No unit yet} one {# active unit} other {# active units}}",
+        "empty": "No partner leads in the last 12 months."
+      },
+      "latestLeads": "Latest partner leads",
       "latestLeadsEmpty": "No partner applications yet. Applications from the Partnership page will appear here.",
+      "viewAll": "View all",
       "leadColumns": {
         "name": "Name",
         "village": "Village",
         "status": "Status",
         "date": "Received"
       },
-      "shortcuts": "Shortcuts",
-      "shortcutsDescription": "Modules you can manage."
+      "activity": {
+        "title": "Recent activity",
+        "description": "The latest changes in admin, from the audit log.",
+        "empty": "No activity yet.",
+        "system": "System",
+        "fallback": "{actor} made a change",
+        "actions": {
+          "lead": {
+            "create": "A new partner application came in from the site",
+            "update": "{actor} updated a partner lead",
+            "note": "{actor} added a note to a partner lead",
+            "delete": "{actor} deleted a partner lead",
+            "convert": "{actor} created a unit from a partner lead",
+            "export": "{actor} exported the partner lead list"
+          },
+          "unit": {
+            "create": "{actor} added a unit",
+            "update": "{actor} edited a unit",
+            "delete": "{actor} deleted a unit"
+          },
+          "quota": {
+            "reserve": "{actor} reserved a quota slot",
+            "release": "{actor} released a quota reservation"
+          },
+          "post": {
+            "create": "{actor} wrote an article",
+            "update": "{actor} edited an article",
+            "delete": "{actor} deleted an article"
+          },
+          "media": {
+            "upload": "{actor} uploaded an image",
+            "rename": "{actor} renamed an image",
+            "delete": "{actor} deleted an image"
+          },
+          "activity": {
+            "create": "{actor} added an activity",
+            "update": "{actor} edited an activity",
+            "delete": "{actor} deleted an activity",
+            "publish": "{actor} changed the visibility of an activity",
+            "reorder": "{actor} reordered an activity"
+          },
+          "testimonial": {
+            "create": "{actor} added a testimonial",
+            "update": "{actor} edited a testimonial",
+            "delete": "{actor} deleted a testimonial",
+            "publish": "{actor} changed the visibility of a testimonial",
+            "reorder": "{actor} reordered a testimonial"
+          },
+          "faq": {
+            "create": "{actor} added an FAQ entry",
+            "update": "{actor} edited an FAQ entry",
+            "delete": "{actor} deleted an FAQ entry",
+            "publish": "{actor} changed the visibility of an FAQ entry",
+            "reorder": "{actor} reordered an FAQ entry"
+          },
+          "program": {
+            "update": "{actor} edited a program",
+            "publish": "{actor} changed a program's visibility"
+          },
+          "settings": {
+            "update": "{actor} changed the settings"
+          },
+          "seo": {
+            "update": "{actor} changed SEO"
+          },
+          "user": {
+            "create": "{actor} added a user",
+            "update": "{actor} edited a user",
+            "activate": "{actor} enabled an account",
+            "deactivate": "{actor} disabled an account",
+            "link": "{actor} created an account access link",
+            "profile": "{actor} edited their profile",
+            "password": "{actor} changed their password"
+          }
+        }
+      }
     },
     "leadStatus": {
       "new": "New",
@@ -1050,7 +1174,8 @@
       "dropped": "{item} dropped at position {position} of {total}.",
       "cancelled": "Moving {item} cancelled.",
       "saved": "Order saved."
-    }
+    },
+    "scrollMore": "See more below"
   },
   "AdminSettings": {
     "description": "Head-office contact details and the partnership package shown on the site.",
