@@ -36,7 +36,10 @@ test.describe("admin settings", () => {
     const address = contact.getByLabel(/^Alamat/);
     const previous = await address.inputValue();
     const e2eAddress = `Jl. Uji E2E No. ${Date.now() % 1000}, Kab. Bogor`;
+    // Clear first and check the result: a fill racing hydration used to prepend to the old value.
+    await address.clear();
     await address.fill(e2eAddress);
+    await expect(address).toHaveValue(e2eAddress);
     await save(page, contact);
     await expect(page.getByText(/Terakhir diubah .* oleh E2E Admin/).first()).toBeVisible();
 
@@ -45,11 +48,14 @@ test.describe("admin settings", () => {
       await expect(page.getByRole("contentinfo")).toContainText(e2eAddress);
     } finally {
       await page.goto("/admin/pengaturan");
-      await page
+      await page.waitForLoadState("networkidle");
+      const restore = page
         .locator("form")
         .first()
-        .getByLabel(/^Alamat/)
-        .fill(previous);
+        .getByLabel(/^Alamat/);
+      await restore.clear();
+      await restore.fill(previous);
+      await expect(restore).toHaveValue(previous);
       await save(page, page.locator("form").first());
     }
   });

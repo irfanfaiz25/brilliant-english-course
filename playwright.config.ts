@@ -17,8 +17,15 @@ export default defineConfig({
     trace: "on-first-retry",
   },
   projects: [
-    { name: "desktop", use: { ...devices["Desktop Chrome"] } },
-    { name: "mobile", use: { ...devices["Pixel 7"] } },
+    { name: "desktop", use: { ...devices["Desktop Chrome"] }, testIgnore: "publishing/**" },
+    { name: "mobile", use: { ...devices["Pixel 7"] }, testIgnore: "publishing/**" },
+    // Specs that publish content the public specs count (the blog's 8 posts) run after them.
+    {
+      name: "publishing",
+      use: { ...devices["Desktop Chrome"] },
+      testMatch: "publishing/**/*.spec.ts",
+      dependencies: ["desktop", "mobile"],
+    },
   ],
   webServer: {
     // CI runs against the production build; locally the dev server is reused if already running.
