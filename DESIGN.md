@@ -507,8 +507,10 @@ Baseline: Penpot `02 · Dashboard` (Ringkasan, Calon Mitra, Unit Mitra, Kuota Wi
   The image picker reuses the same uploader, and a finished upload is picked right away.
 - **Users (Phase 4g):** Pengguna is a data list (table from `md`, cards below) with role chips, a status badge
   (Aktif / Menunggu aktivasi / Nonaktif) and the last sign-in; "Akun Anda" marks one's own row. Below it, "Hak akses
-  per peran" shows the permission matrix read from `permissions.ts` (a table from `md`, one list per role below; "Akses
-  penuh" when every action is allowed). An account page puts Akses first (status, last sign-in, devices, the link
+  per peran" shows the access in force (a table from `md`, one list per role below; "Akses penuh" when every action of
+  the module is allowed) with "Atur hak akses" for super admins. That page (ADR-036) states the fixed rules first, then
+  one tab per editable role (a dot marks a role that differs from the default, with "Kembalikan ke bawaan"): a
+  checkbox per action the module has ("–" elsewhere), cards of checkbox pills on phones, and the sticky save bar. An account page puts Akses first (status, last sign-in, devices, the link
   still valid, and the actions: a new activation/reset link, disable/enable) above Profil and Peran. Roles are radio
   cards that say what each role may do; a partner's unit appears only for Mitra. One's own role is shown read-only with
   a note. A created link opens once in a dialog that closes only through its buttons, with a copy button, its expiry

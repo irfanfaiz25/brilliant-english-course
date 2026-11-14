@@ -411,7 +411,7 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
 
 ### ADR-035 — Users, roles and account activation
 
-2026-11-14 · Accepted
+2026-11-14 · Accepted · Fixed role matrix amended by ADR-036 (configurable for admin/editor)
 
 - **Decision:** Pengguna (`/admin/pengguna`) manages accounts; only super admins change them (`users` grants), admins
   read the list. Roles stay the four fixed roles of `permissions.ts`; the page shows the matrix from `grantsFor()` so
@@ -434,3 +434,25 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
   admins managing non-super-admin accounts (the user chose super admin only); custom roles (too much for a small team).
 - **Follow-up:** Phase 6 emails the link instead of the copy dialog; the partner portal (Phase 9) builds on `mitra`
   accounts created here.
+
+### ADR-036 — Configurable permissions for admin and editor
+
+2026-11-15 · Accepted
+
+- **Decision:** Super admins set what `admin` and `editor` may do in Pengguna › Hak akses (`/admin/pengguna/hak-akses`):
+  a checkbox per module and action, one tab per role, "reset to default", saved as the `rolePermissions` setting
+  (one JSON document, no migration; `saveSetting` writes the audit row and the `settings` tag expires). The code
+  matrix in `permissions.ts` is the default. `getCurrentUser()` attaches the role's effective grants
+  (`effectiveGrants()`, read through the settings cache) to the session user, and `can()` reads `actor.grants`, so
+  every existing check is unchanged and a change applies from the next request. Guard rails that hold whatever is
+  ticked or stored (`normalizeRoleGrants()`, applied by the schema on save and again on read; `can()` itself ignores
+  grants for the other roles): super admin always uses the full code matrix; mitra keeps its unit-scoped default
+  (unit scoping exists only for units); `users` can only be granted read (granting edit would let a role make itself
+  super admin); only the actions a resource has can be granted (`resourceActions`, what the app checks) and any action
+  brings read; `dashboard` (it also guards shared tools such as region search) and `auditLog` (no module yet) keep their
+  defaults. The default matrix was aligned with `resourceActions` (leads `rud`, programs `rup`): nothing checked the
+  removed actions. E2E global setup clears the setting so every run starts from the defaults.
+- **Why:** The product owner wants to adjust access without a developer and takes responsibility for it; the guard
+  rails keep the mistakes the app could not undo (lock-out, privilege escalation, data of other units) impossible.
+- **Alternatives:** The fixed matrix of ADR-035 (less flexible); fully custom roles (more than a small team needs);
+  per-account overrides (hard to oversee, and roles already group people).

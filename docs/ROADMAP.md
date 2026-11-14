@@ -110,7 +110,8 @@ Sub-phases (separate PRs): 4a Settings & SEO defaults · 4b Programs & Activitie
   accounts (a partner account needs its unit) and send the person a single-use activation link (72 h) instead of a
   password; an account page edits name, email, role and unit, creates activation/reset links and disables or enables
   the account (ending its sessions and links). Nobody changes their own role or status, and the last active super
-  admin stays. Akun saya lets every account change its own name and password.
+  admin stays. Akun saya lets every account change its own name and password. Hak akses (ADR-036) lets super admins tick
+  what Admin and Editor may do, within fixed guard rails.
 
 ## Phase 5 — Public website
 
