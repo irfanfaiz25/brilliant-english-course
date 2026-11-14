@@ -22,6 +22,7 @@ import { limits } from "@/config/limits";
 import type { MediaOption } from "@/features/media/admin-queries";
 
 import { createActivityAction, updateActivityAction } from "../actions";
+import { ActivityCardPreview, type ActivityCardLabels } from "./activity-card-preview";
 import {
   activityFormSchema,
   type ActivityForm as ActivityFormOutput,
@@ -36,10 +37,18 @@ type ActivityFormProps = {
   defaultValues: ActivityFormInput;
   mediaOptions: readonly MediaOption[];
   canPublish: boolean;
+  /** Card labels for the live preview, in every locale. */
+  previewLabels: ActivityCardLabels;
 };
 
 /** Add or edit an activity: photo, visibility and bilingual copy. */
-export function ActivityForm({ id, defaultValues, mediaOptions, canPublish }: ActivityFormProps) {
+export function ActivityForm({
+  id,
+  defaultValues,
+  mediaOptions,
+  canPublish,
+  previewLabels,
+}: ActivityFormProps) {
   const t = useTranslations("AdminActivities");
   const errorText = useFormErrorText();
   const router = useRouter();
@@ -63,97 +72,113 @@ export function ActivityForm({ id, defaultValues, mediaOptions, canPublish }: Ac
   return (
     <form onSubmit={onSubmit} noValidate className="flex flex-col gap-6">
       <UnsavedChangesGuard when={isDirty && !isPending} />
-      <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
-        <AdminPanel title={t("sections.photo.title")} description={t("sections.photo.description")}>
-          <Controller
-            control={form.control}
-            name="imageId"
-            render={({ field, fieldState }) => (
-              <MediaPicker
-                value={field.value}
-                onChange={field.onChange}
-                options={mediaOptions}
-                label={t("fields.image")}
-                error={errorText(fieldState.error?.message)}
+      <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_20rem]">
+        <ActivityCardPreview
+          control={form.control}
+          locale={tabs.locale}
+          labels={previewLabels}
+          mediaOptions={mediaOptions}
+          className="xl:order-last"
+        />
+        <div className="flex min-w-0 flex-col gap-6">
+          <AdminPanel
+            title={t("sections.photo.title")}
+            description={t("sections.photo.description")}
+          >
+            <Controller
+              control={form.control}
+              name="imageId"
+              render={({ field, fieldState }) => (
+                <MediaPicker
+                  value={field.value}
+                  onChange={field.onChange}
+                  options={mediaOptions}
+                  label={t("fields.image")}
+                  error={errorText(fieldState.error?.message)}
+                />
+              )}
+            />
+            {canPublish && (
+              <PublishedCheckbox
+                label={t("fields.isPublished")}
+                hint={t("fields.isPublishedHint")}
+                {...form.register("isPublished")}
               />
             )}
-          />
-          {canPublish && (
-            <PublishedCheckbox
-              label={t("fields.isPublished")}
-              hint={t("fields.isPublishedHint")}
-              {...form.register("isPublished")}
-            />
-          )}
-        </AdminPanel>
+          </AdminPanel>
 
-        <AdminPanel
-          title={t("sections.content.title")}
-          description={t("sections.content.description")}
-        >
-          <LocaleTabs value={tabs.locale} onValueChange={tabs.setLocale} invalid={tabs.invalid}>
-            {(locale) => {
-              const text = errors.texts?.[locale];
-              return (
-                <>
-                  <div className="grid gap-5 md:grid-cols-2">
-                    <Field label={t("fields.name")} error={errorText(text?.name?.message)} required>
+          <AdminPanel
+            title={t("sections.content.title")}
+            description={t("sections.content.description")}
+          >
+            <LocaleTabs value={tabs.locale} onValueChange={tabs.setLocale} invalid={tabs.invalid}>
+              {(locale) => {
+                const text = errors.texts?.[locale];
+                return (
+                  <>
+                    <div className="grid gap-5 md:grid-cols-2">
+                      <Field
+                        label={t("fields.name")}
+                        error={errorText(text?.name?.message)}
+                        required
+                      >
+                        {(control) => (
+                          <Input
+                            {...control}
+                            {...form.register(`texts.${locale}.name`)}
+                            maxLength={A.nameMax}
+                          />
+                        )}
+                      </Field>
+                      <Field
+                        label={t("fields.audience")}
+                        description={t("fields.audienceHint")}
+                        error={errorText(text?.audience?.message)}
+                        required
+                      >
+                        {(control) => (
+                          <Input
+                            {...control}
+                            {...form.register(`texts.${locale}.audience`)}
+                            maxLength={A.audienceMax}
+                          />
+                        )}
+                      </Field>
+                    </div>
+                    <Field
+                      label={t("fields.summary")}
+                      error={errorText(text?.summary?.message)}
+                      required
+                    >
                       {(control) => (
-                        <Input
+                        <Textarea
                           {...control}
-                          {...form.register(`texts.${locale}.name`)}
-                          maxLength={A.nameMax}
+                          {...form.register(`texts.${locale}.summary`)}
+                          rows={3}
+                          maxLength={A.summaryMax}
                         />
                       )}
                     </Field>
                     <Field
-                      label={t("fields.audience")}
-                      description={t("fields.audienceHint")}
-                      error={errorText(text?.audience?.message)}
+                      label={t("fields.imageAlt")}
+                      description={t("fields.imageAltHint")}
+                      error={errorText(text?.imageAlt?.message)}
                       required
                     >
                       {(control) => (
                         <Input
                           {...control}
-                          {...form.register(`texts.${locale}.audience`)}
-                          maxLength={A.audienceMax}
+                          {...form.register(`texts.${locale}.imageAlt`)}
+                          maxLength={limits.imageAltMax}
                         />
                       )}
                     </Field>
-                  </div>
-                  <Field
-                    label={t("fields.summary")}
-                    error={errorText(text?.summary?.message)}
-                    required
-                  >
-                    {(control) => (
-                      <Textarea
-                        {...control}
-                        {...form.register(`texts.${locale}.summary`)}
-                        rows={3}
-                        maxLength={A.summaryMax}
-                      />
-                    )}
-                  </Field>
-                  <Field
-                    label={t("fields.imageAlt")}
-                    description={t("fields.imageAltHint")}
-                    error={errorText(text?.imageAlt?.message)}
-                    required
-                  >
-                    {(control) => (
-                      <Input
-                        {...control}
-                        {...form.register(`texts.${locale}.imageAlt`)}
-                        maxLength={limits.imageAltMax}
-                      />
-                    )}
-                  </Field>
-                </>
-              );
-            }}
-          </LocaleTabs>
-        </AdminPanel>
+                  </>
+                );
+              }}
+            </LocaleTabs>
+          </AdminPanel>
+        </div>
       </div>
 
       <FormFooter

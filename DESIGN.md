@@ -473,6 +473,11 @@ Baseline: Penpot `02 · Dashboard` (Ringkasan, Calon Mitra, Unit Mitra, Kuota Wi
   reload/close, a dialog for in-app links). Lists use row controls: a visibility switch with a visible state label,
   up/down buttons for order, and delete behind a confirm dialog that names the item; every control's accessible name
   names its item ("Hapus Book Day").
+- **Live card preview (Phase 4b):** content forms whose record appears as a card on the site show that card beside the
+  copy (`CardPreview` + the site's own card component, so the preview can never drift from the real card). It follows
+  the open language tab and updates while typing; empty fields show their field label. From `xl` it is a sticky side
+  column; below that a collapsed "Pratinjau di situs" panel above the copy. The card is `inert` (not clickable or
+  focusable) and labels come from the public messages of that locale.
 
 ---
 

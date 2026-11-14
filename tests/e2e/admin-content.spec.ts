@@ -134,7 +134,11 @@ test.describe("admin activities", () => {
       await panel.getByLabel(/^Untuk siapa/).fill(values[1]);
       await panel.getByLabel(/^Ringkasan/).fill(values[2]);
       await panel.getByLabel(/^Teks alternatif foto/).fill(values[3]);
+      // The live preview shows the public card in the language of the open tab.
+      await expect(page.locator("[inert]")).toContainText(values[1]);
     }
+    await page.getByRole("tab", { name: /^Indonesia/ }).click();
+    await expect(page.locator("[inert]")).toContainText("Semua level");
     await page.getByRole("button", { name: "Tambah kegiatan" }).click();
     await saved(page);
     await expect(page).toHaveURL(/\/admin\/kegiatan$/);

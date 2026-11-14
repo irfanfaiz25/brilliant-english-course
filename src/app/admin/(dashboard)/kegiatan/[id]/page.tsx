@@ -12,6 +12,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { adminLocale, adminRoutes } from "@/config/admin-routes";
 import { deleteActivityAction } from "@/features/activities/actions";
 import { getActivityForEdit } from "@/features/activities/admin-queries";
+import { activityCardLabels } from "@/features/activities/admin-labels";
 import { ActivityForm } from "@/features/activities/components/activity-form";
 import { getMediaOptions } from "@/features/media/admin-queries";
 import { requirePermission } from "@/features/users/session";
@@ -41,10 +42,11 @@ async function EditActivity({ params }: { params: Promise<{ id: string }> }) {
   if (!z.uuid().safeParse(id).success) notFound();
   const path = `${adminRoutes.activities}/${id}`;
   const user = await requirePermission("update", "activities", path);
-  const [t, activity, mediaOptions] = await Promise.all([
+  const [t, activity, mediaOptions, previewLabels] = await Promise.all([
     getTranslations({ locale: adminLocale, namespace: "AdminActivities" }),
     getActivityForEdit(user, id),
     can(user, "read", "media") ? getMediaOptions(user) : [],
+    activityCardLabels(),
   ]);
   if (!activity) notFound();
   const name = activity.values.texts.id.name;
@@ -82,6 +84,7 @@ async function EditActivity({ params }: { params: Promise<{ id: string }> }) {
         defaultValues={activity.values}
         mediaOptions={mediaOptions}
         canPublish={can(user, "publish", "activities")}
+        previewLabels={previewLabels}
       />
     </>
   );

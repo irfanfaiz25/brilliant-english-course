@@ -6,6 +6,7 @@ import { AdminPageHeader } from "@/components/admin/admin-page-header";
 import { BackLink } from "@/components/admin/back-link";
 import { Skeleton } from "@/components/ui/skeleton";
 import { adminLocale, adminRoutes } from "@/config/admin-routes";
+import { activityCardLabels } from "@/features/activities/admin-labels";
 import { ActivityForm } from "@/features/activities/components/activity-form";
 import type { ActivityFormInput } from "@/features/activities/schema";
 import { getMediaOptions } from "@/features/media/admin-queries";
@@ -46,6 +47,7 @@ async function NewActivity() {
       defaultValues={emptyActivity}
       mediaOptions={mediaOptions}
       canPublish={can(user, "publish", "activities")}
+      previewLabels={await activityCardLabels()}
     />
   );
 }

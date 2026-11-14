@@ -980,6 +980,11 @@
       "none": "Belum ada gambar dipilih.",
       "selected": "Gambar terpilih",
       "cancelPick": "Batal"
+    },
+    "preview": {
+      "title": "Pratinjau di situs",
+      "note": "Kartu seperti tampil di {placement} ({locale}). Berubah saat kamu mengetik.",
+      "needsImage": "Pilih foto untuk melihat pratinjau kartu."
     }
   },
   "AdminSettings": {
@@ -1129,7 +1134,8 @@
       "addCurriculum": "Tambah materi",
       "imageAlt": "Teks alternatif foto",
       "imageAltHint": "Jelaskan isi foto untuk pembaca layar dan mesin pencari."
-    }
+    },
+    "previewPlacement": "Beranda"
   },
   "AdminActivities": {
     "description": "Kegiatan rutin unit yang tampil di Beranda dan halaman Program.",
@@ -1172,6 +1178,7 @@
       "audienceHint": "Contoh: Semua level, Kindy & Intro.",
       "imageAlt": "Teks alternatif foto",
       "imageAltHint": "Jelaskan isi foto untuk pembaca layar dan mesin pencari."
-    }
+    },
+    "previewPlacement": "Beranda dan halaman Program"
   }
 }

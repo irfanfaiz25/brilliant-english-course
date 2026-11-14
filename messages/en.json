@@ -980,6 +980,11 @@
       "none": "No image picked yet.",
       "selected": "Selected image",
       "cancelPick": "Cancel"
+    },
+    "preview": {
+      "title": "Preview on the site",
+      "note": "The card as shown on {placement} ({locale}). It updates as you type.",
+      "needsImage": "Pick a photo to see the card preview."
     }
   },
   "AdminSettings": {
@@ -1129,7 +1134,8 @@
       "addCurriculum": "Add topic",
       "imageAlt": "Photo alt text",
       "imageAltHint": "Describe the photo for screen readers and search engines."
-    }
+    },
+    "previewPlacement": "Home"
   },
   "AdminActivities": {
     "description": "Recurring unit activities shown on Home and the Programs page.",
@@ -1172,6 +1178,7 @@
       "audienceHint": "E.g. All levels, Kindy & Intro.",
       "imageAlt": "Photo alt text",
       "imageAltHint": "Describe the photo for screen readers and search engines."
-    }
+    },
+    "previewPlacement": "Home and the Programs page"
   }
 }

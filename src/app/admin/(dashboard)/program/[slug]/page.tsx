@@ -10,6 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { adminLocale, adminRoutes } from "@/config/admin-routes";
 import { getMediaOptions } from "@/features/media/admin-queries";
 import { getLevelForEdit } from "@/features/programs/admin-queries";
+import { levelCardLabels } from "@/features/programs/admin-labels";
 import { LevelForm } from "@/features/programs/components/level-form";
 import { levelSlugs, type LevelSlug } from "@/features/programs/schema";
 import { requirePermission } from "@/features/users/session";
@@ -50,10 +51,11 @@ export default async function EditLevelPage({ params }: PageProps<"/admin/progra
 async function EditLevel({ slug }: { slug: LevelSlug }) {
   const path = `${adminRoutes.programs}/${slug}`;
   const user = await requirePermission("update", "programs", path);
-  const [t, level, mediaOptions] = await Promise.all([
+  const [t, level, mediaOptions, previewLabels] = await Promise.all([
     getTranslations({ locale: adminLocale, namespace: "AdminPrograms" }),
     getLevelForEdit(user, slug),
     can(user, "read", "media") ? getMediaOptions(user) : [],
+    levelCardLabels(),
   ]);
   if (!level) notFound();
 
@@ -75,6 +77,7 @@ async function EditLevel({ slug }: { slug: LevelSlug }) {
         mediaOptions={mediaOptions}
         canEdit
         canPublish={can(user, "publish", "programs")}
+        previewLabels={previewLabels}
       />
     </>
   );
