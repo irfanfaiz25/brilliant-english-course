@@ -960,7 +960,8 @@
       "quotaFull": "Kuota desa ini sudah penuh, jadi unit belum bisa diaktifkan. Lepas pesanan slot di Kuota Wilayah (jika pesanan itu untuk unit ini) atau pilih status lain.",
       "quotaExceeded": "Slot yang tersisa di desa ini hanya {limit}.",
       "dateInvalid": "Tanggal belum benar.",
-      "almostFullTooHigh": "Batas \"hampir penuh\" harus lebih kecil dari maksimal unit per desa."
+      "almostFullTooHigh": "Batas \"hampir penuh\" harus lebih kecil dari maksimal unit per desa.",
+      "inUse": "Gambar ini masih dipakai, jadi belum bisa dihapus."
     },
     "back": "Kembali",
     "removeItem": "Hapus {item}",
@@ -986,12 +987,14 @@
       "pick": "Pilih gambar",
       "change": "Ganti gambar",
       "title": "Pustaka media",
-      "description": "Pilih satu gambar. Unggah gambar baru tersedia di modul Media (tahap 4e).",
+      "description": "Pilih satu gambar, atau unggah gambar baru dari komputer.",
       "empty": "Belum ada gambar di pustaka.",
       "use": "Pakai gambar ini",
       "none": "Belum ada gambar dipilih.",
       "selected": "Gambar terpilih",
-      "cancelPick": "Batal"
+      "cancelPick": "Batal",
+      "upload": "Unggah gambar baru",
+      "backToLibrary": "Kembali ke pustaka"
     },
     "preview": {
       "title": "Pratinjau di situs",
@@ -1484,6 +1487,91 @@
       "status": "Status",
       "assignee": "Petugas",
       "received": "Masuk"
+    }
+  },
+  "AdminMedia": {
+    "description": "Semua gambar situs di satu tempat. Gambar yang diunggah otomatis diperkecil dan disimpan sebagai WebP.",
+    "libraryLabel": "Pustaka gambar",
+    "upload": {
+      "title": "Unggah gambar",
+      "description": "JPG, PNG, atau WebP, maksimal {maxMb} MB per file dan {maxFiles} file sekaligus. Disimpan sebagai WebP dengan sisi terpanjang maksimal {maxPx} px.",
+      "drop": "Seret gambar ke sini",
+      "or": "atau",
+      "choose": "Pilih file",
+      "dropActive": "Lepaskan untuk mengunggah",
+      "queueTitle": "{done} dari {total} selesai",
+      "clear": "Bersihkan daftar",
+      "queued": "Menunggu giliran",
+      "uploading": "{loaded} dari {total}",
+      "processing": "Memproses gambar…",
+      "done": "Selesai · {width} × {height} px",
+      "cancelled": "Dibatalkan",
+      "cancel": "Batalkan unggah {name}",
+      "retry": "Ulangi unggah {name}",
+      "remove": "Hapus {name} dari daftar",
+      "open": "Buka {name}",
+      "tooMany": "Hanya {max} file pertama yang diunggah. Unggah sisanya setelah ini selesai.",
+      "allDone": "{count, plural, other {# gambar}} berhasil diunggah.",
+      "errors": {
+        "fileType": "Format tidak didukung. Gunakan JPG, PNG, atau WebP.",
+        "fileTooLarge": "File lebih dari {maxMb} MB. Perkecil dulu lalu unggah lagi.",
+        "fileEmpty": "File kosong atau rusak.",
+        "uploadFailed": "Unggah terputus. Periksa koneksi lalu ulangi.",
+        "uploadMissing": "File tidak sampai ke penyimpanan. Ulangi unggah.",
+        "invalidImage": "File ini bukan gambar yang bisa dibaca.",
+        "forbidden": "Akunmu tidak punya izin mengunggah gambar.",
+        "unknown": "Unggah gagal. Coba lagi sebentar lagi."
+      }
+    },
+    "search": "Cari gambar",
+    "searchPlaceholder": "Nama gambar",
+    "searchSubmit": "Cari",
+    "filters": {
+      "label": "Saring gambar",
+      "all": "Semua",
+      "unused": "Belum dipakai"
+    },
+    "count": "{count, plural, =0 {Tidak ada gambar} other {# gambar}}",
+    "empty": "Belum ada gambar. Unggah gambar pertama di atas.",
+    "noResults": "Tidak ada gambar yang cocok dengan saringan ini.",
+    "pagination": {
+      "label": "Halaman pustaka media"
+    },
+    "usedCount": "Dipakai {count}×",
+    "unused": "Belum dipakai",
+    "bundled": "Bawaan",
+    "detail": {
+      "preview": "Pratinjau",
+      "info": "Info gambar",
+      "dimensions": "Ukuran",
+      "fileSize": "Besar file",
+      "type": "Format",
+      "uploaded": "Diunggah",
+      "uploadedBy": "oleh {name}",
+      "bundledNote": "Gambar contoh bawaan situs. Ganti dengan foto asli lewat unggahan.",
+      "openOriginal": "Buka gambar",
+      "usagesTitle": "Dipakai di",
+      "usagesDescription": "Gambar yang masih dipakai tidak bisa dihapus.",
+      "noUsages": "Belum dipakai di mana pun, jadi aman dihapus.",
+      "usageKinds": {
+        "program": "Program",
+        "activity": "Kegiatan",
+        "unit": "Unit",
+        "post": "Artikel",
+        "seo": "SEO"
+      },
+      "renameTitle": "Nama gambar",
+      "renameDescription": "Hanya untuk mencari di pustaka; teks alternatif diisi di tempat gambar dipakai.",
+      "name": "Nama",
+      "saved": "Nama gambar tersimpan."
+    },
+    "delete": {
+      "label": "Hapus gambar",
+      "title": "Hapus {name}?",
+      "body": "Gambar dihapus dari pustaka dan penyimpanan. Tindakan ini tidak bisa dibatalkan.",
+      "confirm": "Hapus gambar",
+      "deleted": "Gambar dihapus.",
+      "inUse": "Gambar ini masih dipakai, jadi belum bisa dihapus. Ganti dulu gambarnya di tempat-tempat tersebut."
     }
   }
 }
