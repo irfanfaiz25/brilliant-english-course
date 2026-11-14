@@ -81,7 +81,7 @@ Sub-phases (separate PRs): 4a Settings & SEO defaults · 4b Programs & Activitie
   the shared schema, checks the permission, writes an audit row in the same transaction and expires the cache tag.
 - 4b Programs & Activities ✅ (ADR-028): Program lists the three fixed levels (show/hide switch, edit page with class
   details, photo from the media library, bilingual copy incl. card highlights and curriculum lists; overlapping age
-  ranges are refused). Kegiatan adds, edits, hides, reorders (up/down) and deletes activities (confirm dialog). Long
+  ranges are refused). Kegiatan adds, edits, hides, reorders (drag, since 4f) and deletes activities (confirm dialog). Long
   forms use `ID | EN` tabs with an error dot, a sticky save bar once dirty and an unsaved-changes guard.
 - 4c Units & Quota ✅ (ADR-029): Unit Mitra lists units with search, status chips with counts and paging (table from
   `md`, cards on phones); add/edit with a province → village picker, coordinates with a map check, schedule, levels
@@ -102,7 +102,7 @@ Sub-phases (separate PRs): 4a Settings & SEO defaults · 4b Programs & Activitie
   captions, YouTube, HTML import, word count), `ID | EN` tabs with optional English, cover image, category, author,
   status and publish time. Admin list searches now apply while typing.
 - 4f Testimonials & FAQ ✅ (ADR-033): Testimoni and FAQ list each group (parents/partners; parents/program/partners)
-  behind filter chips with counts; rows can be shown or hidden, moved up/down, edited and deleted. Testimonials have a
+  behind filter chips with counts; rows can be shown or hidden, dragged into order (mouse, touch or keyboard; also the list fields of content forms), edited and deleted. Testimonials have a
   name, a star rating and a bilingual quote and context line with a live card preview; FAQ entries a bilingual
   question and plain-text answer (line breaks kept on the site).
 
