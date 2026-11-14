@@ -7,6 +7,8 @@ export const adminRoutes = {
   signIn: "/admin/masuk",
   forgotPassword: "/admin/lupa-password",
   resetPassword: "/admin/reset-password",
+  /** Where an invited account sets its first password (same token as a reset, ADR-035). */
+  activate: "/admin/aktivasi",
   leads: "/admin/calon-mitra",
   leadExport: "/admin/calon-mitra/ekspor",
   units: "/admin/unit",
@@ -24,6 +26,10 @@ export const adminRoutes = {
   newTestimonial: "/admin/testimoni/baru",
   faq: "/admin/faq",
   newFaqItem: "/admin/faq/baru",
+  users: "/admin/pengguna",
+  newUser: "/admin/pengguna/baru",
+  permissions: "/admin/pengguna/hak-akses",
+  account: "/admin/akun",
 } as const;
 
 /** Admin pages reachable without a session. */
@@ -31,10 +37,14 @@ export const publicAdminPaths: readonly string[] = [
   adminRoutes.signIn,
   adminRoutes.forgotPassword,
   adminRoutes.resetPassword,
+  adminRoutes.activate,
 ];
 
 /** Locale of the admin UI; passed explicitly because admin routes have no `[locale]` segment. */
 export const adminLocale = "id" as const;
+
+/** BEC's office time zone: admin dates and times are shown (and typed) in it, whatever the server's. */
+export const adminTimeZone = "Asia/Jakarta";
 
 /**
  * Where to go after signing in: only same-site admin paths are accepted, so a crafted `next`

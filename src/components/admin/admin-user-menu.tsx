@@ -1,19 +1,20 @@
 "use client";
 
-import { ChevronDownIcon, ExternalLinkIcon, LogOutIcon } from "lucide-react";
+import { ChevronDownIcon, ExternalLinkIcon, LogOutIcon, UserRoundIcon } from "lucide-react";
 import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
+import { adminRoutes } from "@/config/admin-routes";
 import { signOut } from "@/features/users/actions";
 
 type AdminUserMenuProps = {
   name: string;
   email: string;
   roleLabel: string;
-  labels: { menu: string; viewSite: string; signOut: string };
+  labels: { menu: string; account: string; viewSite: string; signOut: string };
 };
 
 /** Initials for the avatar: "Rina Lestari" → "RL". */
@@ -22,7 +23,7 @@ function initials(name: string): string {
   return (second ? first[0] + second[0] : first.slice(0, 2)).toUpperCase();
 }
 
-/** Avatar button in the top bar: who is signed in, a link to the public site and sign out. */
+/** Avatar button in the top bar: who is signed in, "Akun saya", the public site and sign out. */
 export function AdminUserMenu({ name, email, roleLabel, labels }: AdminUserMenuProps) {
   return (
     <Popover>
@@ -50,6 +51,13 @@ export function AdminUserMenu({ name, email, roleLabel, labels }: AdminUserMenuP
           </Badge>
         </div>
         <Separator />
+        <Link
+          href={adminRoutes.account}
+          className="flex min-h-10 items-center gap-2 rounded-md px-2 text-label text-foreground hover:bg-muted"
+        >
+          <UserRoundIcon aria-hidden className="size-4 text-muted-foreground" />
+          {labels.account}
+        </Link>
         <Link
           href="/"
           target="_blank"

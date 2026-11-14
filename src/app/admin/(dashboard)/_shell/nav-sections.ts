@@ -23,7 +23,6 @@ export async function navSectionsFor(user: SessionUser | null): Promise<AdminNav
         href: item.href,
         icon: item.icon,
         label: t(`nav.items.${item.key}`),
-        badge: item.phase ? t("soon") : undefined,
       }));
     return items.length ? [{ key: group.key, label: t(`nav.groups.${group.key}`), items }] : [];
   });

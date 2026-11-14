@@ -5,7 +5,7 @@
  *   pnpm auth:create-user --email ana@bec.id --reset-password
  *
  * Self sign-up is disabled, so this is how the first super admin is created; later accounts come
- * from the Users module (Phase 4g). The password is read from `BEC_USER_PASSWORD` when set (CI,
+ * from the Users module (Pengguna, ADR-035). The password is read from `BEC_USER_PASSWORD` when set (CI,
  * E2E), otherwise a strong one is generated and printed once. Run it against local or CI
  * databases only; production accounts are created through the deploy pipeline (Phase 8).
  */

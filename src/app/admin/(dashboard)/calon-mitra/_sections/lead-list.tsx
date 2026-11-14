@@ -3,7 +3,7 @@ import { getFormatter, getTranslations } from "next-intl/server";
 import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
-import { adminLocale, adminRoutes } from "@/config/admin-routes";
+import { adminLocale, adminRoutes, adminTimeZone } from "@/config/admin-routes";
 import type { PipelineLead } from "@/features/partners/admin-queries";
 import { leadStatusBadge } from "@/features/partners/lead-status";
 
@@ -42,7 +42,7 @@ export async function LeadList({
       title={format.dateTime(lead.createdAt, {
         dateStyle: "medium",
         timeStyle: "short",
-        timeZone: "Asia/Jakarta",
+        timeZone: adminTimeZone,
       })}
     >
       {format.relativeTime(lead.createdAt, now)}

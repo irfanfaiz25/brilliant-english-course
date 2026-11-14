@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server";
 
-import { adminLocale } from "@/config/admin-routes";
+import { adminLocale, adminTimeZone } from "@/config/admin-routes";
 import { getLeadsForExport } from "@/features/partners/admin-queries";
 import { recordLeadExport } from "@/features/partners/admin-service";
 import { getCurrentUser } from "@/features/users/session";
@@ -27,7 +27,7 @@ export async function GET(request: Request) {
   ]);
 
   const received = new Intl.DateTimeFormat("sv-SE", {
-    timeZone: "Asia/Jakarta",
+    timeZone: adminTimeZone,
     dateStyle: "short",
     timeStyle: "short",
   });

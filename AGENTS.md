@@ -180,15 +180,21 @@ Forms share one Zod schema between React Hook Form and the action; validation me
 
 Roles: `super_admin`, `admin`, `editor`, `mitra` (mitra is scoped to its `unit_id`; portal ships in a later phase).
 Permissions are defined in one place (`src/lib/permissions.ts`) and checked on the server — hiding UI is not authorization.
-A change to the matrix must be mirrored in `permissions.test.ts`, which lists every role × resource × action by hand.
+A change to the default matrix must be mirrored in `permissions.test.ts`, which lists every role × resource × action by hand.
+Super admins may change what `admin`/`editor` may do (Pengguna › Hak akses, ADR-036): the session carries the role's
+effective grants and `can()` reads them; the guard rails (`normalizeRoleGrants()`, `resourceActions`) live in the same file.
 
 - Better Auth lives in `src/lib/auth.ts`; UI and actions never import it directly but go through `features/users`
   (`actions.ts` for sign-in/out and reset, `session.ts` for the session). There is no `/api/auth` route (ADR-025).
 - Read the session with `getCurrentUser()` / `requireUser()` / `requirePermission()` from `features/users/session.ts`,
   inside a component behind `<Suspense>`, never at the top of a layout. Every Server Action re-checks the session itself.
 - `src/proxy.ts` only redirects visitors without a session cookie away from `/admin`; it is not authorization.
-- Staff accounts are created with `pnpm auth:create-user` (self sign-up is disabled). Admin paths and the admin locale
-  live in `src/config/admin-routes.ts`; post-login redirects go through `safeAdminRedirect()`.
+- Self sign-up is disabled. Super admins create accounts in Pengguna (`/admin/pengguna`, ADR-035): no password is
+  typed for anyone; the account gets a single-use activation link (a Better Auth reset token) that is copied and sent by
+  hand. Account rules (own role/status, last super admin) live in `features/users/rules.ts`; every signed-in account
+  edits its own name and password in Akun saya (`/admin/akun`). `pnpm auth:create-user` stays for the first super admin
+  and CI. Admin paths, the admin locale and `adminTimeZone` live in `src/config/admin-routes.ts`; post-login redirects
+  go through `safeAdminRedirect()`.
 
 ### Database
 

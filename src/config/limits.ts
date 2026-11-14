@@ -20,12 +20,20 @@ export const limits = {
     /** Signed-in sessions last this long; each visit after a day extends them again. */
     sessionDays: 7,
     resetLinkMinutes: 60,
+    /** Activation and reset links a super admin creates and sends by hand (Users module). */
+    accessLinkHours: 72,
     /** Sign-in attempts per IP and per email within `signInWindowMs`. */
     signInRateLimit: 10,
     signInWindowMs: 15 * 60 * 1000,
     /** Password-reset requests per IP and per email within `resetWindowMs`. */
     resetRateLimit: 5,
     resetWindowMs: 60 * 60 * 1000,
+  },
+  users: {
+    nameMax: 120,
+    emailMax: 254,
+    /** Rows per page of the admin user list. */
+    pageSize: 20,
   },
   settings: {
     addressMax: 200,

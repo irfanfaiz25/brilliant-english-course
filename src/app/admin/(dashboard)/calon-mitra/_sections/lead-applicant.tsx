@@ -1,7 +1,7 @@
 import { getFormatter, getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
 
-import { adminLocale } from "@/config/admin-routes";
+import { adminLocale, adminTimeZone } from "@/config/admin-routes";
 import type { LeadDetail } from "@/features/partners/admin-queries";
 
 /** What the applicant filled in, as a description list (label above value on phones). */
@@ -75,7 +75,7 @@ export async function LeadApplicant({ lead }: { lead: LeadDetail }) {
           {format.dateTime(lead.createdAt, {
             dateStyle: "long",
             timeStyle: "short",
-            timeZone: "Asia/Jakarta",
+            timeZone: adminTimeZone,
           })}
         </time>
       </p>

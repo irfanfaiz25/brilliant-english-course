@@ -15,8 +15,18 @@ import { resetPassword } from "../actions";
 import { newPasswordSchema, type AuthError, type NewPasswordInput } from "../schema";
 import { focusOnMount, FormAlert, PasswordInput, useAuthErrorText } from "./form-parts";
 
-/** Sets a new password from the emailed link. The token is checked only by the server. */
-export function ResetPasswordForm({ token }: { token: string }) {
+/**
+ * Sets a password from a link. The token is checked only by the server. `activate` is the same
+ * flow for an invited account's first password (`/admin/aktivasi`), with its own wording; its
+ * links come from a super admin, so an expired one is not followed by "request a new link".
+ */
+export function ResetPasswordForm({
+  token,
+  variant = "reset",
+}: {
+  token: string;
+  variant?: "reset" | "activate";
+}) {
   const t = useTranslations("Auth");
   const errorText = useAuthErrorText();
   const [formError, setFormError] = useState<AuthError | null>(null);
@@ -53,8 +63,8 @@ export function ResetPasswordForm({ token }: { token: string }) {
         <div className="flex items-start gap-3 rounded-xl bg-success-soft px-4 py-3">
           <CircleCheckIcon aria-hidden className="mt-0.5 size-5 shrink-0 text-success-strong" />
           <div className="flex flex-col gap-1">
-            <p className="text-label text-foreground">{t("reset.doneTitle")}</p>
-            <p className="text-body-sm text-muted-foreground">{t("reset.done")}</p>
+            <p className="text-label text-foreground">{t(`${variant}.doneTitle`)}</p>
+            <p className="text-body-sm text-muted-foreground">{t(`${variant}.done`)}</p>
           </div>
         </div>
         <Button asChild pop className="w-full">
@@ -88,7 +98,7 @@ export function ResetPasswordForm({ token }: { token: string }) {
       {formError && formError !== "invalid" && (
         <div className="flex flex-col gap-3">
           <FormAlert>{errorText(formError) ?? ""}</FormAlert>
-          {formError === "tokenInvalid" && (
+          {formError === "tokenInvalid" && variant === "reset" && (
             <Button asChild variant="secondary" className="w-full">
               <Link href={adminRoutes.forgotPassword}>{t("reset.requestNew")}</Link>
             </Button>
@@ -97,7 +107,7 @@ export function ResetPasswordForm({ token }: { token: string }) {
       )}
 
       <Button type="submit" pop loading={isPending} className="w-full">
-        {t("reset.submit")}
+        {t(`${variant}.submit`)}
       </Button>
     </form>
   );

@@ -813,7 +813,17 @@
       "accountDisabled": "Akun ini dinonaktifkan. Hubungi super admin.",
       "rateLimited": "Terlalu banyak percobaan. Coba lagi beberapa menit lagi.",
       "tokenInvalid": "Tautan sudah tidak berlaku. Minta tautan baru.",
-      "unknown": "Terjadi kesalahan. Coba lagi."
+      "unknown": "Terjadi kesalahan. Coba lagi.",
+      "currentPasswordWrong": "Kata sandi saat ini salah."
+    },
+    "activate": {
+      "metaTitle": "Aktivasi akun",
+      "title": "Aktifkan akunmu",
+      "description": "Buat kata sandi untuk akun Admin BEC-mu, minimal {min} karakter.",
+      "submit": "Aktifkan akun",
+      "doneTitle": "Akunmu sudah aktif",
+      "done": "Silakan masuk dengan email dan kata sandi barumu.",
+      "missingToken": "Tautan tidak lengkap. Minta tautan aktivasi baru ke super admin."
     }
   },
   "Admin": {
@@ -836,7 +846,6 @@
     "openMenu": "Buka menu",
     "menuTitle": "Menu admin",
     "menuDescription": "Navigasi modul dashboard",
-    "soon": "Segera",
     "nav": {
       "groups": {
         "main": "Utama",
@@ -893,17 +902,12 @@
       "rejected": "Ditolak",
       "lost": "Batal"
     },
-    "module": {
-      "description": "Modul ini sedang dibangun.",
-      "title": "Segera hadir di tahap {phase}",
-      "body": "Kamu punya akses ke modul ini. Fitur kelola data ditambahkan bertahap sesuai roadmap; sementara itu datanya tetap aman di database.",
-      "back": "Kembali ke Ringkasan"
-    },
     "notFound": {
       "title": "Halaman tidak ditemukan",
       "body": "Halaman ini tidak ada atau tidak tersedia untuk akunmu.",
       "back": "Kembali ke Ringkasan"
-    }
+    },
+    "account": "Akun saya"
   },
   "AdminForms": {
     "save": "Simpan perubahan",
@@ -966,7 +970,13 @@
       "translationIncomplete": "Lengkapi kolom ini atau kosongkan semua kolom versi Inggris.",
       "contentRequired": "Tulis isi artikel.",
       "publishForbidden": "Akunmu tidak bisa menerbitkan atau mengarsipkan artikel.",
-      "orderChanged": "Urutan sudah diubah di tempat lain. Daftar dimuat ulang; coba lagi."
+      "orderChanged": "Urutan sudah diubah di tempat lain. Daftar dimuat ulang; coba lagi.",
+      "selfChange": "Peran dan status akun sendiri tidak bisa diubah.",
+      "lastSuperAdmin": "Harus ada minimal satu super admin aktif. Jadikan akun lain super admin dulu.",
+      "userInactive": "Akun ini nonaktif. Aktifkan kembali sebelum membuat tautan.",
+      "emailTaken": "Email ini sudah dipakai akun lain.",
+      "unitRequired": "Pilih unit untuk akun mitra.",
+      "unitMissing": "Unit ini sudah tidak ada. Pilih unit lain."
     },
     "back": "Kembali",
     "removeItem": "Hapus {item}",
@@ -1875,5 +1885,187 @@
       "isPublished": "Tampilkan pertanyaan ini di situs",
       "isPublishedHint": "Pertanyaan yang disembunyikan tetap tersimpan, tapi tidak muncul di situs."
     }
+  },
+  "AdminUsers": {
+    "description": "Akun tim BEC dan mitra: siapa yang bisa masuk ke admin dan apa yang boleh dilakukan.",
+    "add": "Tambah pengguna",
+    "listLabel": "Daftar pengguna",
+    "search": "Cari pengguna",
+    "searchPlaceholder": "Nama atau email",
+    "filters": {
+      "label": "Peran",
+      "all": "Semua"
+    },
+    "count": "{count, plural, =0 {Tidak ada pengguna} other {# pengguna}}",
+    "empty": "Belum ada pengguna.",
+    "noResults": "Tidak ada pengguna yang cocok. Ubah pencarian atau pilih peran lain.",
+    "pagination": {
+      "label": "Halaman daftar pengguna"
+    },
+    "columns": {
+      "user": "Pengguna",
+      "role": "Peran",
+      "unit": "Unit",
+      "status": "Status",
+      "lastSignIn": "Terakhir masuk",
+      "actions": "Aksi"
+    },
+    "status": {
+      "active": "Aktif",
+      "invited": "Menunggu aktivasi",
+      "disabled": "Nonaktif"
+    },
+    "never": "Belum pernah",
+    "you": "Akun Anda",
+    "unitDeleted": "Unit dihapus",
+    "manageLabel": "Kelola {name}",
+    "roleDescriptions": {
+      "super_admin": "Akses penuh, termasuk mengelola pengguna dan peran.",
+      "admin": "Mengelola kemitraan, unit, kuota, dan semua konten. Bisa melihat daftar pengguna.",
+      "editor": "Mengelola konten situs: program, kegiatan, blog, testimoni, FAQ, media, dan SEO.",
+      "mitra": "Pemilik unit. Hanya bisa melihat dan mengubah unit miliknya (portal mitra menyusul)."
+    },
+    "matrix": {
+      "title": "Hak akses per peran",
+      "description": "Ditetapkan di sistem dan sama untuk semua akun dengan peran itu.",
+      "module": "Modul",
+      "none": "Tidak ada akses",
+      "full": "Akses penuh",
+      "ownUnit": "unit sendiri",
+      "actions": {
+        "read": "Lihat",
+        "create": "Tambah",
+        "update": "Ubah",
+        "delete": "Hapus",
+        "publish": "Terbitkan"
+      },
+      "resources": {
+        "dashboard": "Ringkasan",
+        "units": "Unit Mitra",
+        "quota": "Kuota Wilayah",
+        "leads": "Calon Mitra",
+        "programs": "Program",
+        "activities": "Kegiatan",
+        "blog": "Artikel Blog",
+        "testimonials": "Testimoni",
+        "faq": "FAQ",
+        "media": "Media",
+        "settings": "Pengaturan",
+        "seo": "SEO",
+        "seoIndexing": "SEO: sembunyikan dari Google",
+        "users": "Pengguna",
+        "auditLog": "Log audit"
+      },
+      "manage": "Atur hak akses"
+    },
+    "createTitle": "Tambah pengguna",
+    "createDescription": "Akun baru belum punya kata sandi. Setelah disimpan, salin tautan aktivasi dan kirim ke orangnya.",
+    "editDescription": "Ubah profil dan peran, buat tautan aktivasi atau reset kata sandi, atau nonaktifkan akun.",
+    "created": "Pengguna dibuat.",
+    "sections": {
+      "profile": {
+        "title": "Profil",
+        "description": "Nama dan email yang dipakai untuk masuk."
+      },
+      "role": {
+        "title": "Peran",
+        "description": "Menentukan apa yang boleh dilakukan akun ini di admin."
+      },
+      "access": {
+        "title": "Akses",
+        "description": "Status akun, tautan untuk membuat kata sandi, dan kapan terakhir masuk."
+      }
+    },
+    "fields": {
+      "name": "Nama",
+      "email": "Email",
+      "emailHint": "Dipakai untuk masuk. Huruf besar dan kecil dianggap sama.",
+      "role": "Peran",
+      "unit": "Unit",
+      "unitHint": "Akun mitra hanya bisa melihat dan mengubah unit ini.",
+      "unitPlaceholder": "Pilih unit",
+      "noUnits": "Belum ada unit. Tambahkan unit dulu sebelum membuat akun mitra."
+    },
+    "selfNote": "Ini akun Anda. Peran dan status akun sendiri tidak bisa diubah di sini; nama dan kata sandi diubah di Akun saya.",
+    "access": {
+      "status": "Status",
+      "lastSignIn": "Terakhir masuk",
+      "devices": "Perangkat",
+      "sessions": "{count, plural, =0 {Tidak ada perangkat yang masuk} other {Masuk di # perangkat}}",
+      "created": "Dibuat",
+      "pendingLink": "Tautan {kind} terakhir berlaku sampai {date}.",
+      "noPendingLink": "Tidak ada tautan yang masih berlaku.",
+      "kinds": {
+        "activation": "aktivasi",
+        "reset": "reset kata sandi"
+      },
+      "invitedHint": "Akun ini belum membuat kata sandi. Kirim tautan aktivasi; kalau tautannya sudah kedaluwarsa atau hilang, buat yang baru.",
+      "disabledHint": "Akun nonaktif tidak bisa masuk dan tidak bisa diberi tautan. Aktifkan kembali dulu.",
+      "linkActivation": "Buat tautan aktivasi",
+      "linkReset": "Buat tautan reset kata sandi",
+      "linkConfirmTitle": "Buat tautan baru untuk {name}?",
+      "linkConfirmBody": "Tautan sebelumnya untuk akun ini langsung tidak berlaku.",
+      "linkConfirm": "Buat tautan",
+      "deactivate": "Nonaktifkan akun",
+      "deactivateTitle": "Nonaktifkan {name}?",
+      "deactivateBody": "{name} langsung keluar dari semua perangkat dan tidak bisa masuk sampai diaktifkan lagi. Data dan riwayatnya tetap tersimpan.",
+      "deactivateConfirm": "Nonaktifkan",
+      "deactivated": "Akun dinonaktifkan.",
+      "activate": "Aktifkan kembali",
+      "activated": "Akun diaktifkan kembali."
+    },
+    "linkDialog": {
+      "titleActivation": "Tautan aktivasi untuk {name}",
+      "titleReset": "Tautan reset kata sandi untuk {name}",
+      "body": "Kirim tautan ini ke {name}, misalnya lewat WhatsApp. Tautan hanya bisa dipakai sekali dan berlaku sampai {date}.",
+      "warning": "Tautan ini tidak bisa ditampilkan lagi setelah jendela ini ditutup. Kalau hilang, buat tautan baru.",
+      "label": "Tautan",
+      "copy": "Salin tautan",
+      "copied": "Tautan disalin.",
+      "copyFailed": "Tidak bisa menyalin otomatis. Pilih tautan lalu salin manual.",
+      "done": "Selesai"
+    },
+    "permissions": {
+      "title": "Hak akses",
+      "description": "Atur apa yang boleh dilakukan peran Admin dan Editor. Perubahan langsung berlaku untuk semua akun dengan peran itu.",
+      "rolesLabel": "Peran yang diatur",
+      "superAdminNote": "Super admin selalu punya akses penuh, supaya selalu ada yang bisa mengelola pengguna dan hak akses.",
+      "mitraNote": "Mitra hanya bisa melihat dan mengubah unit miliknya sampai portal mitra dibuat.",
+      "fixedNote": "Ringkasan selalu bisa dilihat semua staf karena juga dipakai alat bersama, misalnya pencarian wilayah.",
+      "usersNote": "Hanya bisa diberi Lihat. Mengelola akun tetap tugas super admin.",
+      "unavailable": "Tidak tersedia di modul ini",
+      "checkbox": "{action} {module} untuk {role}",
+      "changed": "Berbeda dari bawaan",
+      "reset": "Kembalikan ke bawaan",
+      "resetHint": "Mengisi ulang centang {role} dengan aturan bawaan. Simpan untuk menerapkannya.",
+      "saved": "Hak akses tersimpan dan langsung berlaku."
+    }
+  },
+  "AdminAccount": {
+    "title": "Akun saya",
+    "description": "Nama dan kata sandi akunmu.",
+    "sections": {
+      "profile": {
+        "title": "Profil",
+        "description": "Email, peran, dan unit diatur oleh super admin."
+      },
+      "password": {
+        "title": "Kata sandi",
+        "description": "Minimal {min} karakter. Setelah diganti, perangkat lain otomatis keluar."
+      }
+    },
+    "fields": {
+      "name": "Nama",
+      "email": "Email",
+      "role": "Peran",
+      "unit": "Unit",
+      "lastSignIn": "Terakhir masuk",
+      "currentPassword": "Kata sandi saat ini",
+      "newPassword": "Kata sandi baru",
+      "confirmPassword": "Ulangi kata sandi baru"
+    },
+    "saved": "Nama tersimpan.",
+    "changePassword": "Ganti kata sandi",
+    "passwordChanged": "Kata sandi diganti. Perangkat lain sudah dikeluarkan."
   }
 }

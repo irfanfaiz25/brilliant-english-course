@@ -38,7 +38,8 @@ test.describe("admin shell", () => {
     await nav.getByRole("link", { name: /^Pengguna/ }).click();
     await expect(page).toHaveURL(/\/admin\/pengguna$/);
     await expect(page.getByRole("heading", { level: 1, name: "Pengguna" })).toBeVisible();
-    await expect(page.getByText("Segera hadir di tahap 4g")).toBeVisible();
+    // No module is a "coming soon" placeholder any more.
+    await expect(nav.getByText("Segera")).toHaveCount(0);
   });
 
   test("shows an editor only content modules and hides partner data", async ({

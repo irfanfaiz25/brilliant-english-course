@@ -2,11 +2,9 @@ import { CalendarClockIcon, MapPinIcon } from "lucide-react";
 import { getFormatter, getTranslations } from "next-intl/server";
 
 import { DeleteButton } from "@/components/admin/row-actions";
-import { adminLocale } from "@/config/admin-routes";
+import { adminLocale, adminTimeZone } from "@/config/admin-routes";
 import type { ReservationRow } from "@/features/quota/admin-queries";
 import { releaseReservationAction } from "@/features/quota/actions";
-
-const TIME_ZONE = "Asia/Jakarta";
 
 /** Open reservations with where, how many, until when and who made them; release per row. */
 export async function ReservationList({
@@ -23,7 +21,8 @@ export async function ReservationList({
     getTranslations({ locale: adminLocale, namespace: "AdminQuota.reservations" }),
     getFormatter({ locale: adminLocale }),
   ]);
-  const day = (date: Date) => format.dateTime(date, { dateStyle: "medium", timeZone: TIME_ZONE });
+  const day = (date: Date) =>
+    format.dateTime(date, { dateStyle: "medium", timeZone: adminTimeZone });
 
   return (
     <ul className="flex flex-col divide-y divide-border/60">

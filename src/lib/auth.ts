@@ -74,6 +74,13 @@ export const auth = betterAuth({
             .where(eq(users.id, session.userId));
           if (!user?.isActive) throw new APIError("FORBIDDEN", { message: "ACCOUNT_DISABLED" });
         },
+        // Shown as "last signed in" in the Users module; a session starts only at sign-in.
+        async after(session) {
+          await db
+            .update(users)
+            .set({ lastSignInAt: new Date() })
+            .where(eq(users.id, session.userId));
+        },
       },
     },
   },

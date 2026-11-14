@@ -813,7 +813,17 @@
       "accountDisabled": "This account is deactivated. Contact a super admin.",
       "rateLimited": "Too many attempts. Try again in a few minutes.",
       "tokenInvalid": "This link has expired. Request a new one.",
-      "unknown": "Something went wrong. Please try again."
+      "unknown": "Something went wrong. Please try again.",
+      "currentPasswordWrong": "The current password is wrong."
+    },
+    "activate": {
+      "metaTitle": "Activate account",
+      "title": "Activate your account",
+      "description": "Create a password for your BEC admin account, at least {min} characters.",
+      "submit": "Activate account",
+      "doneTitle": "Your account is active",
+      "done": "Sign in with your email and new password.",
+      "missingToken": "The link is incomplete. Ask a super admin for a new activation link."
     }
   },
   "Admin": {
@@ -836,7 +846,6 @@
     "openMenu": "Open menu",
     "menuTitle": "Admin menu",
     "menuDescription": "Dashboard module navigation",
-    "soon": "Soon",
     "nav": {
       "groups": {
         "main": "Main",
@@ -893,17 +902,12 @@
       "rejected": "Rejected",
       "lost": "Dropped"
     },
-    "module": {
-      "description": "This module is being built.",
-      "title": "Coming in stage {phase}",
-      "body": "You have access to this module. Management features arrive step by step following the roadmap; meanwhile the data stays safe in the database.",
-      "back": "Back to Overview"
-    },
     "notFound": {
       "title": "Page not found",
       "body": "This page doesn't exist or isn't available to your account.",
       "back": "Back to Overview"
-    }
+    },
+    "account": "My account"
   },
   "AdminForms": {
     "save": "Save changes",
@@ -966,7 +970,13 @@
       "translationIncomplete": "Fill this in, or leave every English field empty.",
       "contentRequired": "Write the article's body.",
       "publishForbidden": "Your account cannot publish or archive articles.",
-      "orderChanged": "The order was changed elsewhere. The list was reloaded; try again."
+      "orderChanged": "The order was changed elsewhere. The list was reloaded; try again.",
+      "selfChange": "Your own role and status cannot be changed.",
+      "lastSuperAdmin": "There must be at least one active super admin. Make another account super admin first.",
+      "userInactive": "This account is disabled. Enable it before creating a link.",
+      "emailTaken": "This email is already used by another account.",
+      "unitRequired": "Choose a unit for the partner account.",
+      "unitMissing": "This unit no longer exists. Choose another one."
     },
     "back": "Back",
     "removeItem": "Remove {item}",
@@ -1875,5 +1885,187 @@
       "isPublished": "Show this question on the site",
       "isPublishedHint": "Hidden questions are kept but do not appear on the site."
     }
+  },
+  "AdminUsers": {
+    "description": "BEC team and partner accounts: who can sign in to admin and what they may do.",
+    "add": "Add user",
+    "listLabel": "User list",
+    "search": "Search users",
+    "searchPlaceholder": "Name or email",
+    "filters": {
+      "label": "Role",
+      "all": "All"
+    },
+    "count": "{count, plural, =0 {No users} one {# user} other {# users}}",
+    "empty": "No users yet.",
+    "noResults": "No users match. Change the search or pick another role.",
+    "pagination": {
+      "label": "User list pages"
+    },
+    "columns": {
+      "user": "User",
+      "role": "Role",
+      "unit": "Unit",
+      "status": "Status",
+      "lastSignIn": "Last signed in",
+      "actions": "Actions"
+    },
+    "status": {
+      "active": "Active",
+      "invited": "Awaiting activation",
+      "disabled": "Disabled"
+    },
+    "never": "Never",
+    "you": "Your account",
+    "unitDeleted": "Unit deleted",
+    "manageLabel": "Manage {name}",
+    "roleDescriptions": {
+      "super_admin": "Full access, including managing users and roles.",
+      "admin": "Manages partnership, units, quota and all content. Can see the user list.",
+      "editor": "Manages site content: programs, activities, blog, testimonials, FAQ, media and SEO.",
+      "mitra": "Unit owner. Can only see and edit their own unit (partner portal comes later)."
+    },
+    "matrix": {
+      "title": "Access by role",
+      "description": "Set by the system and the same for every account with that role.",
+      "module": "Module",
+      "none": "No access",
+      "full": "Full access",
+      "ownUnit": "own unit",
+      "actions": {
+        "read": "View",
+        "create": "Add",
+        "update": "Edit",
+        "delete": "Delete",
+        "publish": "Publish"
+      },
+      "resources": {
+        "dashboard": "Overview",
+        "units": "Partner units",
+        "quota": "Regional quota",
+        "leads": "Partner leads",
+        "programs": "Programs",
+        "activities": "Activities",
+        "blog": "Blog posts",
+        "testimonials": "Testimonials",
+        "faq": "FAQ",
+        "media": "Media",
+        "settings": "Settings",
+        "seo": "SEO",
+        "seoIndexing": "SEO: hide from Google",
+        "users": "Users",
+        "auditLog": "Audit log"
+      },
+      "manage": "Manage access"
+    },
+    "createTitle": "Add user",
+    "createDescription": "A new account has no password yet. After saving, copy the activation link and send it to the person.",
+    "editDescription": "Edit the profile and role, create an activation or password reset link, or disable the account.",
+    "created": "User created.",
+    "sections": {
+      "profile": {
+        "title": "Profile",
+        "description": "Name and the email used to sign in."
+      },
+      "role": {
+        "title": "Role",
+        "description": "Decides what this account may do in admin."
+      },
+      "access": {
+        "title": "Access",
+        "description": "Account status, links to set a password and the last sign-in."
+      }
+    },
+    "fields": {
+      "name": "Name",
+      "email": "Email",
+      "emailHint": "Used to sign in. Upper and lower case count as the same.",
+      "role": "Role",
+      "unit": "Unit",
+      "unitHint": "A partner account can only see and edit this unit.",
+      "unitPlaceholder": "Choose a unit",
+      "noUnits": "No units yet. Add a unit before creating a partner account."
+    },
+    "selfNote": "This is your account. Your own role and status cannot be changed here; change your name and password in My account.",
+    "access": {
+      "status": "Status",
+      "lastSignIn": "Last signed in",
+      "devices": "Devices",
+      "sessions": "{count, plural, =0 {Not signed in on any device} one {Signed in on # device} other {Signed in on # devices}}",
+      "created": "Created",
+      "pendingLink": "The latest {kind} link is valid until {date}.",
+      "noPendingLink": "No link is still valid.",
+      "kinds": {
+        "activation": "activation",
+        "reset": "password reset"
+      },
+      "invitedHint": "This account has not set a password yet. Send the activation link; if it expired or got lost, create a new one.",
+      "disabledHint": "A disabled account cannot sign in or receive links. Enable it first.",
+      "linkActivation": "Create activation link",
+      "linkReset": "Create password reset link",
+      "linkConfirmTitle": "Create a new link for {name}?",
+      "linkConfirmBody": "The previous link for this account stops working right away.",
+      "linkConfirm": "Create link",
+      "deactivate": "Disable account",
+      "deactivateTitle": "Disable {name}?",
+      "deactivateBody": "{name} is signed out of every device at once and cannot sign in until enabled again. Their data and history are kept.",
+      "deactivateConfirm": "Disable",
+      "deactivated": "Account disabled.",
+      "activate": "Enable again",
+      "activated": "Account enabled again."
+    },
+    "linkDialog": {
+      "titleActivation": "Activation link for {name}",
+      "titleReset": "Password reset link for {name}",
+      "body": "Send this link to {name}, for example on WhatsApp. It works once and is valid until {date}.",
+      "warning": "This link cannot be shown again after you close this window. If it gets lost, create a new one.",
+      "label": "Link",
+      "copy": "Copy link",
+      "copied": "Link copied.",
+      "copyFailed": "Could not copy automatically. Select the link and copy it by hand.",
+      "done": "Done"
+    },
+    "permissions": {
+      "title": "Access",
+      "description": "Set what the Admin and Editor roles may do. Changes apply at once to every account with that role.",
+      "rolesLabel": "Role to set",
+      "superAdminNote": "Super admins always have full access, so someone can always manage users and access.",
+      "mitraNote": "Partners can only see and edit their own unit until the partner portal exists.",
+      "fixedNote": "Every staff member can always see the Overview, as it also serves shared tools such as region search.",
+      "usersNote": "Can only be given View. Managing accounts stays with super admins.",
+      "unavailable": "Not available in this module",
+      "checkbox": "{action} {module} for {role}",
+      "changed": "Differs from default",
+      "reset": "Reset to default",
+      "resetHint": "Refills {role}'s boxes with the default rules. Save to apply.",
+      "saved": "Access saved and applied."
+    }
+  },
+  "AdminAccount": {
+    "title": "My account",
+    "description": "Your name and password.",
+    "sections": {
+      "profile": {
+        "title": "Profile",
+        "description": "Email, role and unit are set by a super admin."
+      },
+      "password": {
+        "title": "Password",
+        "description": "At least {min} characters. Once changed, other devices are signed out."
+      }
+    },
+    "fields": {
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "unit": "Unit",
+      "lastSignIn": "Last signed in",
+      "currentPassword": "Current password",
+      "newPassword": "New password",
+      "confirmPassword": "Repeat new password"
+    },
+    "saved": "Name saved.",
+    "changePassword": "Change password",
+    "passwordChanged": "Password changed. Other devices have been signed out."
   }
 }

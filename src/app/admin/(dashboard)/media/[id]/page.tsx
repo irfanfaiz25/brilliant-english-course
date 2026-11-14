@@ -13,7 +13,7 @@ import { DeleteButton } from "@/components/admin/row-actions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { adminLocale, adminRoutes } from "@/config/admin-routes";
+import { adminLocale, adminRoutes, adminTimeZone } from "@/config/admin-routes";
 import { deleteMediaAction } from "@/features/media/actions";
 import { getMediaDetail } from "@/features/media/admin-queries";
 import { MediaRenameForm } from "@/features/media/components/media-rename-form";
@@ -62,7 +62,7 @@ async function MediaDetail({ params }: { params: Promise<{ id: string }> }) {
         format.dateTime(media.createdAt, {
           dateStyle: "medium",
           timeStyle: "short",
-          timeZone: "Asia/Jakarta",
+          timeZone: adminTimeZone,
         }),
         media.uploadedBy && t("detail.uploadedBy", { name: media.uploadedBy }),
       ]

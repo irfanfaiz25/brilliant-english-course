@@ -15,9 +15,11 @@ export default async function globalSetup() {
   const databaseUrl = process.env.DATABASE_URL;
   if (!databaseUrl) throw new Error("DATABASE_URL is not set for the E2E auth accounts.");
 
+  const managed: string[] = [];
   const disabled: string[] = [];
   for (const project of e2eProjects) {
     for (const user of Object.values(e2eUsers(project))) {
+      managed.push(user.email);
       execFileSync(
         "pnpm",
         [
@@ -40,10 +42,14 @@ export default async function globalSetup() {
   const client = new pg.Client({ connectionString: databaseUrl });
   await client.connect();
   try {
+    // Only the accounts above: accounts a spec creates (the Users spec's invitees) keep the
+    // status the spec left them in.
     await client.query(
-      "update users set is_active = (email <> all($1::text[])) where email like 'e2e-%@bec.test'",
-      [disabled],
+      "update users set is_active = (email <> all($2::text[])) where email = any($1::text[])",
+      [managed, disabled],
     );
+    // Role permissions start from the code defaults on every run (the access spec changes them).
+    await client.query("delete from settings where key = 'rolePermissions'");
     await resetLeadFixture(client);
   } finally {
     await client.end();

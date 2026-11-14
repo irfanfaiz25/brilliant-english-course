@@ -1,5 +1,14 @@
 import { sql } from "drizzle-orm";
-import { boolean, pgEnum, pgTable, text, uniqueIndex, uuid, varchar } from "drizzle-orm/pg-core";
+import {
+  boolean,
+  pgEnum,
+  pgTable,
+  text,
+  timestamp,
+  uniqueIndex,
+  uuid,
+  varchar,
+} from "drizzle-orm/pg-core";
 
 import { userRoles } from "../../config/enums";
 import { id, timestamps } from "./_helpers";
@@ -25,6 +34,8 @@ export const users = pgTable(
     unitId: uuid().references(() => units.id, { onDelete: "set null" }),
     /** Deactivated accounts keep their history but cannot sign in. */
     isActive: boolean().notNull().default(true),
+    /** Set when a session starts (Better Auth hook), shown in the Users module. */
+    lastSignInAt: timestamp({ withTimezone: true }),
     ...timestamps,
   },
   (table) => [uniqueIndex("users_email_idx").on(sql`lower(${table.email})`)],

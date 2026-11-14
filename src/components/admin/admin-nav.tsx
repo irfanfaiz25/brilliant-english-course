@@ -13,8 +13,6 @@ export type AdminNavLink = {
   href: string;
   icon: AdminIconName;
   label: string;
-  /** "Segera" badge text for modules still in the roadmap. */
-  badge?: string;
 };
 
 export type AdminNavSection = { key: string; label: string; items: AdminNavLink[] };
@@ -77,16 +75,6 @@ export function AdminNav({ sections, variant, onNavigate }: AdminNavProps) {
                     <span className={cn("flex-1 truncate", rail && "sr-only xl:not-sr-only")}>
                       {item.label}
                     </span>
-                    {item.badge && (
-                      <span
-                        className={cn(
-                          "rounded-full bg-neutral-100 px-2 py-0.5 text-caption font-medium text-muted-foreground",
-                          rail && "hidden xl:inline",
-                        )}
-                      >
-                        {item.badge}
-                      </span>
-                    )}
                   </Link>
                 </li>
               );

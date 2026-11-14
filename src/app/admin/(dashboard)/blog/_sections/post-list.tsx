@@ -6,7 +6,7 @@ import Link from "next/link";
 import { DeleteButton } from "@/components/admin/row-actions";
 import { Badge, type BadgeProps } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { adminLocale, adminRoutes } from "@/config/admin-routes";
+import { adminLocale, adminRoutes, adminTimeZone } from "@/config/admin-routes";
 import { deletePostAction } from "@/features/blog/actions";
 import type { AdminPostRow } from "@/features/blog/admin-queries";
 import type { PostCategory } from "@/features/blog/schema";
@@ -87,7 +87,7 @@ export async function PostList({ rows, filtered, categoryLabels, canDelete, now 
       title={format.dateTime(row.updatedAt, {
         dateStyle: "medium",
         timeStyle: "short",
-        timeZone: "Asia/Jakarta",
+        timeZone: adminTimeZone,
       })}
     >
       {format.relativeTime(row.updatedAt, now)}
