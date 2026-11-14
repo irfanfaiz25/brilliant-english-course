@@ -35,6 +35,27 @@ export const limits = {
     inclusionsMax: 10,
     inclusionMax: 120,
   },
+  programs: {
+    ageMin: 3,
+    ageMax: 18,
+    sessionsPerWeekMax: 7,
+    studentsPerClassMax: 30,
+    nameMax: 80,
+    taglineMax: 120,
+    summaryMax: 300,
+    descriptionMax: 1200,
+    skillsMax: 5,
+    skillMax: 60,
+    curriculumMax: 8,
+    curriculumItemMax: 120,
+  },
+  activities: {
+    nameMax: 80,
+    summaryMax: 300,
+    audienceMax: 60,
+  },
+  /** Alt text of a content image (localized, stored with the content). */
+  imageAltMax: 200,
   seo: {
     /** Search results cut titles and descriptions around these lengths. */
     titleMax: 70,
