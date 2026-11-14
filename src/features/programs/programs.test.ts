@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { levelFixtures } from "./fixtures";
+import { levelFixtures } from "@/db/seed/content/programs";
 import { findLevelForAge } from "./service";
 import { levelSchema, levelSlugs } from "./schema";
 

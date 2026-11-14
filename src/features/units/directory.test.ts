@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { regionFixtures } from "@/features/regions/fixtures";
+import { regionFixtures } from "@/db/seed/content/regions";
 
 import {
   buildUnitDirectory,
@@ -8,7 +8,7 @@ import {
   resolveDirectoryPath,
   unitPathsByCode,
 } from "./directory";
-import { unitFixtures } from "./fixtures";
+import { unitFixtures } from "@/db/seed/content/units";
 import type { UnitSummary } from "./schema";
 
 const directory = buildUnitDirectory(unitFixtures, regionFixtures);

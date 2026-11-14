@@ -1,17 +1,25 @@
 import "server-only";
 
-import { cacheLife, cacheTag } from "next/cache";
+import { z } from "zod";
 
-import { cacheTags } from "@/config/cache-tags";
+import { readSetting } from "@/features/settings/queries";
 import type { Locale } from "@/i18n/routing";
 
-import { partnershipPackageFixtures } from "./fixtures";
-import type { PartnershipPackage } from "./schema";
+import { partnershipPackageDefaults } from "./defaults";
+import { partnershipPackageSchema, type PartnershipPackage } from "./schema";
 
-/** The partnership package. Reads fixtures until admin settings land (Phase 4a). */
+/** The `partnership` setting: one package per locale, admin-editable from Phase 4a. */
+const partnershipSettingSchema = z.object({
+  id: partnershipPackageSchema,
+  en: partnershipPackageSchema,
+});
+
+/** The partnership package in `locale`: the saved setting or the code defaults. */
 export async function getPartnershipPackage(locale: Locale): Promise<PartnershipPackage> {
-  "use cache";
-  cacheTag(cacheTags.settings);
-  cacheLife("hours");
-  return partnershipPackageFixtures[locale];
+  const packages = await readSetting(
+    "partnership",
+    partnershipSettingSchema,
+    partnershipPackageDefaults,
+  );
+  return packages[locale];
 }

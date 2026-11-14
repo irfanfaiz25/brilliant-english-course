@@ -817,6 +817,7 @@
   },
   "Admin": {
     "metaTitle": "Dashboard",
+    "area": "BEC Admin",
     "greeting": "Hi, {name}",
     "role": {
       "super_admin": "Super admin",
@@ -824,9 +825,82 @@
       "editor": "Editor",
       "mitra": "Partner"
     },
-    "comingSoon": "Admin modules are being prepared. The full menu arrives in the next stage.",
     "noAccess": "Partner accounts can't use this dashboard yet. The partner portal arrives in a later stage.",
     "signOut": "Sign out",
-    "loading": "Loading the dashboard…"
+    "loading": "Loading…",
+    "skipToContent": "Skip to content",
+    "viewSite": "View site",
+    "userMenu": "Account menu",
+    "openMenu": "Open menu",
+    "menuTitle": "Admin menu",
+    "menuDescription": "Dashboard module navigation",
+    "soon": "Soon",
+    "nav": {
+      "groups": {
+        "main": "Main",
+        "partnership": "Partnership",
+        "content": "Content",
+        "system": "System"
+      },
+      "items": {
+        "overview": "Overview",
+        "leads": "Prospective Partners",
+        "units": "Partner Units",
+        "quota": "Regional Quota",
+        "programs": "Programs",
+        "activities": "Activities",
+        "blog": "Blog Posts",
+        "testimonials": "Testimonials",
+        "faq": "FAQ",
+        "media": "Media",
+        "users": "Users",
+        "settings": "Settings",
+        "seo": "SEO"
+      }
+    },
+    "overview": {
+      "title": "Overview",
+      "description": "How the BEC network looks today.",
+      "kpi": {
+        "newLeads": "New prospective partners",
+        "newLeadsHint": "last 7 days",
+        "activeUnits": "Active units",
+        "activeUnitsHint": "in {cities} regencies/cities",
+        "students": "Active students",
+        "studentsHint": "across all units",
+        "posts": "Published posts",
+        "postsHint": "{draft} drafts waiting"
+      },
+      "latestLeads": "Latest prospective partners",
+      "latestLeadsEmpty": "No partner applications yet. Applications from the Partnership page will appear here.",
+      "leadColumns": {
+        "name": "Name",
+        "village": "Village",
+        "status": "Status",
+        "date": "Received"
+      },
+      "shortcuts": "Shortcuts",
+      "shortcutsDescription": "Modules you can manage."
+    },
+    "leadStatus": {
+      "new": "New",
+      "contacted": "Contacted",
+      "qualified": "Survey",
+      "onboarding": "Onboarding",
+      "converted": "Partner",
+      "rejected": "Rejected",
+      "lost": "Dropped"
+    },
+    "module": {
+      "description": "This module is being built.",
+      "title": "Coming in stage {phase}",
+      "body": "You have access to this module. Management features arrive step by step following the roadmap; meanwhile the data stays safe in the database.",
+      "back": "Back to Overview"
+    },
+    "notFound": {
+      "title": "Page not found",
+      "body": "This page doesn't exist or isn't available to your account.",
+      "back": "Back to Overview"
+    }
   }
 }

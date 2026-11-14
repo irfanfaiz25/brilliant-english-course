@@ -24,6 +24,7 @@
     "db:studio": "drizzle-kit studio",
     "db:regions": "tsx src/db/seed/regions/import-regions.ts",
     "db:regions:build": "tsx scripts/build-regions.ts",
+    "db:seed": "tsx src/db/seed/seed.ts",
     "auth:create-user": "tsx scripts/create-user.ts",
     "prepare": "husky"
   },

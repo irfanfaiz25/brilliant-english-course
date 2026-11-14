@@ -3,9 +3,11 @@ import { describe, expect, it } from "vitest";
 import { userRoles, type UserRole } from "@/features/users/schema";
 
 import {
+  assertCan,
   can,
   canAccessAdmin,
   permissionActions,
+  PermissionError,
   resources,
   type Actor,
   type PermissionAction,
@@ -145,5 +147,13 @@ describe("special rules", () => {
     for (const resource of ["units", "quota", "leads", "settings", "users", "auditLog"] as const) {
       expect(can(editor, "read", resource)).toBe(false);
     }
+  });
+});
+
+describe("assertCan", () => {
+  it("passes silently when allowed and throws a PermissionError otherwise", () => {
+    expect(() => assertCan(actorFor("admin"), "read", "leads")).not.toThrow();
+    expect(() => assertCan(actorFor("editor"), "read", "leads")).toThrow(PermissionError);
+    expect(() => assertCan(null, "read", "dashboard")).toThrow(/read dashboard/);
   });
 });

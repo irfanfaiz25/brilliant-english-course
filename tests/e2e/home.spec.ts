@@ -30,7 +30,8 @@ test.describe("home page — top sections", () => {
     await page.goto("/");
     const stats = page.getByRole("region", { name: "BEC dalam angka" });
 
-    await expect(stats).toMatchAriaSnapshot(`- definition: "128+"`);
+    // Computed from the dev seed: 8 active units (`pnpm db:seed`).
+    await expect(stats).toMatchAriaSnapshot(`- definition: "8+"`);
     await expect(stats.getByText("Siswa belajar")).toBeVisible();
   });
 

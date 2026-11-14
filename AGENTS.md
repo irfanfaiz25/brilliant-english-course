@@ -135,9 +135,16 @@ Rules:
   `SectionTabs`, `UrlStateShell`, `CopyLinkButton`, `PageHero`, `PartnerBanner`, `FactRow` (`components/site`), `ActivitiesSection`, `TestimonialsSection` and `RegionFilter`
   (`features/<domain>/components`). Promote a section the moment a
   second page needs it; don't copy it.
-- Until the database exists, `queries.ts` returns typed fixtures from `features/<domain>/fixtures.ts` (marked
-  PLACEHOLDER), cached with `"use cache"` + `cacheTag(cacheTags.x)` from `src/config/cache-tags.ts`. Placeholder photos
-  are referenced only through `src/config/placeholder-images.ts` (credits in `public/placeholders/CREDITS.md`).
+- Public `queries.ts` read Postgres and are cached with `"use cache"` + `cacheTag(cacheTags.x)` from
+  `src/config/cache-tags.ts`; cached functions take only serializable arguments (ADR-026). Display region names with
+  `shortRegionName()`; pick localized rows with `pickTranslation()` (`src/lib/translations.ts`). Sample content lives in
+  `src/db/seed/content` (PLACEHOLDER, used by `pnpm db:seed` and unit tests); code defaults of settings live in
+  `features/<domain>/defaults.ts`. Placeholder photos are referenced only through `src/config/placeholder-images.ts`
+  (credits in `public/placeholders/CREDITS.md`) and stored as `media_assets` rows by the seed.
+- Admin pages render inside the shell (`app/admin/(dashboard)/layout.tsx`); a page provides an `AdminPageHeader` (its
+  only `h1`) and content, never another `<main>`. Modules are listed once in `src/config/admin-navigation.ts` with the
+  resource that guards them; admin data functions live in `features/<domain>/admin-queries.ts`, take the `SessionUser`
+  and call `assertCan()` before reading. Admin surfaces use `surface-glass-panel` (`DESIGN.md` § 6).
 - Public pages render inside `SiteShell` (`src/app/[locale]/(site)/layout.tsx`); page content starts below the header,
   so a page provides its sections, not another `<main>`. Navigation items live in `src/config/navigation.ts`.
 - WhatsApp links are always built with `buildWhatsAppUrl()` (`src/lib/whatsapp.ts`); message templates live in the
@@ -222,7 +229,7 @@ non-developer need to change it? If yes → admin field with a sensible default 
 
 ## 5. Commands
 
-First run: `cp .env.example .env.local` (set `BETTER_AUTH_SECRET`), then `pnpm i && pnpm db:up && pnpm db:migrate && pnpm db:regions && pnpm dev`.
+First run: `cp .env.example .env.local` (set `BETTER_AUTH_SECRET`), then `pnpm i && pnpm db:up && pnpm db:migrate && pnpm db:regions && pnpm db:seed && pnpm dev`.
 Create a local super admin with `pnpm auth:create-user --email you@example.com --role super_admin` and sign in at `/admin/masuk`.
 
 | Command                                    | Purpose                                                                              |
@@ -239,14 +246,16 @@ Create a local super admin with `pnpm auth:create-user --email you@example.com -
 | `pnpm db:regions`                          | Upsert the Kemendagri region dataset (~3 s) and print search timings                 |
 | `pnpm db:regions:build [commit]`           | Refresh `src/db/seed/regions/*` from upstream `cahyadsn/wilayah`; review the diff    |
 | `pnpm auth:create-user --email … --role …` | Create a staff account or, with `--reset-password`, set a new password (local/CI)    |
-| `pnpm db:seed` / `pnpm worker`             | Added in Phase 3c / Phase 6                                                          |
+| `pnpm db:seed [--reset]`                   | Dev sample content (local/CI only); `--reset` replaces seeded content                |
+| `pnpm worker`                              | Added in Phase 6                                                                     |
 
 Git hooks (Husky): pre-commit runs lint-staged and checks `AGENTS.md` == `CLAUDE.md`;
 commit-msg runs commitlint (Conventional Commits, rejects AI co-author trailers).
 
 CI (`.github/workflows/ci.yml`) on PRs/pushes to `staging` and `main`: quality checks, migrations
-applied to a throwaway Postgres 17, production build and E2E (also on a throwaway database; the E2E global setup creates
-the staff accounts the auth specs use, so `pnpm test:e2e` locally needs the migrated Docker database).
+applied to a throwaway Postgres 17, production build and E2E (on a throwaway database with regions and the dev seed:
+public pages are prerendered from it; the E2E global setup creates the staff accounts, so `pnpm test:e2e` locally needs
+the migrated, seeded Docker database).
 
 ## 6. Workflow
 

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { activityFixtures } from "./fixtures";
+import { activityFixtures } from "@/db/seed/content/activities";
 import { activitySchema } from "./schema";
 
 describe("activities", () => {

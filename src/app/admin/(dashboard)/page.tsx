@@ -1,67 +1,75 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import Image from "next/image";
 import { Suspense } from "react";
 
-import { Badge } from "@/components/ui/badge";
-import { Card } from "@/components/ui/card";
+import { AdminPageHeader } from "@/components/admin/admin-page-header";
 import { Skeleton } from "@/components/ui/skeleton";
 import { adminLocale, adminRoutes } from "@/config/admin-routes";
-import { siteConfig } from "@/config/site";
-import { SignOutButton } from "@/features/users/components/sign-out-button";
 import { requireUser } from "@/features/users/session";
 import { canAccessAdmin } from "@/lib/permissions";
 
+import { KpiCards } from "./_overview/kpi-cards";
+import { LatestLeads } from "./_overview/latest-leads";
+import { Shortcuts } from "./_overview/shortcuts";
+
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations({ locale: adminLocale, namespace: "Admin" });
-  return { title: t("metaTitle") };
+  return { title: t("overview.title") };
 }
 
 /**
- * Temporary dashboard landing (Phase 3b): proves the session guard end to end. Phase 3c replaces
- * it with the admin shell (sidebar, top bar) and the overview.
+ * Ringkasan (DESIGN.md § 6): KPI cards, the latest partner applications and shortcuts, each
+ * shown only to roles that may read the underlying data. Everything below the title reads the
+ * session, so it streams in behind one boundary.
  */
-export default async function AdminHomePage() {
+export default async function AdminOverviewPage() {
   const t = await getTranslations({ locale: adminLocale, namespace: "Admin" });
   return (
-    <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 px-4 py-10">
-      <Image
-        src={siteConfig.logo.src}
-        alt={siteConfig.name}
-        width={siteConfig.logo.width}
-        height={siteConfig.logo.height}
-        priority
-        sizes="56px"
-        className="h-12 w-auto self-start"
-      />
-      <Suspense
-        fallback={
-          <Card padding="lg" aria-busy aria-label={t("loading")}>
-            <Skeleton className="h-8 w-48" />
-            <Skeleton className="h-5 w-full" />
-          </Card>
-        }
-      >
-        <Welcome />
+    <>
+      <AdminPageHeader title={t("overview.title")} description={t("overview.description")} />
+      <Suspense fallback={<OverviewSkeleton />}>
+        <OverviewContent />
       </Suspense>
-    </main>
+    </>
   );
 }
 
-async function Welcome() {
-  // The guard lives with the data, not in a layout (Next.js auth guide, ADR-025).
-  const user = await requireUser(adminRoutes.home);
-  const t = await getTranslations({ locale: adminLocale, namespace: "Admin" });
-  const allowed = canAccessAdmin(user);
+async function OverviewContent() {
+  const [user, t] = await Promise.all([
+    requireUser(adminRoutes.home),
+    getTranslations({ locale: adminLocale, namespace: "Admin" }),
+  ]);
+
+  if (!canAccessAdmin(user)) {
+    return (
+      <p className="rounded-2xl surface-glass-panel p-6 text-body text-muted-foreground">
+        {t("noAccess")}
+      </p>
+    );
+  }
 
   return (
-    <Card padding="lg" className="gap-4">
-      <div className="flex flex-wrap items-center gap-3">
-        <h1 className="text-h3 text-foreground">{t("greeting", { name: user.name })}</h1>
-        <Badge variant="outline">{t(`role.${user.role}`)}</Badge>
+    <>
+      <p className="text-h5 text-foreground">{t("greeting", { name: user.name })}</p>
+      <KpiCards user={user} />
+      <div className="grid grid-cols-1 items-start gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+        <LatestLeads user={user} />
+        <Shortcuts user={user} />
       </div>
-      <p className="text-body text-muted-foreground">{allowed ? t("comingSoon") : t("noAccess")}</p>
-      <SignOutButton label={t("signOut")} />
-    </Card>
+    </>
+  );
+}
+
+function OverviewSkeleton() {
+  return (
+    <div aria-hidden className="flex flex-col gap-6">
+      <Skeleton className="h-7 w-56" />
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        {Array.from({ length: 4 }, (_, index) => (
+          <Skeleton key={index} className="h-32 rounded-2xl" />
+        ))}
+      </div>
+      <Skeleton className="h-72 rounded-2xl" />
+    </div>
   );
 }

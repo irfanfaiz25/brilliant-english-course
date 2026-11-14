@@ -23,6 +23,16 @@ export function computeVillageQuota(
   const reserved = reservations
     .filter((reservation) => reservation.villageCode === villageCode)
     .reduce((total, reservation) => total + reservation.slots, 0);
+  return quotaFromCounts(villageCode, activeUnits, reserved, max);
+}
+
+/** Quota of one village from counts already aggregated (e.g. by SQL). */
+export function quotaFromCounts(
+  villageCode: string,
+  activeUnits: number,
+  reserved: number,
+  max: number = limits.unitsPerVillage,
+): VillageQuota {
   const remaining = Math.max(0, max - activeUnits - reserved);
   return { villageCode, max, activeUnits, reserved, remaining, status: quotaStatus(remaining) };
 }

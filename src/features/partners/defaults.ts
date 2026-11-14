@@ -3,11 +3,11 @@ import type { Locale } from "@/i18n/routing";
 import type { PartnershipPackage } from "./schema";
 
 /**
- * PLACEHOLDER partnership package until admin settings (Phase 4a). The investment is not public
- * yet, so it stays `null` (the page says it is explained during the consultation). Confirm the
- * inclusions with BEC before launch.
+ * Code default of the `partnership` setting, used until an admin saves one (Phase 4a).
+ * PLACEHOLDER: the investment is not public yet, so it stays `null` (the page says it is explained
+ * during the consultation). Confirm the inclusions with BEC before launch.
  */
-export const partnershipPackageFixtures: Record<Locale, PartnershipPackage> = {
+export const partnershipPackageDefaults: Record<Locale, PartnershipPackage> = {
   id: {
     investment: null,
     inclusions: [

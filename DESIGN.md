@@ -455,6 +455,10 @@ Baseline: Penpot `02 · Dashboard` (Ringkasan, Calon Mitra, Unit Mitra, Kuota Wi
 - **Dashboard home (Ringkasan):** KPI cards (new leads this week, active units, quota fill rate, posts published), leads trend chart, latest leads, storage usage of the DB.
 - **Lead pipeline:** statuses `baru → dihubungi → survei → disetujui / ditolak`, with notes and activity history.
 - Admin motion is minimal: 150–250 ms transitions only, no reveals.
+- **Glass, lightly (Phase 3c):** the shell sits on `bg-gradient-soft` with three fixed `DecorBlob`s; sidebar, top bar
+  and content cards use `surface-glass-panel` (72 % white, 16 px blur, hairline white border, `shadow-card`). Text
+  never sits on raw blur: panels stay opaque enough for AA contrast without `backdrop-filter`. Active nav items are a
+  solid white pill with the primary icon; module placeholders carry a "Segera" badge until their phase ships.
 
 ---
 
