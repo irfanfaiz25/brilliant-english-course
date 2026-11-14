@@ -101,6 +101,10 @@ Sub-phases (separate PRs): 4a Settings & SEO defaults · 4b Programs & Activitie
   page has a full Tiptap editor (headings, marks, brand colors, alignment, lists, quote, code, tables, images with
   captions, YouTube, HTML import, word count), `ID | EN` tabs with optional English, cover image, category, author,
   status and publish time. Admin list searches now apply while typing.
+- 4f Testimonials & FAQ ✅ (ADR-033): Testimoni and FAQ list each group (parents/partners; parents/program/partners)
+  behind filter chips with counts; rows can be shown or hidden, moved up/down, edited and deleted. Testimonials have a
+  name, a star rating and a bilingual quote and context line with a live card preview; FAQ entries a bilingual
+  question and plain-text answer (line breaks kept on the site).
 
 ## Phase 5 — Public website
 

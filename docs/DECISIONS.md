@@ -358,3 +358,27 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
 - **Alternatives:** Storing HTML (XSS risk, styling drift); free color pickers (off-brand, low contrast); falling
   back to Indonesian on `/en` (mixed-language pages and duplicate content); a separate editor library (Tiptap is
   already the stored format).
+
+### ADR-033 — Testimonials and FAQ in admin
+
+2026-11-14 · Accepted
+
+- **Decision:** Testimoni and FAQ are ordered lists edited in admin like Kegiatan: a list per group (testimonials by
+  audience: parents on Beranda, partners on Kemitraan; FAQ by topic: parents on Beranda, program on Program, partners
+  on Kemitraan) chosen with filter chips that show counts and live in the URL (`?audience=`, `?topic=`). Each row has a
+  show/hide switch, move up/down within its group, edit and delete; "Add" opens the form for the group on screen, a
+  new row goes to the end of its group, and changing a row's group moves it to the end of the new one. Both languages
+  are required (short copy). A testimonial has a shared author name and a 1–5 star rating (native radio group) and a
+  quote and context line per language, with a live preview of the public card; an FAQ answer is plain text whose line
+  breaks show on the site (`whitespace-pre-line`) and which also feeds the `FAQPage` JSON-LD. Writes live in
+  `features/<domain>/admin-service.ts` (transaction + audit row, `testimonial.*` / `faq.*`), go through
+  `guardedAction()` and expire the `testimonials` / `faq` cache tags. The optional `testimonials.unit_id` is not
+  edited yet: the context line already names the unit. Shared pieces extracted while building it: `lib/ordering.ts`
+  (`moveInOrder`, `moveSchema`), `FilterChips` (the chip row of Blog, Unit Mitra, Calon Mitra, Media and the new
+  lists) and `OrderedRowActions` (the row actions of Kegiatan, Testimoni and FAQ).
+- **Why:** Staff manage what parents and partners read without a developer, in the same patterns they already know
+  from Kegiatan; order matters per page, so it is kept per group rather than globally.
+- **Alternatives:** One mixed list with a group column (ordering across pages is meaningless); drag-and-drop ordering
+  (more client code and harder with a keyboard than up/down buttons); rich text for FAQ answers (the structured data
+  needs plain text, and answers are short); optional English as for blog posts (testimonial and FAQ copy is short and
+  every public section shows it in both languages).
