@@ -187,8 +187,12 @@ A change to the matrix must be mirrored in `permissions.test.ts`, which lists ev
 - Read the session with `getCurrentUser()` / `requireUser()` / `requirePermission()` from `features/users/session.ts`,
   inside a component behind `<Suspense>`, never at the top of a layout. Every Server Action re-checks the session itself.
 - `src/proxy.ts` only redirects visitors without a session cookie away from `/admin`; it is not authorization.
-- Staff accounts are created with `pnpm auth:create-user` (self sign-up is disabled). Admin paths and the admin locale
-  live in `src/config/admin-routes.ts`; post-login redirects go through `safeAdminRedirect()`.
+- Self sign-up is disabled. Super admins create accounts in Pengguna (`/admin/pengguna`, ADR-035): no password is
+  typed for anyone; the account gets a single-use activation link (a Better Auth reset token) that is copied and sent by
+  hand. Account rules (own role/status, last super admin) live in `features/users/rules.ts`; every signed-in account
+  edits its own name and password in Akun saya (`/admin/akun`). `pnpm auth:create-user` stays for the first super admin
+  and CI. Admin paths, the admin locale and `adminTimeZone` live in `src/config/admin-routes.ts`; post-login redirects
+  go through `safeAdminRedirect()`.
 
 ### Database
 

@@ -505,6 +505,15 @@ Baseline: Penpot `02 · Dashboard` (Ringkasan, Calon Mitra, Unit Mitra, Kuota Wi
   connection). Phones get the button and the rules only (no drop text). Cards show usage ("Dipakai 2×" /
   "Belum dipakai") so cleanup is easy; an image in use has no delete button and its page lists where it is used.
   The image picker reuses the same uploader, and a finished upload is picked right away.
+- **Users (Phase 4g):** Pengguna is a data list (table from `md`, cards below) with role chips, a status badge
+  (Aktif / Menunggu aktivasi / Nonaktif) and the last sign-in; "Akun Anda" marks one's own row. Below it, "Hak akses
+  per peran" shows the permission matrix read from `permissions.ts` (a table from `md`, one list per role below; "Akses
+  penuh" when every action is allowed). An account page puts Akses first (status, last sign-in, devices, the link
+  still valid, and the actions: a new activation/reset link, disable/enable) above Profil and Peran. Roles are radio
+  cards that say what each role may do; a partner's unit appears only for Mitra. One's own role is shown read-only with
+  a note. A created link opens once in a dialog that closes only through its buttons, with a copy button, its expiry
+  and a warning that it cannot be shown again. Disabling asks first and names the account. Akun saya (from the user
+  menu) shows email, role and unit read-only and two panels: name, and password (current password required).
 - **Record pages (Phase 4d):** a record that is worked over time (a lead) opens on its own page: the record's data
   and its history in the main column, the controls that change it (status, assignee) and related context (quota,
   linked unit) in a sticky side column from `xl`, stacked below the data on smaller screens. The history is one

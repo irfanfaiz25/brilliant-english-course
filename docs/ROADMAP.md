@@ -105,6 +105,12 @@ Sub-phases (separate PRs): 4a Settings & SEO defaults · 4b Programs & Activitie
   behind filter chips with counts; rows can be shown or hidden, dragged into order (mouse, touch or keyboard; also the list fields of content forms), edited and deleted. Testimonials have a
   name, a star rating and a bilingual quote and context line with a live card preview; FAQ entries a bilingual
   question and plain-text answer (line breaks kept on the site).
+- 4g Users & roles ✅ (ADR-035): Pengguna lists every account with live search, role chips with counts, status
+  (active, awaiting activation, disabled) and last sign-in, plus the read-only permission matrix. Super admins add
+  accounts (a partner account needs its unit) and send the person a single-use activation link (72 h) instead of a
+  password; an account page edits name, email, role and unit, creates activation/reset links and disables or enables
+  the account (ending its sessions and links). Nobody changes their own role or status, and the last active super
+  admin stays. Akun saya lets every account change its own name and password.
 
 ## Phase 5 — Public website
 

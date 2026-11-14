@@ -408,3 +408,29 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
   already covers non-pointer use).
 - **Known limitation:** WCAG 2.2 § 2.5.7 asks for a single-pointer alternative to dragging; here the alternative is
   the keyboard. If a user needs pointer-only reordering, add a "Pindahkan ke…" menu on the grip.
+
+### ADR-035 — Users, roles and account activation
+
+2026-11-14 · Accepted
+
+- **Decision:** Pengguna (`/admin/pengguna`) manages accounts; only super admins change them (`users` grants), admins
+  read the list. Roles stay the four fixed roles of `permissions.ts`; the page shows the matrix from `grantsFor()` so
+  the text cannot drift from what the server enforces. A new account is created without a password (`emailVerified`,
+  active) and gets a **single-use activation link**: a Better Auth reset token (`reset-password:<token>`, stored hashed)
+  created through `internalAdapter.createVerificationValue`, valid `limits.auth.accessLinkHours` (72 h), pointing to
+  `/admin/aktivasi` (no password yet) or `/admin/reset-password` (has one). Better Auth's `resetPassword` consumes it
+  and creates the credential account when missing. A new link deletes the account's earlier links; the link is shown
+  once in a dialog and never logged (the audit row records only its kind and expiry). Until email exists (Phase 6) it is
+  copied and sent by hand. A `mitra` account must name a live unit. Accounts are never deleted: disabling one ends its
+  sessions and links at once (history and audit references stay). Rules in `features/users/rules.ts`: nobody changes
+  their own role or disables themselves, and the last active super admin cannot be demoted or disabled (the active
+  super admins are locked `FOR UPDATE` in the same transaction). Emails are unique case-insensitively. `users.last_sign_in_at`
+  is set by a session-create hook. Akun saya (`/admin/akun`) lets every signed-in account change its name and its
+  password (`changePassword` with the current one, other sessions revoked, rate-limited per account).
+- **Why:** No password is ever shared or typed by someone else; the reset machinery is already tested and hashed;
+  disabling keeps the audit trail intact; the two account rules prevent locking the team out.
+- **Alternatives:** A temporary password set by the admin (shared secret that often stays); a separate invitation
+  table and token (duplicates Better Auth's reset tokens); deleting accounts (breaks history and audit references);
+  admins managing non-super-admin accounts (the user chose super admin only); custom roles (too much for a small team).
+- **Follow-up:** Phase 6 emails the link instead of the copy dialog; the partner portal (Phase 9) builds on `mitra`
+  accounts created here.
