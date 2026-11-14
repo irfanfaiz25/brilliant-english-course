@@ -59,16 +59,17 @@ test.describe("admin blog", () => {
     const body = panel.getByRole("textbox", { name: "Isi artikel (ID)" });
     await body.click();
     await expect(body).toBeFocused();
-    // On a slow runner the first toolbar command can land before the editor has its selection:
-    // toggle until the button reports the heading, then check the node itself.
+    // Headings are applied to a line that is not the last block: turning the last block into a
+    // heading appends a trailing paragraph, and headless Chrome on CI then moves the caret into it.
     const h2 = bar.getByRole("button", { name: "Heading 2" });
-    await expect(async () => {
-      if ((await h2.getAttribute("aria-pressed")) !== "true") await h2.click();
-      await expect(h2).toHaveAttribute("aria-pressed", "true", { timeout: 1000 });
-    }).toPass();
     await page.keyboard.type("Bagian pertama");
-    await expect(body.locator("h2", { hasText: "Bagian pertama" })).toBeVisible();
     await page.keyboard.press("Enter");
+    await page.keyboard.press("ArrowUp");
+    await h2.click();
+    await expect(h2).toHaveAttribute("aria-pressed", "true");
+    await expect(body.locator("h2", { hasText: "Bagian pertama" })).toBeVisible();
+    await page.keyboard.press("ArrowDown");
+    await expect(h2).toHaveAttribute("aria-pressed", "false");
     await page.keyboard.type("Kalimat dengan kata ");
     // Bold on, type, bold off: the toolbar toggles the mark at the caret.
     const bold = bar.getByRole("button", { name: "Tebal" });
@@ -86,11 +87,13 @@ test.describe("admin blog", () => {
     await page.keyboard.press("Enter");
     // Formatting stored as attributes: heading level, alignment and a link.
     const h3 = bar.getByRole("button", { name: "Heading 3" });
+    await page.keyboard.type("Sub bagian");
+    await page.keyboard.press("Enter");
+    await page.keyboard.press("ArrowUp");
     await h3.click();
     await expect(h3).toHaveAttribute("aria-pressed", "true");
-    await page.keyboard.type("Sub bagian");
     await expect(body.locator("h3", { hasText: "Sub bagian" })).toBeVisible();
-    await page.keyboard.press("Enter");
+    await page.keyboard.press("ArrowDown");
     await bar.getByRole("button", { name: "Rata tengah" }).click();
     await page.keyboard.type("Teks di tengah ");
     await bar.getByRole("button", { name: "Tautan" }).click();
@@ -184,6 +187,13 @@ test.describe("admin blog", () => {
       page.getByText("Lengkapi kolom ini atau kosongkan semua kolom versi Inggris.").first(),
     ).toBeVisible();
     await page.getByRole("button", { name: "Kosongkan versi Inggris" }).click();
+    // Clearing remounts the English editor; submit once the form shows the cleared state.
+    const en = page.locator('[data-locale-panel="en"]');
+    await expect(en.getByRole("textbox", { name: "Judul", exact: true })).toHaveValue("");
+    await expect(
+      page.getByText("Lengkapi kolom ini atau kosongkan semua kolom versi Inggris."),
+    ).toHaveCount(0);
+    await expect(en.getByRole("textbox", { name: "Isi artikel (EN)" })).toBeVisible();
     await page.getByRole("button", { name: "Tulis artikel" }).click();
     await expect(page).toHaveURL(/\/admin\/blog\/[0-9a-f-]{36}$/);
 
