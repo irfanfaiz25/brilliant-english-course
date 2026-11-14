@@ -2,6 +2,7 @@ import { SearchIcon, XIcon } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 
+import { listHref } from "@/components/admin/list-href";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { adminLocale, adminRoutes } from "@/config/admin-routes";
@@ -11,12 +12,7 @@ import { cn } from "@/lib/utils";
 
 /** List URL for a filter; the page resets whenever the search or status changes. */
 export function unitListHref({ query, status, page }: Partial<AdminUnitFilter>): string {
-  const params = new URLSearchParams();
-  if (query) params.set("q", query);
-  if (status) params.set("status", status);
-  if (page && page > 1) params.set("page", String(page));
-  const search = params.toString();
-  return search ? `${adminRoutes.units}?${search}` : adminRoutes.units;
+  return listHref(adminRoutes.units, { q: query, status, page });
 }
 
 /**

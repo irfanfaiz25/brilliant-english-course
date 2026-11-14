@@ -3,8 +3,7 @@ import Link from "next/link";
 
 import { adminLocale, adminRoutes } from "@/config/admin-routes";
 import type { VillageQuotaRow } from "@/features/quota/admin-queries";
-
-import { QuotaBadge } from "./quota-badges";
+import { QuotaBadge } from "@/features/quota/components/quota-badge";
 
 const checkHref = (villageCode: string) =>
   `${adminRoutes.quota}?desa=${encodeURIComponent(villageCode)}#cek-desa`;

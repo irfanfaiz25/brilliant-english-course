@@ -4,12 +4,12 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { adminLocale, adminRoutes } from "@/config/admin-routes";
 import type { VillageDetail } from "@/features/quota/admin-queries";
+import { QuotaBadge } from "@/features/quota/components/quota-badge";
 import { ReservationSheet } from "@/features/quota/components/reservation-sheet";
 import type { RegionPickerLevel } from "@/features/regions/picker";
 import type { UnitStatus } from "@/features/units/schema";
 import { unitStatusBadge } from "@/features/units/status-badge";
 
-import { QuotaBadge } from "./quota-badges";
 import { ReservationList } from "./reservation-list";
 
 /** The checked village: its numbers, the units behind them and its open reservations. */
