@@ -2,13 +2,13 @@
 
 import { cacheTags } from "@/config/cache-tags";
 import { guardedAction } from "@/features/users/guarded-action";
-import { moveSchema } from "@/lib/ordering";
+import { reorderSchema } from "@/lib/ordering";
 import { can } from "@/lib/permissions";
 
 import {
   createTestimonial,
   deleteTestimonial,
-  moveTestimonial,
+  reorderTestimonials,
   setTestimonialPublished,
   updateTestimonial,
 } from "./admin-service";
@@ -74,13 +74,13 @@ export async function setTestimonialPublishedAction(input: unknown) {
   });
 }
 
-export async function moveTestimonialAction(input: unknown) {
+export async function reorderTestimonialsAction(input: unknown) {
   return guardedAction({
     label: "testimonials",
-    schema: moveSchema,
+    schema: reorderSchema,
     input,
     permission: ["update", "testimonials"],
     tags,
-    run: ({ id, direction }, user) => moveTestimonial(id, direction, user.id),
+    run: ({ ids, moved }, user) => reorderTestimonials(ids, moved, user.id),
   });
 }

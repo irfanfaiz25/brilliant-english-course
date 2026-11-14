@@ -1,6 +1,6 @@
 import "server-only";
 
-import { and, asc, eq, max, sql } from "drizzle-orm";
+import { eq, max } from "drizzle-orm";
 
 import type { Database } from "@/db/client";
 import { db } from "@/db/client";
@@ -8,7 +8,7 @@ import { testimonials, testimonialTranslations } from "@/db/schema";
 import { routing } from "@/i18n/routing";
 import { ActionFailure } from "@/lib/action-result";
 import { writeAuditLog } from "@/lib/audit";
-import { moveInOrder, type MoveDirection } from "@/lib/ordering";
+import { isSameList } from "@/lib/ordering";
 
 import type { TestimonialAudience, TestimonialForm } from "./schema";
 
@@ -169,37 +169,40 @@ export async function setTestimonialPublished(id: string, isPublished: boolean, 
   });
 }
 
-/** Moves a testimonial one place within its audience and renumbers that list (0, 1, 2, …). */
-export async function moveTestimonial(id: string, direction: MoveDirection, actorId: string) {
+/**
+ * Saves the order of one audience's testimonials (`ids`, as dragged) and renumbers them 0, 1, 2,
+ * …. Refused when that list changed since the page was loaded.
+ */
+export async function reorderTestimonials(ids: string[], moved: string, actorId: string) {
   await db.transaction(async (tx) => {
     const [row] = await tx
       .select({ audience: testimonials.audience })
       .from(testimonials)
-      .where(eq(testimonials.id, id));
-    if (!row) throw new ActionFailure("notFound");
+      .where(eq(testimonials.id, moved));
+    if (!row) throw new ActionFailure("orderChanged");
     const rows = await tx
-      .select({ id: testimonials.id })
+      .select({ id: testimonials.id, sortOrder: testimonials.sortOrder })
       .from(testimonials)
       .where(eq(testimonials.audience, row.audience))
-      .orderBy(asc(testimonials.sortOrder), asc(testimonials.createdAt))
       .for("update");
-    const order = moveInOrder(
-      rows.map((item) => item.id),
-      id,
-      direction,
-    );
-    for (const [index, rowId] of order.entries()) {
-      await tx
-        .update(testimonials)
-        .set({ sortOrder: index })
-        .where(and(eq(testimonials.id, rowId), sql`${testimonials.sortOrder} <> ${index}`));
+    if (
+      !isSameList(
+        rows.map((item) => item.id),
+        ids,
+      )
+    )
+      throw new ActionFailure("orderChanged");
+    const current = new Map(rows.map((item) => [item.id, item.sortOrder]));
+    for (const [index, id] of ids.entries()) {
+      if (current.get(id) === index) continue;
+      await tx.update(testimonials).set({ sortOrder: index }).where(eq(testimonials.id, id));
     }
     await writeAuditLog(tx, {
       actorId,
       action: "testimonial.reorder",
       entityType: "testimonial",
-      entityId: id,
-      changes: { audience: row.audience, direction, position: order.indexOf(id) },
+      entityId: moved,
+      changes: { audience: row.audience, position: ids.indexOf(moved), order: ids },
     });
   });
 }

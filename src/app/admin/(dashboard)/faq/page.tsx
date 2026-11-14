@@ -7,13 +7,14 @@ import { Suspense } from "react";
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
 import { FilterChips } from "@/components/admin/filter-chips";
 import { firstParam, listHref } from "@/components/admin/list-href";
-import { OrderedRowActions } from "@/components/admin/ordered-row-actions";
+import { ContentRowActions } from "@/components/admin/content-row-actions";
+import { SortableList } from "@/components/admin/sortable-list";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { adminLocale, adminRoutes } from "@/config/admin-routes";
 import {
   deleteFaqItemAction,
-  moveFaqItemAction,
+  reorderFaqItemsAction,
   setFaqItemPublishedAction,
 } from "@/features/faq/actions";
 import { getAdminFaqItems } from "@/features/faq/admin-queries";
@@ -118,45 +119,43 @@ async function FaqList({ searchParams }: { searchParams: SearchParams }) {
       ) : (
         <>
           <p className="text-body-sm text-muted-foreground">{t("orderHint", { placement })}</p>
-          <ol className="flex flex-col divide-y divide-border/60">
-            {list.items.map((item, index) => (
-              <li
-                key={item.id}
-                className="flex flex-wrap items-center gap-x-4 gap-y-3 py-4 first:pt-0 last:pb-0"
-              >
-                <div className="flex min-w-0 flex-1 basis-72 flex-col gap-1">
-                  <p className="text-body font-semibold text-foreground">{item.question}</p>
-                  <p className="line-clamp-2 text-body-sm text-muted-foreground">{item.answer}</p>
+          <SortableList
+            action={reorderFaqItemsAction}
+            canReorder={permissions.update}
+            rows={list.items.map((item) => ({
+              id: item.id,
+              label: item.question,
+              content: (
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
+                  <div className="flex min-w-0 flex-1 basis-72 flex-col gap-1">
+                    <p className="text-body font-semibold text-foreground">{item.question}</p>
+                    <p className="line-clamp-2 text-body-sm text-muted-foreground">{item.answer}</p>
+                  </div>
+                  <ContentRowActions
+                    id={item.id}
+                    isPublished={item.isPublished}
+                    editHref={`${adminRoutes.faq}/${item.id}`}
+                    actions={{
+                      publish: setFaqItemPublishedAction,
+                      remove: deleteFaqItemAction,
+                    }}
+                    can={permissions}
+                    labels={{
+                      show: t("showLabel", { name: item.question }),
+                      published: tVisibility("published"),
+                      hidden: tVisibility("hidden"),
+                      edit: t("editLabel", { name: item.question }),
+                      remove: t("deleteLabel", { name: item.question }),
+                      removeTitle: t("deleteTitle"),
+                      removeBody: t("deleteBody", { name: item.question }),
+                      removeConfirm: t("deleteConfirm"),
+                      removed: t("deleted"),
+                    }}
+                  />
                 </div>
-                <OrderedRowActions
-                  id={item.id}
-                  isPublished={item.isPublished}
-                  index={index}
-                  total={list.items.length}
-                  editHref={`${adminRoutes.faq}/${item.id}`}
-                  actions={{
-                    publish: setFaqItemPublishedAction,
-                    move: moveFaqItemAction,
-                    remove: deleteFaqItemAction,
-                  }}
-                  can={permissions}
-                  labels={{
-                    show: t("showLabel", { name: item.question }),
-                    published: tVisibility("published"),
-                    hidden: tVisibility("hidden"),
-                    moveUp: t("moveUp", { name: item.question }),
-                    moveDown: t("moveDown", { name: item.question }),
-                    edit: t("editLabel", { name: item.question }),
-                    remove: t("deleteLabel", { name: item.question }),
-                    removeTitle: t("deleteTitle"),
-                    removeBody: t("deleteBody", { name: item.question }),
-                    removeConfirm: t("deleteConfirm"),
-                    removed: t("deleted"),
-                  }}
-                />
-              </li>
-            ))}
-          </ol>
+              ),
+            }))}
+          />
         </>
       )}
     </section>

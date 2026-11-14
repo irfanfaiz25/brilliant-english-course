@@ -2,13 +2,13 @@
 
 import { cacheTags } from "@/config/cache-tags";
 import { guardedAction } from "@/features/users/guarded-action";
-import { moveSchema } from "@/lib/ordering";
+import { reorderSchema } from "@/lib/ordering";
 import { can } from "@/lib/permissions";
 
 import {
   createFaqItem,
   deleteFaqItem,
-  moveFaqItem,
+  reorderFaqItems,
   setFaqItemPublished,
   updateFaqItem,
 } from "./admin-service";
@@ -69,13 +69,13 @@ export async function setFaqItemPublishedAction(input: unknown) {
   });
 }
 
-export async function moveFaqItemAction(input: unknown) {
+export async function reorderFaqItemsAction(input: unknown) {
   return guardedAction({
     label: "faq",
-    schema: moveSchema,
+    schema: reorderSchema,
     input,
     permission: ["update", "faq"],
     tags,
-    run: ({ id, direction }, user) => moveFaqItem(id, direction, user.id),
+    run: ({ ids, moved }, user) => reorderFaqItems(ids, moved, user.id),
   });
 }

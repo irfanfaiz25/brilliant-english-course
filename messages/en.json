@@ -965,7 +965,8 @@
       "postSlugTaken": "Another article already uses this slug in the same language.",
       "translationIncomplete": "Fill this in, or leave every English field empty.",
       "contentRequired": "Write the article's body.",
-      "publishForbidden": "Your account cannot publish or archive articles."
+      "publishForbidden": "Your account cannot publish or archive articles.",
+      "orderChanged": "The order was changed elsewhere. The list was reloaded; try again."
     },
     "back": "Back",
     "removeItem": "Remove {item}",
@@ -1030,6 +1031,15 @@
     },
     "search": {
       "clear": "Clear search"
+    },
+    "sortable": {
+      "handle": "Drag to move {item}",
+      "instructions": "To reorder with the keyboard: Tab to a row, press Space to pick it up, the up or down arrow to move it, then Space to drop it. Escape cancels.",
+      "grabbed": "{item} picked up, position {position} of {total}.",
+      "moved": "{item} at position {position} of {total}.",
+      "dropped": "{item} dropped at position {position} of {total}.",
+      "cancelled": "Moving {item} cancelled.",
+      "saved": "Order saved."
     }
   },
   "AdminSettings": {
@@ -1165,15 +1175,13 @@
   },
   "AdminActivities": {
     "description": "Recurring unit activities shown on Home and the Programs page.",
-    "orderHint": "The order of this list is the order on the site.",
+    "orderHint": "Drag ⠿ to reorder. The order here is the order on the site.",
     "add": "Add activity",
     "empty": "No activities yet. Add the first one to show it on the site.",
     "noImage": "No photo yet",
     "edit": "Edit",
     "editLabel": "Edit {name}",
     "showLabel": "Show {name} on the site",
-    "moveUp": "Move {name} up",
-    "moveDown": "Move {name} down",
     "deleteLabel": "Delete {name}",
     "deleteTitle": "Delete {name}?",
     "deleteBody": "This activity disappears from the site and cannot be restored.",
@@ -1767,7 +1775,7 @@
   },
   "AdminTestimonials": {
     "description": "Stories from parents and partners shown on Home and the Partnership page.",
-    "orderHint": "Shown on {placement}. The order here is the order on the site.",
+    "orderHint": "Shown on {placement}. Drag ⠿ to reorder; the order here is the order on the site.",
     "add": "Add testimonial",
     "empty": "No {group} testimonials yet. Add the first one so it shows on {placement}.",
     "audiences": {
@@ -1784,8 +1792,6 @@
     "rating": "Rated {rating} out of 5",
     "editLabel": "Edit testimonial by {name}",
     "showLabel": "Show testimonial by {name} on the site",
-    "moveUp": "Move testimonial by {name} up",
-    "moveDown": "Move testimonial by {name} down",
     "deleteLabel": "Delete testimonial by {name}",
     "deleteTitle": "Delete testimonial by {name}?",
     "deleteBody": "This testimonial disappears from the site and cannot be restored.",
@@ -1822,7 +1828,7 @@
   },
   "AdminFaq": {
     "description": "Frequently asked questions on Home, the Program page and the Partnership page.",
-    "orderHint": "Shown on {placement}. The order here is the order on the site.",
+    "orderHint": "Shown on {placement}. Drag ⠿ to reorder; the order here is the order on the site.",
     "add": "Add question",
     "empty": "No questions for {group} yet. Add the first one so it shows on {placement}.",
     "topics": {
@@ -1840,8 +1846,6 @@
     },
     "editLabel": "Edit question: {name}",
     "showLabel": "Show question on the site: {name}",
-    "moveUp": "Move question up: {name}",
-    "moveDown": "Move question down: {name}",
     "deleteLabel": "Delete question: {name}",
     "deleteTitle": "Delete this question?",
     "deleteBody": "“{name}” disappears from the site and cannot be restored.",

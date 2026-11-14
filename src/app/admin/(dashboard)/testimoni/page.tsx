@@ -7,13 +7,14 @@ import { Suspense } from "react";
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
 import { FilterChips } from "@/components/admin/filter-chips";
 import { firstParam, listHref } from "@/components/admin/list-href";
-import { OrderedRowActions } from "@/components/admin/ordered-row-actions";
+import { ContentRowActions } from "@/components/admin/content-row-actions";
+import { SortableList } from "@/components/admin/sortable-list";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { adminLocale, adminRoutes } from "@/config/admin-routes";
 import {
   deleteTestimonialAction,
-  moveTestimonialAction,
+  reorderTestimonialsAction,
   setTestimonialPublishedAction,
 } from "@/features/testimonials/actions";
 import { getAdminTestimonials } from "@/features/testimonials/admin-queries";
@@ -118,54 +119,52 @@ async function TestimonialList({ searchParams }: { searchParams: SearchParams })
       ) : (
         <>
           <p className="text-body-sm text-muted-foreground">{t("orderHint", { placement })}</p>
-          <ol className="flex flex-col divide-y divide-border/60">
-            {list.items.map((item, index) => (
-              <li
-                key={item.id}
-                className="flex flex-wrap items-center gap-x-4 gap-y-3 py-4 first:pt-0 last:pb-0"
-              >
-                <div className="flex min-w-0 flex-1 basis-72 flex-col gap-1">
-                  <p className="flex items-center gap-0.5 text-highlight">
-                    <span className="sr-only">{t("rating", { rating: item.rating })}</span>
-                    {Array.from({ length: item.rating }, (_, star) => (
-                      <StarIcon key={star} aria-hidden className="size-3.5 fill-current" />
-                    ))}
-                  </p>
-                  <p className="line-clamp-2 text-body text-foreground">“{item.quote}”</p>
-                  <p className="truncate text-body-sm text-muted-foreground">
-                    <span className="font-semibold text-foreground">{item.authorName}</span>
-                    {item.role && ` · ${item.role}`}
-                  </p>
+          <SortableList
+            action={reorderTestimonialsAction}
+            canReorder={permissions.update}
+            rows={list.items.map((item) => ({
+              id: item.id,
+              label: item.authorName,
+              content: (
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
+                  <div className="flex min-w-0 flex-1 basis-72 flex-col gap-1">
+                    <p className="flex items-center gap-0.5 text-highlight">
+                      <span className="sr-only">{t("rating", { rating: item.rating })}</span>
+                      {Array.from({ length: item.rating }, (_, star) => (
+                        <StarIcon key={star} aria-hidden className="size-3.5 fill-current" />
+                      ))}
+                    </p>
+                    <p className="line-clamp-2 text-body text-foreground">“{item.quote}”</p>
+                    <p className="truncate text-body-sm text-muted-foreground">
+                      <span className="font-semibold text-foreground">{item.authorName}</span>
+                      {item.role && ` · ${item.role}`}
+                    </p>
+                  </div>
+                  <ContentRowActions
+                    id={item.id}
+                    isPublished={item.isPublished}
+                    editHref={`${adminRoutes.testimonials}/${item.id}`}
+                    actions={{
+                      publish: setTestimonialPublishedAction,
+                      remove: deleteTestimonialAction,
+                    }}
+                    can={permissions}
+                    labels={{
+                      show: t("showLabel", { name: item.authorName }),
+                      published: tVisibility("published"),
+                      hidden: tVisibility("hidden"),
+                      edit: t("editLabel", { name: item.authorName }),
+                      remove: t("deleteLabel", { name: item.authorName }),
+                      removeTitle: t("deleteTitle", { name: item.authorName }),
+                      removeBody: t("deleteBody"),
+                      removeConfirm: t("deleteConfirm"),
+                      removed: t("deleted"),
+                    }}
+                  />
                 </div>
-                <OrderedRowActions
-                  id={item.id}
-                  isPublished={item.isPublished}
-                  index={index}
-                  total={list.items.length}
-                  editHref={`${adminRoutes.testimonials}/${item.id}`}
-                  actions={{
-                    publish: setTestimonialPublishedAction,
-                    move: moveTestimonialAction,
-                    remove: deleteTestimonialAction,
-                  }}
-                  can={permissions}
-                  labels={{
-                    show: t("showLabel", { name: item.authorName }),
-                    published: tVisibility("published"),
-                    hidden: tVisibility("hidden"),
-                    moveUp: t("moveUp", { name: item.authorName }),
-                    moveDown: t("moveDown", { name: item.authorName }),
-                    edit: t("editLabel", { name: item.authorName }),
-                    remove: t("deleteLabel", { name: item.authorName }),
-                    removeTitle: t("deleteTitle", { name: item.authorName }),
-                    removeBody: t("deleteBody"),
-                    removeConfirm: t("deleteConfirm"),
-                    removed: t("deleted"),
-                  }}
-                />
-              </li>
-            ))}
-          </ol>
+              ),
+            }))}
+          />
         </>
       )}
     </section>

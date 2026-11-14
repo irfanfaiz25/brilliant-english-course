@@ -2,7 +2,7 @@
 
 import { cacheTags } from "@/config/cache-tags";
 import { guardedAction } from "@/features/users/guarded-action";
-import { moveSchema } from "@/lib/ordering";
+import { reorderSchema } from "@/lib/ordering";
 import { can } from "@/lib/permissions";
 
 import {
@@ -14,7 +14,7 @@ import {
 import {
   createActivity,
   deleteActivity,
-  moveActivity,
+  reorderActivities,
   setActivityPublished,
   updateActivity,
 } from "./service";
@@ -71,13 +71,13 @@ export async function setActivityPublishedAction(input: unknown) {
   });
 }
 
-export async function moveActivityAction(input: unknown) {
+export async function reorderActivitiesAction(input: unknown) {
   return guardedAction({
     label: "activities",
-    schema: moveSchema,
+    schema: reorderSchema,
     input,
     permission: ["update", "activities"],
     tags,
-    run: ({ id, direction }, user) => moveActivity(id, direction, user.id),
+    run: ({ ids, moved }, user) => reorderActivities(ids, moved, user.id),
   });
 }

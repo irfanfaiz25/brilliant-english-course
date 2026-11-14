@@ -1,6 +1,6 @@
 import "server-only";
 
-import { and, asc, eq, max, sql } from "drizzle-orm";
+import { eq, max } from "drizzle-orm";
 
 import type { Database } from "@/db/client";
 import { db } from "@/db/client";
@@ -8,7 +8,7 @@ import { faqItems, faqItemTranslations } from "@/db/schema";
 import { routing } from "@/i18n/routing";
 import { ActionFailure } from "@/lib/action-result";
 import { writeAuditLog } from "@/lib/audit";
-import { moveInOrder, type MoveDirection } from "@/lib/ordering";
+import { isSameList } from "@/lib/ordering";
 
 import type { FaqForm, FaqTopic } from "./schema";
 
@@ -160,37 +160,40 @@ export async function setFaqItemPublished(id: string, isPublished: boolean, acto
   });
 }
 
-/** Moves an entry one place within its topic and renumbers that list (0, 1, 2, …). */
-export async function moveFaqItem(id: string, direction: MoveDirection, actorId: string) {
+/**
+ * Saves the order of one topic's entries (`ids`, as dragged) and renumbers them 0, 1, 2, ….
+ * Refused when that list changed since the page was loaded.
+ */
+export async function reorderFaqItems(ids: string[], moved: string, actorId: string) {
   await db.transaction(async (tx) => {
     const [row] = await tx
       .select({ topic: faqItems.topic })
       .from(faqItems)
-      .where(eq(faqItems.id, id));
-    if (!row) throw new ActionFailure("notFound");
+      .where(eq(faqItems.id, moved));
+    if (!row) throw new ActionFailure("orderChanged");
     const rows = await tx
-      .select({ id: faqItems.id })
+      .select({ id: faqItems.id, sortOrder: faqItems.sortOrder })
       .from(faqItems)
       .where(eq(faqItems.topic, row.topic))
-      .orderBy(asc(faqItems.sortOrder), asc(faqItems.createdAt))
       .for("update");
-    const order = moveInOrder(
-      rows.map((item) => item.id),
-      id,
-      direction,
-    );
-    for (const [index, rowId] of order.entries()) {
-      await tx
-        .update(faqItems)
-        .set({ sortOrder: index })
-        .where(and(eq(faqItems.id, rowId), sql`${faqItems.sortOrder} <> ${index}`));
+    if (
+      !isSameList(
+        rows.map((item) => item.id),
+        ids,
+      )
+    )
+      throw new ActionFailure("orderChanged");
+    const current = new Map(rows.map((item) => [item.id, item.sortOrder]));
+    for (const [index, id] of ids.entries()) {
+      if (current.get(id) === index) continue;
+      await tx.update(faqItems).set({ sortOrder: index }).where(eq(faqItems.id, id));
     }
     await writeAuditLog(tx, {
       actorId,
       action: "faq.reorder",
       entityType: "faq_item",
-      entityId: id,
-      changes: { topic: row.topic, direction, position: order.indexOf(id) },
+      entityId: moved,
+      changes: { topic: row.topic, position: ids.indexOf(moved), order: ids },
     });
   });
 }

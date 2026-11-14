@@ -965,7 +965,8 @@
       "postSlugTaken": "Slug ini sudah dipakai artikel lain dalam bahasa yang sama.",
       "translationIncomplete": "Lengkapi kolom ini atau kosongkan semua kolom versi Inggris.",
       "contentRequired": "Tulis isi artikel.",
-      "publishForbidden": "Akunmu tidak bisa menerbitkan atau mengarsipkan artikel."
+      "publishForbidden": "Akunmu tidak bisa menerbitkan atau mengarsipkan artikel.",
+      "orderChanged": "Urutan sudah diubah di tempat lain. Daftar dimuat ulang; coba lagi."
     },
     "back": "Kembali",
     "removeItem": "Hapus {item}",
@@ -1030,6 +1031,15 @@
     },
     "search": {
       "clear": "Hapus pencarian"
+    },
+    "sortable": {
+      "handle": "Seret untuk memindah {item}",
+      "instructions": "Untuk mengubah urutan dengan keyboard: pilih baris dengan Tab, tekan Spasi untuk mengambil, panah atas atau bawah untuk memindah, lalu Spasi untuk meletakkan. Escape membatalkan.",
+      "grabbed": "{item} diambil, posisi {position} dari {total}.",
+      "moved": "{item} di posisi {position} dari {total}.",
+      "dropped": "{item} diletakkan di posisi {position} dari {total}.",
+      "cancelled": "Pemindahan {item} dibatalkan.",
+      "saved": "Urutan disimpan."
     }
   },
   "AdminSettings": {
@@ -1165,15 +1175,13 @@
   },
   "AdminActivities": {
     "description": "Kegiatan rutin unit yang tampil di Beranda dan halaman Program.",
-    "orderHint": "Urutan di daftar ini sama dengan urutan di situs.",
+    "orderHint": "Seret ⠿ untuk mengubah urutan. Urutan di daftar ini sama dengan urutan di situs.",
     "add": "Tambah kegiatan",
     "empty": "Belum ada kegiatan. Tambahkan kegiatan pertama supaya tampil di situs.",
     "noImage": "Belum ada foto",
     "edit": "Ubah",
     "editLabel": "Ubah {name}",
     "showLabel": "Tampilkan {name} di situs",
-    "moveUp": "Naikkan {name}",
-    "moveDown": "Turunkan {name}",
     "deleteLabel": "Hapus {name}",
     "deleteTitle": "Hapus {name}?",
     "deleteBody": "Kegiatan ini hilang dari situs dan tidak bisa dikembalikan.",
@@ -1767,7 +1775,7 @@
   },
   "AdminTestimonials": {
     "description": "Cerita orang tua dan mitra yang tampil di Beranda dan halaman Kemitraan.",
-    "orderHint": "Tampil di {placement}. Urutan di daftar ini sama dengan urutan di situs.",
+    "orderHint": "Tampil di {placement}. Seret ⠿ untuk mengubah urutan; urutan di sini sama dengan di situs.",
     "add": "Tambah testimoni",
     "empty": "Belum ada testimoni {group}. Tambahkan yang pertama supaya tampil di {placement}.",
     "audiences": {
@@ -1784,8 +1792,6 @@
     "rating": "Rating {rating} dari 5",
     "editLabel": "Ubah testimoni {name}",
     "showLabel": "Tampilkan testimoni {name} di situs",
-    "moveUp": "Naikkan testimoni {name}",
-    "moveDown": "Turunkan testimoni {name}",
     "deleteLabel": "Hapus testimoni {name}",
     "deleteTitle": "Hapus testimoni {name}?",
     "deleteBody": "Testimoni ini hilang dari situs dan tidak bisa dikembalikan.",
@@ -1822,7 +1828,7 @@
   },
   "AdminFaq": {
     "description": "Pertanyaan yang sering diajukan di Beranda, halaman Program dan halaman Kemitraan.",
-    "orderHint": "Tampil di {placement}. Urutan di daftar ini sama dengan urutan di situs.",
+    "orderHint": "Tampil di {placement}. Seret ⠿ untuk mengubah urutan; urutan di sini sama dengan di situs.",
     "add": "Tambah pertanyaan",
     "empty": "Belum ada pertanyaan untuk topik {group}. Tambahkan yang pertama supaya tampil di {placement}.",
     "topics": {
@@ -1840,8 +1846,6 @@
     },
     "editLabel": "Ubah pertanyaan: {name}",
     "showLabel": "Tampilkan pertanyaan di situs: {name}",
-    "moveUp": "Naikkan pertanyaan: {name}",
-    "moveDown": "Turunkan pertanyaan: {name}",
     "deleteLabel": "Hapus pertanyaan: {name}",
     "deleteTitle": "Hapus pertanyaan ini?",
     "deleteBody": "“{name}” hilang dari situs dan tidak bisa dikembalikan.",
