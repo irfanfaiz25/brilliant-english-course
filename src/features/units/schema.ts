@@ -1,8 +1,16 @@
 import { z } from "zod";
 
-import { enrollmentStatuses } from "@/config/enums";
+import { enrollmentStatuses, unitStatuses } from "@/config/enums";
+import { limits } from "@/config/limits";
 import { levelSlugs } from "@/features/programs/schema";
-import { regionCodeSchema } from "@/features/regions/schema";
+import { regionCodeSchema, villageCodeField } from "@/features/regions/schema";
+import {
+  integerField,
+  textField,
+  timeField,
+  weekdaysField,
+  whatsappField,
+} from "@/lib/form-schemas";
 import { slugSchemaPattern } from "@/lib/slug";
 
 /** Network-wide numbers shown on the site; always computed from data, never typed in (AGENTS.md § 4). */
@@ -43,3 +51,55 @@ export const unitSummarySchema = z.object({
 });
 
 export type UnitSummary = z.infer<typeof unitSummarySchema>;
+
+/*
+ * Admin form (Phase 4c). The unit code is assigned once when the unit is created; the slug
+ * defaults to the name and must be unique within the unit's regency (checked by the service).
+ * Messages are codes (`lib/form-schemas`).
+ */
+
+/** Where a unit is in its life: only `active` units appear on the site and count for quota. */
+export { unitStatuses };
+export type UnitStatus = (typeof unitStatuses)[number];
+
+const U = limits.units;
+
+const coordinate = (range: { min: number; max: number }, code: string) =>
+  z.number("numberRequired").min(range.min, code).max(range.max, code);
+
+export const unitFormSchema = z
+  .object({
+    name: textField(3, U.nameMax),
+    slug: z
+      .string()
+      .trim()
+      .toLowerCase()
+      .min(1, "required")
+      .max(U.slugMax, `tooLong:${U.slugMax}`)
+      .regex(slugSchemaPattern, "slugInvalid"),
+    status: z.enum(unitStatuses),
+    enrollment: z.enum(enrollmentStatuses),
+    villageCode: villageCodeField,
+    address: textField(10, U.addressMax),
+    latitude: coordinate(U.latitude, "latitudeInvalid"),
+    longitude: coordinate(U.longitude, "longitudeInvalid"),
+    managerName: textField(3, U.managerMax),
+    whatsapp: whatsappField,
+    openDays: weekdaysField,
+    opensAt: timeField,
+    closesAt: timeField,
+    levels: z.array(z.enum(levelSlugs)).min(1, "levelsRequired"),
+    studentsCount: integerField(0, U.studentsMax),
+    /** `YYYY-MM-DD`, or "" when the opening date is not known yet. */
+    openedAt: z.union([z.literal(""), z.iso.date("dateInvalid")]),
+  })
+  .refine((unit) => unit.closesAt > unit.opensAt, {
+    message: "closesBeforeOpens",
+    path: ["closesAt"],
+  });
+
+export type UnitFormInput = z.input<typeof unitFormSchema>;
+export type UnitForm = z.output<typeof unitFormSchema>;
+
+export const unitUpdateSchema = unitFormSchema.and(z.object({ id: z.uuid() }));
+export const unitIdSchema = z.object({ id: z.uuid() });
