@@ -77,6 +77,31 @@ test.describe("admin shell", () => {
     await expect(page.getByRole("main")).toBeFocused();
   });
 
+  test("shows where a page sits with a breadcrumb trail", async ({ page, isMobile }, testInfo) => {
+    const users = e2eUsers(testInfo.project.name);
+    await page.goto("/admin/masuk?next=%2Fadmin%2Fprogram%2Fintro");
+    await signIn(page, users.admin.email);
+    await expect(page).toHaveURL(/\/admin\/program\/intro$/);
+
+    const trail = page.getByRole("navigation", { name: "Jejak navigasi" });
+    const level = await page.getByRole("heading", { level: 1 }).textContent();
+    if (isMobile) {
+      // Phones show only the way up.
+      await expect(trail.getByRole("link")).toHaveText(["Program"]);
+      await expect(trail.getByRole("link", { name: "Ringkasan" })).toBeHidden();
+    } else {
+      await expect(trail.getByRole("listitem")).toHaveText([
+        "Ringkasan",
+        "Program",
+        (level ?? "").replace(/^Level /, ""),
+      ]);
+      await expect(trail.locator("[aria-current=page]")).toBeVisible();
+    }
+    await trail.getByRole("link", { name: "Program" }).click();
+    await expect(page).toHaveURL(/\/admin\/program$/);
+    await expect(page.getByRole("heading", { level: 1, name: "Program" })).toBeVisible();
+  });
+
   test("keeps signed-out visitors out of module pages", async ({ page }) => {
     await page.goto("/admin/kuota");
     await expect(page).toHaveURL(/\/admin\/masuk\?next=%2Fadmin%2Fkuota$/);

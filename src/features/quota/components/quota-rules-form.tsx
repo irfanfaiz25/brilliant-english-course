@@ -34,8 +34,9 @@ export function QuotaRulesForm({
 
   return (
     <form onSubmit={onSubmit} noValidate>
-      <fieldset disabled={!canEdit} className="flex flex-col gap-5">
-        <div className="grid gap-5 sm:grid-cols-2">
+      <fieldset disabled={!canEdit} className="@container flex flex-col gap-5">
+        {/* Stacked in the narrow side panel; side by side only when the panel is wide. */}
+        <div className="grid gap-5 @xl:grid-cols-2">
           <Field
             label={t("unitsPerVillage")}
             description={t("unitsPerVillageHint")}
@@ -50,6 +51,7 @@ export function QuotaRulesForm({
                 inputMode="numeric"
                 min={1}
                 max={limits.quota.unitsPerVillageMax}
+                className="max-w-32"
               />
             )}
           </Field>
@@ -67,6 +69,7 @@ export function QuotaRulesForm({
                 inputMode="numeric"
                 min={0}
                 max={limits.quota.unitsPerVillageMax}
+                className="max-w-32"
               />
             )}
           </Field>

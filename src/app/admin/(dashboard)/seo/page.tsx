@@ -33,7 +33,7 @@ export default async function SeoPage() {
   ]);
   return (
     <>
-      <AdminPageHeader title={tNav("seo")} description={t("description")} />
+      <AdminPageHeader breadcrumbs={[]} title={tNav("seo")} description={t("description")} />
       <Suspense fallback={<SeoSkeleton />}>
         <SeoContent />
       </Suspense>

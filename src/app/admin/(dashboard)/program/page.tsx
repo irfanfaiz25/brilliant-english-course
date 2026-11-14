@@ -30,7 +30,7 @@ export default async function ProgramsPage() {
   ]);
   return (
     <>
-      <AdminPageHeader title={tNav("programs")} description={t("description")} />
+      <AdminPageHeader breadcrumbs={[]} title={tNav("programs")} description={t("description")} />
       <Suspense fallback={<LevelsSkeleton />}>
         <LevelList />
       </Suspense>

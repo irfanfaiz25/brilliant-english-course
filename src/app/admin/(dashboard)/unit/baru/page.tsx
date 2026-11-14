@@ -5,7 +5,6 @@ import { Suspense } from "react";
 import { z } from "zod";
 
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
-import { BackLink } from "@/components/admin/back-link";
 import { firstParam } from "@/components/admin/list-href";
 import { Skeleton } from "@/components/ui/skeleton";
 import { adminLocale, adminRoutes } from "@/config/admin-routes";
@@ -48,8 +47,11 @@ export default async function NewUnitPage({ searchParams }: PageProps<"/admin/un
   const t = await getTranslations({ locale: adminLocale, namespace: "AdminUnits" });
   return (
     <>
-      <BackLink href={adminRoutes.units} label={t("backToList")} />
-      <AdminPageHeader title={t("createTitle")} description={t("createDescription")} />
+      <AdminPageHeader
+        breadcrumbs={["units"]}
+        title={t("createTitle")}
+        description={t("createDescription")}
+      />
       <Suspense fallback={<Skeleton aria-hidden className="h-[40rem] rounded-2xl" />}>
         <NewUnit searchParams={searchParams} />
       </Suspense>

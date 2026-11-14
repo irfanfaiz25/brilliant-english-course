@@ -9,7 +9,6 @@ import { z } from "zod";
 import { BrandIcon } from "@/components/icons/brand-icon";
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
 import { AdminPanel } from "@/components/admin/admin-panel";
-import { BackLink } from "@/components/admin/back-link";
 import { DeleteButton } from "@/components/admin/row-actions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -40,15 +39,11 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 /** One lead (Phase 4d). The id is read inside the boundary: it is request data. */
-export default async function LeadPage({ params }: PageProps<"/admin/calon-mitra/[id]">) {
-  const t = await getTranslations({ locale: adminLocale, namespace: "AdminLeads" });
+export default function LeadPage({ params }: PageProps<"/admin/calon-mitra/[id]">) {
   return (
-    <>
-      <BackLink href={adminRoutes.leads} label={t("backToList")} />
-      <Suspense fallback={<LeadSkeleton />}>
-        <Lead params={params} />
-      </Suspense>
-    </>
+    <Suspense fallback={<LeadSkeleton />}>
+      <Lead params={params} />
+    </Suspense>
   );
 }
 
@@ -84,6 +79,7 @@ async function Lead({ params }: { params: Promise<{ id: string }> }) {
   return (
     <>
       <AdminPageHeader
+        breadcrumbs={["leads"]}
         title={lead.fullName}
         description={
           <span className="flex flex-wrap items-center gap-x-3 gap-y-1">

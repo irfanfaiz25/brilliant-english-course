@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
-import { BackLink } from "@/components/admin/back-link";
 import { LastSaved } from "@/components/admin/last-saved";
 import { Skeleton } from "@/components/ui/skeleton";
 import { adminLocale, adminRoutes } from "@/config/admin-routes";
@@ -37,14 +36,10 @@ export async function generateMetadata({
 export default async function EditLevelPage({ params }: PageProps<"/admin/program/[slug]">) {
   const { slug } = await params;
   if (!isLevelSlug(slug)) notFound();
-  const t = await getTranslations({ locale: adminLocale, namespace: "AdminPrograms" });
   return (
-    <>
-      <BackLink href={adminRoutes.programs} label={t("backToList")} />
-      <Suspense fallback={<EditSkeleton />}>
-        <EditLevel slug={slug} />
-      </Suspense>
-    </>
+    <Suspense fallback={<EditSkeleton />}>
+      <EditLevel slug={slug} />
+    </Suspense>
   );
 }
 
@@ -62,7 +57,9 @@ async function EditLevel({ slug }: { slug: LevelSlug }) {
   return (
     <>
       <AdminPageHeader
+        breadcrumbs={["programs"]}
         title={t("editTitle", { name: level.values.texts.id.name || slug })}
+        crumb={level.values.texts.id.name || slug}
         description={
           <>
             {t("editDescription")}{" "}
