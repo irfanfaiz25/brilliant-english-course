@@ -1,10 +1,11 @@
 "use client";
 
-import { CheckIcon, ImageIcon } from "lucide-react";
+import { ArrowLeftIcon, CheckIcon, ImageIcon, ImageUpIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { RadioGroup } from "radix-ui";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useCallback, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -17,6 +18,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import type { MediaOption } from "@/features/media/admin-queries";
+import type { UploadedMedia } from "@/features/media/admin-service";
+import { MediaUploader } from "@/features/media/components/media-uploader";
 import { cn } from "@/lib/utils";
 
 type MediaPickerProps = {
@@ -28,11 +31,14 @@ type MediaPickerProps = {
   /** Validation message under the preview. */
   error?: string;
   disabled?: boolean;
+  /** Offers uploading a new image inside the dialog (`media` create permission). */
+  canUpload?: boolean;
 };
 
 /**
  * Image field: a preview of the picked image and a dialog with the media library as a radio grid
- * (arrow keys move, Enter picks). Uploading lives in the media module (Phase 4e).
+ * (arrow keys move, Enter picks). With `canUpload` the dialog can switch to the uploader; a
+ * finished upload joins the grid, is picked, and the page refreshes so previews know it too.
  */
 export function MediaPicker({
   value,
@@ -41,11 +47,26 @@ export function MediaPicker({
   label,
   error,
   disabled,
+  canUpload = false,
 }: MediaPickerProps) {
   const t = useTranslations("AdminForms.media");
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState(value);
-  const selected = options.find((option) => option.id === value);
+  const [uploading, setUploading] = useState(false);
+  // Uploaded in this dialog and not yet in `options` (until the refresh brings them).
+  const [uploaded, setUploaded] = useState<readonly MediaOption[]>([]);
+  const all = [...uploaded.filter((item) => !options.some((o) => o.id === item.id)), ...options];
+  const selected = all.find((option) => option.id === value);
+
+  const onUploaded = useCallback(
+    (media: UploadedMedia) => {
+      setUploaded((current) => [media, ...current]);
+      setDraft(media.id);
+      router.refresh();
+    },
+    [router],
+  );
 
   return (
     <div className="flex flex-col gap-2">
@@ -79,7 +100,10 @@ export function MediaPicker({
             open={open}
             onOpenChange={(next) => {
               setOpen(next);
-              if (next) setDraft(value);
+              if (next) {
+                setDraft(value);
+                setUploading(false);
+              }
             }}
           >
             <DialogTrigger asChild>
@@ -92,7 +116,23 @@ export function MediaPicker({
                 <DialogTitle>{t("title")}</DialogTitle>
                 <DialogDescription>{t("description")}</DialogDescription>
               </DialogHeader>
-              {options.length === 0 ? (
+              {canUpload && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  className="w-fit"
+                  onClick={() => setUploading((current) => !current)}
+                >
+                  {uploading ? <ArrowLeftIcon aria-hidden /> : <ImageUpIcon aria-hidden />}
+                  {uploading ? t("backToLibrary") : t("upload")}
+                </Button>
+              )}
+              {uploading ? (
+                <div className="max-h-[60vh] overflow-y-auto">
+                  <MediaUploader onUploaded={onUploaded} />
+                </div>
+              ) : all.length === 0 ? (
                 <p className="rounded-xl bg-surface px-4 py-6 text-body-sm text-muted-foreground">
                   {t("empty")}
                 </p>
@@ -101,9 +141,9 @@ export function MediaPicker({
                   value={draft}
                   onValueChange={setDraft}
                   aria-label={t("title")}
-                  className="grid grid-cols-2 gap-3 sm:grid-cols-3"
+                  className="grid max-h-[60vh] grid-cols-2 gap-3 overflow-y-auto p-1 sm:grid-cols-3"
                 >
-                  {options.map((option) => (
+                  {all.map((option) => (
                     <RadioGroup.Item
                       key={option.id}
                       value={option.id}

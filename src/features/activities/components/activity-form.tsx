@@ -36,6 +36,8 @@ type ActivityFormProps = {
   id?: string;
   defaultValues: ActivityFormInput;
   mediaOptions: readonly MediaOption[];
+  /** Shows "upload a new image" in the picker (`media` create permission). */
+  canUploadMedia: boolean;
   canPublish: boolean;
   /** Card labels for the live preview, in every locale. */
   previewLabels: ActivityCardLabels;
@@ -46,6 +48,7 @@ export function ActivityForm({
   id,
   defaultValues,
   mediaOptions,
+  canUploadMedia,
   canPublish,
   previewLabels,
 }: ActivityFormProps) {
@@ -93,6 +96,7 @@ export function ActivityForm({
                   value={field.value}
                   onChange={field.onChange}
                   options={mediaOptions}
+                  canUpload={canUploadMedia}
                   label={t("fields.image")}
                   error={errorText(fieldState.error?.message)}
                 />
