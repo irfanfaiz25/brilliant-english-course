@@ -96,7 +96,11 @@ Sub-phases (separate PRs): 4a Settings & SEO defaults · 4b Programs & Activitie
 - 4e-1 Media ✅ (ADR-031): Media lists every image with search, a "Belum dipakai" filter and paging; uploads go
   straight from the browser to storage (R2, or `.storage/` without R2) with live progress, then become WebP of at
   most 2400 px. An image page shows the preview, details, its name, where it is used and delete (refused while in
-  use). The image picker of content forms can upload too. 4e-2 Blog follows.
+  use). The image picker of content forms can upload too.
+- 4e-2 Blog ✅ (ADR-032): Blog lists articles with live search, status chips with counts and paging; the write/edit
+  page has a full Tiptap editor (headings, marks, brand colors, alignment, lists, quote, code, tables, images with
+  captions, YouTube, HTML import, word count), `ID | EN` tabs with optional English, cover image, category, author,
+  status and publish time. Admin list searches now apply while typing.
 
 ## Phase 5 — Public website
 
