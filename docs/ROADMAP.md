@@ -88,6 +88,11 @@ Sub-phases (separate PRs): 4a Settings & SEO defaults · 4b Programs & Activitie
   and a live preview of the public unit card; soft delete. Codes are generated per province (`BEC-JB-0124`), slugs are
   unique per regency, and activating a unit in a full village is refused. Kuota Wilayah edits the quota rules (now a
   setting read by Kemitraan), checks one village, lists occupied villages and creates/releases reservations.
+- 4d Leads pipeline ✅ (ADR-030): Calon Mitra lists applications with search (name, reference, WhatsApp), status
+  chips with counts, "Sedang diproses" and "Ditugaskan ke saya" filters, paging and a CSV export of the filtered list.
+  The detail page shows the application, a WhatsApp chat button, status/assignee/note in one form, the village quota
+  and one history of notes and changes. Persiapan holds a village slot; "Buat unit" prefills the unit form and turns
+  the lead into a partner when the unit is saved.
 
 ## Phase 5 — Public website
 

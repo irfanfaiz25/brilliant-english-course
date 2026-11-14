@@ -9,6 +9,9 @@ export const e2eUsers = (project: string) => ({
   disabled: { email: `e2e-disabled-${project}@bec.test`, name: "E2E Disabled", role: "editor" },
 });
 
+/** The partner lead the admin leads spec works on; reset to a fresh application by the global setup. */
+export const e2eLead = { reference: "MTR-E2E-0001", name: "Calon Mitra E2E" } as const;
+
 export const e2eProjects = ["desktop", "mobile"] as const;
 
 /** Fills and submits the admin sign-in form on the current page. */

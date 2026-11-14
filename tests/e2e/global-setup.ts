@@ -3,7 +3,7 @@ import { execFileSync } from "node:child_process";
 import nextEnv from "@next/env";
 import pg from "pg";
 
-import { E2E_PASSWORD, e2eProjects, e2eUsers } from "./auth-users";
+import { E2E_PASSWORD, e2eLead, e2eProjects, e2eUsers } from "./auth-users";
 
 /**
  * Creates (or resets) the E2E staff accounts in the database the app under test uses, through the
@@ -44,7 +44,32 @@ export default async function globalSetup() {
       "update users set is_active = (email <> all($1::text[])) where email like 'e2e-%@bec.test'",
       [disabled],
     );
+    await resetLeadFixture(client);
   } finally {
     await client.end();
   }
+}
+
+/**
+ * Puts the lead the admin leads spec works on back to a fresh application: status `new`, no
+ * assignee, notes or quota reservation, in a village no other spec reads (Singajaya, Kab. Bogor).
+ */
+async function resetLeadFixture(client: pg.Client) {
+  const { rows } = await client.query<{ id: string }>(
+    `insert into partner_leads
+       (reference, full_name, whatsapp, background, space, motivation, village_code, locale)
+     values ($1, $2, '6281200009999', 'educator', 'ready', 'Fixture for the E2E specs.', '32.01.06.2003', 'id')
+     on conflict (reference) do update set
+       status = 'new', assigned_to_id = null, unit_id = null, deleted_at = null,
+       created_at = now(), updated_at = now()
+     returning id`,
+    [e2eLead.reference, e2eLead.name],
+  );
+  const leadId = rows[0]?.id;
+  await client.query("delete from partner_lead_notes where lead_id = $1", [leadId]);
+  await client.query("delete from quota_reservations where lead_id = $1", [leadId]);
+  await client.query(
+    "delete from audit_log where entity_type = 'partner_lead' and entity_id = $1::text",
+    [leadId],
+  );
 }

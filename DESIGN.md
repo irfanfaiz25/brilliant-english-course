@@ -483,6 +483,12 @@ Baseline: Penpot `02 · Dashboard` (Ringkasan, Calon Mitra, Unit Mitra, Kuota Wi
   previous/next paging. Regions are picked with `RegionPicker`: four native selects (the OS picker is best for long
   lists on phones), each level loading the next. Components that sit in panels of varying width (the form footer,
   the unit card's buttons) lay out by container queries, not by viewport breakpoints.
+- **Record pages (Phase 4d):** a record that is worked over time (a lead) opens on its own page: the record's data
+  and its history in the main column, the controls that change it (status, assignee) and related context (quota,
+  linked unit) in a sticky side column from `xl`, stacked below the data on smaller screens. The history is one
+  timeline, newest first: notes as quotes, recorded changes as short lines ("Status: Baru → Persiapan"), each with
+  time and author ("Sistem" when nobody signed in). List pages share `listHref()` (URL state without defaults) and
+  `ListPagination`. A select whose options can share a label (staff with the same name) adds what tells them apart.
 
 ---
 

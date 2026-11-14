@@ -9,6 +9,8 @@ import {
 } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
+import { getQuotaRules } from "@/features/quota/queries";
+
 import { Stagger, StaggerItem } from "@/components/motion/stagger";
 import { DecorBlob } from "@/components/site/decor-blob";
 import { Section } from "@/components/site/section";
@@ -26,7 +28,7 @@ const BENEFITS = [
 
 /** What BEC provides, as six equal cards (two columns on tablets, three on desktop). */
 export async function BenefitsSection() {
-  const t = await getTranslations("Partnership.benefits");
+  const [t, rules] = await Promise.all([getTranslations("Partnership.benefits"), getQuotaRules()]);
 
   return (
     <Section id="keuntungan" aria-labelledby="benefits-title" className="scroll-mt-16">
@@ -50,7 +52,9 @@ export async function BenefitsSection() {
                 <Icon aria-hidden className="size-6" />
               </span>
               <h3 className="text-h5 text-foreground">{t(`${key}.title`)}</h3>
-              <p className="text-body text-muted-foreground">{t(`${key}.text`)}</p>
+              <p className="text-body text-muted-foreground">
+                {t(`${key}.text`, { max: rules.unitsPerVillage })}
+              </p>
             </article>
           </StaggerItem>
         ))}

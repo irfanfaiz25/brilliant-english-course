@@ -21,6 +21,8 @@ type SaveFormOptions<TValues extends FieldValues> = {
   onSaved?: (data: unknown) => void;
   /** Called when validation fails (browser or server), e.g. to switch to the tab with errors. */
   onInvalid?: (errors: FieldErrors<TValues>) => void;
+  /** Toast after a save (default: `AdminForms.saved`, which says the change is live on the site). */
+  successMessage?: string;
 };
 
 /**
@@ -36,6 +38,7 @@ export function useSaveForm<TValues extends FieldValues, TParsed extends FieldVa
     toFieldName = (path) => path,
     onSaved,
     onInvalid,
+    successMessage,
   }: SaveFormOptions<TValues> = {},
 ) {
   const t = useTranslations("AdminForms");
@@ -51,7 +54,7 @@ export function useSaveForm<TValues extends FieldValues, TParsed extends FieldVa
         const result = await action(toInput(values));
         if (result.ok) {
           form.reset(values);
-          toast.success(t("saved"));
+          toast.success(successMessage ?? t("saved"));
           onSaved?.(result.data);
           router.refresh();
           return;

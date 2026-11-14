@@ -4,6 +4,7 @@ import { getTranslations } from "next-intl/server";
 import { BrandIcon } from "@/components/icons/brand-icon";
 import { DecorBlob } from "@/components/site/decor-blob";
 import { Button } from "@/components/ui/button";
+import { getQuotaRules } from "@/features/quota/queries";
 import { getContactSettings } from "@/features/settings/queries";
 import type { Region } from "@/features/regions/schema";
 import { Link } from "@/i18n/navigation";
@@ -17,7 +18,7 @@ type FinderEmptyStateProps =
  * partnership opportunity, and both cases offer a wider search and a human to ask.
  */
 export async function FinderEmptyState(props: FinderEmptyStateProps) {
-  const t = await getTranslations("Finder.empty");
+  const [t, rules] = await Promise.all([getTranslations("Finder.empty"), getQuotaRules()]);
   const tWhatsApp = await getTranslations("WhatsApp");
   const contact = await getContactSettings();
   const isRegion = props.kind === "region";
@@ -35,7 +36,7 @@ export async function FinderEmptyState(props: FinderEmptyStateProps) {
           : t("queryTitle", { query: props.query })}
       </h2>
       <p className="max-w-xl text-body text-muted-foreground">
-        {isRegion ? t("regionText") : t("queryText")}
+        {isRegion ? t("regionText", { max: rules.unitsPerVillage }) : t("queryText")}
       </p>
 
       <div className="flex w-full flex-col justify-center gap-3 sm:w-auto sm:flex-row">

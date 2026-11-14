@@ -4,6 +4,10 @@ import { and, eq, inArray, isNull, ne, sql } from "drizzle-orm";
 
 import { db } from "@/db/client";
 import { programLevels, unitLevels, units } from "@/db/schema";
+import {
+  convertLeadInTransaction,
+  releaseLeadSlotInTransaction,
+} from "@/features/partners/admin-service";
 import type { QuotaRules } from "@/features/quota/schema";
 import { quotaFromCounts, villageUsage } from "@/features/quota/service";
 import { ActionFailure } from "@/lib/action-result";
@@ -79,15 +83,24 @@ const columns = (form: UnitForm) => ({
   openedAt: form.openedAt || null,
 });
 
-/** Creates a unit with the next code of its province, its levels and an audit row. */
+/**
+ * Creates a unit with the next code of its province, its levels and an audit row. From a lead
+ * (Phase 4d): the lead's reserved slot is freed before the quota check (the unit takes it) and
+ * the lead is marked converted in the same transaction.
+ */
 export async function createUnit(
   form: UnitForm,
   rules: QuotaRules,
   actorId: string,
+  { leadId }: { leadId?: string } = {},
 ): Promise<{ id: string; code: string }> {
   return db.transaction(async (tx) => {
     await lock(tx, "units:code");
     await assertSlugFree(tx, form);
+    if (leadId) {
+      await lock(tx, `quota:${form.villageCode}`);
+      await releaseLeadSlotInTransaction(tx, leadId);
+    }
     await assertQuotaAllows(tx, form, rules);
     // Every code ever issued, deleted units included, so a code is never handed out twice.
     const codes = await tx.select({ code: units.code }).from(units);
@@ -106,8 +119,9 @@ export async function createUnit(
       action: "unit.create",
       entityType: "unit",
       entityId: unit.id,
-      changes: { after: { code, ...form } },
+      changes: { after: { code, ...form }, leadId: leadId ?? null },
     });
+    if (leadId) await convertLeadInTransaction(tx, { leadId, unitId: unit.id, actorId });
     return { id: unit.id, code };
   });
 }

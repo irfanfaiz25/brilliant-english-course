@@ -102,4 +102,6 @@ export type UnitFormInput = z.input<typeof unitFormSchema>;
 export type UnitForm = z.output<typeof unitFormSchema>;
 
 export const unitUpdateSchema = unitFormSchema.and(z.object({ id: z.uuid() }));
+/** A new unit, optionally created from a lead in the pipeline (which it then converts). */
+export const unitCreateSchema = unitFormSchema.and(z.object({ leadId: z.uuid().optional() }));
 export const unitIdSchema = z.object({ id: z.uuid() });

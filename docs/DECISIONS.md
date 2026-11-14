@@ -279,4 +279,28 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
   reuse codes); letting admins override the quota (the reservation can simply be released first); a searchable
   combobox for 91k villages (heavier, worse on phones than native selects).
 - **Follow-up:** 4d links reservations to leads from the pipeline; unit photos (`unit_photos`) get an editor with the
-  media module (4e); copy that still says "2 unit per desa" in messages should read the setting.
+  media module (4e). Site copy that names the per-village limit reads it from the setting (done in 4d); FAQ
+  answers are content and are edited by staff.
+
+### ADR-030 — Partner leads pipeline in admin
+
+2026-11-14 · Accepted
+
+- **Decision:** Leads move through `new → contacted → qualified → onboarding → converted`, with `rejected` and `lost`
+  as closed exits; staff may move a lead to any stage (no enforced order). Status, assignee and an optional note are
+  saved together; every change writes an audit row and the detail page shows those rows plus notes as one history.
+  Entering `onboarding` reserves one slot in the lead's village (a `quota_reservations` row linked by `lead_id`, under
+  the same per-village advisory lock and full-village check as units); leaving it, or deleting the lead, releases the
+  slot. "Buat unit dari calon mitra ini" opens the unit form prefilled from the lead; saving it releases the lead's
+  slot before the quota check and marks the lead `converted` with its `unit_id`, in the same transaction. Leads are
+  soft-deleted. The CSV export follows the list's filters, is capped at `limits.leads.exportMax` rows, is written with
+  a BOM and CRLF for Excel, prefixes cells starting with `= + - @` (or tab/CR) with `'` against formula injection,
+  is served `no-store` from a route that answers 404 without `read` on leads, and is recorded in the audit log.
+- **Why:** A small team needs flexibility over a strict state machine, but the quota must stay honest: a partner who
+  is setting up must not lose the village to someone else, and the slot must turn into the unit without a gap where
+  another lead could take it. Lead data is personal data, so every export leaves a trace.
+- **Alternatives:** A strict transition graph (blocks fixing a wrong click); reserving on `qualified` (holds slots for
+  leads that often drop out); exporting through a Server Action (no streaming download, no `Content-Disposition`);
+  XLSX export (a dependency for what spreadsheets already open as CSV).
+- **Follow-up:** Phase 6 notifies the assignee and the applicant through the worker; the mitra portal (later phase)
+  sees only its own unit, never leads.

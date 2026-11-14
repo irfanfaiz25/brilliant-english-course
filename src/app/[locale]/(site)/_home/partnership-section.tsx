@@ -2,6 +2,8 @@ import { CheckIcon, HandshakeIcon, MapPinnedIcon } from "lucide-react";
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 
+import { getQuotaRules } from "@/features/quota/queries";
+
 import { CountUp } from "@/components/motion/count-up";
 import { Reveal } from "@/components/motion/reveal";
 import { DecorBlob } from "@/components/site/decor-blob";
@@ -17,7 +19,7 @@ import { Link } from "@/i18n/navigation";
  * (not a full-width band, so the page background stays continuous).
  */
 export async function PartnershipSection({ activeUnits }: { activeUnits: number }) {
-  const t = await getTranslations("Home.partnership");
+  const [t, rules] = await Promise.all([getTranslations("Home.partnership"), getQuotaRules()]);
   const benefits = [t("benefit1"), t("benefit2"), t("benefit3")];
 
   return (
@@ -60,7 +62,7 @@ export async function PartnershipSection({ activeUnits }: { activeUnits: number 
               </ul>
               <p className="inline-flex w-fit items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-body-sm text-inverse-muted">
                 <MapPinnedIcon aria-hidden className="size-4 shrink-0 text-sunny-300" />
-                {t("quotaNote")}
+                {t("quotaNote", { max: rules.unitsPerVillage })}
               </p>
               <div className="flex flex-col gap-3 sm:flex-row">
                 <Button asChild variant="partner" size="lg" pop>

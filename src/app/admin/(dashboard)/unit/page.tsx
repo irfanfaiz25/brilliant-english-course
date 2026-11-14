@@ -5,6 +5,8 @@ import Link from "next/link";
 import { Suspense } from "react";
 
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
+import { firstParam, pageParam } from "@/components/admin/list-href";
+import { ListPagination } from "@/components/admin/list-pagination";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { adminLocale, adminRoutes } from "@/config/admin-routes";
@@ -13,9 +15,8 @@ import { unitStatuses, type UnitStatus } from "@/features/units/schema";
 import { requirePermission } from "@/features/users/session";
 import { can } from "@/lib/permissions";
 
-import { UnitFilters } from "./_sections/unit-filters";
+import { UnitFilters, unitListHref } from "./_sections/unit-filters";
 import { UnitList } from "./_sections/unit-list";
-import { UnitPagination } from "./_sections/unit-pagination";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations({ locale: adminLocale, namespace: "Admin" });
@@ -62,23 +63,23 @@ async function AddButton() {
   );
 }
 
-const first = (value: string | string[] | undefined) => (Array.isArray(value) ? value[0] : value);
-
 /** `?q=&status=&page=` → a valid filter; anything unexpected falls back to the defaults. */
 function readFilter(params: Awaited<SearchParams>) {
-  const status = first(params.status);
-  const page = Number.parseInt(first(params.page) ?? "1", 10);
+  const status = firstParam(params.status);
   return {
-    query: (first(params.q) ?? "").slice(0, 80),
+    query: (firstParam(params.q) ?? "").slice(0, 80),
     status: unitStatuses.includes(status as UnitStatus) ? (status as UnitStatus) : null,
-    page: Number.isFinite(page) && page > 0 ? page : 1,
+    page: pageParam(params.page),
   };
 }
 
 async function Units({ searchParams }: { searchParams: SearchParams }) {
   const user = await requirePermission("read", "units", adminRoutes.units);
   const filter = readFilter(await searchParams);
-  const list = await getAdminUnits(user, filter);
+  const [t, list] = await Promise.all([
+    getTranslations({ locale: adminLocale, namespace: "AdminUnits" }),
+    getAdminUnits(user, filter),
+  ]);
 
   return (
     <section className="flex flex-col gap-5 rounded-2xl surface-glass-panel p-4 sm:p-6">
@@ -89,7 +90,12 @@ async function Units({ searchParams }: { searchParams: SearchParams }) {
         canUpdate={can(user, "update", "units")}
         canDelete={can(user, "delete", "units")}
       />
-      <UnitPagination filter={filter} pageCount={list.pageCount} />
+      <ListPagination
+        page={filter.page}
+        pageCount={list.pageCount}
+        hrefFor={(page) => unitListHref({ ...filter, page })}
+        label={t("pagination.label")}
+      />
     </section>
   );
 }

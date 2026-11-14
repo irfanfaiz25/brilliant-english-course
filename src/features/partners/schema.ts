@@ -3,6 +3,7 @@ import { z } from "zod";
 import { leadStatuses, partnerBackgrounds, partnerSpaceOptions } from "@/config/enums";
 import { limits } from "@/config/limits";
 import { regionCodeSchema } from "@/features/regions/schema";
+import { textField } from "@/lib/form-schemas";
 import { normalizeWhatsAppNumber } from "@/lib/whatsapp";
 
 /** Pipeline stages of a lead in admin (Phase 4d). */
@@ -96,3 +97,38 @@ export const partnershipSettingSchema = z.object({
 
 export type PartnershipPackage = z.infer<typeof partnershipPackageSchema>;
 export type PartnershipSetting = z.infer<typeof partnershipSettingSchema>;
+
+/*
+ * Lead pipeline in admin (Phase 4d). Messages are form codes (`lib/form-schemas`).
+ */
+
+/** Stages that still need work; the others close the lead. */
+export const openLeadStatuses = ["new", "contacted", "qualified", "onboarding"] as const;
+export const closedLeadStatuses = ["converted", "rejected", "lost"] as const;
+
+export const isOpenLeadStatus = (status: LeadStatus) =>
+  (openLeadStatuses as readonly LeadStatus[]).includes(status);
+
+/**
+ * The "Kelola" panel: status and assignee, saved together with an optional note that explains
+ * the change. `onboarding` holds a village quota slot for the lead (ADR-030).
+ */
+export const leadUpdateSchema = z.object({
+  id: z.uuid(),
+  status: z.enum(leadStatuses),
+  /** "" = nobody. */
+  assignedToId: z.union([z.literal(""), z.uuid()]),
+  note: z.string().trim().max(limits.leads.noteMax, `tooLong:${limits.leads.noteMax}`),
+});
+
+export const leadNoteSchema = z.object({
+  id: z.uuid(),
+  body: textField(2, limits.leads.noteMax),
+});
+
+export const leadIdSchema = z.object({ id: z.uuid() });
+
+export type LeadUpdateInput = z.input<typeof leadUpdateSchema>;
+export type LeadUpdate = z.output<typeof leadUpdateSchema>;
+export type LeadNoteInput = z.input<typeof leadNoteSchema>;
+export type LeadNote = z.output<typeof leadNoteSchema>;

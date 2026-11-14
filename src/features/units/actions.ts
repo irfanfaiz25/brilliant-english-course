@@ -5,7 +5,7 @@ import { getQuotaRules } from "@/features/quota/queries";
 import { guardedAction } from "@/features/users/guarded-action";
 
 import { createUnit, deleteUnit, updateUnit } from "./admin-service";
-import { unitFormSchema, unitIdSchema, unitUpdateSchema } from "./schema";
+import { unitCreateSchema, unitIdSchema, unitUpdateSchema } from "./schema";
 
 /* Unit pages, the finder, the directory and village quota all read units. */
 const tags = [cacheTags.units, cacheTags.quota];
@@ -14,11 +14,12 @@ const tags = [cacheTags.units, cacheTags.quota];
 export async function createUnitAction(input: unknown) {
   return guardedAction({
     label: "units",
-    schema: unitFormSchema,
+    schema: unitCreateSchema,
     input,
     permission: ["create", "units"],
     tags,
-    run: async (form, user) => createUnit(form, await getQuotaRules(), user.id),
+    run: async ({ leadId, ...form }, user) =>
+      createUnit(form, await getQuotaRules(), user.id, { leadId }),
   });
 }
 
