@@ -84,14 +84,8 @@ export const adminNavigation: readonly AdminNavGroup[] = [
     key: "system",
     items: [
       { key: "users", href: "/admin/pengguna", icon: "users", resource: "users", phase: "4g" },
-      {
-        key: "settings",
-        href: "/admin/pengaturan",
-        icon: "settings",
-        resource: "settings",
-        phase: "4a",
-      },
-      { key: "seo", href: "/admin/seo", icon: "seo", resource: "seo", phase: "4a" },
+      { key: "settings", href: adminRoutes.settings, icon: "settings", resource: "settings" },
+      { key: "seo", href: adminRoutes.seo, icon: "seo", resource: "seo" },
     ],
   },
 ];

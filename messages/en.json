@@ -902,5 +902,139 @@
       "body": "This page doesn't exist or isn't available to your account.",
       "back": "Back to Overview"
     }
+  },
+  "AdminForms": {
+    "save": "Save changes",
+    "reset": "Discard changes",
+    "saved": "Changes saved and live on the site.",
+    "unsaved": "You have unsaved changes.",
+    "lastSaved": "Last changed {date} by {name}",
+    "lastSavedUnknown": "Last changed {date}",
+    "neverSaved": "Never changed: the site uses the default values.",
+    "readOnly": "You can only view this section.",
+    "add": "Add",
+    "remove": "Remove",
+    "characters": "{count}/{max} characters",
+    "errors": {
+      "invalid": "Check the highlighted fields.",
+      "forbidden": "Your account is not allowed to change this section.",
+      "unknown": "The changes could not be saved. Please try again shortly.",
+      "whatsappInvalid": "Enter an Indonesian mobile number, e.g. 0812-3456-7890.",
+      "emailInvalid": "This email address is not valid.",
+      "addressRequired": "The address is required (at least 5 characters).",
+      "addressTooLong": "The address can be at most {max} characters.",
+      "timeInvalid": "Enter the time as HH:MM.",
+      "closesBeforeOpens": "Closing time must be after opening time.",
+      "daysRequired": "Pick at least one day.",
+      "daysOverlap": "Each day can appear in only one office-hours row.",
+      "officeHoursRequired": "Add at least one office-hours row.",
+      "urlInvalid": "Enter a full link starting with https://.",
+      "investmentInvalid": "Enter an amount in rupiah without separators, or leave it empty.",
+      "inclusionRequired": "Fill in this item (at least 3 characters) or remove the row.",
+      "inclusionTooLong": "An item can be at most {max} characters.",
+      "inclusionsTooFew": "Write at least {min} items.",
+      "inclusionsTooMany": "At most {max} items.",
+      "titleTooLong": "The title can be at most {max} characters.",
+      "descriptionTooShort": "Write at least {min} characters so search results stay clear.",
+      "descriptionTooLong": "The description can be at most {max} characters."
+    }
+  },
+  "AdminSettings": {
+    "description": "Head-office contact details and the partnership package shown on the site.",
+    "contact": {
+      "title": "Head-office contact",
+      "description": "Used in the header, footer, Contact page and every general WhatsApp button.",
+      "whatsapp": "WhatsApp number",
+      "whatsappHint": "The number that receives chats from the site's WhatsApp buttons.",
+      "email": "Email",
+      "address": "Address",
+      "hoursTitle": "Office hours",
+      "hoursDescription": "Shown on the Contact page. One row for days with the same hours.",
+      "days": "Days",
+      "opens": "Opens",
+      "closes": "Closes",
+      "addHours": "Add hours row",
+      "removeHours": "Remove hours row {index}",
+      "socialTitle": "Social media",
+      "socialDescription": "Profile links in the footer and on the Contact page."
+    },
+    "weekdays": {
+      "1": "Mon",
+      "2": "Tue",
+      "3": "Wed",
+      "4": "Thu",
+      "5": "Fri",
+      "6": "Sat",
+      "7": "Sun"
+    },
+    "weekdaysLong": {
+      "1": "Monday",
+      "2": "Tuesday",
+      "3": "Wednesday",
+      "4": "Thursday",
+      "5": "Friday",
+      "6": "Saturday",
+      "7": "Sunday"
+    },
+    "partnership": {
+      "title": "Partnership package",
+      "description": "Starting investment and package contents shown on the Partnership page.",
+      "investment": "Starting investment (IDR)",
+      "investmentHint": "Leave empty when the investment is explained during the consultation.",
+      "inclusions": "What partners get",
+      "inclusionsHint": "One item per row, {min}–{max} items.",
+      "addInclusion": "Add item",
+      "removeInclusion": "Remove item {index}",
+      "inclusionLabel": "Item {index}"
+    },
+    "locales": {
+      "id": "Bahasa Indonesia",
+      "en": "English"
+    }
+  },
+  "AdminSeo": {
+    "description": "Titles and descriptions shown on Google and when links are shared.",
+    "defaults": {
+      "title": "Default site description",
+      "description": "Used by pages without a description of their own, such as Home.",
+      "field": "Description ({locale})"
+    },
+    "pages": {
+      "title": "Page metadata",
+      "description": "Leave a field empty to use the page's own text. Program, article and unit pages are managed in their modules.",
+      "columns": {
+        "page": "Page",
+        "status": "Status",
+        "action": "Action"
+      },
+      "statusDefault": "Default",
+      "statusCustom": "Customised",
+      "statusNoindex": "Not indexed",
+      "edit": "Edit",
+      "editLabel": "Edit SEO of the {page} page",
+      "names": {
+        "home": "Home",
+        "program": "Programs",
+        "finder": "Find a Unit",
+        "units": "Unit Directory",
+        "partnership": "Partnership",
+        "blog": "Blog",
+        "contact": "Contact"
+      }
+    },
+    "editor": {
+      "title": "SEO · {page}",
+      "description": "Empty fields use the default text shown as a placeholder.",
+      "pageTitle": "Title",
+      "pageTitleHint": "The site name is added after the title automatically.",
+      "pageTitleHintAbsolute": "This title is shown as is, without the site name.",
+      "pageDescription": "Description",
+      "pageDescriptionHint": "Leave empty to use the page's own description or the default site description.",
+      "preview": "Google preview",
+      "noindex": "Hide this page from search engines (noindex)",
+      "noindexHint": "The page still opens, but does not appear on Google. Only super admins can change this.",
+      "noindexLocked": "Only super admins can change this setting.",
+      "cancel": "Cancel"
+    }
   }
 }
