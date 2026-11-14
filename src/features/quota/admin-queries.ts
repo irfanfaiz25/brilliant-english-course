@@ -9,6 +9,7 @@ import { shortRegionName } from "@/features/regions/service";
 import type { SessionUser } from "@/features/users/schema";
 import { assertCan } from "@/lib/permissions";
 
+import { getQuotaRules } from "./queries";
 import type { QuotaRules, VillageQuota } from "./schema";
 import { activeUnit, openReservation, quotaFromCounts, villageUsage } from "./service";
 
@@ -179,4 +180,10 @@ export async function getVillageDetail(
     units: unitRows,
     reservations: reservationRows.map((row) => ({ ...row, ...shortPlace(row) })),
   };
+}
+
+/** Villages that are almost full under the current rules (still open, few slots left). */
+export async function countAlmostFullVillages(actor: SessionUser): Promise<number> {
+  const villages = await getOccupiedVillages(actor, await getQuotaRules());
+  return villages.filter((village) => village.status === "almostFull").length;
 }

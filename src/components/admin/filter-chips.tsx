@@ -33,10 +33,13 @@ export function FilterChips({
   label,
   chips,
   wrap = false,
+  scroll = true,
 }: {
   label: string;
   chips: readonly FilterChip[];
   wrap?: boolean;
+  /** `false` keeps the scroll position (a filter of one section further down the page). */
+  scroll?: boolean;
 }) {
   return (
     <nav aria-label={label} className="-mx-1 overflow-x-auto px-1 pb-1">
@@ -45,6 +48,7 @@ export function FilterChips({
           <li key={chip.key}>
             <Link
               href={chip.href}
+              scroll={scroll}
               aria-current={chip.active ? "page" : undefined}
               className={chipClass(chip.active)}
             >

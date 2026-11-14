@@ -35,6 +35,15 @@ export const limits = {
     /** Rows per page of the admin user list. */
     pageSize: 20,
   },
+  /** Ringkasan (Phase 4h). */
+  overview: {
+    /** A new lead nobody contacted for this many days shows under "Perlu tindakan". */
+    staleLeadDays: 2,
+    /** Regencies in "Peluang wilayah", most leads first. */
+    regions: 5,
+    /** Entries of "Aktivitas terbaru". */
+    activity: 8,
+  },
   settings: {
     addressMax: 200,
     /** Rows in the office-hours editor (one per group of days). */
