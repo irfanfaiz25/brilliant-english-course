@@ -147,7 +147,7 @@
       "benefit1": "Kurikulum & modul siap pakai",
       "benefit2": "Pelatihan pengajar dan pendampingan",
       "benefit3": "Dukungan materi promosi dan sistem",
-      "quotaNote": "Maks. 2 unit per desa — amankan wilayahmu lebih dulu.",
+      "quotaNote": "Maks. {max} unit per desa — amankan wilayahmu lebih dulu.",
       "primaryCta": "Gabung Mitra",
       "secondaryCta": "Pelajari Kemitraan",
       "joinedLabel": "unit sudah bergabung"
@@ -316,7 +316,7 @@
     },
     "empty": {
       "regionTitle": "Belum ada unit BEC di {area}",
-      "regionText": "Kuota kemitraan di wilayah ini masih terbuka (maks. 2 unit per desa). Jadilah mitra pertama, atau cari unit di wilayah sekitar.",
+      "regionText": "Kuota kemitraan di wilayah ini masih terbuka (maks. {max} unit per desa). Jadilah mitra pertama, atau cari unit di wilayah sekitar.",
       "partnerCta": "Jadi mitra pertama di sini",
       "widen": "Cari di {area}",
       "showAll": "Lihat semua unit",
@@ -332,7 +332,7 @@
   },
   "Partnership": {
     "metaTitle": "Kemitraan — Buka Unit Kursus Bahasa Inggris Anak",
-    "metaDescription": "Buka unit kursus bahasa Inggris anak BEC di rumahmu. Kurikulum, pelatihan, dan dukungan disiapkan. Cek kuota desamu (maks. 2 unit per desa) dan daftar online.",
+    "metaDescription": "Buka unit kursus bahasa Inggris anak BEC di rumahmu. Kurikulum, pelatihan, dan dukungan disiapkan. Cek kuota desamu (maks. {max} unit per desa) dan daftar online.",
     "hero": {
       "overline": "Kemitraan BEC",
       "title": "Buka Unit Kursus Bahasa Inggris Anak di Rumahmu",
@@ -381,7 +381,7 @@
       },
       "territory": {
         "title": "Wilayah terlindungi",
-        "text": "Maksimal 2 unit per desa, supaya setiap unit punya cukup calon siswa."
+        "text": "Maksimal {max} unit per desa, supaya setiap unit punya cukup calon siswa."
       }
     },
     "fit": {
@@ -739,7 +739,7 @@
       "finderText": "Urutkan unit di {area} dari jarak terdekat dengan rumahmu.",
       "partner": {
         "title": "Desamu di {area} belum ada unit BEC?",
-        "text": "Setiap desa maksimal 2 unit. Cek kuota desamu dan jadilah mitra pertama di sana.",
+        "text": "Setiap desa maksimal {max} unit. Cek kuota desamu dan jadilah mitra pertama di sana.",
         "cta": "Cek kuota desamu"
       },
       "unitsOverline": "Daftar unit",

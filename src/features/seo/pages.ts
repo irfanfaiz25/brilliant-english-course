@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 
 import { siteConfig } from "@/config/site";
+import { getQuotaRules } from "@/features/quota/queries";
 import type { Locale, StaticPathname } from "@/i18n/routing";
 import { localizedAlternates } from "@/lib/seo/alternates";
 
@@ -62,7 +63,10 @@ export const seoPages: Record<SeoPageKey, SeoPage> = {
     href: "/kemitraan",
     derive: async (locale) => {
       const t = await getTranslations({ locale, namespace: "Partnership" });
-      return fromMessages(t("metaTitle"), t("metaDescription"));
+      return fromMessages(
+        t("metaTitle"),
+        t("metaDescription", { max: (await getQuotaRules()).unitsPerVillage }),
+      );
     },
   },
   blog: {

@@ -1,6 +1,8 @@
 import { GraduationCapIcon, LocateFixedIcon, MapPinIcon, StoreIcon } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 
+import { getQuotaRules } from "@/features/quota/queries";
+
 import { Reveal } from "@/components/motion/reveal";
 import { HeroChip, PageHero } from "@/components/site/page-hero";
 import { PartnerBanner } from "@/components/site/partner-banner";
@@ -28,6 +30,7 @@ type AreaViewProps =
 export async function AreaView(props: AreaViewProps) {
   const t = await getTranslations("UnitPages.area");
   const tNav = await getTranslations("Nav");
+  const rules = await getQuotaRules();
   const locale = (await getLocale()) as Locale;
   const { province } = props;
   const area = props.kind === "regency" ? props.regency : province;
@@ -133,7 +136,7 @@ export async function AreaView(props: AreaViewProps) {
 
       <PartnerBanner
         title={t("partner.title", { area: area.name })}
-        text={t("partner.text")}
+        text={t("partner.text", { max: rules.unitsPerVillage })}
         cta={t("partner.cta")}
         href={{ pathname: "/kemitraan", query: { wilayah: area.code }, hash: "kuota" }}
       />

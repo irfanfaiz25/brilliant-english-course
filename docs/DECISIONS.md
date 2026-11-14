@@ -279,7 +279,8 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
   reuse codes); letting admins override the quota (the reservation can simply be released first); a searchable
   combobox for 91k villages (heavier, worse on phones than native selects).
 - **Follow-up:** 4d links reservations to leads from the pipeline; unit photos (`unit_photos`) get an editor with the
-  media module (4e); copy that still says "2 unit per desa" in messages should read the setting.
+  media module (4e). Site copy that names the per-village limit reads it from the setting (done in 4d); FAQ
+  answers are content and are edited by staff.
 
 ### ADR-030 — Partner leads pipeline in admin
 

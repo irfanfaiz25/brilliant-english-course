@@ -147,7 +147,7 @@
       "benefit1": "Ready-to-use curriculum & modules",
       "benefit2": "Teacher training and mentoring",
       "benefit3": "Marketing materials and systems",
-      "quotaNote": "Max. 2 units per village — secure your area first.",
+      "quotaNote": "Max. {max, plural, one {# unit} other {# units}} per village — secure your area first.",
       "primaryCta": "Become a Partner",
       "secondaryCta": "Explore the Partnership",
       "joinedLabel": "units have joined"
@@ -316,7 +316,7 @@
     },
     "empty": {
       "regionTitle": "No BEC unit in {area} yet",
-      "regionText": "Partnership slots here are still open (max. 2 units per village). Be the first partner, or look for units in the wider area.",
+      "regionText": "Partnership slots here are still open (max. {max, plural, one {# unit} other {# units}} per village). Be the first partner, or look for units in the wider area.",
       "partnerCta": "Be the first partner here",
       "widen": "Search in {area}",
       "showAll": "See all units",
@@ -332,7 +332,7 @@
   },
   "Partnership": {
     "metaTitle": "Partnership — Open a Kids' English Course Unit",
-    "metaDescription": "Open a BEC kids' English course unit at home. Curriculum, training and support are ready. Check your village quota (max. 2 units per village) and apply online.",
+    "metaDescription": "Open a BEC kids' English course unit at home. Curriculum, training and support are ready. Check your village quota (max. {max, plural, one {# unit} other {# units}} per village) and apply online.",
     "hero": {
       "overline": "BEC Partnership",
       "title": "Open a Kids' English Course Unit at Home",
@@ -381,7 +381,7 @@
       },
       "territory": {
         "title": "Protected area",
-        "text": "At most 2 units per village, so every unit has enough prospective students."
+        "text": "At most {max, plural, one {# unit} other {# units}} per village, so every unit has enough prospective students."
       }
     },
     "fit": {
@@ -739,7 +739,7 @@
       "finderText": "Sort the units in {area} by distance from your home.",
       "partner": {
         "title": "No BEC unit in your village in {area} yet?",
-        "text": "Each village has at most 2 units. Check your village quota and become its first partner.",
+        "text": "Each village has at most {max, plural, one {# unit} other {# units}}. Check your village quota and become its first partner.",
         "cta": "Check your village quota"
       },
       "unitsOverline": "Unit list",
