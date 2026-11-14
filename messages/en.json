@@ -1764,5 +1764,112 @@
         }
       }
     }
+  },
+  "AdminTestimonials": {
+    "description": "Stories from parents and partners shown on Home and the Partnership page.",
+    "orderHint": "Shown on {placement}. The order here is the order on the site.",
+    "add": "Add testimonial",
+    "empty": "No {group} testimonials yet. Add the first one so it shows on {placement}.",
+    "audiences": {
+      "parent": "Parents",
+      "partner": "Partners"
+    },
+    "placements": {
+      "parent": "Home",
+      "partner": "the Partnership page"
+    },
+    "filters": {
+      "label": "Testimonial group"
+    },
+    "rating": "Rated {rating} out of 5",
+    "editLabel": "Edit testimonial by {name}",
+    "showLabel": "Show testimonial by {name} on the site",
+    "moveUp": "Move testimonial by {name} up",
+    "moveDown": "Move testimonial by {name} down",
+    "deleteLabel": "Delete testimonial by {name}",
+    "deleteTitle": "Delete testimonial by {name}?",
+    "deleteBody": "This testimonial disappears from the site and cannot be restored.",
+    "deleteConfirm": "Delete testimonial",
+    "deleted": "Testimonial deleted.",
+    "createTitle": "Add testimonial",
+    "createDescription": "A new testimonial goes to the end of its group.",
+    "editTitle": "Testimonial by {name}",
+    "editDescription": "Once saved, changes show on the site right away.",
+    "sections": {
+      "about": {
+        "title": "Who said it",
+        "description": "Who is speaking, which group it belongs to and the rating they gave."
+      },
+      "content": {
+        "title": "Content",
+        "description": "Quote and context in both languages. A tab with a red dot has fields to fix."
+      }
+    },
+    "fields": {
+      "audience": "Shown for",
+      "audienceHint": "Parents show on Home, partners on the Partnership page. Changing the group moves it to the end of the list.",
+      "authorName": "Name",
+      "authorNameHint": "E.g. Ibu Sari. Use the name the person agreed to.",
+      "rating": "Rating",
+      "ratingOption": "{count} stars",
+      "quote": "Quote",
+      "quoteHint": "The person's own words, without quotation marks.",
+      "role": "Context",
+      "roleHint": "E.g. Parent of a Kindy student · Kab. Bogor.",
+      "isPublished": "Show this testimonial on the site",
+      "isPublishedHint": "Hidden testimonials are kept but do not appear on the site."
+    }
+  },
+  "AdminFaq": {
+    "description": "Frequently asked questions on Home, the Program page and the Partnership page.",
+    "orderHint": "Shown on {placement}. The order here is the order on the site.",
+    "add": "Add question",
+    "empty": "No questions for {group} yet. Add the first one so it shows on {placement}.",
+    "topics": {
+      "parents": "Parents",
+      "program": "Program",
+      "partners": "Partnership"
+    },
+    "placements": {
+      "parents": "Home",
+      "program": "the Program page",
+      "partners": "the Partnership page"
+    },
+    "filters": {
+      "label": "FAQ topic"
+    },
+    "editLabel": "Edit question: {name}",
+    "showLabel": "Show question on the site: {name}",
+    "moveUp": "Move question up: {name}",
+    "moveDown": "Move question down: {name}",
+    "deleteLabel": "Delete question: {name}",
+    "deleteTitle": "Delete this question?",
+    "deleteBody": "“{name}” disappears from the site and cannot be restored.",
+    "deleteConfirm": "Delete question",
+    "deleted": "Question deleted.",
+    "createTitle": "Add question",
+    "createDescription": "A new question goes to the end of its topic.",
+    "editTitle": "Edit question",
+    "editDescription": "Once saved, changes show on the site right away.",
+    "sections": {
+      "topic": {
+        "title": "Topic",
+        "description": "The page this question shows on."
+      },
+      "content": {
+        "title": "Question and answer",
+        "description": "In both languages. A tab with a red dot has fields to fix."
+      }
+    },
+    "fields": {
+      "topic": "Topic",
+      "topicHint": "Changing the topic moves it to the end of that topic's list.",
+      "question": "Question",
+      "questionHint": "Write it the way people ask it, ending with a question mark.",
+      "answer": "Answer",
+      "answerHint": "Plain text; line breaks show on the site. Google also reads this answer for FAQ results.",
+      "isPublished": "Show this question on the site",
+      "isPublishedHint": "Hidden questions are kept but do not appear on the site."
+    }
   }
 }

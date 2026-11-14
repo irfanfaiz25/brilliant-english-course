@@ -79,6 +79,21 @@ export const limits = {
     summaryMax: 300,
     audienceMax: 60,
   },
+  testimonials: {
+    /** Matches `testimonials.author_name` / `testimonial_translations.role` (varchar 120). */
+    authorMax: 120,
+    roleMax: 120,
+    quoteMin: 20,
+    /** Keeps cards of one row at a similar height. */
+    quoteMax: 400,
+  },
+  faq: {
+    /** Matches `faq_item_translations.question` (varchar 200). */
+    questionMin: 10,
+    questionMax: 200,
+    answerMin: 20,
+    answerMax: 1200,
+  },
   /** Alt text of a content image (localized, stored with the content). */
   imageAltMax: 200,
   media: {

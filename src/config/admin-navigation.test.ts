@@ -17,9 +17,10 @@ describe("admin navigation", () => {
   });
 
   it("lists placeholder modules by URL segment", () => {
-    expect(plannedAdminModules.get("testimoni")?.resource).toBe("testimonials");
+    expect(plannedAdminModules.get("pengguna")?.resource).toBe("users");
     // Built modules leave the placeholder list.
     expect(plannedAdminModules.has("blog")).toBe(false);
+    expect(plannedAdminModules.has("testimoni")).toBe(false);
     expect(plannedAdminModules.has("")).toBe(false);
   });
 

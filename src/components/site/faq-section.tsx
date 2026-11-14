@@ -70,7 +70,8 @@ export async function FaqSection({
             {items.map((item) => (
               <AccordionItem key={item.id} value={item.id}>
                 <AccordionTrigger>{item.question}</AccordionTrigger>
-                <AccordionContent>{item.answer}</AccordionContent>
+                {/* Plain-text answers keep the line breaks typed in admin. */}
+                <AccordionContent className="whitespace-pre-line">{item.answer}</AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>

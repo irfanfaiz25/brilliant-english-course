@@ -20,6 +20,10 @@ export const adminRoutes = {
   media: "/admin/media",
   blog: "/admin/blog",
   newPost: "/admin/blog/tulis",
+  testimonials: "/admin/testimoni",
+  newTestimonial: "/admin/testimoni/baru",
+  faq: "/admin/faq",
+  newFaqItem: "/admin/faq/baru",
 } as const;
 
 /** Admin pages reachable without a session. */
