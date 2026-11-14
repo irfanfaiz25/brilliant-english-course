@@ -258,3 +258,25 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
   fallback (half-translated pages and harder validation for little gain); soft delete for activities (no restore UI is
   planned, the audit row keeps what was removed).
 - **Follow-up:** 4e adds uploads to the media picker; blog posts may allow a missing English translation (ADR then).
+
+### ADR-029 — Units and regional quota in admin
+
+2026-11-14 · Accepted
+
+- **Decision:** Units get their code once, when created: `BEC-<ISO 3166-2:ID province letters>-<4 digits>`, one above
+  the highest code ever issued in that province (deleted units keep theirs), under an advisory lock. The slug is
+  suggested from the name and must be unique among live units of the same regency. Statuses: `onboarding` (not public,
+  no quota), `active` (public, takes a village slot), `inactive` (hidden, slot freed). Activating a unit in a village
+  whose active units plus open reservations reach the maximum is refused with a field error; quota checks lock per
+  village. Deleting a unit is a soft delete. The quota rules (`unitsPerVillage`, `almostFullAt`) became the `quota`
+  setting with `limits` as code defaults; Kemitraan and the quota checker read it. Reservations are created (slots,
+  optional end date at 23:59 WIB, note) and released; expired ones stop counting. The village is chosen with a
+  cascade of native selects that load children through a staff-only Server Action. Units are not translated, so
+  their preview is Indonesian; `UnitCard` was split into a pure `UnitCardView` and a server wrapper for it.
+- **Why:** Stable, readable codes for staff and partners; URLs that never collide; the quota stays honest without
+  manual bookkeeping; the admin can tune the rule without a deploy.
+- **Alternatives:** A global code sequence (loses the province hint); hard delete (breaks the audit trail and could
+  reuse codes); letting admins override the quota (the reservation can simply be released first); a searchable
+  combobox for 91k villages (heavier, worse on phones than native selects).
+- **Follow-up:** 4d links reservations to leads from the pipeline; unit photos (`unit_photos`) get an editor with the
+  media module (4e); copy that still says "2 unit per desa" in messages should read the setting.

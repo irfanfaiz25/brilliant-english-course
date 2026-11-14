@@ -150,6 +150,9 @@ Rules:
   on their fields, a toast, `router.refresh()`. Error codes are translated by `useFormErrorText()` (`AdminForms.errors`).
   Long content forms add `LocaleTabs` + `useLocaleTabs()`, `StringListField`, `MediaPicker`, a sticky `FormFooter` and
   `UnsavedChangesGuard`; list rows use `VisibilitySwitch`, `ActionIconButton` and `DeleteButton` (`row-actions.tsx`).
+  Data lists render a table from `md` and cards below; selects use `NativeSelect`, weekdays `WeekdayPicker`, and a
+  village is chosen with `RegionPicker` (`features/regions/components`, initial state from `getRegionPickerLevels()`).
+  Public cards an admin edits are pure views (`LevelCard`, `ActivityCard`, `UnitCardView`) so forms can preview them.
 - Public pages render inside `SiteShell` (`src/app/[locale]/(site)/layout.tsx`); page content starts below the header,
   so a page provides its sections, not another `<main>`. Navigation items live in `src/config/navigation.ts`.
 - WhatsApp links are always built with `buildWhatsAppUrl()` (`src/lib/whatsapp.ts`); message templates live in the
@@ -194,6 +197,9 @@ A change to the matrix must be mirrored in `permissions.test.ts`, which lists ev
 - Enum value lists (roles, statuses, categories, locales) are defined once in `src/config/enums.ts` and re-exported by the owning `features/<domain>/schema.ts`; `src/db/schema` imports that file relatively because drizzle-kit does not resolve the `@/` alias. Nothing else imports `src/config/enums.ts` directly.
 - Regions are reference data (ADR-023): `pnpm db:regions` upserts `src/db/seed/regions/regions.csv` (91,599 Kemendagri codes with official names); `pnpm db:regions:build` refreshes that file from the pinned upstream commit. Never edit regions in admin or by hand.
 - Settings are one JSON document per key in `settings`, validated by a Zod schema with code defaults in `features/settings` (no migration for a new setting).
+- Quota rules (units per village, "almost full" threshold) are the `quota` setting (`getQuotaRules()`); never read
+  `limits.unitsPerVillage` directly. A unit's DB writes live in `features/units/admin-service.ts` because
+  `units/service.ts` also runs in the browser.
 - Production storage is small (1–2 GB): no binary data in the DB, prune job/audit tables on a schedule.
 - Never run migrations or seeds against a production database from a local machine.
 
