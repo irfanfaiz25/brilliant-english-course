@@ -3,6 +3,14 @@ import { z } from "zod";
 import { userRoles } from "@/config/enums";
 import { limits } from "@/config/limits";
 import { textField } from "@/lib/form-schemas";
+import {
+  normalizeRoleGrants,
+  permissionActions,
+  resources,
+  type Grants,
+  type PermissionAction,
+  type Resource,
+} from "@/lib/permissions";
 
 export { userRoles };
 export type UserRole = (typeof userRoles)[number];
@@ -15,6 +23,8 @@ export type SessionUser = {
   role: UserRole;
   /** Unit a `mitra` account belongs to; `null` for staff. */
   unitId: string | null;
+  /** The role's effective grants (configured for admin/editor, ADR-036); `can()` reads them. */
+  grants?: Grants;
 };
 
 /*
@@ -129,3 +139,28 @@ export const changePasswordSchema = z
   })
   .and(newPasswordSchema);
 export type ChangePasswordInput = z.input<typeof changePasswordSchema>;
+
+/*
+ * Configurable permissions (ADR-036): what `admin` and `editor` may do, per resource. Unknown
+ * resources or actions are refused; the rest is normalized (`normalizeRoleGrants`), so only
+ * grantable actions are stored, "read" comes with any other action, and fixed resources keep
+ * their defaults.
+ */
+
+const roleGrantsSchema = z.partialRecord(
+  z.enum(resources),
+  z.array(z.enum(permissionActions)).max(permissionActions.length),
+);
+
+export const rolePermissionsSchema = z
+  .object({ admin: roleGrantsSchema, editor: roleGrantsSchema })
+  .transform((value) => ({
+    admin: normalizeRoleGrants("admin", value.admin),
+    editor: normalizeRoleGrants("editor", value.editor),
+  }));
+
+/** Form values: one list of ticked actions per resource and role. */
+export type RolePermissionsInput = Record<
+  "admin" | "editor",
+  Partial<Record<Resource, PermissionAction[]>>
+>;

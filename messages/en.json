@@ -1955,7 +1955,8 @@
         "seoIndexing": "SEO: hide from Google",
         "users": "Users",
         "auditLog": "Audit log"
-      }
+      },
+      "manage": "Manage access"
     },
     "createTitle": "Add user",
     "createDescription": "A new account has no password yet. After saving, copy the activation link and send it to the person.",
@@ -2023,6 +2024,21 @@
       "copied": "Link copied.",
       "copyFailed": "Could not copy automatically. Select the link and copy it by hand.",
       "done": "Done"
+    },
+    "permissions": {
+      "title": "Access",
+      "description": "Set what the Admin and Editor roles may do. Changes apply at once to every account with that role.",
+      "rolesLabel": "Role to set",
+      "superAdminNote": "Super admins always have full access, so someone can always manage users and access.",
+      "mitraNote": "Partners can only see and edit their own unit until the partner portal exists.",
+      "fixedNote": "Every staff member can always see the Overview, as it also serves shared tools such as region search.",
+      "usersNote": "Can only be given View. Managing accounts stays with super admins.",
+      "unavailable": "Not available in this module",
+      "checkbox": "{action} {module} for {role}",
+      "changed": "Differs from default",
+      "reset": "Reset to default",
+      "resetHint": "Refills {role}'s boxes with the default rules. Save to apply.",
+      "saved": "Access saved and applied."
     }
   },
   "AdminAccount": {

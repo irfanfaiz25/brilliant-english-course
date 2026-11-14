@@ -1,8 +1,17 @@
 "use server";
 
+import { cacheTags } from "@/config/cache-tags";
+import { saveSetting } from "@/features/settings/service";
+
 import { createUser, createUserAccessLink, setUserActive, updateUser } from "./admin-service";
 import { guardedAction } from "./guarded-action";
-import { userActiveSchema, userFormSchema, userIdSchema, userUpdateSchema } from "./schema";
+import {
+  rolePermissionsSchema,
+  userActiveSchema,
+  userFormSchema,
+  userIdSchema,
+  userUpdateSchema,
+} from "./schema";
 
 /*
  * Users module (Phase 4g): super admins only, through the admin pipeline. Accounts are not cached
@@ -54,5 +63,21 @@ export async function createUserAccessLinkAction(input: unknown) {
     permission: ["update", "users"],
     tags,
     run: ({ id }, user) => createUserAccessLink(id, user.id),
+  });
+}
+
+/**
+ * Saves what `admin` and `editor` may do (ADR-036). The schema normalizes the matrix (grantable
+ * actions only, "read" with any other); the change applies from the next request, as session
+ * grants are read through the `settings` cache tag expired here.
+ */
+export async function updateRolePermissionsAction(input: unknown) {
+  return guardedAction({
+    label: "users",
+    schema: rolePermissionsSchema,
+    input,
+    permission: ["update", "users"],
+    tags: [cacheTags.settings],
+    run: (grants, user) => saveSetting("rolePermissions", grants, user.id),
   });
 }

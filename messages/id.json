@@ -1955,7 +1955,8 @@
         "seoIndexing": "SEO: sembunyikan dari Google",
         "users": "Pengguna",
         "auditLog": "Log audit"
-      }
+      },
+      "manage": "Atur hak akses"
     },
     "createTitle": "Tambah pengguna",
     "createDescription": "Akun baru belum punya kata sandi. Setelah disimpan, salin tautan aktivasi dan kirim ke orangnya.",
@@ -2023,6 +2024,21 @@
       "copied": "Tautan disalin.",
       "copyFailed": "Tidak bisa menyalin otomatis. Pilih tautan lalu salin manual.",
       "done": "Selesai"
+    },
+    "permissions": {
+      "title": "Hak akses",
+      "description": "Atur apa yang boleh dilakukan peran Admin dan Editor. Perubahan langsung berlaku untuk semua akun dengan peran itu.",
+      "rolesLabel": "Peran yang diatur",
+      "superAdminNote": "Super admin selalu punya akses penuh, supaya selalu ada yang bisa mengelola pengguna dan hak akses.",
+      "mitraNote": "Mitra hanya bisa melihat dan mengubah unit miliknya sampai portal mitra dibuat.",
+      "fixedNote": "Ringkasan selalu bisa dilihat semua staf karena juga dipakai alat bersama, misalnya pencarian wilayah.",
+      "usersNote": "Hanya bisa diberi Lihat. Mengelola akun tetap tugas super admin.",
+      "unavailable": "Tidak tersedia di modul ini",
+      "checkbox": "{action} {module} untuk {role}",
+      "changed": "Berbeda dari bawaan",
+      "reset": "Kembalikan ke bawaan",
+      "resetHint": "Mengisi ulang centang {role} dengan aturan bawaan. Simpan untuk menerapkannya.",
+      "saved": "Hak akses tersimpan dan langsung berlaku."
     }
   },
   "AdminAccount": {

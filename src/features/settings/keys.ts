@@ -3,6 +3,8 @@ export const settingKeys = {
   contact: "contact",
   partnership: "partnership",
   quota: "quota",
+  /** What `admin` and `editor` may do (Pengguna › Hak akses, ADR-036). */
+  rolePermissions: "rolePermissions",
   seo: "seo",
 } as const;
 

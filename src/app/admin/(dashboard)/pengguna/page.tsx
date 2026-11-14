@@ -1,4 +1,4 @@
-import { UserPlusIcon } from "lucide-react";
+import { ShieldCheckIcon, UserPlusIcon } from "lucide-react";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
@@ -10,8 +10,10 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { adminLocale, adminRoutes } from "@/config/admin-routes";
 import { getAdminUsers } from "@/features/users/admin-queries";
+import { getRoleGrants } from "@/features/users/role-permissions";
+import { userRoles, type UserRole } from "@/features/users/schema";
 import { requirePermission } from "@/features/users/session";
-import { can } from "@/lib/permissions";
+import { can, effectiveGrants, type Grants } from "@/lib/permissions";
 
 import { RoleMatrix } from "./_sections/role-matrix";
 import { readUserFilter, UserFilters, userListHref } from "./_sections/user-filters";
@@ -107,6 +109,27 @@ async function Users({
 }
 
 async function Matrix() {
-  await requirePermission("read", "users", adminRoutes.users);
-  return <RoleMatrix />;
+  const user = await requirePermission("read", "users", adminRoutes.users);
+  const [t, configured] = await Promise.all([
+    getTranslations({ locale: adminLocale, namespace: "AdminUsers.matrix" }),
+    getRoleGrants(),
+  ]);
+  const grants = Object.fromEntries(
+    userRoles.map((role) => [role, effectiveGrants(role, configured)]),
+  ) as Record<UserRole, Grants>;
+  return (
+    <RoleMatrix
+      grants={grants}
+      actions={
+        can(user, "update", "users") && (
+          <Button asChild variant="secondary" size="sm">
+            <Link href={adminRoutes.permissions}>
+              <ShieldCheckIcon aria-hidden />
+              {t("manage")}
+            </Link>
+          </Button>
+        )
+      }
+    />
+  );
 }

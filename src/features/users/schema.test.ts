@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { changePasswordSchema, userFormSchema } from "./schema";
+import { changePasswordSchema, rolePermissionsSchema, userFormSchema } from "./schema";
 
 const issues = (
   schema: {
@@ -70,5 +70,28 @@ describe("changePasswordSchema", () => {
     expect(
       issues(changePasswordSchema, { ...valid, password: "short", confirmPassword: "short" }),
     ).toEqual(["password=passwordTooShort"]);
+  });
+});
+
+describe("rolePermissionsSchema", () => {
+  it("normalizes the matrix it stores", () => {
+    const parsed = rolePermissionsSchema.parse({
+      admin: { users: ["read", "update"], blog: ["publish"] },
+      editor: {},
+    });
+    expect(parsed.admin.users).toEqual(["read"]);
+    expect(parsed.admin.blog).toEqual(["read", "publish"]);
+    // Fixed resources come back even when left out.
+    expect(parsed.editor.dashboard).toEqual(["read"]);
+  });
+
+  it("refuses unknown modules, actions and roles", () => {
+    expect(
+      rolePermissionsSchema.safeParse({ admin: { reports: ["read"] }, editor: {} }).success,
+    ).toBe(false);
+    expect(
+      rolePermissionsSchema.safeParse({ admin: { blog: ["approve"] }, editor: {} }).success,
+    ).toBe(false);
+    expect(rolePermissionsSchema.safeParse({ admin: {} }).success).toBe(false);
   });
 });

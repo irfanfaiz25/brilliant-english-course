@@ -1,35 +1,42 @@
 import { CheckIcon, MinusIcon } from "lucide-react";
 import { getTranslations } from "next-intl/server";
+import type { ReactNode } from "react";
 
 import { AdminPanel } from "@/components/admin/admin-panel";
 import { adminLocale } from "@/config/admin-routes";
 import { userRoles, type UserRole } from "@/features/users/schema";
 import {
-  grantsFor,
   isUnitScoped,
   permissionActions,
+  resourceActions,
   resources,
+  type Grants,
   type Resource,
 } from "@/lib/permissions";
 
+type RoleMatrixProps = {
+  /** Effective grants per role (configured for admin/editor, ADR-036). */
+  grants: Record<UserRole, Grants>;
+  /** "Atur hak akses" for super admins. */
+  actions?: ReactNode;
+};
+
 /**
- * "Hak akses per peran": the permission matrix read straight from `permissions.ts`, so what staff
- * read here is what the server enforces. A table (modules × roles) from `md`; below it, one list
- * per role with only the modules it can open, so phones never scroll sideways.
+ * "Hak akses per peran", read-only: what each role may do right now, from the same grants the
+ * server checks. A table (modules × roles) from `md`; below it, one list per role with only the
+ * modules it can open, so phones never scroll sideways.
  */
-export async function RoleMatrix() {
+export async function RoleMatrix({ grants, actions }: RoleMatrixProps) {
   const [t, tRole] = await Promise.all([
     getTranslations({ locale: adminLocale, namespace: "AdminUsers.matrix" }),
     getTranslations({ locale: adminLocale, namespace: "Admin.role" }),
   ]);
 
-  /** The allowed actions in words, "Akses penuh" when every action is allowed, or `null`. */
+  /** The allowed actions in words, "Akses penuh" when all of the module's actions are, or `null`. */
   const allowedText = (role: UserRole, resource: Resource): string | null => {
-    const allowed = permissionActions.filter((action) =>
-      grantsFor(role)[resource]?.includes(action),
-    );
+    const allowed = permissionActions.filter((action) => grants[role][resource]?.includes(action));
     if (allowed.length === 0) return null;
-    if (allowed.length === permissionActions.length) return t("full");
+    if (resourceActions[resource].every((action) => allowed.includes(action))) return t("full");
     return allowed.map((action) => t(`actions.${action}`)).join(", ");
   };
 
@@ -57,7 +64,7 @@ export async function RoleMatrix() {
   };
 
   return (
-    <AdminPanel title={t("title")} description={t("description")}>
+    <AdminPanel title={t("title")} description={t("description")} actions={actions}>
       <table className="hidden w-full text-left md:table">
         <caption className="sr-only">{t("title")}</caption>
         <thead>

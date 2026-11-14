@@ -28,6 +28,7 @@ export const adminRoutes = {
   newFaqItem: "/admin/faq/baru",
   users: "/admin/pengguna",
   newUser: "/admin/pengguna/baru",
+  permissions: "/admin/pengguna/hak-akses",
   account: "/admin/akun",
 } as const;
 

@@ -6,7 +6,15 @@ import { cache } from "react";
 
 import { adminRoutes } from "@/config/admin-routes";
 import { auth } from "@/lib/auth";
-import { can, type PermissionAction, type Resource, type ScopedResource } from "@/lib/permissions";
+import {
+  can,
+  effectiveGrants,
+  type PermissionAction,
+  type Resource,
+  type ScopedResource,
+} from "@/lib/permissions";
+
+import { getRoleGrants } from "./role-permissions";
 
 import type { SessionUser, UserRole } from "./schema";
 
@@ -23,12 +31,15 @@ export const getCurrentUser = cache(async (): Promise<SessionUser | null> => {
   const { user } = session;
   // Deactivated after signing in: treat as signed out right away.
   if (user.isActive === false) return null;
+  const role = user.role as UserRole;
   return {
     id: user.id,
     name: user.name,
     email: user.email,
-    role: user.role as UserRole,
+    role,
     unitId: user.unitId ?? null,
+    // What this role may do right now: a super admin's change applies on the next request.
+    grants: effectiveGrants(role, await getRoleGrants()),
   };
 });
 
