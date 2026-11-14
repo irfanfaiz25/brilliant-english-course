@@ -1,9 +1,6 @@
 import { getFormatter, getTranslations } from "next-intl/server";
 
-import { adminLocale } from "@/config/admin-routes";
-
-/** Office time zone of BEC; admin timestamps are shown in it whatever the server's zone is. */
-const ADMIN_TIME_ZONE = "Asia/Jakarta";
+import { adminLocale, adminTimeZone } from "@/config/admin-routes";
 
 type LastSavedProps = {
   /** `undefined` = never saved, the code defaults apply. */
@@ -21,7 +18,7 @@ export async function LastSaved({ meta }: LastSavedProps) {
   const date = format.dateTime(meta.updatedAt, {
     dateStyle: "medium",
     timeStyle: "short",
-    timeZone: ADMIN_TIME_ZONE,
+    timeZone: adminTimeZone,
   });
   return meta.updatedBy
     ? t("lastSaved", { date, name: meta.updatedBy })

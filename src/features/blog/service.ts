@@ -4,6 +4,7 @@ import type { Locale } from "@/i18n/routing";
 
 import { documentText, inlineText } from "./rich-text";
 import type { Post, PostRecord, PostSummary, RichTextDoc } from "./schema";
+import { adminTimeZone } from "@/config/admin-routes";
 
 export { documentText, inlineText } from "./rich-text";
 
@@ -38,7 +39,7 @@ export function extractHeadings(doc: RichTextDoc): PostHeading[] {
 export function toJakartaInput(instant: Date): string {
   const parts = Object.fromEntries(
     new Intl.DateTimeFormat("en-GB", {
-      timeZone: "Asia/Jakarta",
+      timeZone: adminTimeZone,
       year: "numeric",
       month: "2-digit",
       day: "2-digit",
@@ -57,7 +58,7 @@ export const fromJakartaInput = (value: string): Date => new Date(`${value}:00+0
 
 /** Calendar date of an instant in Indonesia's western time zone ("2026-11-06"), as posts show it. */
 export function jakartaDate(instant: Date): string {
-  return new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Jakarta" }).format(instant);
+  return new Intl.DateTimeFormat("en-CA", { timeZone: adminTimeZone }).format(instant);
 }
 
 type StoredTranslation = PostRecord["translations"]["id"];

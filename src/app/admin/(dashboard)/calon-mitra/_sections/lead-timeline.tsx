@@ -11,7 +11,7 @@ import {
 import { getFormatter, getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
 
-import { adminLocale } from "@/config/admin-routes";
+import { adminLocale, adminTimeZone } from "@/config/admin-routes";
 import type { LeadTimelineEntry } from "@/features/partners/admin-queries";
 import { leadStatuses, type LeadStatus } from "@/features/partners/schema";
 
@@ -135,7 +135,7 @@ export async function LeadTimeline({
               {format.dateTime(entry.at, {
                 dateStyle: "medium",
                 timeStyle: "short",
-                timeZone: "Asia/Jakarta",
+                timeZone: adminTimeZone,
               })}
             </time>{" "}
             · {entry.author ? t("history.by", { name: entry.author }) : t("history.system")}
