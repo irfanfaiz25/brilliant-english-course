@@ -454,7 +454,20 @@ Baseline: Penpot `02 · Dashboard` (Ringkasan, Calon Mitra, Unit Mitra, Kuota Wi
 - **Localized fields:** tabs `ID | EN` inside the form, with a dot indicator for missing EN translation.
 - **SEO panel:** collapsible section on every content form — title/description with character counters, Google result preview, OG image, (super admin only) `noindex`.
 - **Empty, loading and error states** are designed for every list.
-- **Dashboard home (Ringkasan):** KPI cards (new leads this week, active units, quota fill rate, posts published), leads trend chart, latest leads, storage usage of the DB.
+- **Dashboard home (Ringkasan, Phase 4h):** top to bottom: "Perlu tindakan" (counts waiting on staff, each a link to
+  the filtered list; hidden at 0, "nothing waiting" when all are), four KPI cards (new partner leads in 30 days with the
+  change against the 30 days before as an arrow plus words, conversion over 12 months, active units, students; articles
+  for roles without partnership data), the partner-lead trend, the pipeline beside regional demand, then the latest
+  leads beside the activity log. Every section shows only to roles that may read its data.
+- **Charts (ADR-037):** hand-built SVG, no chart library, one axis. Series colours are the `chart-1` (teal) and
+  `chart-2` (orange) tokens in that order, validated for colour-blind separation; text never wears them. Lines are 2px
+  monotone curves (no overshoot below zero) over a light vertical gradient wash; gridlines are hairlines. A legend with
+  line keys and totals sits above any chart with two series. The whole plot is the hover target: a crosshair snaps to
+  the nearest period and one tooltip lists every series (value first, then the name); the same tooltip follows keyboard
+  focus and the arrow keys. Every chart offers its numbers as a table ("Lihat sebagai tabel"). A time range is a
+  `FilterChips` row in the panel header, kept in the URL without scrolling the page. Bars are thin (12px), rounded at
+  the data end, value at the tip; colour carries meaning (in progress teal, partners won orange as in the trend,
+  closed grey).
 - **Lead pipeline:** statuses `baru → dihubungi → survei → disetujui / ditolak`, with notes and activity history.
 - Admin motion is minimal: 150–250 ms transitions only, no reveals.
 - **Glass, lightly (Phase 3c):** the shell sits on `bg-gradient-soft` with three fixed `DecorBlob`s; sidebar, top bar
