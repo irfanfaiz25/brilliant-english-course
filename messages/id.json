@@ -205,7 +205,8 @@
     "all": "Semua",
     "chooseParentFirst": "Pilih {parent} dulu",
     "apply": "Terapkan",
-    "reset": "Atur ulang"
+    "reset": "Atur ulang",
+    "choose": "Pilih {level}"
   },
   "Program": {
     "metaTitle": "Program Kursus Bahasa Inggris Anak: Kindy, Intro, Secondary",
@@ -948,7 +949,17 @@
       "imageRequired": "Pilih gambar dari pustaka media.",
       "ageRange": "Usia maksimal tidak boleh lebih kecil dari usia minimal.",
       "ageOverlap": "Rentang usia ini bertabrakan dengan level lain.",
-      "notFound": "Data ini sudah tidak ada. Muat ulang halaman."
+      "notFound": "Data ini sudah tidak ada. Muat ulang halaman.",
+      "villageRequired": "Pilih desa / kelurahan sampai tingkat terakhir.",
+      "slugInvalid": "Gunakan huruf kecil, angka, dan tanda hubung saja (contoh: sukamaju-indah).",
+      "slugTaken": "Slug ini sudah dipakai unit lain di kabupaten/kota yang sama.",
+      "latitudeInvalid": "Lintang harus di antara -11,5 dan 6,5 (wilayah Indonesia). Pastikan lintang dan bujur tidak tertukar.",
+      "longitudeInvalid": "Bujur harus di antara 94,5 dan 141,5 (wilayah Indonesia).",
+      "levelsRequired": "Pilih minimal satu level yang dibuka unit ini.",
+      "quotaFull": "Kuota desa ini sudah penuh, jadi unit belum bisa diaktifkan. Lepas pesanan slot di Kuota Wilayah (jika pesanan itu untuk unit ini) atau pilih status lain.",
+      "quotaExceeded": "Slot yang tersisa di desa ini hanya {limit}.",
+      "dateInvalid": "Tanggal belum benar.",
+      "almostFullTooHigh": "Batas \"hampir penuh\" harus lebih kecil dari maksimal unit per desa."
     },
     "back": "Kembali",
     "removeItem": "Hapus {item}",
@@ -985,6 +996,24 @@
       "title": "Pratinjau di situs",
       "note": "Kartu seperti tampil di {placement} ({locale}). Berubah saat kamu mengetik.",
       "needsImage": "Pilih foto untuk melihat pratinjau kartu."
+    },
+    "weekdays": {
+      "1": "Sen",
+      "2": "Sel",
+      "3": "Rab",
+      "4": "Kam",
+      "5": "Jum",
+      "6": "Sab",
+      "7": "Min"
+    },
+    "weekdaysLong": {
+      "1": "Senin",
+      "2": "Selasa",
+      "3": "Rabu",
+      "4": "Kamis",
+      "5": "Jumat",
+      "6": "Sabtu",
+      "7": "Minggu"
     }
   },
   "AdminSettings": {
@@ -1005,24 +1034,6 @@
       "removeHours": "Hapus baris jam {index}",
       "socialTitle": "Media sosial",
       "socialDescription": "Tautan profil di footer dan halaman Kontak."
-    },
-    "weekdays": {
-      "1": "Sen",
-      "2": "Sel",
-      "3": "Rab",
-      "4": "Kam",
-      "5": "Jum",
-      "6": "Sab",
-      "7": "Min"
-    },
-    "weekdaysLong": {
-      "1": "Senin",
-      "2": "Selasa",
-      "3": "Rabu",
-      "4": "Kamis",
-      "5": "Jumat",
-      "6": "Sabtu",
-      "7": "Minggu"
     },
     "partnership": {
       "title": "Paket kemitraan",
@@ -1180,5 +1191,177 @@
       "imageAltHint": "Jelaskan isi foto untuk pembaca layar dan mesin pencari."
     },
     "previewPlacement": "Beranda dan halaman Program"
+  },
+  "AdminUnits": {
+    "description": "Unit milik mitra: data, jadwal, dan status tampil di situs.",
+    "add": "Tambah unit",
+    "search": "Cari unit",
+    "searchPlaceholder": "Nama, kode, atau slug",
+    "searchSubmit": "Cari",
+    "filters": {
+      "label": "Saring status",
+      "all": "Semua"
+    },
+    "status": {
+      "onboarding": "Persiapan",
+      "active": "Aktif",
+      "inactive": "Nonaktif"
+    },
+    "statusHint": {
+      "onboarding": "Belum tampil di situs dan belum memakai kuota desa.",
+      "active": "Tampil di situs dan memakai satu slot kuota desa.",
+      "inactive": "Disembunyikan dari situs; slot kuota desa kembali tersedia."
+    },
+    "enrollment": {
+      "open": "Pendaftaran dibuka",
+      "limited": "Kuota kelas terbatas",
+      "full": "Kelas penuh"
+    },
+    "columns": {
+      "unit": "Unit",
+      "location": "Lokasi",
+      "status": "Status",
+      "enrollment": "Pendaftaran",
+      "students": "Siswa",
+      "actions": "Aksi"
+    },
+    "studentsCount": "{count} siswa",
+    "empty": "Belum ada unit. Tambahkan unit pertama saat mitra mulai bersiap.",
+    "noResults": "Tidak ada unit yang cocok dengan pencarian ini.",
+    "clearSearch": "Hapus pencarian",
+    "pagination": {
+      "label": "Halaman daftar unit",
+      "page": "Halaman {page} dari {pages}",
+      "previous": "Sebelumnya",
+      "next": "Berikutnya"
+    },
+    "editLabel": "Ubah {name}",
+    "deleteLabel": "Hapus {name}",
+    "deleteTitle": "Hapus {name}?",
+    "deleteBody": "Unit hilang dari situs dan slot kuota desanya kembali tersedia. Kode unit dan riwayatnya tetap tercatat.",
+    "deleteConfirm": "Hapus unit",
+    "deleted": "Unit dihapus.",
+    "backToList": "Semua unit",
+    "createTitle": "Tambah unit",
+    "createDescription": "Kode unit dibuat otomatis dari provinsinya setelah disimpan.",
+    "editDescription": "Setelah disimpan, perubahan langsung tampil di Cek Unit dan halaman unit.",
+    "viewOnSite": "Lihat di situs",
+    "previewPlacement": "Cek Unit dan halaman wilayah",
+    "sections": {
+      "identity": {
+        "title": "Identitas",
+        "description": "Nama, alamat halaman, dan status unit."
+      },
+      "location": {
+        "title": "Lokasi",
+        "description": "Desa menentukan kuota dan halaman wilayah; koordinat dipakai untuk jarak di Cek Unit."
+      },
+      "contact": {
+        "title": "Kontak & jadwal",
+        "description": "Pengelola, WhatsApp, dan jam buka yang tampil di kartu unit."
+      },
+      "program": {
+        "title": "Program & siswa",
+        "description": "Level yang dibuka dan jumlah siswa aktif (dipakai statistik situs)."
+      }
+    },
+    "fields": {
+      "name": "Nama unit",
+      "code": "Kode unit",
+      "codeHint": "Dibuat otomatis dan tidak berubah.",
+      "slug": "Slug halaman",
+      "slugHint": "Bagian akhir alamat halaman unit: {path}",
+      "status": "Status",
+      "enrollment": "Pendaftaran",
+      "address": "Alamat lengkap",
+      "latitude": "Lintang (latitude)",
+      "longitude": "Bujur (longitude)",
+      "coordinatesHint": "Salin dari Google Maps: klik kanan titik lokasi, lalu klik angka koordinatnya.",
+      "checkOnMap": "Cek titik di peta",
+      "managerName": "Nama pengelola",
+      "whatsapp": "Nomor WhatsApp unit",
+      "whatsappHint": "Orang tua menghubungi unit lewat nomor ini.",
+      "openDays": "Hari buka",
+      "opensAt": "Buka",
+      "closesAt": "Tutup",
+      "levels": "Level yang dibuka",
+      "studentsCount": "Jumlah siswa aktif",
+      "studentsHint": "Dijumlahkan menjadi statistik siswa di Beranda.",
+      "openedAt": "Tanggal mulai beroperasi",
+      "openedAtHint": "Kosongkan jika belum diketahui."
+    }
+  },
+  "AdminQuota": {
+    "description": "Batas unit per desa, sisa slot setiap desa, dan slot yang dipesan calon mitra.",
+    "status": {
+      "available": "Tersedia",
+      "almostFull": "Hampir penuh",
+      "full": "Penuh"
+    },
+    "rules": {
+      "title": "Aturan kuota",
+      "description": "Berlaku untuk semua desa, termasuk pengecek kuota di halaman Kemitraan.",
+      "unitsPerVillage": "Maksimal unit per desa",
+      "unitsPerVillageHint": "Unit aktif dan slot yang dipesan dihitung bersama.",
+      "almostFullAt": "Tampil \"hampir penuh\" saat sisa slot",
+      "almostFullAtHint": "Contoh: 1 berarti desa tampil hampir penuh saat sisa satu slot."
+    },
+    "check": {
+      "title": "Cek kuota desa",
+      "description": "Pilih desa untuk melihat sisa slot beserta unit dan pesanan di dalamnya.",
+      "max": "Maksimal",
+      "active": "Unit aktif",
+      "reserved": "Slot dipesan",
+      "remaining": "Sisa slot",
+      "units": "Unit di desa ini",
+      "noUnits": "Belum ada unit di desa ini.",
+      "reservations": "Pesanan di desa ini",
+      "noReservations": "Tidak ada pesanan aktif.",
+      "reserveHere": "Pesan slot di desa ini",
+      "clear": "Pilih desa lain"
+    },
+    "occupied": {
+      "title": "Desa terisi",
+      "description": "Desa yang punya unit aktif atau slot dipesan, dari yang paling penuh.",
+      "empty": "Belum ada desa yang terisi.",
+      "columns": {
+        "village": "Desa",
+        "active": "Unit aktif",
+        "reserved": "Dipesan",
+        "remaining": "Sisa",
+        "status": "Status"
+      },
+      "view": "Lihat",
+      "viewLabel": "Lihat kuota {village}"
+    },
+    "reservations": {
+      "title": "Pesanan slot",
+      "description": "Slot yang ditahan untuk calon mitra yang sedang bersiap. Pesanan yang lewat tanggal berakhir tidak dihitung lagi.",
+      "add": "Pesan slot",
+      "empty": "Tidak ada pesanan slot aktif.",
+      "slots": "{count} slot",
+      "until": "Sampai {date}",
+      "untilReleased": "Sampai dilepas",
+      "by": "Dibuat {date} oleh {name}",
+      "byUnknown": "Dibuat {date}",
+      "lead": "Calon mitra {reference}",
+      "expiredHint": "{count, plural, one {# pesanan} other {# pesanan}} berakhir dalam 30 hari terakhir dan tidak dihitung lagi.",
+      "releaseLabel": "Lepas pesanan {village}",
+      "releaseTitle": "Lepas pesanan di {village}?",
+      "releaseBody": "Slot yang dipesan kembali tersedia untuk calon mitra lain.",
+      "releaseConfirm": "Lepas pesanan",
+      "released": "Pesanan dilepas."
+    },
+    "reserveForm": {
+      "title": "Pesan slot",
+      "description": "Tahan slot di satu desa untuk calon mitra yang sedang bersiap.",
+      "slots": "Jumlah slot",
+      "expiresOn": "Berlaku sampai",
+      "expiresOnHint": "Kosongkan untuk menahan slot sampai dilepas admin.",
+      "note": "Catatan",
+      "notePlaceholder": "Contoh: Ibu Sari, survei lokasi 20 Nov",
+      "submit": "Pesan slot",
+      "saved": "Slot dipesan."
+    }
   }
 }
