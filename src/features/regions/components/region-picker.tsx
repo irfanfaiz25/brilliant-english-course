@@ -85,12 +85,15 @@ export function RegionPicker({
               htmlFor={selectId}
               className="flex items-center gap-2 text-label text-foreground"
             >
-              {t(level.level)}
-              {isVillage && (
-                <span aria-hidden className="text-destructive">
-                  *
-                </span>
-              )}
+              {/* Same required mark as `Field`: right after the last word, also when wrapping. */}
+              <span>
+                {t(level.level)}
+                {isVillage && (
+                  <span aria-hidden className="ml-1 text-destructive">
+                    *
+                  </span>
+                )}
+              </span>
               {loadingLevel === index && (
                 <LoaderCircleIcon
                   aria-hidden

@@ -52,12 +52,15 @@ function Field({
       className={cn("flex flex-col gap-2", className)}
     >
       <Label htmlFor={id}>
-        {label}
-        {required && (
-          <span aria-hidden className="text-destructive">
-            {requiredMark}
-          </span>
-        )}
+        {/* One flex item, so a wrapping label keeps the mark right after its last word. */}
+        <span>
+          {label}
+          {required && (
+            <span aria-hidden className="ml-1 text-destructive">
+              {requiredMark}
+            </span>
+          )}
+        </span>
       </Label>
       {children({
         id,
