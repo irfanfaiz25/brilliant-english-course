@@ -31,14 +31,14 @@ test.describe("admin shell", () => {
       "aria-current",
       "page",
     );
-    for (const name of ["Calon Mitra", "Artikel Blog", "Pengguna", "SEO"]) {
+    for (const name of ["Calon Mitra", "Artikel Blog", "Testimoni", "SEO"]) {
       await expect(nav.getByRole("link", { name: new RegExp(`^${name}`) })).toBeVisible();
     }
 
-    await nav.getByRole("link", { name: /^Testimoni/ }).click();
-    await expect(page).toHaveURL(/\/admin\/testimoni$/);
-    await expect(page.getByRole("heading", { level: 1, name: "Testimoni" })).toBeVisible();
-    await expect(page.getByText("Segera hadir di tahap 4f")).toBeVisible();
+    await nav.getByRole("link", { name: /^Pengguna/ }).click();
+    await expect(page).toHaveURL(/\/admin\/pengguna$/);
+    await expect(page.getByRole("heading", { level: 1, name: "Pengguna" })).toBeVisible();
+    await expect(page.getByText("Segera hadir di tahap 4g")).toBeVisible();
   });
 
   test("shows an editor only content modules and hides partner data", async ({
