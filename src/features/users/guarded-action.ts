@@ -10,7 +10,7 @@ import type { SessionUser } from "./schema";
 import { getCurrentUser } from "./session";
 
 /** Errors every admin mutation can return; forms translate them from `AdminForms.errors`. */
-export type AdminActionError = "invalid" | "forbidden" | "notFound" | "unknown";
+export type AdminActionError = "invalid" | "forbidden" | "notFound" | "orderChanged" | "unknown";
 
 type GuardedAction<TParsed, TData> = {
   /** Log prefix, e.g. "activities". */

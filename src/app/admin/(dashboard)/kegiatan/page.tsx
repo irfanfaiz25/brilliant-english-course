@@ -1,4 +1,4 @@
-import { ArrowDownIcon, ArrowUpIcon, ImageIcon, PencilIcon, PlusIcon } from "lucide-react";
+import { ImageIcon, PlusIcon } from "lucide-react";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
@@ -6,14 +6,14 @@ import Link from "next/link";
 import { Suspense } from "react";
 
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
-import { ActionIconButton, DeleteButton, VisibilitySwitch } from "@/components/admin/row-actions";
-import { Badge } from "@/components/ui/badge";
+import { ContentRowActions } from "@/components/admin/content-row-actions";
+import { SortableList } from "@/components/admin/sortable-list";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { adminLocale, adminRoutes } from "@/config/admin-routes";
 import {
   deleteActivityAction,
-  moveActivityAction,
+  reorderActivitiesAction,
   setActivityPublishedAction,
 } from "@/features/activities/actions";
 import { getAdminActivities } from "@/features/activities/admin-queries";
@@ -86,84 +86,58 @@ async function ActivityList() {
   return (
     <section className="flex flex-col gap-4 rounded-2xl surface-glass-panel p-4 sm:p-6">
       <p className="text-body-sm text-muted-foreground">{t("orderHint")}</p>
-      <ol className="flex flex-col divide-y divide-border/60">
-        {activities.map((activity, index) => (
-          <li
-            key={activity.id}
-            className="flex flex-wrap items-center gap-x-4 gap-y-3 py-4 first:pt-0 last:pb-0"
-          >
-            <div className="relative aspect-[3/2] w-20 shrink-0 overflow-hidden rounded-lg bg-muted sm:w-24">
-              {activity.imageSrc ? (
-                <Image src={activity.imageSrc} alt="" fill sizes="96px" className="object-cover" />
-              ) : (
-                <span className="flex size-full items-center justify-center text-muted-foreground">
-                  <ImageIcon aria-hidden className="size-5" />
-                  <span className="sr-only">{t("noImage")}</span>
-                </span>
-              )}
-            </div>
-            <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-              <span className="text-body font-semibold text-foreground">{activity.name}</span>
-              <span className="truncate text-body-sm text-muted-foreground">
-                {activity.audience}
-              </span>
-            </div>
-            <div className="flex w-full flex-wrap items-center justify-between gap-3 sm:w-auto sm:justify-end">
-              {canPublish ? (
-                <VisibilitySwitch
-                  action={setActivityPublishedAction}
-                  input={{ id: activity.id }}
-                  checked={activity.isPublished}
-                  label={t("showLabel", { name: activity.name })}
-                />
-              ) : (
-                <Badge variant={activity.isPublished ? "success" : "neutral"}>
-                  {activity.isPublished ? tVisibility("published") : tVisibility("hidden")}
-                </Badge>
-              )}
-              <div className="flex items-center gap-1">
-                {canUpdate && (
-                  <>
-                    <ActionIconButton
-                      action={moveActivityAction}
-                      input={{ id: activity.id, direction: "up" }}
-                      label={t("moveUp", { name: activity.name })}
-                      icon={<ArrowUpIcon aria-hidden />}
-                      disabled={index === 0}
-                    />
-                    <ActionIconButton
-                      action={moveActivityAction}
-                      input={{ id: activity.id, direction: "down" }}
-                      label={t("moveDown", { name: activity.name })}
-                      icon={<ArrowDownIcon aria-hidden />}
-                      disabled={index === activities.length - 1}
-                    />
-                    <Button asChild variant="ghost" size="icon-sm">
-                      <Link
-                        href={`${adminRoutes.activities}/${activity.id}`}
-                        aria-label={t("editLabel", { name: activity.name })}
-                      >
-                        <PencilIcon aria-hidden />
-                      </Link>
-                    </Button>
-                  </>
-                )}
-                {canDelete && (
-                  <DeleteButton
-                    action={deleteActivityAction}
-                    input={{ id: activity.id }}
-                    label={t("deleteLabel", { name: activity.name })}
-                    title={t("deleteTitle", { name: activity.name })}
-                    description={t("deleteBody")}
-                    confirmLabel={t("deleteConfirm")}
-                    successMessage={t("deleted")}
+      <SortableList
+        action={reorderActivitiesAction}
+        canReorder={canUpdate}
+        rows={activities.map((activity) => ({
+          id: activity.id,
+          label: activity.name,
+          content: (
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
+              <div className="relative aspect-[3/2] w-20 shrink-0 overflow-hidden rounded-lg bg-muted sm:w-24">
+                {activity.imageSrc ? (
+                  <Image
+                    src={activity.imageSrc}
+                    alt=""
+                    fill
+                    sizes="96px"
+                    className="object-cover"
                   />
+                ) : (
+                  <span className="flex size-full items-center justify-center text-muted-foreground">
+                    <ImageIcon aria-hidden className="size-5" />
+                    <span className="sr-only">{t("noImage")}</span>
+                  </span>
                 )}
               </div>
+              <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+                <span className="text-body font-semibold text-foreground">{activity.name}</span>
+                <span className="truncate text-body-sm text-muted-foreground">
+                  {activity.audience}
+                </span>
+              </div>
+              <ContentRowActions
+                id={activity.id}
+                isPublished={activity.isPublished}
+                editHref={`${adminRoutes.activities}/${activity.id}`}
+                actions={{ publish: setActivityPublishedAction, remove: deleteActivityAction }}
+                can={{ update: canUpdate, publish: canPublish, remove: canDelete }}
+                labels={{
+                  show: t("showLabel", { name: activity.name }),
+                  published: tVisibility("published"),
+                  hidden: tVisibility("hidden"),
+                  edit: t("editLabel", { name: activity.name }),
+                  remove: t("deleteLabel", { name: activity.name }),
+                  removeTitle: t("deleteTitle", { name: activity.name }),
+                  removeBody: t("deleteBody"),
+                  removeConfirm: t("deleteConfirm"),
+                  removed: t("deleted"),
+                }}
+              />
             </div>
-          </li>
-        ))}
-      </ol>
+          ),
+        }))}
+      />
     </section>
   );
 }

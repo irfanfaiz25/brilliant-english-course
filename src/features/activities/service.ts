@@ -1,13 +1,14 @@
-import { asc, eq, sql } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
 import { db } from "@/db/client";
 import { activities, activityTranslations } from "@/db/schema";
 import { routing } from "@/i18n/routing";
 import { ActionFailure } from "@/lib/action-result";
 import { writeAuditLog } from "@/lib/audit";
+import { isSameList } from "@/lib/ordering";
 import { slugify } from "@/lib/slug";
 
-import type { ActivityForm, MoveDirection } from "./schema";
+import type { ActivityForm } from "./schema";
 
 /** `base`, or `base-2`, `base-3`, … whichever is not taken yet. */
 export function uniqueSlug(base: string, taken: ReadonlySet<string>): string {
@@ -17,16 +18,6 @@ export function uniqueSlug(base: string, taken: ReadonlySet<string>): string {
     const candidate = `${root}-${suffix}`;
     if (!taken.has(candidate)) return candidate;
   }
-}
-
-/** `ids` with `id` swapped with its neighbour in `direction`; unchanged at either end. */
-export function moveInOrder(ids: readonly string[], id: string, direction: MoveDirection) {
-  const from = ids.indexOf(id);
-  const to = direction === "up" ? from - 1 : from + 1;
-  if (from === -1 || to < 0 || to >= ids.length) return [...ids];
-  const order = [...ids];
-  [order[from], order[to]] = [order[to] as string, order[from] as string];
-  return order;
 }
 
 type Tx = Parameters<Parameters<typeof db.transaction>[0]>[0];
@@ -171,29 +162,34 @@ export async function setActivityPublished(id: string, isPublished: boolean, act
   });
 }
 
-/** Moves an activity one place up or down and renumbers the list (0, 1, 2, …). */
-export async function moveActivity(id: string, direction: MoveDirection, actorId: string) {
+/**
+ * Saves the order of every activity (`ids`, as dragged) and renumbers them 0, 1, 2, …. Refused
+ * when the list changed since the page was loaded (an activity added or deleted meanwhile).
+ */
+export async function reorderActivities(ids: string[], moved: string, actorId: string) {
   await db.transaction(async (tx) => {
     const rows = await tx
-      .select({ id: activities.id })
+      .select({ id: activities.id, sortOrder: activities.sortOrder })
       .from(activities)
-      .orderBy(asc(activities.sortOrder), asc(activities.createdAt))
       .for("update");
-    const ids = rows.map((row) => row.id);
-    if (!ids.includes(id)) throw new ActionFailure("notFound");
-    const order = moveInOrder(ids, id, direction);
-    for (const [index, rowId] of order.entries()) {
-      await tx
-        .update(activities)
-        .set({ sortOrder: index })
-        .where(sql`${activities.id} = ${rowId} and ${activities.sortOrder} <> ${index}`);
+    if (
+      !isSameList(
+        rows.map((row) => row.id),
+        ids,
+      )
+    )
+      throw new ActionFailure("orderChanged");
+    const current = new Map(rows.map((row) => [row.id, row.sortOrder]));
+    for (const [index, id] of ids.entries()) {
+      if (current.get(id) === index) continue;
+      await tx.update(activities).set({ sortOrder: index }).where(eq(activities.id, id));
     }
     await writeAuditLog(tx, {
       actorId,
       action: "activity.reorder",
       entityType: "activity",
-      entityId: id,
-      changes: { direction, position: order.indexOf(id) },
+      entityId: moved,
+      changes: { position: ids.indexOf(moved), order: ids },
     });
   });
 }

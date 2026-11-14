@@ -235,6 +235,8 @@ JS motion values (seconds, easing arrays) come from `src/components/motion/token
   ease-out, CSS first. For height use the grid-rows technique (`grid-rows-[0fr]` → `grid-rows-[1fr]`) on a wrapper,
   not JS measuring; pair it with a short opacity/translate on the content. Nothing should pop in or vanish abruptly.
 - Keep it light: CSS transitions/keyframes before Motion, Motion before anything heavier; never animate on every scroll frame in JS.
+- Admin drag-to-reorder uses Motion's `Reorder` from `motion/react-m` inside its own lazy `LazyMotion` (`domMax`),
+  never a separate drag-and-drop library (§ 6 Reordering).
 
 ---
 
@@ -471,7 +473,7 @@ Baseline: Penpot `02 · Dashboard` (Ringkasan, Calon Mitra, Unit Mitra, Kuota Wi
   `StringListField`; images come from `MediaPicker` (library grid, uploads arrive in 4e). Once the form is dirty the
   save bar sticks to the bottom of the viewport, and `UnsavedChangesGuard` asks before leaving (browser prompt for
   reload/close, a dialog for in-app links). Lists use row controls: a visibility switch with a visible state label,
-  up/down buttons for order, and delete behind a confirm dialog that names the item; every control's accessible name
+  drag-to-reorder (below), and delete behind a confirm dialog that names the item; every control's accessible name
   names its item ("Hapus Book Day").
 - **Live card preview (Phase 4b):** content forms whose record appears as a card on the site show that card beside the
   copy (`CardPreview` + the site's own card component, so the preview can never drift from the real card). It follows
@@ -483,6 +485,15 @@ Baseline: Penpot `02 · Dashboard` (Ringkasan, Calon Mitra, Unit Mitra, Kuota Wi
   previous/next paging. Regions are picked with `RegionPicker`: four native selects (the OS picker is best for long
   lists on phones), each level loading the next. Components that sit in panels of varying width (the form footer,
   the unit card's buttons) lay out by container queries, not by viewport breakpoints.
+- **Reordering (Phase 4f):** every manually ordered list (Kegiatan, Testimoni, FAQ, and the `StringListField` lists
+  of content forms) is reordered by dragging a row's grip (⠿, left of the row, `Sortable` on Motion's `Reorder`). Only
+  the grip starts a drag, so phones still scroll the page and the row's own controls keep working. The held row lifts
+  (white surface, `shadow-lg`), the others slide aside in 250 ms with ease-out (instant with reduced motion), and the
+  page scrolls near its edges. Keyboard: Tab to the row, Space to pick it up, arrows to move, Space to drop, Escape
+  to put it back; a hidden instruction and a live region say what happens ("Book Day di posisi 2 dari 4"). Lists save
+  on drop with a short "Urutan disimpan." toast (forms save with the form); a save refused because the list changed
+  elsewhere reloads the list. The drag engine (`domMax`) loads lazily, after the list is on screen. Roles without
+  `update` see the same rows without grips. A hint above the list says that its order is the site's order.
 - **Breadcrumbs:** every admin page except Ringkasan starts with a trail above its title: Ringkasan › parent
   pages › the page itself (bold, not a link, cut with an ellipsis when long). Phones show only "‹ parent" in the
   primary color, which replaces the old "← Semua …" back links; the full trail starts at `sm`. Parents are named

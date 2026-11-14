@@ -149,8 +149,10 @@ Rules:
   (`components/admin`): browser validation with the shared schema, the raw values to the action, field errors back
   on their fields, a toast, `router.refresh()`. Error codes are translated by `useFormErrorText()` (`AdminForms.errors`).
   Long content forms add `LocaleTabs` + `useLocaleTabs()`, `StringListField`, `MediaPicker`, a sticky `FormFooter` and
-  `UnsavedChangesGuard`; list rows use `VisibilitySwitch`, `ActionIconButton` and `DeleteButton` (`row-actions.tsx`).
-  Data lists render a table from `md` and cards below, keep filters in the URL with `listHref()` and page with
+  `UnsavedChangesGuard`; list rows use `VisibilitySwitch`, `ActionIconButton` and `DeleteButton` (`row-actions.tsx`),
+  content lists `ContentRowActions`; manually ordered lists are dragged into place with `SortableList` (saves through a
+  `reorderSchema` action, `lib/ordering.ts`) and form lists with `Sortable` (`DESIGN.md` § 6 Reordering).
+  Data lists render a table from `md` and cards below, keep filters in the URL with `listHref()` (chips: `FilterChips`) and page with
   `ListPagination` (`components/admin`); CSV files are built with `toCsv()` (`lib/csv.ts`, formula-safe);
   uploads use `MediaUploader` (`features/media/components`, browser → storage with progress) and files are stored only
   through `storage` (`lib/storage`: R2, or `.storage/` when the `R2_*` variables are unset); image URLs come from `mediaUrl()`; selects use `NativeSelect`, weekdays `WeekdayPicker`, and a

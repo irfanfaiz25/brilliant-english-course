@@ -358,3 +358,53 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
 - **Alternatives:** Storing HTML (XSS risk, styling drift); free color pickers (off-brand, low contrast); falling
   back to Indonesian on `/en` (mixed-language pages and duplicate content); a separate editor library (Tiptap is
   already the stored format).
+
+### ADR-033 — Testimonials and FAQ in admin
+
+2026-11-14 · Accepted · Ordering amended by ADR-034 (drag instead of up/down)
+
+- **Decision:** Testimoni and FAQ are ordered lists edited in admin like Kegiatan: a list per group (testimonials by
+  audience: parents on Beranda, partners on Kemitraan; FAQ by topic: parents on Beranda, program on Program, partners
+  on Kemitraan) chosen with filter chips that show counts and live in the URL (`?audience=`, `?topic=`). Each row has a
+  show/hide switch, move up/down within its group, edit and delete; "Add" opens the form for the group on screen, a
+  new row goes to the end of its group, and changing a row's group moves it to the end of the new one. Both languages
+  are required (short copy). A testimonial has a shared author name and a 1–5 star rating (native radio group) and a
+  quote and context line per language, with a live preview of the public card; an FAQ answer is plain text whose line
+  breaks show on the site (`whitespace-pre-line`) and which also feeds the `FAQPage` JSON-LD. Writes live in
+  `features/<domain>/admin-service.ts` (transaction + audit row, `testimonial.*` / `faq.*`), go through
+  `guardedAction()` and expire the `testimonials` / `faq` cache tags. The optional `testimonials.unit_id` is not
+  edited yet: the context line already names the unit. Shared pieces extracted while building it: `lib/ordering.ts`
+  (`moveInOrder`, `moveSchema`), `FilterChips` (the chip row of Blog, Unit Mitra, Calon Mitra, Media and the new
+  lists) and `OrderedRowActions` (the row actions of Kegiatan, Testimoni and FAQ).
+- **Why:** Staff manage what parents and partners read without a developer, in the same patterns they already know
+  from Kegiatan; order matters per page, so it is kept per group rather than globally.
+- **Alternatives:** One mixed list with a group column (ordering across pages is meaningless); drag-and-drop ordering
+  (more client code and harder with a keyboard than up/down buttons); rich text for FAQ answers (the structured data
+  needs plain text, and answers are short); optional English as for blog posts (testimonial and FAQ copy is short and
+  every public section shows it in both languages).
+
+### ADR-034 — Drag-to-reorder for ordered lists
+
+2026-11-14 · Accepted
+
+- **Decision:** Manually ordered lists are reordered by dragging instead of up/down buttons: Kegiatan, Testimoni and
+  FAQ (`SortableList`, `components/admin`) and the list fields of content forms (`StringListField`: card highlights,
+  curriculum, partnership inclusions). Both build on `Sortable`, a thin wrapper around Motion's `Reorder` (already in
+  the stack) rendered with `m` components inside its own `LazyMotion` that loads `domMax` lazily, under
+  `MotionConfig reducedMotion="user"`. Only a row's grip starts a drag (`dragListener={false}` + `useDragControls`,
+  `touch-action: none` on the grip), so the page still scrolls on phones. Keyboard reordering is Motion's own (Space
+  picks up and drops, arrows move, Escape restores); `Sortable` adds the instructions (`aria-describedby`) and a live
+  region announcing each step. A list saves on drop with one action per module that takes the full new order of its
+  list or group (`reorderSchema`: every id once and the moved id); the service locks that group, refuses with
+  `orderChanged` when its rows are no longer exactly the ids sent (a row added or deleted elsewhere), renumbers
+  0, 1, 2, … and writes one audit row (`*.reorder`, the moved row, its position and the order). The client shows the
+  new order at once, runs saves one after another, and reloads the server's order after a refused or failed save.
+  `moveInOrder`/`moveSchema` and the move actions are removed; the row actions become `ContentRowActions`.
+- **Why:** Dragging is the expected way to order short lists, moves a row any distance in one gesture, and Motion
+  already provides layout animation, auto-scroll, click suppression after a drag and keyboard support without a new
+  dependency. Saving the whole order (not "one step up") makes every drop one request and detects stale lists.
+- **Alternatives:** `@dnd-kit` (a new dependency for what Motion already does); native HTML5 drag-and-drop (no touch
+  support, poor keyboard story); keeping up/down buttons next to the grip (more controls per row; the keyboard path
+  already covers non-pointer use).
+- **Known limitation:** WCAG 2.2 § 2.5.7 asks for a single-pointer alternative to dragging; here the alternative is
+  the keyboard. If a user needs pointer-only reordering, add a "Pindahkan ke…" menu on the grip.

@@ -19,7 +19,7 @@ export default defineConfig({
   projects: [
     { name: "desktop", use: { ...devices["Desktop Chrome"] }, testIgnore: "publishing/**" },
     { name: "mobile", use: { ...devices["Pixel 7"] }, testIgnore: "publishing/**" },
-    // Specs that publish content the public specs count (the blog's 8 posts) run after them.
+    // Specs that change content the public specs count (posts, testimonials, FAQ) run after them.
     {
       name: "publishing",
       use: { ...devices["Desktop Chrome"] },

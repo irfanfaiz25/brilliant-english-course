@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 import { activityFixtures } from "@/db/seed/content/activities";
 
 import { activityFormSchema, activitySchema } from "./schema";
-import { moveInOrder, uniqueSlug } from "./service";
+import { uniqueSlug } from "./service";
 
 // `service.ts` also writes activities; these checks do not need the database.
 vi.mock("@/db/client", () => ({ db: {} }));
@@ -25,21 +25,6 @@ describe("uniqueSlug", () => {
 
   it("never returns an empty slug", () => {
     expect(uniqueSlug("", new Set())).toBe("kegiatan");
-  });
-});
-
-describe("moveInOrder", () => {
-  const ids = ["a", "b", "c"];
-
-  it("swaps with the neighbour", () => {
-    expect(moveInOrder(ids, "b", "up")).toEqual(["b", "a", "c"]);
-    expect(moveInOrder(ids, "b", "down")).toEqual(["a", "c", "b"]);
-  });
-
-  it("keeps the order at either end or for an unknown id", () => {
-    expect(moveInOrder(ids, "a", "up")).toEqual(ids);
-    expect(moveInOrder(ids, "c", "down")).toEqual(ids);
-    expect(moveInOrder(ids, "z", "up")).toEqual(ids);
   });
 });
 

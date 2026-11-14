@@ -2,7 +2,7 @@ import type { Locale } from "@/i18n/routing";
 
 import type { FaqItem } from "@/features/faq/schema";
 
-/** PLACEHOLDER FAQ until the FAQ admin module (Phase 4f). Confirm answers with BEC before launch. */
+/** PLACEHOLDER FAQ for the dev seed (edited in admin → FAQ). Confirm answers with BEC before launch. */
 export const faqFixtures: Record<Locale, FaqItem[]> = {
   id: [
     {

@@ -39,9 +39,7 @@ export const activityFormSchema = z.object({
 export const activityUpdateSchema = activityFormSchema.extend({ id: z.uuid() });
 export const activityIdSchema = z.object({ id: z.uuid() });
 export const activityPublishSchema = activityIdSchema.extend({ isPublished: z.boolean() });
-export const activityMoveSchema = activityIdSchema.extend({ direction: z.enum(["up", "down"]) });
 
 export type ActivityFormInput = z.input<typeof activityFormSchema>;
 export type ActivityForm = z.output<typeof activityFormSchema>;
 export type ActivityText = z.output<typeof activityTextSchema>;
-export type MoveDirection = z.output<typeof activityMoveSchema>["direction"];

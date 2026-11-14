@@ -15,6 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
+import { Sortable } from "./sortable";
 import { useFormErrorText } from "./use-form-error-text";
 
 type StringListFieldProps<TValues extends FieldValues> = {
@@ -32,8 +33,9 @@ type StringListFieldProps<TValues extends FieldValues> = {
 };
 
 /**
- * An editable list of short texts (skills, curriculum, inclusions): one input per row, remove per
- * row, add at the end. Row and list errors from the shared schema show under their inputs.
+ * An editable list of short texts (skills, curriculum, inclusions): one input per row, rows dragged
+ * into order by their grip (or moved with the keyboard, `Sortable`), remove per row, add at the
+ * end. Row and list errors from the shared schema show under their inputs.
  */
 export function StringListField<TValues extends FieldValues>({
   form,
@@ -61,13 +63,27 @@ export function StringListField<TValues extends FieldValues>({
     <fieldset className="flex flex-col gap-3">
       <legend className="mb-1 text-label text-foreground">{label}</legend>
       {description && <p className="text-body-sm text-muted-foreground">{description}</p>}
-      <ol className="flex flex-col gap-2">
-        {rows.fields.map((row, index) => {
+      <Sortable
+        values={rows.fields.map((row) => row.id)}
+        onReorder={(order, moved) => {
+          const from = rows.fields.findIndex((row) => row.id === moved);
+          rows.move(from, order.indexOf(moved));
+        }}
+        itemLabel={(rowId) => {
+          const index = rows.fields.findIndex((row) => row.id === rowId);
+          const value = form.getValues(`${name}.${index}.value` as Path<TValues>) as unknown;
+          return typeof value === "string" && value.trim() ? value : itemLabel(index + 1);
+        }}
+        disabled={rows.fields.length < 2}
+        className="flex flex-col gap-2"
+      >
+        {(rowId) => {
+          const index = rows.fields.findIndex((row) => row.id === rowId);
           const rowErrors = errors as Record<number, { value?: { message?: string } }> | undefined;
           const message = errorText(rowErrors?.[index]?.value?.message);
-          const errorId = `${id}-${index}-error`;
+          const errorId = `${id}-${rowId}-error`;
           return (
-            <li key={row.id} className="flex flex-col gap-1.5">
+            <div className="flex flex-col gap-1.5">
               <div className="flex items-center gap-2">
                 <Input
                   {...form.register(`${name}.${index}.value` as Path<TValues>)}
@@ -96,10 +112,10 @@ export function StringListField<TValues extends FieldValues>({
                   {message}
                 </p>
               )}
-            </li>
+            </div>
           );
-        })}
-      </ol>
+        }}
+      </Sortable>
       {listError && (
         <p role="alert" className="text-body-sm font-medium text-destructive-strong">
           {errorText(listError)}

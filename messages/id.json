@@ -965,7 +965,8 @@
       "postSlugTaken": "Slug ini sudah dipakai artikel lain dalam bahasa yang sama.",
       "translationIncomplete": "Lengkapi kolom ini atau kosongkan semua kolom versi Inggris.",
       "contentRequired": "Tulis isi artikel.",
-      "publishForbidden": "Akunmu tidak bisa menerbitkan atau mengarsipkan artikel."
+      "publishForbidden": "Akunmu tidak bisa menerbitkan atau mengarsipkan artikel.",
+      "orderChanged": "Urutan sudah diubah di tempat lain. Daftar dimuat ulang; coba lagi."
     },
     "back": "Kembali",
     "removeItem": "Hapus {item}",
@@ -1030,6 +1031,15 @@
     },
     "search": {
       "clear": "Hapus pencarian"
+    },
+    "sortable": {
+      "handle": "Seret untuk memindah {item}",
+      "instructions": "Untuk mengubah urutan dengan keyboard: pilih baris dengan Tab, tekan Spasi untuk mengambil, panah atas atau bawah untuk memindah, lalu Spasi untuk meletakkan. Escape membatalkan.",
+      "grabbed": "{item} diambil, posisi {position} dari {total}.",
+      "moved": "{item} di posisi {position} dari {total}.",
+      "dropped": "{item} diletakkan di posisi {position} dari {total}.",
+      "cancelled": "Pemindahan {item} dibatalkan.",
+      "saved": "Urutan disimpan."
     }
   },
   "AdminSettings": {
@@ -1165,15 +1175,13 @@
   },
   "AdminActivities": {
     "description": "Kegiatan rutin unit yang tampil di Beranda dan halaman Program.",
-    "orderHint": "Urutan di daftar ini sama dengan urutan di situs.",
+    "orderHint": "Seret ⠿ untuk mengubah urutan. Urutan di daftar ini sama dengan urutan di situs.",
     "add": "Tambah kegiatan",
     "empty": "Belum ada kegiatan. Tambahkan kegiatan pertama supaya tampil di situs.",
     "noImage": "Belum ada foto",
     "edit": "Ubah",
     "editLabel": "Ubah {name}",
     "showLabel": "Tampilkan {name} di situs",
-    "moveUp": "Naikkan {name}",
-    "moveDown": "Turunkan {name}",
     "deleteLabel": "Hapus {name}",
     "deleteTitle": "Hapus {name}?",
     "deleteBody": "Kegiatan ini hilang dari situs dan tidak bisa dikembalikan.",
@@ -1763,6 +1771,109 @@
           "empty": "Tempel kode HTML dulu."
         }
       }
+    }
+  },
+  "AdminTestimonials": {
+    "description": "Cerita orang tua dan mitra yang tampil di Beranda dan halaman Kemitraan.",
+    "orderHint": "Tampil di {placement}. Seret ⠿ untuk mengubah urutan; urutan di sini sama dengan di situs.",
+    "add": "Tambah testimoni",
+    "empty": "Belum ada testimoni {group}. Tambahkan yang pertama supaya tampil di {placement}.",
+    "audiences": {
+      "parent": "Orang tua",
+      "partner": "Mitra"
+    },
+    "placements": {
+      "parent": "Beranda",
+      "partner": "halaman Kemitraan"
+    },
+    "filters": {
+      "label": "Kelompok testimoni"
+    },
+    "rating": "Rating {rating} dari 5",
+    "editLabel": "Ubah testimoni {name}",
+    "showLabel": "Tampilkan testimoni {name} di situs",
+    "deleteLabel": "Hapus testimoni {name}",
+    "deleteTitle": "Hapus testimoni {name}?",
+    "deleteBody": "Testimoni ini hilang dari situs dan tidak bisa dikembalikan.",
+    "deleteConfirm": "Hapus testimoni",
+    "deleted": "Testimoni dihapus.",
+    "createTitle": "Tambah testimoni",
+    "createDescription": "Testimoni baru ditaruh di akhir daftar kelompoknya.",
+    "editTitle": "Testimoni {name}",
+    "editDescription": "Setelah disimpan, perubahan langsung tampil di situs.",
+    "sections": {
+      "about": {
+        "title": "Pemberi testimoni",
+        "description": "Siapa yang bercerita, untuk kelompok mana, dan rating yang diberikan."
+      },
+      "content": {
+        "title": "Isi",
+        "description": "Kutipan dan keterangan dalam dua bahasa. Tab bertanda titik merah berisi kolom yang perlu diperbaiki."
+      }
+    },
+    "fields": {
+      "audience": "Tampil untuk",
+      "audienceHint": "Orang tua tampil di Beranda, mitra di halaman Kemitraan. Pindah kelompok menaruhnya di akhir daftar.",
+      "authorName": "Nama",
+      "authorNameHint": "Contoh: Ibu Sari. Pakai nama yang sudah disetujui pemberi testimoni.",
+      "rating": "Rating",
+      "ratingOption": "{count} bintang",
+      "quote": "Kutipan",
+      "quoteHint": "Kata-kata pemberi testimoni, tanpa tanda kutip.",
+      "role": "Keterangan",
+      "roleHint": "Contoh: Orang tua siswa Kindy · Kab. Bogor.",
+      "isPublished": "Tampilkan testimoni ini di situs",
+      "isPublishedHint": "Testimoni yang disembunyikan tetap tersimpan, tapi tidak muncul di situs."
+    }
+  },
+  "AdminFaq": {
+    "description": "Pertanyaan yang sering diajukan di Beranda, halaman Program dan halaman Kemitraan.",
+    "orderHint": "Tampil di {placement}. Seret ⠿ untuk mengubah urutan; urutan di sini sama dengan di situs.",
+    "add": "Tambah pertanyaan",
+    "empty": "Belum ada pertanyaan untuk topik {group}. Tambahkan yang pertama supaya tampil di {placement}.",
+    "topics": {
+      "parents": "Orang tua",
+      "program": "Program",
+      "partners": "Kemitraan"
+    },
+    "placements": {
+      "parents": "Beranda",
+      "program": "halaman Program",
+      "partners": "halaman Kemitraan"
+    },
+    "filters": {
+      "label": "Topik FAQ"
+    },
+    "editLabel": "Ubah pertanyaan: {name}",
+    "showLabel": "Tampilkan pertanyaan di situs: {name}",
+    "deleteLabel": "Hapus pertanyaan: {name}",
+    "deleteTitle": "Hapus pertanyaan ini?",
+    "deleteBody": "“{name}” hilang dari situs dan tidak bisa dikembalikan.",
+    "deleteConfirm": "Hapus pertanyaan",
+    "deleted": "Pertanyaan dihapus.",
+    "createTitle": "Tambah pertanyaan",
+    "createDescription": "Pertanyaan baru ditaruh di akhir daftar topiknya.",
+    "editTitle": "Ubah pertanyaan",
+    "editDescription": "Setelah disimpan, perubahan langsung tampil di situs.",
+    "sections": {
+      "topic": {
+        "title": "Topik",
+        "description": "Halaman tempat pertanyaan ini tampil."
+      },
+      "content": {
+        "title": "Pertanyaan dan jawaban",
+        "description": "Dalam dua bahasa. Tab bertanda titik merah berisi kolom yang perlu diperbaiki."
+      }
+    },
+    "fields": {
+      "topic": "Topik",
+      "topicHint": "Pindah topik menaruhnya di akhir daftar topik itu.",
+      "question": "Pertanyaan",
+      "questionHint": "Tulis seperti yang biasa ditanyakan, diakhiri tanda tanya.",
+      "answer": "Jawaban",
+      "answerHint": "Teks biasa; baris baru tetap tampil di situs. Jawaban ini juga dibaca Google untuk hasil FAQ.",
+      "isPublished": "Tampilkan pertanyaan ini di situs",
+      "isPublishedHint": "Pertanyaan yang disembunyikan tetap tersimpan, tapi tidak muncul di situs."
     }
   }
 }

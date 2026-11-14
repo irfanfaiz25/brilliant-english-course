@@ -19,7 +19,7 @@ import { useFormErrorText } from "./use-form-error-text";
  * and refresh the list afterwards. Failures show as a toast with the translated error code.
  */
 
-type RowAction = (input: unknown) => Promise<ActionResult<unknown>>;
+export type RowAction = (input: unknown) => Promise<ActionResult<unknown>>;
 
 function useRowAction() {
   const router = useRouter();

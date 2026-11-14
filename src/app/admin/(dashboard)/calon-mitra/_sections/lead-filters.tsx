@@ -1,25 +1,13 @@
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 
+import { chipClass, FilterChips } from "@/components/admin/filter-chips";
 import { ListSearch } from "@/components/admin/list-search";
 import { adminLocale, adminRoutes } from "@/config/admin-routes";
 import type { LeadFilter, PipelineList } from "@/features/partners/admin-queries";
 import { leadStatuses } from "@/features/partners/schema";
-import { cn } from "@/lib/utils";
 
 import { leadListHref } from "./lead-filter";
-
-const chipClass = (active: boolean) =>
-  cn(
-    "inline-flex h-10 items-center gap-2 rounded-full border px-4 text-body-sm font-semibold whitespace-nowrap transition-colors duration-(--duration-fast)",
-    "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
-    active
-      ? "border-primary bg-primary text-primary-foreground"
-      : "border-border bg-background text-foreground hover:border-primary/60",
-  );
-
-const countClass = (active: boolean) =>
-  cn("rounded-full px-2 text-caption", active ? "bg-white/20" : "bg-muted text-muted-foreground");
 
 /**
  * Search (a plain GET form) plus the pipeline as chips with live counts, and an "assigned to me"
@@ -69,26 +57,17 @@ export async function LeadFilters({
         </Link>
       </div>
 
-      {/* Scrolls sideways on phones; wraps where there is room. */}
-      <nav aria-label={t("filters.label")} className="-mx-1 overflow-x-auto px-1 pb-1">
-        <ul className="flex w-max gap-2 lg:w-auto lg:flex-wrap">
-          {chips.map((chip) => {
-            const active = filter.status === chip.key;
-            return (
-              <li key={chip.key ?? "all"}>
-                <Link
-                  href={leadListHref({ ...filter, status: chip.key, page: 1 })}
-                  aria-current={active ? "page" : undefined}
-                  className={chipClass(active)}
-                >
-                  {chip.label}
-                  <span className={countClass(active)}>{chip.count}</span>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      </nav>
+      <FilterChips
+        label={t("filters.label")}
+        chips={chips.map((chip) => ({
+          key: chip.key ?? "all",
+          label: chip.label,
+          count: chip.count,
+          href: leadListHref({ ...filter, status: chip.key, page: 1 }),
+          active: filter.status === chip.key,
+        }))}
+        wrap
+      />
     </div>
   );
 }

@@ -25,6 +25,8 @@ export const adminClientNamespaces = [
   "AdminLeads",
   "AdminMedia",
   "AdminBlog",
+  "AdminTestimonials",
+  "AdminFaq",
   "Regions",
 ] as const satisfies readonly (keyof Messages)[];
 

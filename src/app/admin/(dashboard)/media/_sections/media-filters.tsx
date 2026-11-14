@@ -1,11 +1,10 @@
 import { getTranslations } from "next-intl/server";
-import Link from "next/link";
 
 import { firstParam, listHref, pageParam } from "@/components/admin/list-href";
+import { FilterChips } from "@/components/admin/filter-chips";
 import { ListSearch } from "@/components/admin/list-search";
 import { adminLocale, adminRoutes } from "@/config/admin-routes";
 import type { MediaFilter, MediaLibrary } from "@/features/media/admin-queries";
-import { cn } from "@/lib/utils";
 
 type Params = Record<string, string | string[] | undefined>;
 
@@ -49,38 +48,16 @@ export async function MediaFilters({
         className="@2xl:max-w-sm"
       />
 
-      <nav aria-label={t("filters.label")}>
-        <ul className="flex gap-2">
-          {chips.map((chip) => {
-            const active = filter.unused === chip.unused;
-            return (
-              <li key={String(chip.unused)}>
-                <Link
-                  href={mediaListHref({ query: filter.query, unused: chip.unused })}
-                  aria-current={active ? "page" : undefined}
-                  className={cn(
-                    "inline-flex h-10 items-center gap-2 rounded-full border px-4 text-body-sm font-semibold whitespace-nowrap transition-colors duration-(--duration-fast)",
-                    "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
-                    active
-                      ? "border-primary bg-primary text-primary-foreground"
-                      : "border-border bg-background text-foreground hover:border-primary/60",
-                  )}
-                >
-                  {chip.label}
-                  <span
-                    className={cn(
-                      "rounded-full px-2 text-caption",
-                      active ? "bg-white/20" : "bg-muted text-muted-foreground",
-                    )}
-                  >
-                    {chip.count}
-                  </span>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      </nav>
+      <FilterChips
+        label={t("filters.label")}
+        chips={chips.map((chip) => ({
+          key: String(chip.unused),
+          label: chip.label,
+          count: chip.count,
+          href: mediaListHref({ query: filter.query, unused: chip.unused }),
+          active: filter.unused === chip.unused,
+        }))}
+      />
     </div>
   );
 }

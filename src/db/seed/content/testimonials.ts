@@ -2,7 +2,7 @@ import type { Locale } from "@/i18n/routing";
 
 import type { Testimonial } from "@/features/testimonials/schema";
 
-/** PLACEHOLDER testimonials until the testimonials admin module (Phase 4f). Names are fictional. */
+/** PLACEHOLDER testimonials for the dev seed (edited in admin → Testimoni). Names are fictional. */
 export const testimonialFixtures: Record<Locale, Testimonial[]> = {
   id: [
     {

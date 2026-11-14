@@ -965,7 +965,8 @@
       "postSlugTaken": "Another article already uses this slug in the same language.",
       "translationIncomplete": "Fill this in, or leave every English field empty.",
       "contentRequired": "Write the article's body.",
-      "publishForbidden": "Your account cannot publish or archive articles."
+      "publishForbidden": "Your account cannot publish or archive articles.",
+      "orderChanged": "The order was changed elsewhere. The list was reloaded; try again."
     },
     "back": "Back",
     "removeItem": "Remove {item}",
@@ -1030,6 +1031,15 @@
     },
     "search": {
       "clear": "Clear search"
+    },
+    "sortable": {
+      "handle": "Drag to move {item}",
+      "instructions": "To reorder with the keyboard: Tab to a row, press Space to pick it up, the up or down arrow to move it, then Space to drop it. Escape cancels.",
+      "grabbed": "{item} picked up, position {position} of {total}.",
+      "moved": "{item} at position {position} of {total}.",
+      "dropped": "{item} dropped at position {position} of {total}.",
+      "cancelled": "Moving {item} cancelled.",
+      "saved": "Order saved."
     }
   },
   "AdminSettings": {
@@ -1165,15 +1175,13 @@
   },
   "AdminActivities": {
     "description": "Recurring unit activities shown on Home and the Programs page.",
-    "orderHint": "The order of this list is the order on the site.",
+    "orderHint": "Drag ⠿ to reorder. The order here is the order on the site.",
     "add": "Add activity",
     "empty": "No activities yet. Add the first one to show it on the site.",
     "noImage": "No photo yet",
     "edit": "Edit",
     "editLabel": "Edit {name}",
     "showLabel": "Show {name} on the site",
-    "moveUp": "Move {name} up",
-    "moveDown": "Move {name} down",
     "deleteLabel": "Delete {name}",
     "deleteTitle": "Delete {name}?",
     "deleteBody": "This activity disappears from the site and cannot be restored.",
@@ -1763,6 +1771,109 @@
           "empty": "Paste some HTML first."
         }
       }
+    }
+  },
+  "AdminTestimonials": {
+    "description": "Stories from parents and partners shown on Home and the Partnership page.",
+    "orderHint": "Shown on {placement}. Drag ⠿ to reorder; the order here is the order on the site.",
+    "add": "Add testimonial",
+    "empty": "No {group} testimonials yet. Add the first one so it shows on {placement}.",
+    "audiences": {
+      "parent": "Parents",
+      "partner": "Partners"
+    },
+    "placements": {
+      "parent": "Home",
+      "partner": "the Partnership page"
+    },
+    "filters": {
+      "label": "Testimonial group"
+    },
+    "rating": "Rated {rating} out of 5",
+    "editLabel": "Edit testimonial by {name}",
+    "showLabel": "Show testimonial by {name} on the site",
+    "deleteLabel": "Delete testimonial by {name}",
+    "deleteTitle": "Delete testimonial by {name}?",
+    "deleteBody": "This testimonial disappears from the site and cannot be restored.",
+    "deleteConfirm": "Delete testimonial",
+    "deleted": "Testimonial deleted.",
+    "createTitle": "Add testimonial",
+    "createDescription": "A new testimonial goes to the end of its group.",
+    "editTitle": "Testimonial by {name}",
+    "editDescription": "Once saved, changes show on the site right away.",
+    "sections": {
+      "about": {
+        "title": "Who said it",
+        "description": "Who is speaking, which group it belongs to and the rating they gave."
+      },
+      "content": {
+        "title": "Content",
+        "description": "Quote and context in both languages. A tab with a red dot has fields to fix."
+      }
+    },
+    "fields": {
+      "audience": "Shown for",
+      "audienceHint": "Parents show on Home, partners on the Partnership page. Changing the group moves it to the end of the list.",
+      "authorName": "Name",
+      "authorNameHint": "E.g. Ibu Sari. Use the name the person agreed to.",
+      "rating": "Rating",
+      "ratingOption": "{count} stars",
+      "quote": "Quote",
+      "quoteHint": "The person's own words, without quotation marks.",
+      "role": "Context",
+      "roleHint": "E.g. Parent of a Kindy student · Kab. Bogor.",
+      "isPublished": "Show this testimonial on the site",
+      "isPublishedHint": "Hidden testimonials are kept but do not appear on the site."
+    }
+  },
+  "AdminFaq": {
+    "description": "Frequently asked questions on Home, the Program page and the Partnership page.",
+    "orderHint": "Shown on {placement}. Drag ⠿ to reorder; the order here is the order on the site.",
+    "add": "Add question",
+    "empty": "No questions for {group} yet. Add the first one so it shows on {placement}.",
+    "topics": {
+      "parents": "Parents",
+      "program": "Program",
+      "partners": "Partnership"
+    },
+    "placements": {
+      "parents": "Home",
+      "program": "the Program page",
+      "partners": "the Partnership page"
+    },
+    "filters": {
+      "label": "FAQ topic"
+    },
+    "editLabel": "Edit question: {name}",
+    "showLabel": "Show question on the site: {name}",
+    "deleteLabel": "Delete question: {name}",
+    "deleteTitle": "Delete this question?",
+    "deleteBody": "“{name}” disappears from the site and cannot be restored.",
+    "deleteConfirm": "Delete question",
+    "deleted": "Question deleted.",
+    "createTitle": "Add question",
+    "createDescription": "A new question goes to the end of its topic.",
+    "editTitle": "Edit question",
+    "editDescription": "Once saved, changes show on the site right away.",
+    "sections": {
+      "topic": {
+        "title": "Topic",
+        "description": "The page this question shows on."
+      },
+      "content": {
+        "title": "Question and answer",
+        "description": "In both languages. A tab with a red dot has fields to fix."
+      }
+    },
+    "fields": {
+      "topic": "Topic",
+      "topicHint": "Changing the topic moves it to the end of that topic's list.",
+      "question": "Question",
+      "questionHint": "Write it the way people ask it, ending with a question mark.",
+      "answer": "Answer",
+      "answerHint": "Plain text; line breaks show on the site. Google also reads this answer for FAQ results.",
+      "isPublished": "Show this question on the site",
+      "isPublishedHint": "Hidden questions are kept but do not appear on the site."
     }
   }
 }
