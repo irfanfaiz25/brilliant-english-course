@@ -1,12 +1,11 @@
 import { getTranslations } from "next-intl/server";
-import Link from "next/link";
 
+import { FilterChips } from "@/components/admin/filter-chips";
 import { ListSearch } from "@/components/admin/list-search";
 import { listHref } from "@/components/admin/list-href";
 import { adminLocale, adminRoutes } from "@/config/admin-routes";
 import type { AdminUnitFilter, AdminUnitList } from "@/features/units/admin-queries";
 import { unitStatuses } from "@/features/units/schema";
-import { cn } from "@/lib/utils";
 
 /** List URL for a filter; the page resets whenever the search or status changes. */
 export function unitListHref({ query, status, page }: Partial<AdminUnitFilter>): string {
@@ -38,39 +37,16 @@ export async function UnitFilters({
         className="lg:max-w-md"
       />
 
-      <nav aria-label={t("filters.label")} className="-mx-1 overflow-x-auto px-1 pb-1">
-        <ul className="flex w-max gap-2">
-          {chips.map((status) => {
-            const active = filter.status === status;
-            const count = counts[status ?? "all"];
-            return (
-              <li key={status ?? "all"}>
-                <Link
-                  href={unitListHref({ query: filter.query, status })}
-                  aria-current={active ? "page" : undefined}
-                  className={cn(
-                    "inline-flex h-10 items-center gap-2 rounded-full border px-4 text-body-sm font-semibold transition-colors duration-(--duration-fast)",
-                    "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
-                    active
-                      ? "border-primary bg-primary text-primary-foreground"
-                      : "border-border bg-background text-foreground hover:border-primary/60",
-                  )}
-                >
-                  {status ? t(`status.${status}`) : t("filters.all")}
-                  <span
-                    className={cn(
-                      "rounded-full px-2 text-caption",
-                      active ? "bg-white/20" : "bg-muted text-muted-foreground",
-                    )}
-                  >
-                    {count}
-                  </span>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      </nav>
+      <FilterChips
+        label={t("filters.label")}
+        chips={chips.map((status) => ({
+          key: status ?? "all",
+          label: status ? t(`status.${status}`) : t("filters.all"),
+          count: counts[status ?? "all"],
+          href: unitListHref({ query: filter.query, status }),
+          active: filter.status === status,
+        }))}
+      />
     </div>
   );
 }

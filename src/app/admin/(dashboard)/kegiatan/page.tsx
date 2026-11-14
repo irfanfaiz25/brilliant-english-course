@@ -1,4 +1,4 @@
-import { ArrowDownIcon, ArrowUpIcon, ImageIcon, PencilIcon, PlusIcon } from "lucide-react";
+import { ImageIcon, PlusIcon } from "lucide-react";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
@@ -6,8 +6,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
-import { ActionIconButton, DeleteButton, VisibilitySwitch } from "@/components/admin/row-actions";
-import { Badge } from "@/components/ui/badge";
+import { OrderedRowActions } from "@/components/admin/ordered-row-actions";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { adminLocale, adminRoutes } from "@/config/admin-routes";
@@ -108,59 +107,32 @@ async function ActivityList() {
                 {activity.audience}
               </span>
             </div>
-            <div className="flex w-full flex-wrap items-center justify-between gap-3 sm:w-auto sm:justify-end">
-              {canPublish ? (
-                <VisibilitySwitch
-                  action={setActivityPublishedAction}
-                  input={{ id: activity.id }}
-                  checked={activity.isPublished}
-                  label={t("showLabel", { name: activity.name })}
-                />
-              ) : (
-                <Badge variant={activity.isPublished ? "success" : "neutral"}>
-                  {activity.isPublished ? tVisibility("published") : tVisibility("hidden")}
-                </Badge>
-              )}
-              <div className="flex items-center gap-1">
-                {canUpdate && (
-                  <>
-                    <ActionIconButton
-                      action={moveActivityAction}
-                      input={{ id: activity.id, direction: "up" }}
-                      label={t("moveUp", { name: activity.name })}
-                      icon={<ArrowUpIcon aria-hidden />}
-                      disabled={index === 0}
-                    />
-                    <ActionIconButton
-                      action={moveActivityAction}
-                      input={{ id: activity.id, direction: "down" }}
-                      label={t("moveDown", { name: activity.name })}
-                      icon={<ArrowDownIcon aria-hidden />}
-                      disabled={index === activities.length - 1}
-                    />
-                    <Button asChild variant="ghost" size="icon-sm">
-                      <Link
-                        href={`${adminRoutes.activities}/${activity.id}`}
-                        aria-label={t("editLabel", { name: activity.name })}
-                      >
-                        <PencilIcon aria-hidden />
-                      </Link>
-                    </Button>
-                  </>
-                )}
-                {canDelete && (
-                  <DeleteButton
-                    action={deleteActivityAction}
-                    input={{ id: activity.id }}
-                    label={t("deleteLabel", { name: activity.name })}
-                    title={t("deleteTitle", { name: activity.name })}
-                    description={t("deleteBody")}
-                    confirmLabel={t("deleteConfirm")}
-                    successMessage={t("deleted")}
-                  />
-                )}
-              </div>
-            </div>
+            <OrderedRowActions
+              id={activity.id}
+              isPublished={activity.isPublished}
+              index={index}
+              total={activities.length}
+              editHref={`${adminRoutes.activities}/${activity.id}`}
+              actions={{
+                publish: setActivityPublishedAction,
+                move: moveActivityAction,
+                remove: deleteActivityAction,
+              }}
+              can={{ update: canUpdate, publish: canPublish, remove: canDelete }}
+              labels={{
+                show: t("showLabel", { name: activity.name }),
+                published: tVisibility("published"),
+                hidden: tVisibility("hidden"),
+                moveUp: t("moveUp", { name: activity.name }),
+                moveDown: t("moveDown", { name: activity.name }),
+                edit: t("editLabel", { name: activity.name }),
+                remove: t("deleteLabel", { name: activity.name }),
+                removeTitle: t("deleteTitle", { name: activity.name }),
+                removeBody: t("deleteBody"),
+                removeConfirm: t("deleteConfirm"),
+                removed: t("deleted"),
+              }}
+            />
           </li>
         ))}
       </ol>

@@ -5,9 +5,10 @@ import { activities, activityTranslations } from "@/db/schema";
 import { routing } from "@/i18n/routing";
 import { ActionFailure } from "@/lib/action-result";
 import { writeAuditLog } from "@/lib/audit";
+import { moveInOrder, type MoveDirection } from "@/lib/ordering";
 import { slugify } from "@/lib/slug";
 
-import type { ActivityForm, MoveDirection } from "./schema";
+import type { ActivityForm } from "./schema";
 
 /** `base`, or `base-2`, `base-3`, … whichever is not taken yet. */
 export function uniqueSlug(base: string, taken: ReadonlySet<string>): string {
@@ -17,16 +18,6 @@ export function uniqueSlug(base: string, taken: ReadonlySet<string>): string {
     const candidate = `${root}-${suffix}`;
     if (!taken.has(candidate)) return candidate;
   }
-}
-
-/** `ids` with `id` swapped with its neighbour in `direction`; unchanged at either end. */
-export function moveInOrder(ids: readonly string[], id: string, direction: MoveDirection) {
-  const from = ids.indexOf(id);
-  const to = direction === "up" ? from - 1 : from + 1;
-  if (from === -1 || to < 0 || to >= ids.length) return [...ids];
-  const order = [...ids];
-  [order[from], order[to]] = [order[to] as string, order[from] as string];
-  return order;
 }
 
 type Tx = Parameters<Parameters<typeof db.transaction>[0]>[0];

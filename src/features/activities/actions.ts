@@ -2,12 +2,12 @@
 
 import { cacheTags } from "@/config/cache-tags";
 import { guardedAction } from "@/features/users/guarded-action";
+import { moveSchema } from "@/lib/ordering";
 import { can } from "@/lib/permissions";
 
 import {
   activityFormSchema,
   activityIdSchema,
-  activityMoveSchema,
   activityPublishSchema,
   activityUpdateSchema,
 } from "./schema";
@@ -74,7 +74,7 @@ export async function setActivityPublishedAction(input: unknown) {
 export async function moveActivityAction(input: unknown) {
   return guardedAction({
     label: "activities",
-    schema: activityMoveSchema,
+    schema: moveSchema,
     input,
     permission: ["update", "activities"],
     tags,
