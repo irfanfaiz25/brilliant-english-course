@@ -487,6 +487,13 @@ Baseline: Penpot `02 · Dashboard` (Ringkasan, Calon Mitra, Unit Mitra, Kuota Wi
   pages › the page itself (bold, not a link, cut with an ellipsis when long). Phones show only "‹ parent" in the
   primary color, which replaces the old "← Semua …" back links; the full trail starts at `sm`. Parents are named
   by their sidebar module, so labels and URLs come from `admin-navigation.ts`.
+- **Media (Phase 4e):** the library is a card grid (2 → 3 → 4 columns) beside a sticky upload panel from `xl`
+  (above it below `xl`). Uploading never blocks: files queue (two at a time) in a list that shows each thumbnail,
+  real byte progress ("2,4 MB dari 4,4 MB", percent), then "Memproses gambar…" and the final size; a file can be
+  cancelled, and failures say what to do (another file for a wrong type or size, "ulangi" for a dropped
+  connection). Phones get the button and the rules only (no drop text). Cards show usage ("Dipakai 2×" /
+  "Belum dipakai") so cleanup is easy; an image in use has no delete button and its page lists where it is used.
+  The image picker reuses the same uploader, and a finished upload is picked right away.
 - **Record pages (Phase 4d):** a record that is worked over time (a lead) opens on its own page: the record's data
   and its history in the main column, the controls that change it (status, assignee) and related context (quota,
   linked unit) in a sticky side column from `xl`, stacked below the data on smaller screens. The history is one

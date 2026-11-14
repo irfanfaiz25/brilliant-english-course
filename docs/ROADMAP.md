@@ -93,6 +93,10 @@ Sub-phases (separate PRs): 4a Settings & SEO defaults · 4b Programs & Activitie
   The detail page shows the application, a WhatsApp chat button, status/assignee/note in one form, the village quota
   and one history of notes and changes. Persiapan holds a village slot; "Buat unit" prefills the unit form and turns
   the lead into a partner when the unit is saved.
+- 4e-1 Media ✅ (ADR-031): Media lists every image with search, a "Belum dipakai" filter and paging; uploads go
+  straight from the browser to storage (R2, or `.storage/` without R2) with live progress, then become WebP of at
+  most 2400 px. An image page shows the preview, details, its name, where it is used and delete (refused while in
+  use). The image picker of content forms can upload too. 4e-2 Blog follows.
 
 ## Phase 5 — Public website
 
