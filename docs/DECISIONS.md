@@ -212,3 +212,27 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
 - **Why:** Real data paths before the admin forms means Phase 4 only adds writes; the public UI stays exactly as reviewed. Seeding from the reviewed content keeps E2E and visual checks meaningful. Glass panels follow the product owner's request for a lighter, more dimensional admin without new colors or heavy effects; the permission-filtered menu and same-404 rule keep the UI honest without making it the security boundary.
 - **Alternatives:** Keeping fixtures until each admin module ships (two data paths per domain for months); runtime-only (dynamic) public pages to avoid a database at build time (slower first byte, loses prerendering); a separate admin UI kit (inconsistent with the site's tokens); hiding forbidden modules without a server check (not authorization).
 - **Follow-up:** Phase 8 must give the image build access to a database (or build against a migrated, seeded snapshot) because prerendering reads it.
+
+### ADR-027 — Admin settings and SEO overrides
+
+2026-11-14 · Accepted
+
+- **Decision:** Pengaturan (`/admin/pengaturan`, resource `settings`) saves the `contact` and `partnership` keys; SEO
+  (`/admin/seo`, resource `seo`) saves the `seo` key (site-wide description per locale) and `seo_overrides` rows of
+  the static pages (`seoPageKeys`, route keys `home`, `program`, `finder`, `units`, `partnership`, `blog`, `contact`).
+  Setting schemas validate both the stored JSON and the forms; their messages are error codes. Actions follow
+  validate → authorize → transaction (row + `audit_log` with `before`/`after`) → `updateTag()` so the editor sees the
+  change at once. An override field left empty is stored as `NULL` and a locale left fully empty loses its row, so
+  the defaults apply again. `noindex` applies to both locales of a page and only a user who may update `seoIndexing`
+  (super admin) changes it; for others the stored value is kept. Override titles keep the page's title shape: the
+  site-name template is added unless the page's title is complete (home). Contact placeholders moved from
+  `siteConfig` to `features/settings/defaults.ts`; public components read `getContactSettings()`. The admin
+  timestamps are shown in Asia/Jakarta.
+- **Why:** Contact details and SEO texts change without a deploy, and every change is attributable. One schema per
+  setting keeps the browser, the action and public reads in agreement; a broken stored document still falls back to
+  code defaults instead of breaking pages.
+- **Alternatives:** Keeping contact values in code (needs a developer for a phone number change); a generic key/value
+  editor (no validation, easy to break the site); `revalidateTag` with stale-while-revalidate (the admin would see the
+  old value right after saving); per-locale `noindex` (no use case, easy to misconfigure).
+- **Follow-up:** Programs, posts and units reuse `applySeoOverride()` with their own editor in 4b, 4c and 4e;
+  WhatsApp message templates and hero texts stay in messages until a module needs them editable.

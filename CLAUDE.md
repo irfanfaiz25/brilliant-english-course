@@ -144,11 +144,15 @@ Rules:
 - Admin pages render inside the shell (`app/admin/(dashboard)/layout.tsx`); a page provides an `AdminPageHeader` (its
   only `h1`) and content, never another `<main>`. Modules are listed once in `src/config/admin-navigation.ts` with the
   resource that guards them; admin data functions live in `features/<domain>/admin-queries.ts`, take the `SessionUser`
-  and call `assertCan()` before reading. Admin surfaces use `surface-glass-panel` (`DESIGN.md` § 6).
+  and call `assertCan()` before reading. Admin surfaces use `surface-glass-panel` (`DESIGN.md` § 6). Each form sits in an
+  `AdminPanel` (its `h2`, description and `LastSaved` line) and submits with `useSaveForm()` + `FormFooter`
+  (`components/admin`): browser validation with the shared schema, the raw values to the action, field errors back
+  on their fields, a toast, `router.refresh()`. Error codes are translated by `useFormErrorText()` (`AdminForms.errors`).
 - Public pages render inside `SiteShell` (`src/app/[locale]/(site)/layout.tsx`); page content starts below the header,
   so a page provides its sections, not another `<main>`. Navigation items live in `src/config/navigation.ts`.
 - WhatsApp links are always built with `buildWhatsAppUrl()` (`src/lib/whatsapp.ts`); message templates live in the
-  `WhatsApp` message namespace. Contact and social values in `siteConfig` are placeholders until Phase 4a.
+  `WhatsApp` message namespace. The head-office number, email, address, office hours and social links come from
+  `getContactSettings()` (`features/settings/queries.ts`, admin-editable in Pengaturan), never from `siteConfig`.
 - Motion: use the primitives in `src/components/motion` (import each from its own file). For custom animations use
   `m` from `motion/react-m` (LazyMotion is strict) and values from `motion/tokens.ts`; follow `DESIGN.md` § 3.
 
@@ -206,8 +210,10 @@ A change to the matrix must be mirrored in `permissions.test.ts`, which lists ev
 
 ### SEO
 
-- Metadata is generated per route via `generateMetadata` using `src/lib/seo`:
-  admin override → content-derived default → global default.
+- Metadata is generated per route via `generateMetadata`: admin override → content-derived default → global default.
+  Static pages return `pageMetadata(key, locale)` (`features/seo/pages.ts`, which also sets canonical and hreflang);
+  other routes merge `applySeoOverride()` (`features/seo/format.ts`) with `getSeoOverride()`. The root layout takes the
+  global description from the `seo` setting and `titleTemplate`. Add a new static page to `seoPageKeys` and `seoPages`.
 - Technical SEO (sitemap, robots, canonical, hreflang, JSON-LD shape) lives in code, not in the admin.
 - JSON-LD: `EducationalOrganization` (site), `LocalBusiness` (unit), `Course` (program), `Article` (post), `FAQPage`, `BreadcrumbList`.
   Render it with `<JsonLd data={…} />` and the builders in `src/lib/seo/json-ld.tsx` (`faqPageJsonLd`, `breadcrumbJsonLd`,

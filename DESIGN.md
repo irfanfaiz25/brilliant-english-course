@@ -459,6 +459,13 @@ Baseline: Penpot `02 · Dashboard` (Ringkasan, Calon Mitra, Unit Mitra, Kuota Wi
   and content cards use `surface-glass-panel` (72 % white, 16 px blur, hairline white border, `shadow-card`). Text
   never sits on raw blur: panels stay opaque enough for AA contrast without `backdrop-filter`. Active nav items are a
   solid white pill with the primary icon; module placeholders carry a "Segera" badge until their phase ships.
+- **Settings-style forms (Phase 4a):** one `AdminPanel` per independently saved form, the form's own footer with
+  Save (enabled once something changed), Discard and an "unsaved changes" note; a "last changed … by …" line under
+  the panel description. Short localized fields (SEO texts, partnership inclusions) show **both locales stacked**
+  (fieldset per locale) instead of tabs, so admins compare ID and EN at a glance; long content (blog, programs) keeps
+  the `ID | EN` tabs. Per-item editors on a list open in a right sheet (full width on phones). The SEO editor shows
+  the default text as placeholder, character counters and a live search-result preview. A navigation guard for
+  unsaved changes comes with the long forms (4b, 4e).
 
 ---
 
