@@ -2,21 +2,53 @@
 
 import { cacheTags } from "@/config/cache-tags";
 import { guardedAction } from "@/features/users/guarded-action";
+import { reorderSchema } from "@/lib/ordering";
 import { can } from "@/lib/permissions";
 
-import { levelFormSchema, levelPublishSchema } from "./schema";
-import { setLevelPublished, updateLevel } from "./service";
+import { levelFormSchema, levelKeySchema, levelPublishSchema, levelUpdateSchema } from "./schema";
+import { createLevel, deleteLevel, reorderLevels, setLevelPublished, updateLevel } from "./service";
 
-/** Saves a level's numbers, photo and copy (Home, Program and the hero age finder read them). */
-export async function updateLevelAction(input: unknown) {
+/*
+ * Levels feed Home, Program, the hero age finder and the unit cards and pages (which name the
+ * levels a unit offers), so every change expires both tags.
+ */
+const tags = [cacheTags.programs, cacheTags.units];
+
+/** Adds a level at the end of the list; returns its id and slug for the redirect. */
+export async function createLevelAction(input: unknown) {
   return guardedAction({
     label: "programs",
     schema: levelFormSchema,
     input,
-    permission: ["update", "programs"],
-    tags: [cacheTags.programs],
+    permission: ["create", "programs"],
+    tags,
     run: (form, user) =>
-      updateLevel(form, { actorId: user.id, canPublish: can(user, "publish", "programs") }),
+      createLevel(form, { actorId: user.id, canPublish: can(user, "publish", "programs") }),
+  });
+}
+
+/** Saves a level's numbers, theme, photo and copy. */
+export async function updateLevelAction(input: unknown) {
+  return guardedAction({
+    label: "programs",
+    schema: levelUpdateSchema,
+    input,
+    permission: ["update", "programs"],
+    tags,
+    run: ({ id, ...form }, user) =>
+      updateLevel(id, form, { actorId: user.id, canPublish: can(user, "publish", "programs") }),
+  });
+}
+
+/** Deletes a level no unit offers. */
+export async function deleteLevelAction(input: unknown) {
+  return guardedAction({
+    label: "programs",
+    schema: levelKeySchema,
+    input,
+    permission: ["delete", "programs"],
+    tags,
+    run: ({ id }, user) => deleteLevel(id, user.id),
   });
 }
 
@@ -27,7 +59,18 @@ export async function setLevelPublishedAction(input: unknown) {
     schema: levelPublishSchema,
     input,
     permission: ["publish", "programs"],
-    tags: [cacheTags.programs],
-    run: ({ slug, isPublished }, user) => setLevelPublished(slug, isPublished, user.id),
+    tags,
+    run: ({ id, isPublished }, user) => setLevelPublished(id, isPublished, user.id),
+  });
+}
+
+export async function reorderLevelsAction(input: unknown) {
+  return guardedAction({
+    label: "programs",
+    schema: reorderSchema,
+    input,
+    permission: ["update", "programs"],
+    tags,
+    run: ({ ids, moved }, user) => reorderLevels(ids, moved, user.id),
   });
 }

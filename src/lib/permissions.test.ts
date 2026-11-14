@@ -26,7 +26,7 @@ const expected: Record<UserRole, Partial<Record<Resource, string>>> = {
     units: "rcud",
     quota: "rcud",
     leads: "rud",
-    programs: "rup",
+    programs: "rcudp",
     activities: "rcudp",
     blog: "rcudp",
     testimonials: "rcudp",
@@ -39,7 +39,7 @@ const expected: Record<UserRole, Partial<Record<Resource, string>>> = {
   },
   editor: {
     dashboard: "r",
-    programs: "rup",
+    programs: "rcudp",
     activities: "rcudp",
     blog: "rcudp",
     testimonials: "rcudp",

@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 import { activityFixtures } from "@/db/seed/content/activities";
 
 import { activityFormSchema, activitySchema } from "./schema";
-import { uniqueSlug } from "./service";
+import { uniqueSlug } from "@/lib/slug";
 
 // `service.ts` also writes activities; these checks do not need the database.
 vi.mock("@/db/client", () => ({ db: {} }));
@@ -19,12 +19,14 @@ describe("activities", () => {
 
 describe("uniqueSlug", () => {
   it("adds the first free number when the slug is taken", () => {
-    expect(uniqueSlug("book-day", new Set())).toBe("book-day");
-    expect(uniqueSlug("book-day", new Set(["book-day", "book-day-2"]))).toBe("book-day-3");
+    expect(uniqueSlug("book-day", new Set(), "kegiatan")).toBe("book-day");
+    expect(uniqueSlug("book-day", new Set(["book-day", "book-day-2"]), "kegiatan")).toBe(
+      "book-day-3",
+    );
   });
 
   it("never returns an empty slug", () => {
-    expect(uniqueSlug("", new Set())).toBe("kegiatan");
+    expect(uniqueSlug("", new Set(), "kegiatan")).toBe("kegiatan");
   });
 });
 

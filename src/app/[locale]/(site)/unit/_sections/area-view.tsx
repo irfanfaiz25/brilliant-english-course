@@ -1,6 +1,7 @@
 import { GraduationCapIcon, LocateFixedIcon, MapPinIcon, StoreIcon } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 
+import { getLevels } from "@/features/programs/queries";
 import { getQuotaRules } from "@/features/quota/queries";
 
 import { Reveal } from "@/components/motion/reveal";
@@ -32,6 +33,7 @@ export async function AreaView(props: AreaViewProps) {
   const tNav = await getTranslations("Nav");
   const rules = await getQuotaRules();
   const locale = (await getLocale()) as Locale;
+  const levels = await getLevels(locale);
   const { province } = props;
   const area = props.kind === "regency" ? props.regency : province;
   const units =
@@ -85,7 +87,9 @@ export async function AreaView(props: AreaViewProps) {
             ? t("regencyCount", { count: province.regencies.length })
             : t("districtCount", { count: districts })}
         </HeroChip>
-        <HeroChip icon={<GraduationCapIcon aria-hidden />}>{t("levels")}</HeroChip>
+        <HeroChip icon={<GraduationCapIcon aria-hidden />}>
+          {t("levels", { levels: levels.map((level) => level.name).join(" · ") })}
+        </HeroChip>
       </PageHero>
 
       {props.kind === "province" && (

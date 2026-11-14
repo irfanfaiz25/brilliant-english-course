@@ -5,45 +5,39 @@ import { Suspense } from "react";
 
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
 import { LastSaved } from "@/components/admin/last-saved";
+import { DeleteButton } from "@/components/admin/row-actions";
 import { Skeleton } from "@/components/ui/skeleton";
 import { adminLocale, adminRoutes } from "@/config/admin-routes";
 import { getMediaOptions } from "@/features/media/admin-queries";
-import { getLevelForEdit } from "@/features/programs/admin-queries";
+import { deleteLevelAction } from "@/features/programs/actions";
 import { levelCardLabels } from "@/features/programs/admin-labels";
+import { getLevelForEdit } from "@/features/programs/admin-queries";
 import { LevelForm } from "@/features/programs/components/level-form";
-import { levelSlugs, type LevelSlug } from "@/features/programs/schema";
+import { levelSlugSchema } from "@/features/programs/schema";
 import { requirePermission } from "@/features/users/session";
 import { can } from "@/lib/permissions";
 
-/** The three levels are fixed; any other segment is a 404. */
-export function generateStaticParams() {
-  return levelSlugs.map((slug) => ({ slug }));
-}
-
-const isLevelSlug = (slug: string): slug is LevelSlug =>
-  (levelSlugs as readonly string[]).includes(slug);
-
-export async function generateMetadata({
-  params,
-}: PageProps<"/admin/program/[slug]">): Promise<Metadata> {
-  const { slug } = await params;
+export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations({ locale: adminLocale, namespace: "Admin" });
-  const name = slug.charAt(0).toUpperCase() + slug.slice(1);
-  return { title: `${t("nav.items.programs")} · ${name}` };
+  return { title: t("nav.items.programs") };
 }
 
-/** Edit one program level (Phase 4b). */
-export default async function EditLevelPage({ params }: PageProps<"/admin/program/[slug]">) {
-  const { slug } = await params;
-  if (!isLevelSlug(slug)) notFound();
+/**
+ * Edit one program level (Phase 4b; deletable since ADR-038). Levels are added in admin, so the
+ * slug is request data and is read inside the boundary.
+ */
+export default function EditLevelPage({ params }: PageProps<"/admin/program/[slug]">) {
   return (
     <Suspense fallback={<EditSkeleton />}>
-      <EditLevel slug={slug} />
+      <EditLevel params={params} />
     </Suspense>
   );
 }
 
-async function EditLevel({ slug }: { slug: LevelSlug }) {
+async function EditLevel({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  // Anything that is not a slug cannot be a level (and is not worth a query).
+  if (!levelSlugSchema.safeParse(slug).success) notFound();
   const path = `${adminRoutes.programs}/${slug}`;
   const user = await requirePermission("update", "programs", path);
   const [t, level, mediaOptions, previewLabels] = await Promise.all([
@@ -53,13 +47,14 @@ async function EditLevel({ slug }: { slug: LevelSlug }) {
     levelCardLabels(),
   ]);
   if (!level) notFound();
+  const name = level.values.texts.id.name || slug;
 
   return (
     <>
       <AdminPageHeader
         breadcrumbs={["programs"]}
-        title={t("editTitle", { name: level.values.texts.id.name || slug })}
-        crumb={level.values.texts.id.name || slug}
+        title={t("editTitle", { name })}
+        crumb={name}
         description={
           <>
             {t("editDescription")}{" "}
@@ -68,8 +63,26 @@ async function EditLevel({ slug }: { slug: LevelSlug }) {
             </span>
           </>
         }
+        actions={
+          // A level units still offer cannot be deleted (the service refuses it too).
+          can(user, "delete", "programs") &&
+          level.unitCount === 0 && (
+            <DeleteButton
+              action={deleteLevelAction}
+              input={{ id: level.id }}
+              label={t("deleteLabel", { name })}
+              title={t("deleteTitle", { name })}
+              description={t("deleteBody")}
+              confirmLabel={t("deleteConfirm")}
+              successMessage={t("deleted")}
+              redirectTo={adminRoutes.programs}
+              showLabel
+            />
+          )
+        }
       />
       <LevelForm
+        id={level.id}
         defaultValues={level.values}
         mediaOptions={mediaOptions}
         canUploadMedia={can(user, "create", "media")}

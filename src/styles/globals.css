@@ -77,6 +77,10 @@
   --color-amber-700: #8a5a00;
   --color-red-700: #b42318;
   --color-blue-700: #1d5fbf;
+  /* Extra program theme (ADR-038); not in Penpot. */
+  --color-berry-50: #fbeaf3;
+  --color-berry-500: #b8327f;
+  --color-berry-700: #8a1f5d;
 
   --color-whatsapp-500: #25d366;
   /* Hover/pressed shade; not in Penpot. */
@@ -167,6 +171,16 @@
   --color-level-secondary: var(--color-orange-500);
   --color-level-secondary-soft: var(--color-orange-50);
   --color-level-secondary-strong: var(--color-orange-700);
+  /* Extra program themes an admin can pick for a new level (ADR-038). */
+  --color-level-blue: var(--color-blue-500);
+  --color-level-blue-soft: var(--color-blue-50);
+  --color-level-blue-strong: var(--color-blue-700);
+  --color-level-green: var(--color-green-500);
+  --color-level-green-soft: var(--color-green-50);
+  --color-level-green-strong: var(--color-green-700);
+  --color-level-berry: var(--color-berry-500);
+  --color-level-berry-soft: var(--color-berry-50);
+  --color-level-berry-strong: var(--color-berry-700);
 
   --color-overlay: rgb(10 41 48 / 0.48);
 

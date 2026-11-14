@@ -34,10 +34,13 @@ function hasArrived(target: HTMLElement): boolean {
  * - Plain `#slug` anchors: they work without JS and scroll smoothly (global `scroll-behavior`).
  * - IntersectionObserver marks the section whose top most recently passed the top 40% of the viewport.
  * - A pill slides under the current tab (measured position, CSS transform transition).
+ * - When the tabs do not fit (many levels, phones) the row scrolls, keeps the current tab in view
+ *   and fades the edge where more tabs wait.
  */
 export function SectionTabs({ tabs, label }: { tabs: readonly SectionTab[]; label: string }) {
   const [current, setCurrent] = useState(tabs[0]?.slug ?? "");
   const [indicator, setIndicator] = useState({ x: 0, width: 0, ready: false });
+  const [edges, setEdges] = useState({ start: false, end: false });
   const listRef = useRef<HTMLUListElement>(null);
   const linkRefs = useRef(new Map<string, HTMLAnchorElement>());
   /**
@@ -106,6 +109,25 @@ export function SectionTabs({ tabs, label }: { tabs: readonly SectionTab[]; labe
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tabs]);
 
+  // Which ends of the row hide more tabs (a pixel of slack for fractional widths).
+  useEffect(() => {
+    const list = listRef.current;
+    if (!list) return;
+    const update = () =>
+      setEdges({
+        start: list.scrollLeft > 1,
+        end: list.scrollLeft + list.clientWidth < list.scrollWidth - 1,
+      });
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(list);
+    list.addEventListener("scroll", update, { passive: true });
+    return () => {
+      observer.disconnect();
+      list.removeEventListener("scroll", update);
+    };
+  }, []);
+
   // Move the pill under the current tab. Offsets are relative to the list (the pill's positioned
   // container); on small screens the list also scrolls horizontally to keep the tab in view.
   useLayoutEffect(() => {
@@ -139,7 +161,14 @@ export function SectionTabs({ tabs, label }: { tabs: readonly SectionTab[]; labe
     >
       <ul
         ref={listRef}
-        className="relative mx-auto flex w-fit max-w-full [scrollbar-width:none] gap-1 overflow-x-auto rounded-full p-1"
+        className={cn(
+          "relative mx-auto flex w-fit max-w-full [scrollbar-width:none] gap-1 overflow-x-auto rounded-full p-1",
+          edges.start && edges.end
+            ? "[mask-image:linear-gradient(to_right,transparent,black_2.5rem,black_calc(100%-2.5rem),transparent)]"
+            : edges.end
+              ? "[mask-image:linear-gradient(to_right,black_calc(100%-2.5rem),transparent)]"
+              : edges.start && "[mask-image:linear-gradient(to_right,transparent,black_2.5rem)]",
+        )}
       >
         <span
           aria-hidden

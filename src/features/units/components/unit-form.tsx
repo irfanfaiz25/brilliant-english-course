@@ -20,7 +20,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { adminRoutes } from "@/config/admin-routes";
 import { limits } from "@/config/limits";
 import { levelTheme } from "@/features/programs/level-theme";
-import type { LevelSlug } from "@/features/programs/schema";
+import type { LevelBadge } from "@/features/programs/schema";
 import { RegionPicker } from "@/features/regions/components/region-picker";
 import type { RegionPickerLevel } from "@/features/regions/picker";
 import { cn } from "@/lib/utils";
@@ -50,7 +50,7 @@ type UnitFormProps = {
   regionLevels: readonly RegionPickerLevel[];
   /** District and regency names of the saved village, for the preview. */
   place: { district: string; regency: string };
-  levelOptions: readonly { slug: LevelSlug; name: string }[];
+  levelOptions: readonly LevelBadge[];
   templates: UnitCardTemplates;
 };
 
@@ -96,6 +96,7 @@ export function UnitForm({
       <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_22rem]">
         <UnitCardPreview
           control={form.control}
+          levelOptions={levelOptions}
           templates={templates}
           code={code}
           district={place.district || "—"}
@@ -332,7 +333,7 @@ export function UnitForm({
                             "flex h-11 cursor-pointer items-center gap-2.5 rounded-lg border px-4 text-body-sm font-semibold transition-colors duration-(--duration-fast)",
                             "has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-ring",
                             checked
-                              ? cn("border-transparent", levelTheme[level.slug].soft)
+                              ? cn("border-transparent", levelTheme[level.theme].soft)
                               : "border-border bg-background hover:border-primary/60",
                           )}
                         >

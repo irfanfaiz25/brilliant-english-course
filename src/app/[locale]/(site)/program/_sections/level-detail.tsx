@@ -49,7 +49,7 @@ export async function LevelDetail({
   const tWhatsApp = await getTranslations("WhatsApp");
   const contact = await getContactSettings();
   const locale = (await getLocale()) as Locale;
-  const theme = levelTheme[level.slug];
+  const theme = levelTheme[level.theme];
   const headingId = `${level.slug}-title`;
 
   return (

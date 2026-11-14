@@ -1,9 +1,9 @@
 import "server-only";
 
-import { asc, eq } from "drizzle-orm";
+import { asc, count, eq } from "drizzle-orm";
 
 import { db } from "@/db/client";
-import { mediaAssets, programLevels, programLevelTranslations } from "@/db/schema";
+import { mediaAssets, programLevels, programLevelTranslations, unitLevels } from "@/db/schema";
 import { mediaUrl } from "@/features/media/service";
 import type { SessionUser } from "@/features/users/schema";
 import { routing, type Locale } from "@/i18n/routing";
@@ -11,7 +11,7 @@ import { toRows } from "@/lib/form-schemas";
 import { assertCan } from "@/lib/permissions";
 import { groupTranslations, pickTranslation } from "@/lib/translations";
 
-import type { LevelFormInput, LevelSlug } from "./schema";
+import type { LevelFormInput, LevelTheme } from "./schema";
 
 /*
  * Admin reads of program levels: every level (published or not) with both locales. Uncached and
@@ -19,7 +19,12 @@ import type { LevelFormInput, LevelSlug } from "./schema";
  */
 
 export type AdminLevel = {
-  slug: LevelSlug;
+  id: string;
+  slug: string;
+  theme: LevelTheme;
+  inAgeFinder: boolean;
+  /** Units that offer the level; a level offered anywhere cannot be deleted. */
+  unitCount: number;
   name: string;
   tagline: string;
   ageMin: number;
@@ -34,19 +39,28 @@ export type AdminLevel = {
 /** All levels in display order, named in the admin locale. */
 export async function getAdminLevels(actor: SessionUser, locale: Locale): Promise<AdminLevel[]> {
   assertCan(actor, "read", "programs");
-  const [levels, translations] = await Promise.all([
+  const [levels, translations, offers] = await Promise.all([
     db
       .select({ level: programLevels, imageKey: mediaAssets.key })
       .from(programLevels)
       .leftJoin(mediaAssets, eq(mediaAssets.id, programLevels.imageId))
       .orderBy(asc(programLevels.sortOrder)),
     db.select().from(programLevelTranslations),
+    db
+      .select({ levelId: unitLevels.levelId, units: count() })
+      .from(unitLevels)
+      .groupBy(unitLevels.levelId),
   ]);
   const byLevel = groupTranslations(translations, (row) => row.levelId);
+  const unitCounts = new Map(offers.map((row) => [row.levelId, row.units]));
   return levels.map(({ level, imageKey }) => {
     const text = pickTranslation(byLevel.get(level.id) ?? [], locale);
     return {
-      slug: level.slug as LevelSlug,
+      id: level.id,
+      slug: level.slug,
+      theme: level.theme,
+      inAgeFinder: level.inAgeFinder,
+      unitCount: unitCounts.get(level.id) ?? 0,
       name: text?.name ?? level.slug,
       tagline: text?.tagline ?? "",
       ageMin: level.ageMin,
@@ -61,6 +75,9 @@ export async function getAdminLevels(actor: SessionUser, locale: Locale): Promis
 }
 
 export type LevelForEdit = {
+  id: string;
+  /** Units that offer the level (it can be deleted only at 0). */
+  unitCount: number;
   values: LevelFormInput;
   imageSrc: string | null;
   updatedAt: Date;
@@ -79,7 +96,7 @@ const emptyText = {
 /** One level as form values (lists as rows), or `null` for an unknown slug. */
 export async function getLevelForEdit(
   actor: SessionUser,
-  slug: LevelSlug,
+  slug: string,
 ): Promise<LevelForEdit | null> {
   assertCan(actor, "read", "programs");
   const [row] = await db
@@ -89,10 +106,13 @@ export async function getLevelForEdit(
     .where(eq(programLevels.slug, slug));
   if (!row) return null;
   const { level, imageKey } = row;
-  const translations = await db
-    .select()
-    .from(programLevelTranslations)
-    .where(eq(programLevelTranslations.levelId, level.id));
+  const [translations, [offers]] = await Promise.all([
+    db
+      .select()
+      .from(programLevelTranslations)
+      .where(eq(programLevelTranslations.levelId, level.id)),
+    db.select({ units: count() }).from(unitLevels).where(eq(unitLevels.levelId, level.id)),
+  ]);
 
   const textFor = (locale: Locale) => {
     const text = translations.find((translation) => translation.locale === locale) ?? emptyText;
@@ -108,8 +128,11 @@ export async function getLevelForEdit(
   };
 
   return {
+    id: level.id,
+    unitCount: offers?.units ?? 0,
     values: {
-      slug,
+      theme: level.theme,
+      inAgeFinder: level.inAgeFinder,
       ageMin: level.ageMin,
       ageMax: level.ageMax,
       sessionsPerWeek: level.sessionsPerWeek,

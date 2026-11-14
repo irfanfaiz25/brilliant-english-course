@@ -17,7 +17,7 @@ export async function loadUnitFormData(user: SessionUser, villageCode: string | 
     regionLevels[index]?.options.find((option) => option.code === regionLevels[index]?.value)
       ?.name ?? "";
   return {
-    levelOptions: levels.map((level) => ({ slug: level.slug, name: level.name })),
+    levelOptions: levels.map(({ slug, name, theme }) => ({ slug, name, theme })),
     regionLevels,
     templates,
     place: { regency: name(1), district: name(2) },

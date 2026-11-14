@@ -1,17 +1,27 @@
 import { z } from "zod";
 
-import { levelSlugs } from "@/config/enums";
+import { levelThemes } from "@/config/enums";
 import { limits } from "@/config/limits";
 import { imageIdField, integerField, rowListField, textField } from "@/lib/form-schemas";
 import { imageSchema } from "@/lib/schemas";
 
-export { levelSlugs };
-export type LevelSlug = (typeof levelSlugs)[number];
+export { levelThemes };
+export type LevelTheme = (typeof levelThemes)[number];
+
+/** A level's slug: its anchor on the Program page (`/program#<slug>`) and its admin URL. */
+export const levelSlugSchema = z
+  .string()
+  .min(1)
+  .max(limits.programs.slugMax)
+  .regex(/^[a-z0-9]+(-[a-z0-9]+)*$/);
 
 /** A program level as shown on the public site (already resolved to one locale). */
 export const levelSchema = z
   .object({
-    slug: z.enum(levelSlugs),
+    slug: levelSlugSchema,
+    theme: z.enum(levelThemes),
+    /** Listed by the hero age chips (special programs may stay out and overlap other ages). */
+    inAgeFinder: z.boolean(),
     name: z.string().min(1),
     ageMin: z.number().int().min(3),
     ageMax: z.number().int().max(18),
@@ -31,10 +41,14 @@ export const levelSchema = z
 
 export type Level = z.infer<typeof levelSchema>;
 
+/** What a level badge needs (unit cards and lists name the levels a unit offers). */
+export type LevelBadge = Pick<Level, "slug" | "name" | "theme">;
+
 /*
- * Admin form (Phase 4b). Levels are fixed (`levelSlugs` drive URLs and colors), so admins edit a
- * level's numbers, photo and copy but cannot add or remove one. Both locales are required: the
- * copy is short and the site is fully bilingual. Messages are codes (`lib/form-schemas`).
+ * Admin form (Phase 4b, open-ended since ADR-038). The slug is derived once from the Indonesian
+ * name when a level is added and never changes; the theme comes from a fixed palette. Both
+ * locales are required: the copy is short and the site is fully bilingual. Messages are codes
+ * (`lib/form-schemas`).
  */
 
 const L = limits.programs;
@@ -49,21 +63,32 @@ const levelTextSchema = z.object({
   imageAlt: textField(3, limits.imageAltMax),
 });
 
-export const levelFormSchema = z
-  .object({
-    slug: z.enum(levelSlugs),
-    ageMin: integerField(L.ageMin, L.ageMax),
-    ageMax: integerField(L.ageMin, L.ageMax),
-    sessionsPerWeek: integerField(1, L.sessionsPerWeekMax),
-    maxStudentsPerClass: integerField(1, L.studentsPerClassMax),
-    imageId: imageIdField,
-    isPublished: z.boolean(),
-    texts: z.object({ id: levelTextSchema, en: levelTextSchema }),
-  })
-  .refine((level) => level.ageMin <= level.ageMax, { message: "ageRange", path: ["ageMax"] });
+const levelFields = z.object({
+  theme: z.enum(levelThemes),
+  inAgeFinder: z.boolean(),
+  ageMin: integerField(L.ageMin, L.ageMax),
+  ageMax: integerField(L.ageMin, L.ageMax),
+  sessionsPerWeek: integerField(1, L.sessionsPerWeekMax),
+  maxStudentsPerClass: integerField(1, L.studentsPerClassMax),
+  imageId: imageIdField,
+  isPublished: z.boolean(),
+  texts: z.object({ id: levelTextSchema, en: levelTextSchema }),
+});
+
+const validAgeRange = (level: { ageMin: number; ageMax: number }) => level.ageMin <= level.ageMax;
+const ageRangeError = { message: "ageRange", path: ["ageMax"] };
+
+/** Adding a level (no slug yet: the service derives it from the name). */
+export const levelFormSchema = levelFields.refine(validAgeRange, ageRangeError);
+
+/** Saving an existing level. */
+export const levelUpdateSchema = levelFields
+  .extend({ id: z.uuid() })
+  .refine(validAgeRange, ageRangeError);
 
 export type LevelFormInput = z.input<typeof levelFormSchema>;
 export type LevelForm = z.output<typeof levelFormSchema>;
 export type LevelText = z.output<typeof levelTextSchema>;
 
-export const levelPublishSchema = z.object({ slug: z.enum(levelSlugs), isPublished: z.boolean() });
+export const levelKeySchema = z.object({ id: z.uuid() });
+export const levelPublishSchema = levelKeySchema.extend({ isPublished: z.boolean() });

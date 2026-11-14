@@ -45,7 +45,7 @@ export default async function ProgramPage({ params }: PageProps<"/[locale]/progr
 
   return (
     <PageCanvas>
-      <ProgramHero />
+      <ProgramHero levelCount={levels.length} />
       <SectionTabs
         label={t("tabs.label")}
         tabs={levels.map((level) => ({

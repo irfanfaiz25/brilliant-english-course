@@ -212,7 +212,7 @@ export async function UnitView({
             </div>
             <Stagger as="ul" className="flex flex-col gap-3">
               {offered.map((level) => {
-                const theme = levelTheme[level.slug];
+                const theme = levelTheme[level.theme];
                 return (
                   <StaggerItem key={level.slug} as="li">
                     <Link

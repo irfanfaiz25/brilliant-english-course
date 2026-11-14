@@ -11,6 +11,8 @@ export const levelFixtures: Record<Locale, Level[]> = {
   id: [
     {
       slug: "kindy",
+      theme: "sunny",
+      inAgeFinder: true,
       name: "Kindy",
       ageMin: 4,
       ageMax: 6,
@@ -35,6 +37,8 @@ export const levelFixtures: Record<Locale, Level[]> = {
     },
     {
       slug: "intro",
+      theme: "teal",
+      inAgeFinder: true,
       name: "Intro",
       ageMin: 7,
       ageMax: 9,
@@ -58,6 +62,8 @@ export const levelFixtures: Record<Locale, Level[]> = {
     },
     {
       slug: "secondary",
+      theme: "orange",
+      inAgeFinder: true,
       name: "Secondary",
       ageMin: 10,
       ageMax: 15,
@@ -83,6 +89,8 @@ export const levelFixtures: Record<Locale, Level[]> = {
   en: [
     {
       slug: "kindy",
+      theme: "sunny",
+      inAgeFinder: true,
       name: "Kindy",
       ageMin: 4,
       ageMax: 6,
@@ -107,6 +115,8 @@ export const levelFixtures: Record<Locale, Level[]> = {
     },
     {
       slug: "intro",
+      theme: "teal",
+      inAgeFinder: true,
       name: "Intro",
       ageMin: 7,
       ageMax: 9,
@@ -130,6 +140,8 @@ export const levelFixtures: Record<Locale, Level[]> = {
     },
     {
       slug: "secondary",
+      theme: "orange",
+      inAgeFinder: true,
       name: "Secondary",
       ageMin: 10,
       ageMax: 15,

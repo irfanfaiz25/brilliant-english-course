@@ -3,14 +3,15 @@ import "server-only";
 import { and, asc, eq, ilike, inArray, isNull, or, sql, type SQL } from "drizzle-orm";
 import { alias } from "drizzle-orm/pg-core";
 
+import { adminLocale } from "@/config/admin-routes";
 import { limits } from "@/config/limits";
 import { db } from "@/db/client";
-import { programLevels, regions, unitLevels, units } from "@/db/schema";
+import { programLevels, programLevelTranslations, regions, unitLevels, units } from "@/db/schema";
 import { shortRegionName } from "@/features/regions/service";
 import type { SessionUser } from "@/features/users/schema";
 import { assertCan } from "@/lib/permissions";
 
-import type { LevelSlug } from "@/features/programs/schema";
+import type { LevelBadge } from "@/features/programs/schema";
 
 import type { EnrollmentStatus, UnitFormInput, UnitStatus } from "./schema";
 import { timeOfDay } from "./service";
@@ -41,7 +42,7 @@ export type AdminUnitRow = {
   village: string;
   regency: string;
   studentsCount: number;
-  levels: LevelSlug[];
+  levels: LevelBadge[];
 };
 
 export type AdminUnitList = {
@@ -52,17 +53,30 @@ export type AdminUnitList = {
   counts: Record<UnitStatus | "all", number>;
 };
 
-async function levelsOf(unitIds: readonly string[]): Promise<Map<string, LevelSlug[]>> {
+/** The levels each unit offers, in display order, named in the admin locale. */
+async function levelsOf(unitIds: readonly string[]): Promise<Map<string, LevelBadge[]>> {
   if (unitIds.length === 0) return new Map();
   const rows = await db
-    .select({ unitId: unitLevels.unitId, slug: programLevels.slug })
+    .select({
+      unitId: unitLevels.unitId,
+      slug: programLevels.slug,
+      theme: programLevels.theme,
+      name: programLevelTranslations.name,
+    })
     .from(unitLevels)
     .innerJoin(programLevels, eq(programLevels.id, unitLevels.levelId))
+    .innerJoin(
+      programLevelTranslations,
+      and(
+        eq(programLevelTranslations.levelId, programLevels.id),
+        eq(programLevelTranslations.locale, adminLocale),
+      ),
+    )
     .where(inArray(unitLevels.unitId, [...unitIds]))
     .orderBy(asc(programLevels.sortOrder));
-  const byUnit = new Map<string, LevelSlug[]>();
-  for (const row of rows) {
-    byUnit.set(row.unitId, [...(byUnit.get(row.unitId) ?? []), row.slug as LevelSlug]);
+  const byUnit = new Map<string, LevelBadge[]>();
+  for (const { unitId, ...level } of rows) {
+    byUnit.set(unitId, [...(byUnit.get(unitId) ?? []), level]);
   }
   return byUnit;
 }
@@ -167,7 +181,7 @@ export async function getUnitForEdit(actor: SessionUser, id: string): Promise<Un
       openDays: unit.openDays,
       opensAt: timeOfDay(unit.opensAt),
       closesAt: timeOfDay(unit.closesAt),
-      levels: levels.get(id) ?? [],
+      levels: (levels.get(id) ?? []).map((level) => level.slug),
       studentsCount: unit.studentsCount,
       openedAt: unit.openedAt ?? "",
     },

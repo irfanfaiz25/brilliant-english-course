@@ -117,28 +117,28 @@ export async function HeroSection({ levels }: { levels: Level[] }) {
             </Button>
           </div>
 
-          <div
-            style={enterDelay(3)}
-            className="grid animate-rise-in grid-cols-3 items-center gap-2 sm:flex sm:flex-wrap"
-          >
-            <span className="col-span-3 text-label text-muted-foreground sm:col-span-1">
+          {/* Chips wrap three to a row on phones, so any number of finder levels lines up. */}
+          <div style={enterDelay(3)} className="flex animate-rise-in flex-wrap items-center gap-2">
+            <span className="w-full text-label text-muted-foreground sm:w-auto">
               {t("agePrompt")}
             </span>
-            {levels.map((level) => (
-              <a
-                key={level.slug}
-                href={`#level-${level.slug}`}
-                className={cn(
-                  "inline-flex h-10 items-center justify-center rounded-full border border-border bg-background px-4 text-label text-foreground shadow-sm",
-                  "transition-[transform,border-color,background-color,box-shadow] duration-(--duration-fast) ease-out hover:-translate-y-0.5 hover:shadow-md",
-                  levelTheme[level.slug].chip,
-                )}
-              >
-                {t("ageOption", { min: level.ageMin, max: level.ageMax })}
-                {/* Extra context for screen readers; the name still starts with the visible text. */}
-                <span className="sr-only"> — {t("ageOptionHint", { level: level.name })}</span>
-              </a>
-            ))}
+            {levels
+              .filter((level) => level.inAgeFinder)
+              .map((level) => (
+                <a
+                  key={level.slug}
+                  href={`#level-${level.slug}`}
+                  className={cn(
+                    "inline-flex h-10 basis-[calc((100%-1rem)/3)] items-center justify-center rounded-full border border-border bg-background px-4 text-label text-foreground shadow-sm sm:basis-auto",
+                    "transition-[transform,border-color,background-color,box-shadow] duration-(--duration-fast) ease-out hover:-translate-y-0.5 hover:shadow-md",
+                    levelTheme[level.theme].chip,
+                  )}
+                >
+                  {t("ageOption", { min: level.ageMin, max: level.ageMax })}
+                  {/* Extra context for screen readers; the name still starts with the visible text. */}
+                  <span className="sr-only"> — {t("ageOptionHint", { level: level.name })}</span>
+                </a>
+              ))}
           </div>
 
           <p style={enterDelay(4)} className="animate-rise-in text-body-sm text-muted-foreground">
@@ -182,7 +182,7 @@ export async function HeroSection({ levels }: { levels: Level[] }) {
             className="top-6 -left-4 sm:-left-8"
             tone="primary"
           >
-            {t("badgeLevels")}
+            {t("badgeLevels", { count: levels.length })}
           </HeroBadge>
           <HeroBadge
             icon={<MapPinIcon aria-hidden />}

@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 
 import { AdminPanel } from "@/components/admin/admin-panel";
@@ -17,16 +18,20 @@ import { useSaveForm } from "@/components/admin/use-save-form";
 import { Field } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { adminRoutes } from "@/config/admin-routes";
 import { limits } from "@/config/limits";
 import type { MediaOption } from "@/features/media/admin-queries";
 
-import { updateLevelAction } from "../actions";
-import { LevelCardPreview, type LevelCardLabels } from "./level-card-preview";
+import { createLevelAction, updateLevelAction } from "../actions";
 import { levelFormSchema, type LevelForm as LevelFormOutput, type LevelFormInput } from "../schema";
+import { LevelCardPreview, type LevelCardLabels } from "./level-card-preview";
+import { LevelThemePicker } from "./level-theme-picker";
 
 const L = limits.programs;
 
 type LevelFormProps = {
+  /** The level being edited; absent when adding a new one. */
+  id?: string;
   defaultValues: LevelFormInput;
   mediaOptions: readonly MediaOption[];
   /** Shows "upload a new image" in the picker (`media` create permission). */
@@ -38,8 +43,9 @@ type LevelFormProps = {
   previewLabels: LevelCardLabels;
 };
 
-/** A program level: class details, photo and bilingual copy, saved together. */
+/** Add or edit a program level: class details, color, photo and bilingual copy, saved together. */
 export function LevelForm({
+  id,
   defaultValues,
   mediaOptions,
   canUploadMedia,
@@ -49,14 +55,18 @@ export function LevelForm({
 }: LevelFormProps) {
   const t = useTranslations("AdminPrograms");
   const errorText = useFormErrorText();
+  const router = useRouter();
   const form = useForm<LevelFormInput, unknown, LevelFormOutput>({
     resolver: zodResolver(levelFormSchema),
     defaultValues,
   });
   const { errors, isDirty } = form.formState;
   const tabs = useLocaleTabs(errors);
-  const { onSubmit, isPending } = useSaveForm(form, updateLevelAction, {
+  const { onSubmit, isPending } = useSaveForm(form, id ? updateLevelAction : createLevelAction, {
+    toInput: (values) => (id ? { ...values, id } : values),
     onInvalid: tabs.showInvalid,
+    // A new level goes back to the list, where it appears at the end.
+    onSaved: id ? undefined : () => router.push(adminRoutes.programs),
   });
   const number = { valueAsNumber: true } as const;
 
@@ -127,6 +137,11 @@ export function LevelForm({
                 )}
               </Field>
             </div>
+            <PublishedCheckbox
+              label={t("fields.inAgeFinder")}
+              hint={t("fields.inAgeFinderHint")}
+              {...form.register("inAgeFinder")}
+            />
             {canPublish && (
               <PublishedCheckbox
                 label={t("fields.isPublished")}
@@ -136,26 +151,37 @@ export function LevelForm({
             )}
           </AdminPanel>
 
-          <AdminPanel
-            title={t("sections.photo.title")}
-            description={t("sections.photo.description")}
-          >
-            <Controller
-              control={form.control}
-              name="imageId"
-              render={({ field, fieldState }) => (
-                <MediaPicker
-                  value={field.value}
-                  onChange={field.onChange}
-                  options={mediaOptions}
-                  canUpload={canUploadMedia}
-                  label={t("fields.image")}
-                  error={errorText(fieldState.error?.message)}
-                  disabled={!canEdit}
-                />
-              )}
-            />
-          </AdminPanel>
+          <div className="flex flex-col gap-6">
+            <AdminPanel
+              title={t("sections.appearance.title")}
+              description={t("sections.appearance.description")}
+            >
+              <LevelThemePicker
+                field={form.register("theme")}
+                error={errorText(errors.theme?.message)}
+              />
+            </AdminPanel>
+            <AdminPanel
+              title={t("sections.photo.title")}
+              description={t("sections.photo.description")}
+            >
+              <Controller
+                control={form.control}
+                name="imageId"
+                render={({ field, fieldState }) => (
+                  <MediaPicker
+                    value={field.value}
+                    onChange={field.onChange}
+                    options={mediaOptions}
+                    canUpload={canUploadMedia}
+                    label={t("fields.image")}
+                    error={errorText(fieldState.error?.message)}
+                    disabled={!canEdit}
+                  />
+                )}
+              />
+            </AdminPanel>
+          </div>
         </div>
 
         <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_22rem]">
@@ -280,7 +306,14 @@ export function LevelForm({
         </div>
 
         {canEdit && (
-          <FormFooter sticky isDirty={isDirty} isPending={isPending} onReset={() => form.reset()} />
+          <FormFooter
+            sticky
+            saveWhenClean={!id}
+            saveLabel={id ? undefined : t("add")}
+            isDirty={isDirty}
+            isPending={isPending}
+            onReset={() => form.reset()}
+          />
         )}
       </fieldset>
     </form>

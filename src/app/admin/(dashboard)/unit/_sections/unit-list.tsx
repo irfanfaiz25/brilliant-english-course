@@ -18,8 +18,6 @@ const enrollmentBadge = {
   full: "destructive",
 } as const satisfies Record<EnrollmentStatus, NonNullable<BadgeProps["variant"]>>;
 
-const levelNames = { kindy: "Kindy", intro: "Intro", secondary: "Secondary" } as const;
-
 type UnitListProps = {
   rows: readonly AdminUnitRow[];
   /** A search or status filter is applied (changes the empty message). */
@@ -81,8 +79,8 @@ export async function UnitList({ rows, filtered, canUpdate, canDelete }: UnitLis
   const levels = (row: AdminUnitRow) => (
     <span className="flex flex-wrap gap-1">
       {row.levels.map((level) => (
-        <Badge key={level} variant={levelTheme[level].badge} className="px-2 py-0.5">
-          {levelNames[level]}
+        <Badge key={level.slug} variant={levelTheme[level.theme].badge} className="px-2 py-0.5">
+          {level.name}
         </Badge>
       ))}
     </span>

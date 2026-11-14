@@ -19,7 +19,7 @@ type LevelCardProps = {
  * Its id (`level-<slug>`) is the target of the hero age chips, which highlight it via `:target`.
  */
 export function LevelCard({ level, ageLabel, detailLabel }: LevelCardProps) {
-  const theme = levelTheme[level.slug];
+  const theme = levelTheme[level.theme];
 
   return (
     <article

@@ -11,6 +11,7 @@ import { BrandIcon } from "@/components/icons/brand-icon";
 import { Badge, type BadgeProps } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { levelTheme } from "@/features/programs/level-theme";
+import type { LevelBadge } from "@/features/programs/schema";
 import { Link } from "@/i18n/navigation";
 
 import type { EnrollmentStatus, UnitSummary } from "../schema";
@@ -22,8 +23,6 @@ const enrollmentBadge: Record<EnrollmentStatus, NonNullable<BadgeProps["variant"
   full: "destructive",
 };
 
-const levelNames = { kindy: "Kindy", intro: "Intro", secondary: "Secondary" } as const;
-
 /** Every text of the card, already translated and filled in for one unit. */
 export type UnitCardText = {
   code: string;
@@ -31,6 +30,8 @@ export type UnitCardText = {
   manager: string;
   schedule: string;
   whatsappUrl: string;
+  /** The levels the unit offers that are on the site, in display order. */
+  levelBadges: readonly LevelBadge[];
   labels: {
     address: string;
     manager: string;
@@ -106,9 +107,9 @@ export function UnitCardView({ unit, text, distanceLabel, path }: UnitCardViewPr
       </dl>
 
       <ul aria-label={text.labels.levels} className="flex flex-wrap gap-1.5">
-        {unit.levels.map((level) => (
-          <li key={level}>
-            <Badge variant={levelTheme[level].badge}>{levelNames[level]}</Badge>
+        {text.levelBadges.map((level) => (
+          <li key={level.slug}>
+            <Badge variant={levelTheme[level.theme].badge}>{level.name}</Badge>
           </li>
         ))}
       </ul>

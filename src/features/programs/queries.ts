@@ -10,7 +10,7 @@ import { toImageRef } from "@/features/media/service";
 import type { Locale } from "@/i18n/routing";
 import { groupTranslations, pickTranslation } from "@/lib/translations";
 
-import type { Level, LevelSlug } from "./schema";
+import type { Level } from "./schema";
 
 /** Published program levels in display order, resolved to `locale`. */
 export async function getLevels(locale: Locale): Promise<Level[]> {
@@ -35,7 +35,9 @@ export async function getLevels(locale: Locale): Promise<Level[]> {
     if (!text || !image) return [];
     return [
       {
-        slug: level.slug as LevelSlug,
+        slug: level.slug,
+        theme: level.theme,
+        inAgeFinder: level.inAgeFinder,
         name: text.name,
         ageMin: level.ageMin,
         ageMax: level.ageMax,
