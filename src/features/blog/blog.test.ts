@@ -23,7 +23,7 @@ describe("post fixtures", () => {
   it("are valid, with unique slugs per locale", () => {
     postFixtures.forEach((record) => postRecordSchema.parse(record));
     for (const locale of ["id", "en"] as const) {
-      const slugs = postFixtures.map((record) => record.translations[locale].slug);
+      const slugs = postFixtures.flatMap((record) => record.translations[locale]?.slug ?? []);
       expect(new Set(slugs).size).toBe(slugs.length);
     }
   });
@@ -62,14 +62,20 @@ describe("rich text helpers", () => {
 describe("toPost", () => {
   it("resolves one locale and keeps every slug", () => {
     const record = postFixtures[0];
-    if (!record) throw new Error("fixtures are empty");
+    const en = record?.translations.en;
+    if (!record || !en) throw new Error("the first fixture needs both languages");
     const post = toPost(record, "en");
-    expect(post.slug).toBe(record.translations.en.slug);
-    expect(post.slugs).toEqual({
-      id: record.translations.id.slug,
-      en: record.translations.en.slug,
-    });
-    expect(post.cover.alt).toBe(record.translations.en.coverAlt);
+    expect(post?.slug).toBe(en.slug);
+    expect(post?.slugs).toEqual({ id: record.translations.id.slug, en: en.slug });
+    expect(post?.cover.alt).toBe(en.coverAlt);
+  });
+
+  it("has no English post when English is not written", () => {
+    const record = postFixtures[0];
+    if (!record) throw new Error("fixtures are empty");
+    const indonesianOnly = { ...record, translations: { id: record.translations.id } };
+    expect(toPost(indonesianOnly, "en")).toBeNull();
+    expect(toPost(indonesianOnly, "id")?.slugs).toEqual({ id: record.translations.id.slug });
   });
 });
 
@@ -155,7 +161,7 @@ describe("toPostRecord", () => {
     const record = toPostRecord(stored);
     expect(record.publishedAt).toBe("2026-11-06");
     expect(record.updatedAt).toBeUndefined();
-    expect(record.translations.en.slug).toBe("title");
+    expect(record.translations.en?.slug).toBe("title");
   });
 
   it("keeps a later update day", () => {

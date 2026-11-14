@@ -15,7 +15,7 @@ import {
   getPostSummaries,
 } from "@/features/blog/queries";
 import { extractHeadings, relatedPosts } from "@/features/blog/service";
-import { getPathname, permanentRedirect } from "@/i18n/navigation";
+import { getPathname, permanentRedirect, redirect } from "@/i18n/navigation";
 import { localeRegion, routing, type Locale } from "@/i18n/routing";
 import { absoluteUrl } from "@/lib/seo/absolute-url";
 import { localizedAlternates } from "@/lib/seo/alternates";
@@ -47,7 +47,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: post.title,
     description: post.excerpt,
-    alternates: localizedAlternates((target) => postHref(post.slugs[target]), locale),
+    alternates: localizedAlternates((target) => {
+      const targetSlug = post.slugs[target];
+      return targetSlug ? postHref(targetSlug) : null;
+    }, locale),
     openGraph: {
       type: "article",
       siteName: siteConfig.name,
@@ -72,7 +75,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 /**
  * Blog post (Phase 5e): header, cover, the article with a table of contents (collapsible on
  * phones, sticky beside the text on desktop), sharing, a next-step CTA and related posts.
- * A slug from the other language redirects to this language's slug (language switcher).
+ * A slug from the other language redirects to this language's slug (language switcher), or to
+ * this language's blog index when the post is not written in it.
  */
 export default async function BlogPostPage({ params }: Props) {
   const { locale, slug } = await params;
@@ -81,6 +85,8 @@ export default async function BlogPostPage({ params }: Props) {
   const post = await getPostBySlug(locale, slug);
   if (!post) {
     const translated = await findTranslatedSlug(locale, slug);
+    // Not written in this language (yet): the blog index of this language instead.
+    if (translated === "untranslated") redirect({ href: "/blog", locale });
     if (translated) permanentRedirect({ href: postHref(translated), locale });
     notFound();
   }

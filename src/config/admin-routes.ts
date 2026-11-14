@@ -18,6 +18,8 @@ export const adminRoutes = {
   settings: "/admin/pengaturan",
   seo: "/admin/seo",
   media: "/admin/media",
+  blog: "/admin/blog",
+  newPost: "/admin/blog/tulis",
 } as const;
 
 /** Admin pages reachable without a session. */
