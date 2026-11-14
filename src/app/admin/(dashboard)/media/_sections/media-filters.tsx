@@ -1,10 +1,8 @@
-import { SearchIcon } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 
 import { firstParam, listHref, pageParam } from "@/components/admin/list-href";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { ListSearch } from "@/components/admin/list-search";
 import { adminLocale, adminRoutes } from "@/config/admin-routes";
 import type { MediaFilter, MediaLibrary } from "@/features/media/admin-queries";
 import { cn } from "@/lib/utils";
@@ -42,34 +40,14 @@ export async function MediaFilters({
   return (
     // Laid out by the panel's width (it sits beside the uploader from `xl`).
     <div className="flex flex-col gap-3 @2xl:flex-row @2xl:items-center @2xl:justify-between">
-      <form
-        role="search"
+      <ListSearch
         action={adminRoutes.media}
-        method="get"
-        className="flex w-full gap-2 @2xl:max-w-sm"
-      >
-        {filter.unused && <input type="hidden" name="unused" value="1" />}
-        <label htmlFor="media-search" className="sr-only">
-          {t("search")}
-        </label>
-        <div className="relative flex-1">
-          <SearchIcon
-            aria-hidden
-            className="pointer-events-none absolute top-1/2 left-3.5 size-5 -translate-y-1/2 text-muted-foreground"
-          />
-          <Input
-            id="media-search"
-            type="search"
-            name="q"
-            defaultValue={filter.query}
-            placeholder={t("searchPlaceholder")}
-            className="pl-11"
-          />
-        </div>
-        <Button type="submit" variant="secondary">
-          {t("searchSubmit")}
-        </Button>
-      </form>
+        defaultValue={filter.query}
+        label={t("search")}
+        placeholder={t("searchPlaceholder")}
+        hiddenParams={filter.unused ? { unused: "1" } : {}}
+        className="@2xl:max-w-sm"
+      />
 
       <nav aria-label={t("filters.label")}>
         <ul className="flex gap-2">

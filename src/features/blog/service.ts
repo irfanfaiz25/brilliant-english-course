@@ -2,39 +2,10 @@ import { limits } from "@/config/limits";
 import { slugify } from "@/lib/slug";
 import type { Locale } from "@/i18n/routing";
 
-import type {
-  Post,
-  PostRecord,
-  PostSummary,
-  RichTextBlock,
-  RichTextDoc,
-  RichTextInline,
-} from "./schema";
+import { documentText, inlineText } from "./rich-text";
+import type { Post, PostRecord, PostSummary, RichTextDoc } from "./schema";
 
-/** Plain text of inline nodes (marks dropped, hard breaks as spaces). */
-export function inlineText(nodes: readonly RichTextInline[] = []): string {
-  return nodes.map((node) => (node.type === "text" ? node.text : " ")).join("");
-}
-
-function blockText(block: RichTextBlock): string {
-  switch (block.type) {
-    case "paragraph":
-    case "heading":
-      return inlineText(block.content);
-    case "bulletList":
-    case "orderedList":
-      return block.content
-        .flatMap((item) => item.content.map((paragraph) => inlineText(paragraph.content)))
-        .join(" ");
-    case "blockquote":
-      return block.content.map((paragraph) => inlineText(paragraph.content)).join(" ");
-  }
-}
-
-/** Whole document as plain text (reading time, search, meta fallbacks). */
-export function documentText(doc: RichTextDoc): string {
-  return doc.content.map(blockText).join(" ");
-}
+export { documentText, inlineText } from "./rich-text";
 
 /** Minutes to read at `limits.blog.wordsPerMinute`, at least 1. */
 export function readingMinutes(doc: RichTextDoc): number {
@@ -51,14 +22,38 @@ export type PostHeading = { id: string; text: string; level: 2 | 3 };
 export function extractHeadings(doc: RichTextDoc): PostHeading[] {
   const seen = new Map<string, number>();
   return doc.content.flatMap((block) => {
-    if (block.type !== "heading") return [];
+    // The table of contents lists the two main levels; h4 stays a sub-point inside a section.
+    if (block.type !== "heading" || block.attrs.level === 4) return [];
     const text = inlineText(block.content).trim();
     const base = slugify(text) || "bagian";
     const count = seen.get(base) ?? 0;
     seen.set(base, count + 1);
-    return [{ id: count === 0 ? base : `${base}-${count + 1}`, text, level: block.attrs.level }];
+    return [
+      { id: count === 0 ? base : `${base}-${count + 1}`, text, level: block.attrs.level as 2 | 3 },
+    ];
   });
 }
+
+/** An instant as a `datetime-local` value in Jakarta time ("2026-11-14T09:30"). */
+export function toJakartaInput(instant: Date): string {
+  const parts = Object.fromEntries(
+    new Intl.DateTimeFormat("en-GB", {
+      timeZone: "Asia/Jakarta",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hourCycle: "h23",
+    })
+      .formatToParts(instant)
+      .map((part) => [part.type, part.value]),
+  );
+  return `${parts.year}-${parts.month}-${parts.day}T${parts.hour}:${parts.minute}`;
+}
+
+/** A `datetime-local` value read as Jakarta time (UTC+7, no daylight saving). */
+export const fromJakartaInput = (value: string): Date => new Date(`${value}:00+07:00`);
 
 /** Calendar date of an instant in Indonesia's western time zone ("2026-11-06"), as posts show it. */
 export function jakartaDate(instant: Date): string {
@@ -71,7 +66,7 @@ type StoredTranslation = PostRecord["translations"]["id"];
 export type StoredPost = Omit<PostRecord, "publishedAt" | "updatedAt" | "translations"> & {
   publishedAt: Date;
   updatedAt: Date;
-  translations: Record<Locale, StoredTranslation>;
+  translations: { id: StoredTranslation; en?: StoredTranslation };
 };
 
 /**
@@ -95,17 +90,24 @@ export function toPostRecord(stored: StoredPost): PostRecord {
     author: stored.author,
     publishedAt: published,
     ...(updated > published ? { updatedAt: updated } : {}),
-    translations: { id: pick(stored.translations.id), en: pick(stored.translations.en) },
+    translations: {
+      id: pick(stored.translations.id),
+      ...(stored.translations.en ? { en: pick(stored.translations.en) } : {}),
+    },
   };
 }
 
-/** Resolves a stored post to one locale. */
-export function toPost(record: PostRecord, locale: Locale): Post {
+/** Resolves a stored post to one locale; `null` when it is not written in that locale. */
+export function toPost(record: PostRecord, locale: Locale): Post | null {
   const translation = record.translations[locale];
+  if (!translation) return null;
   return {
     id: record.id,
     slug: translation.slug,
-    slugs: { id: record.translations.id.slug, en: record.translations.en.slug },
+    slugs: {
+      id: record.translations.id.slug,
+      ...(record.translations.en ? { en: record.translations.en.slug } : {}),
+    },
     category: record.category,
     title: translation.title,
     excerpt: translation.excerpt,

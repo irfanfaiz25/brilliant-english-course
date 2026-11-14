@@ -532,3 +532,157 @@
     display: none;
   }
 }
+
+/*
+ * Blog editor surface (Tiptap). Mirrors the article's typography (`RichText`) closely enough to
+ * write with confidence, using the same tokens. The editor sets its own classes on the content.
+ */
+.rich-text-editor-content {
+  min-height: 24rem;
+  padding: 1.25rem 1.5rem 2rem;
+  font-size: var(--text-body-lg);
+  line-height: 1.7;
+  color: var(--color-muted-foreground);
+  outline: none;
+
+  & > * + * {
+    margin-top: 1rem;
+  }
+  & h2,
+  & h3,
+  & h4 {
+    color: var(--color-foreground);
+    font-weight: 600;
+  }
+  & h2 {
+    margin-top: 1.75rem;
+    font-size: var(--text-h3);
+    line-height: var(--text-h3--line-height);
+  }
+  & h3 {
+    margin-top: 1.25rem;
+    font-size: var(--text-h4);
+    line-height: var(--text-h4--line-height);
+  }
+  & h4 {
+    margin-top: 1rem;
+    font-size: var(--text-h5);
+    line-height: var(--text-h5--line-height);
+  }
+  & strong {
+    color: var(--color-foreground);
+    font-weight: 600;
+  }
+  & a {
+    color: var(--color-primary);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  & ul,
+  & ol {
+    padding-left: 1.5rem;
+  }
+  & ul {
+    list-style: disc;
+  }
+  & ol {
+    list-style: decimal;
+  }
+  & li + li,
+  & li > * + * {
+    margin-top: 0.4rem;
+  }
+  & blockquote {
+    border-left: 4px solid var(--color-partner);
+    border-radius: 0 var(--radius-xl) var(--radius-xl) 0;
+    background: color-mix(in oklab, var(--color-partner-soft) 50%, transparent);
+    padding: 0.75rem 1.25rem;
+    color: var(--color-foreground);
+    font-style: italic;
+  }
+  & code {
+    border-radius: var(--radius-sm);
+    background: var(--color-muted);
+    padding: 0.1rem 0.35rem;
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    color: var(--color-foreground);
+  }
+  & pre {
+    overflow-x: auto;
+    border-radius: var(--radius-xl);
+    background: var(--color-foreground);
+    padding: 1rem 1.25rem;
+    font-size: var(--text-body-sm);
+    color: var(--color-background);
+
+    & code {
+      background: none;
+      padding: 0;
+      color: inherit;
+    }
+  }
+  & mark {
+    border-radius: 2px;
+    padding: 0 0.125rem;
+    color: var(--color-foreground);
+  }
+  & hr {
+    margin-block: 1.5rem;
+    border-color: var(--color-border);
+  }
+  & img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-2xl);
+  }
+  & img.ProseMirror-selectednode,
+  & div[data-youtube-video].ProseMirror-selectednode {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+  & div[data-youtube-video] iframe {
+    aspect-ratio: 16 / 9;
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-2xl);
+  }
+  & .tableWrapper {
+    overflow-x: auto;
+  }
+  & table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-body);
+  }
+  & th,
+  & td {
+    position: relative;
+    min-width: 6rem;
+    border: 1px solid var(--color-border);
+    padding: 0.5rem 0.75rem;
+    vertical-align: top;
+    text-align: left;
+  }
+  & th {
+    background: var(--color-surface);
+    color: var(--color-foreground);
+    font-weight: 600;
+  }
+  & .selectedCell::after {
+    position: absolute;
+    inset: 0;
+    background: color-mix(in oklab, var(--color-primary) 12%, transparent);
+    content: "";
+    pointer-events: none;
+  }
+  /* Placeholder of an empty document (Tiptap's Placeholder extension). */
+  & p.is-editor-empty:first-child::before {
+    float: left;
+    height: 0;
+    color: var(--color-neutral-400);
+    content: attr(data-placeholder);
+    pointer-events: none;
+  }
+}

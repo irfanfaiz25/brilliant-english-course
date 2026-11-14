@@ -256,11 +256,10 @@ async function main() {
         .returning({ id: schema.posts.id });
       if (!row) throw new Error(`Post ${record.id} was not inserted`);
       await tx.insert(schema.postTranslations).values(
-        (["id", "en"] as const).map((locale) => ({
-          postId: row.id,
-          locale,
-          ...record.translations[locale],
-        })),
+        (["id", "en"] as const).flatMap((locale) => {
+          const translation = record.translations[locale];
+          return translation ? [{ postId: row.id, locale, ...translation }] : [];
+        }),
       );
     }
   });

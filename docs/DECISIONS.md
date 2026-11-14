@@ -148,7 +148,7 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
 
 ### ADR-019 — Blog content, localized slugs and index state
 
-2026-11-13 · Accepted
+2026-11-13 · Accepted · Content subset and required English amended by ADR-032
 
 - **Decision:** Post bodies are stored as the Tiptap JSON document, restricted to a validated subset (`features/blog/schema.ts`: paragraph, heading 2–3, lists, blockquote, bold/italic/link, hard break) and rendered by our own server component (`RichText`) — no editor code ships to readers. Each post has one translation per locale with its own slug; `/blog/[slug]` prerenders every slug, sets hreflang to the other locale's slug, and a slug from the other language permanently redirects to this language's slug (keeps the language switcher working). The index keeps `?kategori=` and `?halaman=` in the URL; filtered and paged variants share the index canonical. Reading time and heading anchors are computed from the document, never stored. Until Phase 4e posts are fixtures (PLACEHOLDER).
 - **Why:** Safe, small and SEO-friendly rendering; localized URLs for both audiences; shareable filters without client JS.
@@ -332,3 +332,29 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
 - **Follow-up:** The bucket needs a CORS rule allowing `PUT` from the admin origins and a lifecycle rule deleting
   `tmp/` objects after one day (abandoned uploads). The temporary media domain can change by updating
   `NEXT_PUBLIC_MEDIA_URL` and rebuilding: rows store keys, not URLs. Blog cover images use the same picker (4e-2).
+
+### ADR-032 — Blog editor, rich-text model and optional English
+
+2026-11-14 · Accepted
+
+- **Decision:** Staff write posts in admin (Blog) with a Tiptap v3 editor whose toolbar covers headings 2–4,
+  bold/italic/underline/strike/inline code, brand text and highlight colors, alignment, lists, quote, code block,
+  tables, images (from the media library with upload, or an `https` URL) with alt text and caption, YouTube embeds
+  (rendered from `youtube-nocookie.com`), horizontal rules, HTML import, undo/redo and a word/character count. The
+  stored document is the subset defined in `features/blog/rich-text.ts` (this replaces the subset of ADR-019):
+  `sanitizeDoc()` runs on every save and every render, so pasted or imported markup, script URLs and off-brand colors
+  never reach the site; colors are token names, not hex values. The public `RichText` stays a server component
+  without editor code; the table of contents uses H2/H3 only. Library images in a body are kept in `post_images`
+  (synced on save) so the media library counts them and refuses to delete them. Posts are `draft`, `published` or
+  `archived`; publishing and archiving need the `publish` permission, and the publish time is entered in Jakarta time
+  (`datetime-local`). Indonesian is required, English is optional: a post without English is not listed on `/en`, its
+  hreflang lists only the written languages, and `/en/blog/<indonesian-slug>` redirects to the English blog index.
+  The article page looks a post up by slug (cached per slug) instead of in the full list, so a post published after
+  the build renders from the fallback shell instead of a stale copy of the list. Admin list searches (Media, Unit,
+  Calon Mitra, Blog) apply while typing (`ListSearch`, 300 ms debounce, URL `q`, page reset) instead of a submit
+  button. New dependencies: the Tiptap v3 packages for the editor (admin only).
+- **Why:** Staff get the formatting they expect from common editors while the site keeps a small, safe and on-brand
+  output. Optional English lets Indonesian articles go out without waiting for a translation.
+- **Alternatives:** Storing HTML (XSS risk, styling drift); free color pickers (off-brand, low contrast); falling
+  back to Indonesian on `/en` (mixed-language pages and duplicate content); a separate editor library (Tiptap is
+  already the stored format).

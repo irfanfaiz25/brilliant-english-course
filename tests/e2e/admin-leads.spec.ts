@@ -23,7 +23,7 @@ async function signInTo(page: Page, path: string, email: string) {
 
 async function openFixture(page: Page) {
   await page.getByRole("searchbox", { name: "Cari calon mitra" }).fill(e2eLead.reference);
-  await page.getByRole("button", { name: "Cari" }).click();
+  // Results follow the typing; no button.
   await expect(page).toHaveURL(/[?&]q=MTR-E2E-0001/);
   await page.getByRole("main").getByRole("link", { name: e2eLead.name }).first().click();
   await expect(page.getByRole("heading", { level: 1, name: e2eLead.name })).toBeVisible();
@@ -84,7 +84,7 @@ test.describe("admin leads", () => {
   test("exports the filtered list as CSV", async ({ page }, testInfo) => {
     await signInTo(page, "/admin/calon-mitra", e2eUsers(testInfo.project.name).admin.email);
     await page.getByRole("searchbox", { name: "Cari calon mitra" }).fill(e2eLead.reference);
-    await page.getByRole("button", { name: "Cari" }).click();
+    // Results follow the typing; no button.
     await expect(page).toHaveURL(/[?&]q=MTR-E2E-0001/);
 
     const [download] = await Promise.all([

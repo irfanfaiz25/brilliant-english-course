@@ -106,6 +106,14 @@ export const limits = {
   blog: {
     /** Cards per page on the blog index (the featured post on page 1 is extra). */
     pageSize: 6,
+    /** Rows per page of the admin article list. */
+    adminPageSize: 20,
+    titleMin: 5,
+    titleMax: 110,
+    slugMax: 160,
+    excerptMin: 20,
+    excerptMax: 200,
+    authorMax: 120,
     relatedPosts: 3,
     /** Average reading speed used for "x min read". */
     wordsPerMinute: 200,

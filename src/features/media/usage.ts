@@ -1,12 +1,13 @@
 import "server-only";
 
-import { and, eq, isNull, sql, type SQL } from "drizzle-orm";
+import { and, eq, exists, isNull, or, sql, type SQL } from "drizzle-orm";
 
 import { adminRoutes } from "@/config/admin-routes";
 import { db } from "@/db/client";
 import {
   activities,
   activityTranslations,
+  postImages,
   posts,
   postTranslations,
   programLevels,
@@ -33,7 +34,10 @@ export function usageCount(mediaId: string | SQL = assetIdColumn): SQL<number> {
   return sql<number>`(
     (select count(*) from activities a where a.image_id = ${mediaId})
     + (select count(*) from program_levels pl where pl.image_id = ${mediaId})
-    + (select count(*) from posts p where p.cover_image_id = ${mediaId} and p.deleted_at is null)
+    + (select count(*) from posts p where p.deleted_at is null and (
+        p.cover_image_id = ${mediaId}
+        or exists (select 1 from post_images pi where pi.post_id = p.id and pi.media_id = ${mediaId})
+      ))
     + (select count(*) from seo_overrides so where so.og_image_id = ${mediaId})
     + (select count(*) from unit_photos up join units u on u.id = up.unit_id
         where up.media_id = ${mediaId} and u.deleted_at is null)
@@ -71,13 +75,26 @@ export async function listUsages(mediaId: string): Promise<MediaUsage[]> {
       )
       .where(eq(programLevels.imageId, mediaId)),
     db
-      .select({ title: postTranslations.title })
+      .select({ id: posts.id, title: postTranslations.title })
       .from(posts)
       .innerJoin(
         postTranslations,
         and(eq(postTranslations.postId, posts.id), eq(postTranslations.locale, "id")),
       )
-      .where(and(eq(posts.coverImageId, mediaId), isNull(posts.deletedAt))),
+      .where(
+        and(
+          isNull(posts.deletedAt),
+          or(
+            eq(posts.coverImageId, mediaId),
+            exists(
+              db
+                .select({ one: sql`1` })
+                .from(postImages)
+                .where(and(eq(postImages.postId, posts.id), eq(postImages.mediaId, mediaId))),
+            ),
+          ),
+        ),
+      ),
     db
       .select({
         entityType: seoOverrides.entityType,
@@ -109,7 +126,11 @@ export async function listUsages(mediaId: string): Promise<MediaUsage[]> {
       label: row.name,
       href: `${adminRoutes.units}/${row.id}`,
     })),
-    ...postRows.map((row) => ({ kind: "post" as const, label: row.title, href: null })),
+    ...postRows.map((row) => ({
+      kind: "post" as const,
+      label: row.title,
+      href: `${adminRoutes.blog}/${row.id}`,
+    })),
     ...seoRows.map((row) => ({
       kind: "seo" as const,
       label: `${row.entityType} ${row.entityId} (${row.locale.toUpperCase()})`,

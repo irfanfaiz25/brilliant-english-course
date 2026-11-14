@@ -46,7 +46,8 @@ test.describe("admin media", () => {
     // The grid refreshes with the new image; open it from the library.
     const library = page.getByRole("region", { name: "Pustaka gambar" });
     await library.getByRole("searchbox", { name: "Cari gambar" }).fill(name);
-    await library.getByRole("button", { name: "Cari" }).click();
+    // Results follow the typing; no button.
+    await expect(page).toHaveURL(/[?&]q=/);
     await expect(library.getByText("1 gambar")).toBeVisible();
     await library.getByRole("link", { name: new RegExp(name) }).click();
     await expect(page.getByRole("heading", { level: 1, name })).toBeVisible();

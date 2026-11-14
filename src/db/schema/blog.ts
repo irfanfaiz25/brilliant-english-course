@@ -56,5 +56,25 @@ export const postTranslations = pgTable(
   ],
 );
 
+/**
+ * Library images placed in a post's body (any language), kept in sync on every save. The media
+ * library counts them as uses, so an image in an article cannot be deleted (ADR-032).
+ */
+export const postImages = pgTable(
+  "post_images",
+  {
+    postId: uuid()
+      .notNull()
+      .references(() => posts.id, { onDelete: "cascade" }),
+    mediaId: uuid()
+      .notNull()
+      .references(() => mediaAssets.id, { onDelete: "cascade" }),
+  },
+  (table) => [
+    primaryKey({ columns: [table.postId, table.mediaId] }),
+    index("post_images_media_id_idx").on(table.mediaId),
+  ],
+);
+
 export type PostRow = typeof posts.$inferSelect;
 export type PostTranslationRow = typeof postTranslations.$inferSelect;
