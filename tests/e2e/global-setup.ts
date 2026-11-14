@@ -48,6 +48,8 @@ export default async function globalSetup() {
       "update users set is_active = (email <> all($2::text[])) where email = any($1::text[])",
       [managed, disabled],
     );
+    // Role permissions start from the code defaults on every run (the access spec changes them).
+    await client.query("delete from settings where key = 'rolePermissions'");
     await resetLeadFixture(client);
   } finally {
     await client.end();
