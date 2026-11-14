@@ -1,22 +1,13 @@
 import { InboxIcon } from "lucide-react";
 import { getFormatter, getTranslations } from "next-intl/server";
+import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
-import { adminLocale } from "@/config/admin-routes";
+import { adminLocale, adminRoutes } from "@/config/admin-routes";
 import { getLatestLeads } from "@/features/partners/admin-queries";
-import type { LeadStatus } from "@/features/partners/schema";
+import { leadStatusBadge } from "@/features/partners/lead-status";
 import type { SessionUser } from "@/features/users/schema";
 import { can } from "@/lib/permissions";
-
-const STATUS_BADGE = {
-  new: "info",
-  contacted: "primary",
-  qualified: "warning",
-  onboarding: "partner",
-  converted: "success",
-  rejected: "destructive",
-  lost: "neutral",
-} as const satisfies Record<LeadStatus, string>;
 
 /** The newest partner applications (read-only until the leads module, Phase 4d). */
 export async function LatestLeads({ user }: { user: SessionUser }) {
@@ -63,7 +54,12 @@ export async function LatestLeads({ user }: { user: SessionUser }) {
               {leads.map((lead) => (
                 <tr key={lead.id}>
                   <td className="px-2 py-3">
-                    <span className="block font-medium text-foreground">{lead.fullName}</span>
+                    <Link
+                      href={`${adminRoutes.leads}/${lead.id}`}
+                      className="block rounded-sm font-medium text-foreground underline-offset-4 hover:text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                    >
+                      {lead.fullName}
+                    </Link>
                     <span className="block text-caption text-muted-foreground">
                       {lead.reference}
                     </span>
@@ -73,7 +69,7 @@ export async function LatestLeads({ user }: { user: SessionUser }) {
                     <span className="block text-caption text-muted-foreground">{lead.regency}</span>
                   </td>
                   <td className="px-2 py-3">
-                    <Badge variant={STATUS_BADGE[lead.status]}>
+                    <Badge variant={leadStatusBadge[lead.status]}>
                       {t(`leadStatus.${lead.status}`)}
                     </Badge>
                   </td>

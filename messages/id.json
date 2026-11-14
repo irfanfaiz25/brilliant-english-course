@@ -1014,6 +1014,11 @@
       "5": "Jumat",
       "6": "Sabtu",
       "7": "Minggu"
+    },
+    "pagination": {
+      "page": "Halaman {page} dari {pages}",
+      "previous": "Sebelumnya",
+      "next": "Berikutnya"
     }
   },
   "AdminSettings": {
@@ -1230,10 +1235,7 @@
     "noResults": "Tidak ada unit yang cocok dengan pencarian ini.",
     "clearSearch": "Hapus pencarian",
     "pagination": {
-      "label": "Halaman daftar unit",
-      "page": "Halaman {page} dari {pages}",
-      "previous": "Sebelumnya",
-      "next": "Berikutnya"
+      "label": "Halaman daftar unit"
     },
     "editLabel": "Ubah {name}",
     "deleteLabel": "Hapus {name}",
@@ -1362,6 +1364,129 @@
       "notePlaceholder": "Contoh: Ibu Sari, survei lokasi 20 Nov",
       "submit": "Pesan slot",
       "saved": "Slot dipesan."
+    }
+  },
+  "AdminLeads": {
+    "description": "Pendaftar program kemitraan dari halaman Kemitraan, dari masuk sampai jadi mitra.",
+    "search": "Cari calon mitra",
+    "searchPlaceholder": "Nama, kode referensi, atau WhatsApp",
+    "searchSubmit": "Cari",
+    "filters": {
+      "label": "Saring status",
+      "all": "Semua",
+      "open": "Sedang diproses",
+      "mine": "Ditugaskan ke saya"
+    },
+    "columns": {
+      "lead": "Calon mitra",
+      "village": "Desa",
+      "background": "Latar belakang",
+      "status": "Status",
+      "assignee": "Petugas",
+      "received": "Masuk"
+    },
+    "unassigned": "Belum ada",
+    "empty": "Belum ada pendaftaran calon mitra. Pendaftaran dari halaman Kemitraan akan muncul di sini.",
+    "noResults": "Tidak ada calon mitra yang cocok dengan saringan ini.",
+    "export": "Unduh CSV",
+    "pagination": {
+      "label": "Halaman daftar calon mitra",
+      "count": "{count, plural, =0 {Tidak ada calon mitra} other {# calon mitra}}"
+    },
+    "backToList": "Semua calon mitra",
+    "received": "Masuk {date}",
+    "sections": {
+      "applicant": {
+        "title": "Data pendaftar",
+        "description": "Isi formulir pendaftaran dari halaman Kemitraan."
+      },
+      "manage": {
+        "title": "Kelola",
+        "description": "Status Persiapan memesan satu slot kuota di desa pendaftar; slot dilepas saat status berpindah."
+      },
+      "history": {
+        "title": "Catatan & riwayat",
+        "description": "Catatan tindak lanjut tim dan setiap perubahan status."
+      }
+    },
+    "fields": {
+      "reference": "Kode referensi",
+      "whatsapp": "WhatsApp",
+      "email": "Email",
+      "notFilled": "Tidak diisi",
+      "background": "Latar belakang",
+      "space": "Ruang kelas",
+      "motivation": "Rencana pendaftar",
+      "village": "Desa",
+      "locale": "Bahasa situs",
+      "localeNames": {
+        "id": "Indonesia",
+        "en": "English"
+      }
+    },
+    "chatWhatsApp": "Chat WhatsApp",
+    "whatsappMessage": "Halo {name}, kami dari tim kemitraan Brilliant English Course. Terima kasih sudah mendaftar (kode {reference}). Kapan waktu yang nyaman untuk mengobrol?",
+    "quota": "Kuota desa",
+    "viewQuota": "Lihat kuota desa",
+    "slotHeld": "Satu slot kuota desa dipesan untuk calon mitra ini.",
+    "unit": "Unit",
+    "viewUnit": "Buka unit {code}",
+    "createUnit": "Buat unit dari calon mitra ini",
+    "createUnitHint": "Formulir unit terisi dari data pendaftar. Setelah unit disimpan, status otomatis menjadi Jadi mitra dan slot yang dipesan dipakai unit itu.",
+    "manage": {
+      "status": "Status",
+      "assignee": "Petugas",
+      "assigneeNone": "Belum ditugaskan",
+      "note": "Catatan perubahan",
+      "noteHint": "Opsional. Tersimpan di riwayat, misalnya hasil telepon.",
+      "notePlaceholder": "Contoh: Sudah ditelepon, survei lokasi Senin depan.",
+      "save": "Simpan",
+      "saved": "Perubahan tersimpan."
+    },
+    "note": {
+      "label": "Catatan baru",
+      "placeholder": "Tulis hasil tindak lanjut…",
+      "submit": "Tambah catatan",
+      "saved": "Catatan tersimpan."
+    },
+    "history": {
+      "system": "Sistem",
+      "by": "oleh {name}"
+    },
+    "events": {
+      "created": "Mendaftar lewat halaman Kemitraan",
+      "status": "Status: {from} → {to}",
+      "assigned": "Ditugaskan ke {name}",
+      "unassigned": "Petugas dilepas",
+      "reservationHeld": "Slot kuota desa dipesan",
+      "reservationReleased": "Slot kuota desa dilepas",
+      "converted": "Menjadi mitra: unit dibuat",
+      "deleted": "Dihapus dari daftar",
+      "updated": "Data diperbarui"
+    },
+    "delete": {
+      "label": "Hapus calon mitra",
+      "title": "Hapus {name}?",
+      "body": "Calon mitra hilang dari daftar dan slot kuotanya dilepas. Gunakan untuk pendaftaran palsu atau ganda.",
+      "confirm": "Hapus calon mitra",
+      "deleted": "Calon mitra dihapus."
+    },
+    "fromLead": "Membuat unit dari calon mitra {name} ({reference}). Data pendaftar sudah diisikan; lengkapi sisanya.",
+    "csv": {
+      "reference": "Referensi",
+      "name": "Nama",
+      "whatsapp": "WhatsApp",
+      "email": "Email",
+      "background": "Latar belakang",
+      "space": "Ruang kelas",
+      "motivation": "Rencana",
+      "village": "Desa",
+      "district": "Kecamatan",
+      "regency": "Kabupaten/Kota",
+      "province": "Provinsi",
+      "status": "Status",
+      "assignee": "Petugas",
+      "received": "Masuk"
     }
   }
 }

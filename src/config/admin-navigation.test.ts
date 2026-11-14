@@ -17,7 +17,9 @@ describe("admin navigation", () => {
   });
 
   it("lists placeholder modules by URL segment", () => {
-    expect(plannedAdminModules.get("calon-mitra")?.resource).toBe("leads");
+    expect(plannedAdminModules.get("blog")?.resource).toBe("blog");
+    // Built modules leave the placeholder list.
+    expect(plannedAdminModules.has("calon-mitra")).toBe(false);
     expect(plannedAdminModules.has("")).toBe(false);
   });
 

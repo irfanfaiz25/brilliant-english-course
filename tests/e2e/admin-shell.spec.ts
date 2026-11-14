@@ -35,10 +35,10 @@ test.describe("admin shell", () => {
       await expect(nav.getByRole("link", { name: new RegExp(`^${name}`) })).toBeVisible();
     }
 
-    await nav.getByRole("link", { name: /^Calon Mitra/ }).click();
-    await expect(page).toHaveURL(/\/admin\/calon-mitra$/);
-    await expect(page.getByRole("heading", { level: 1, name: "Calon Mitra" })).toBeVisible();
-    await expect(page.getByText("Segera hadir di tahap 4d")).toBeVisible();
+    await nav.getByRole("link", { name: /^Artikel Blog/ }).click();
+    await expect(page).toHaveURL(/\/admin\/blog$/);
+    await expect(page.getByRole("heading", { level: 1, name: "Artikel Blog" })).toBeVisible();
+    await expect(page.getByText("Segera hadir di tahap 4e")).toBeVisible();
   });
 
   test("shows an editor only content modules and hides partner data", async ({

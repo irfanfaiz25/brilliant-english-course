@@ -1014,6 +1014,11 @@
       "5": "Friday",
       "6": "Saturday",
       "7": "Sunday"
+    },
+    "pagination": {
+      "page": "Page {page} of {pages}",
+      "previous": "Previous",
+      "next": "Next"
     }
   },
   "AdminSettings": {
@@ -1230,10 +1235,7 @@
     "noResults": "No units match this search.",
     "clearSearch": "Clear search",
     "pagination": {
-      "label": "Unit list pages",
-      "page": "Page {page} of {pages}",
-      "previous": "Previous",
-      "next": "Next"
+      "label": "Unit list pages"
     },
     "editLabel": "Edit {name}",
     "deleteLabel": "Delete {name}",
@@ -1362,6 +1364,129 @@
       "notePlaceholder": "E.g. Ms Sari, site survey on 20 Nov",
       "submit": "Reserve slot",
       "saved": "Slot reserved."
+    }
+  },
+  "AdminLeads": {
+    "description": "Applicants to the partnership programme from the Partnership page, from first contact to partner.",
+    "search": "Search leads",
+    "searchPlaceholder": "Name, reference or WhatsApp",
+    "searchSubmit": "Search",
+    "filters": {
+      "label": "Filter by status",
+      "all": "All",
+      "open": "In progress",
+      "mine": "Assigned to me"
+    },
+    "columns": {
+      "lead": "Lead",
+      "village": "Village",
+      "background": "Background",
+      "status": "Status",
+      "assignee": "Assignee",
+      "received": "Received"
+    },
+    "unassigned": "Nobody",
+    "empty": "No partner applications yet. Applications from the Partnership page appear here.",
+    "noResults": "No leads match this filter.",
+    "export": "Download CSV",
+    "pagination": {
+      "label": "Lead list pages",
+      "count": "{count, plural, =0 {No leads} one {# lead} other {# leads}}"
+    },
+    "backToList": "All leads",
+    "received": "Received {date}",
+    "sections": {
+      "applicant": {
+        "title": "Applicant",
+        "description": "What they filled in on the Partnership page."
+      },
+      "manage": {
+        "title": "Manage",
+        "description": "Onboarding reserves one quota slot in the applicant's village; the slot is released when the status moves on."
+      },
+      "history": {
+        "title": "Notes & history",
+        "description": "Follow-up notes by the team and every status change."
+      }
+    },
+    "fields": {
+      "reference": "Reference",
+      "whatsapp": "WhatsApp",
+      "email": "Email",
+      "notFilled": "Not given",
+      "background": "Background",
+      "space": "Classroom space",
+      "motivation": "Applicant's plan",
+      "village": "Village",
+      "locale": "Site language",
+      "localeNames": {
+        "id": "Indonesian",
+        "en": "English"
+      }
+    },
+    "chatWhatsApp": "Chat on WhatsApp",
+    "whatsappMessage": "Hello {name}, this is the Brilliant English Course partnership team. Thank you for applying (reference {reference}). When would be a good time to talk?",
+    "quota": "Village quota",
+    "viewQuota": "View village quota",
+    "slotHeld": "One village quota slot is reserved for this lead.",
+    "unit": "Unit",
+    "viewUnit": "Open unit {code}",
+    "createUnit": "Create a unit from this lead",
+    "createUnitHint": "The unit form is filled from the application. Once the unit is saved, the lead becomes a partner and the reserved slot goes to that unit.",
+    "manage": {
+      "status": "Status",
+      "assignee": "Assignee",
+      "assigneeNone": "Not assigned",
+      "note": "Note on this change",
+      "noteHint": "Optional. Kept in the history, e.g. the outcome of a call.",
+      "notePlaceholder": "E.g. Called, site survey next Monday.",
+      "save": "Save",
+      "saved": "Changes saved."
+    },
+    "note": {
+      "label": "New note",
+      "placeholder": "Write the follow-up outcome…",
+      "submit": "Add note",
+      "saved": "Note saved."
+    },
+    "history": {
+      "system": "System",
+      "by": "by {name}"
+    },
+    "events": {
+      "created": "Applied on the Partnership page",
+      "status": "Status: {from} → {to}",
+      "assigned": "Assigned to {name}",
+      "unassigned": "Assignee removed",
+      "reservationHeld": "Village quota slot reserved",
+      "reservationReleased": "Village quota slot released",
+      "converted": "Became a partner: unit created",
+      "deleted": "Removed from the list",
+      "updated": "Details updated"
+    },
+    "delete": {
+      "label": "Delete lead",
+      "title": "Delete {name}?",
+      "body": "The lead disappears from the list and its quota slot is released. Use it for fake or duplicate applications.",
+      "confirm": "Delete lead",
+      "deleted": "Lead deleted."
+    },
+    "fromLead": "Creating a unit from lead {name} ({reference}). The application details are filled in; complete the rest.",
+    "csv": {
+      "reference": "Reference",
+      "name": "Name",
+      "whatsapp": "WhatsApp",
+      "email": "Email",
+      "background": "Background",
+      "space": "Classroom space",
+      "motivation": "Plan",
+      "village": "Village",
+      "district": "District",
+      "regency": "Regency/City",
+      "province": "Province",
+      "status": "Status",
+      "assignee": "Assignee",
+      "received": "Received"
     }
   }
 }

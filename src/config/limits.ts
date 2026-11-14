@@ -55,6 +55,13 @@ export const limits = {
     reservationSlotsMax: 10,
     reservationNoteMax: 200,
   },
+  leads: {
+    noteMax: 2000,
+    /** Rows per page of the admin lead list. */
+    pageSize: 20,
+    /** Rows a CSV export may hold; narrow the filter for more. */
+    exportMax: 5000,
+  },
   units: {
     nameMax: 120,
     slugMax: 80,

@@ -7,6 +7,8 @@ export const adminRoutes = {
   signIn: "/admin/masuk",
   forgotPassword: "/admin/lupa-password",
   resetPassword: "/admin/reset-password",
+  leads: "/admin/calon-mitra",
+  leadExport: "/admin/calon-mitra/ekspor",
   units: "/admin/unit",
   newUnit: "/admin/unit/baru",
   quota: "/admin/kuota",
