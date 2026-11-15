@@ -1,0 +1,129 @@
+name: Deploy
+
+# Production release (ADR-043): after CI passes on `main` (a `staging` → `main` merge), build the
+# images, push them to GHCR and start the release on the server through deploy.sh.
+# Runbook, secrets and variables: docs/DEPLOY.md.
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Commit SHA on main to deploy (default: the latest commit)"
+        required: false
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  IMAGE: ghcr.io/irfanfaiz25/bec
+  TOOLS_IMAGE: ghcr.io/irfanfaiz25/bec-tools
+
+jobs:
+  build:
+    name: Build images
+    # A push to main whose CI passed (not a pull request into main), or a manual run.
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push')
+    runs-on: ubuntu-latest
+    environment: production
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      sha: ${{ steps.release.outputs.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref || github.event.workflow_run.head_sha || github.sha }}
+          fetch-depth: 0
+
+      - name: Release id
+        id: release
+        run: |
+          sha="$(git rev-parse HEAD)"
+          # Only commits on main are released.
+          git merge-base --is-ancestor "$sha" origin/main || { echo "$sha is not on main"; exit 1; }
+          echo "sha=${sha:0:12}" >> "$GITHUB_OUTPUT"
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Tools image (migrations and one-off jobs)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          target: tools
+          platforms: linux/amd64
+          push: true
+          tags: |
+            ${{ env.TOOLS_IMAGE }}:${{ steps.release.outputs.sha }}
+            ${{ env.TOOLS_IMAGE }}:latest
+          cache-from: type=gha,scope=tools
+          cache-to: type=gha,scope=tools,mode=max
+
+      - name: App image (prerendered from the production database)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          target: runner
+          platforms: linux/amd64
+          push: true
+          tags: |
+            ${{ env.IMAGE }}:${{ steps.release.outputs.sha }}
+            ${{ env.IMAGE }}:latest
+          build-args: |
+            NEXT_PUBLIC_SITE_URL=${{ vars.NEXT_PUBLIC_SITE_URL }}
+            NEXT_PUBLIC_MEDIA_URL=${{ vars.NEXT_PUBLIC_MEDIA_URL }}
+            SITE_INDEXING=${{ vars.SITE_INDEXING || 'false' }}
+            APP_VERSION=${{ steps.release.outputs.sha }}
+          # Read-only database role: the build only reads published content.
+          secrets: |
+            database_url=${{ secrets.BUILD_DATABASE_URL }}
+          cache-from: type=gha,scope=app
+          cache-to: type=gha,scope=app,mode=max
+
+  deploy:
+    name: Release on the server
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: ${{ vars.NEXT_PUBLIC_SITE_URL }}
+    steps:
+      - name: SSH key and known host
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "${{ secrets.DEPLOY_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+
+      # The key only runs deploy.sh on the server (forced command): this sends its arguments.
+      - name: Deploy ${{ needs.build.outputs.sha }}
+        run: |
+          ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes \
+            "deploy@${{ vars.DEPLOY_HOST }}" "deploy ${{ needs.build.outputs.sha }}"
+
+      - name: Check the public URL
+        run: |
+          for _ in $(seq 1 10); do
+            if curl -fsS --max-time 10 "${{ vars.NEXT_PUBLIC_SITE_URL }}/api/health" | grep -q '"version":"${{ needs.build.outputs.sha }}"'; then
+              echo "Live: ${{ needs.build.outputs.sha }}"; exit 0
+            fi
+            sleep 6
+          done
+          echo "The public URL does not serve ${{ needs.build.outputs.sha }} yet" >&2
+          exit 1

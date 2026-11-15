@@ -24,6 +24,14 @@ export const serverEnvSchema = z
     /** Serves the internal `/design-system` preview. Defaults to on outside production. */
     ENABLE_DESIGN_PREVIEW: z.stringbool().optional(),
     /**
+     * Lets search engines index the public site (ADR-043). Off by default, so a preview such as
+     * `dash.beccourses.com` sends `noindex` and a `Disallow: /` robots.txt; set `true` only on the
+     * launch domain. Read at build time by `robots.ts` and at request time by `proxy.ts`.
+     */
+    SITE_INDEXING: z.stringbool().default(false),
+    /** Release identifier (the image's git SHA), reported by `/api/health`. Set by the deploy. */
+    APP_VERSION: optional(z.string()),
+    /**
      * Cloudflare R2 for uploaded media (ADR-031): all four or none. Without them uploads go to the
      * git-ignored `.storage/` folder (local development and CI).
      */

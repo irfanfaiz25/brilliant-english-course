@@ -27,3 +27,8 @@ export async function closeDb(): Promise<void> {
   await pool.end();
   delete globalForDb.__becPool;
 }
+
+/** A round trip to the database, for the health check (`/api/health`). */
+export async function pingDatabase(): Promise<void> {
+  await pool.query("select 1");
+}

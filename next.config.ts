@@ -8,6 +8,9 @@ const mediaUrl = process.env.NEXT_PUBLIC_MEDIA_URL;
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // A self-contained server for the Docker image (ADR-043), which sets NEXT_OUTPUT. Local runs and
+  // CI keep the regular output so `next start` works.
+  output: process.env.NEXT_OUTPUT === "standalone" ? "standalone" : undefined,
   cacheComponents: true,
   partialPrefetching: true,
   images: {

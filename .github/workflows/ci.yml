@@ -20,6 +20,8 @@ env:
   DATABASE_URL: postgres://bec:bec@localhost:5432/bec
   # The design preview is exercised by E2E tests.
   ENABLE_DESIGN_PREVIEW: "true"
+  # Indexing on, so E2E checks that missing pages say "noindex" on their own (ADR-043).
+  SITE_INDEXING: "true"
 
 jobs:
   quality:

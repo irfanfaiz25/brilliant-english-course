@@ -6,8 +6,8 @@
  *
  * Self sign-up is disabled, so this is how the first super admin is created; later accounts come
  * from the Users module (Pengguna, ADR-035). The password is read from `BEC_USER_PASSWORD` when set (CI,
- * E2E), otherwise a strong one is generated and printed once. Run it against local or CI
- * databases only; production accounts are created through the deploy pipeline (Phase 8).
+ * E2E), otherwise a strong one is generated and printed once. In production it runs from the
+ * tools image on the server (`docs/DEPLOY.md` § 6), for the first super admin only.
  */
 import { randomBytes } from "node:crypto";
 import { parseArgs } from "node:util";

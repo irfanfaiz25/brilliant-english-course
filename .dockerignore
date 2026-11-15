@@ -1,0 +1,21 @@
+# Keep the build context small and free of secrets (ADR-043).
+.git
+.github
+.husky
+.next
+node_modules
+.pnpm-store
+.storage
+.env
+.env.*
+!.env.example
+coverage
+playwright-report
+test-results
+*.tsbuildinfo
+*.log
+.DS_Store
+.vercel
+deploy
+Dockerfile
+.dockerignore

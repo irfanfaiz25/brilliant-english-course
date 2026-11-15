@@ -1,0 +1,42 @@
+# Reverse proxy in front of the app (ADR-043), installed at /srv/bec/Caddyfile.
+# TLS uses the Cloudflare Origin Certificate (SSL mode "Full (strict)"); Cloudflare is the only
+# client that can reach this server (UFW), so no public ACME certificates are requested.
+{
+	auto_https disable_certs
+	servers {
+		# Requests arrive from Cloudflare; the visitor's address is in CF-Connecting-IP.
+		trusted_proxies static 0.0.0.0/0 ::/0
+		client_ip_headers CF-Connecting-IP
+	}
+}
+
+(common) {
+	tls /certs/origin.pem /certs/origin.key
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		X-Frame-Options "SAMEORIGIN"
+		Permissions-Policy "camera=(), microphone=(), geolocation=()"
+		-Server
+	}
+	reverse_proxy 127.0.0.1:3000
+	log
+}
+
+# Preview before launch: never indexed, whatever the app says.
+dash.beccourses.com {
+	import common
+	header X-Robots-Tag "noindex, nofollow"
+}
+
+# At launch (docs/DEPLOY.md § Launch), replace the block above with:
+#
+# beccourses.com {
+# 	import common
+# }
+#
+# www.beccourses.com, dash.beccourses.com {
+# 	tls /certs/origin.pem /certs/origin.key
+# 	redir https://beccourses.com{uri} permanent
+# }
