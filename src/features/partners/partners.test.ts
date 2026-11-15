@@ -1,7 +1,15 @@
 import { describe, expect, it } from "vitest";
 
-import { partnershipPackageDefaults } from "./defaults";
-import { partnerApplicationSchema, partnershipPackageSchema } from "./schema";
+import { partnershipPageDefaults } from "./page-defaults";
+import {
+  partnershipBenefitsSchema,
+  partnershipKitFormSchema,
+  partnershipKitSchema,
+  partnershipStepsSchema,
+  partnershipTrainingSchema,
+  toInvestment,
+} from "./page-schema";
+import { partnerApplicationSchema } from "./schema";
 import { createLeadReference } from "./reference";
 
 const valid = {
@@ -65,11 +73,45 @@ describe("createLeadReference", () => {
   });
 });
 
-describe("partnership package defaults", () => {
-  it("are valid and aligned across locales", () => {
-    const { id, en } = partnershipPackageDefaults;
-    expect(partnershipPackageSchema.parse(id)).toEqual(id);
-    expect(partnershipPackageSchema.parse(en)).toEqual(en);
-    expect(en.inclusions).toHaveLength(id.inclusions.length);
+describe("Kemitraan page defaults", () => {
+  it("are valid settings with copy in both locales", () => {
+    const { benefits, kit, training, steps } = partnershipPageDefaults;
+    expect(partnershipBenefitsSchema.parse(benefits)).toEqual(benefits);
+    expect(partnershipKitSchema.parse(kit)).toEqual(kit);
+    expect(partnershipTrainingSchema.parse(training)).toEqual(training);
+    expect(partnershipStepsSchema.parse(steps)).toEqual(steps);
+  });
+
+  it("lead the hero with at least one featured benefit", () => {
+    expect(partnershipPageDefaults.benefits.items.some((item) => item.featured)).toBe(true);
+  });
+});
+
+describe("Kemitraan page forms", () => {
+  const kit = partnershipPageDefaults.kit;
+
+  it("turns the typed investment into a number, or null when empty", () => {
+    expect(toInvestment("")).toBeNull();
+    expect(toInvestment(" 7500000 ")).toBe(7500000);
+  });
+
+  it("accepts digits only for the investment", () => {
+    const form = (investment: string) =>
+      partnershipKitFormSchema.safeParse({ ...kit, investment }).success;
+    expect(form("7500000")).toBe(true);
+    expect(form("")).toBe(true);
+    expect(form("7.500.000")).toBe(false);
+  });
+
+  it("needs copy in both locales and keeps lists within their limits", () => {
+    const [first] = partnershipPageDefaults.benefits.items;
+    if (!first) throw new Error("Missing benefit");
+    const noEnglish = { ...first, texts: { ...first.texts, en: { title: "", text: "" } } };
+    const result = partnershipBenefitsSchema.safeParse({
+      items: [noEnglish, ...partnershipPageDefaults.benefits.items.slice(1)],
+    });
+    expect(result.success).toBe(false);
+    expect(result.error?.issues[0]?.path).toEqual(["items", 0, "texts", "en", "title"]);
+    expect(partnershipStepsSchema.safeParse({ items: [] }).success).toBe(false);
   });
 });

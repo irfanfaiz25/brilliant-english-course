@@ -360,11 +360,14 @@
       "cities": "kota &<br></br> kabupaten",
       "quotaValue": "Maks. {max}",
       "quota": "unit per desa,<br></br> wilayah terlindungi",
-      "imageBadge": "Kelas kecil, suasana rumah"
+      "imageBadge": "Kelas kecil, suasana rumah",
+      "highlightsLabel": "Keunggulan kemitraan"
     },
     "tabs": {
       "label": "Bagian halaman kemitraan",
       "benefits": "Keuntungan",
+      "kit": "Starter kit",
+      "training": "Pelatihan",
       "fit": "Siapa cocok",
       "steps": "Alur",
       "apply": "Cek kuota & daftar",
@@ -373,32 +376,38 @@
     },
     "benefits": {
       "overline": "Keuntungan",
-      "title": "Semua yang Kamu Butuhkan Sudah Disiapkan",
-      "lead": "Mulai tanpa menyusun materi dari nol. Kamu mendapat sistem yang sudah dipakai ratusan kelas BEC.",
-      "curriculum": {
-        "title": "Kurikulum siap pakai",
-        "text": "Modul Kindy Class, Elementary, dan Secondary lengkap dengan rencana pertemuan."
+      "title": "Kenapa Bergabung dengan BEC?",
+      "lead": "Mulai tanpa menyusun materi dari nol, tanpa bagi hasil, dan dengan wilayah yang terlindungi."
+    },
+    "kit": {
+      "overline": "Starter kit",
+      "title": "Semua yang Kamu Terima Saat Bergabung",
+      "lead": "Satu paket lengkap untuk membuka kelas: materi, perlengkapan kelas, panduan, dan pelatihan.",
+      "filter": "Saring isi starter kit",
+      "all": "Semua",
+      "shown": "{count} item ditampilkan",
+      "groups": {
+        "materials": "Materi belajar",
+        "classroom": "Perlengkapan kelas",
+        "guides": "Panduan & administrasi"
       },
-      "training": {
-        "title": "Pelatihan & pendampingan",
-        "text": "Pelatihan metode mengajar untukmu dan pengajar, plus pendampingan rutin."
-      },
-      "marketing": {
-        "title": "Materi promosi",
-        "text": "Desain brosur, spanduk, dan konten media sosial yang tinggal dipakai."
-      },
-      "system": {
-        "title": "Sistem administrasi",
-        "text": "Pendaftaran siswa dan laporan perkembangan yang rapi untuk orang tua."
-      },
-      "brand": {
-        "title": "Merek yang dipercaya",
-        "text": "Orang tua sudah mengenal BEC, jadi unit barumu lebih mudah dipercaya."
-      },
-      "territory": {
-        "title": "Wilayah terlindungi",
-        "text": "Maksimal {max} unit per desa, supaya setiap unit punya cukup calon siswa."
-      }
+      "packageTitle": "{count} item dalam satu paket",
+      "packageText": "Semua isi starter kit di samping sudah termasuk saat kamu bergabung.",
+      "investmentLabel": "Investasi",
+      "investmentFrom": "Mulai {amount}",
+      "investmentAsk": "Dijelaskan saat konsultasi",
+      "investmentNote": "Rincian biaya dan skema pembayaran disampaikan langsung oleh tim kemitraan.",
+      "cta": "Tanya detail via WhatsApp"
+    },
+    "training": {
+      "overline": "Pelatihan",
+      "title": "Siap Mengajar dengan Metode BEC",
+      "lead": "Kamu dan tutor dilatih sampai percaya diri: cara mengajar, administrasi, dan bedah buku bersama.",
+      "flowTitle": "Alur satu sesi kelas BEC",
+      "progress": "Tahap {current} dari {total}",
+      "previous": "Sebelumnya",
+      "next": "Berikutnya",
+      "imageAlt": "Sesi pelatihan tutor BEC"
     },
     "fit": {
       "overline": "Siapa cocok",
@@ -427,38 +436,14 @@
         "commitment": "Komitmen mengikuti pelatihan dan standar BEC"
       }
     },
-    "package": {
-      "overline": "Paket kemitraan",
-      "title": "Yang kamu dapatkan",
-      "investmentLabel": "Investasi",
-      "investmentFrom": "Mulai {amount}",
-      "investmentAsk": "Dijelaskan saat konsultasi",
-      "investmentNote": "Rincian biaya dan skema pembayaran disampaikan langsung oleh tim kemitraan.",
-      "cta": "Tanya detail via WhatsApp"
-    },
     "steps": {
-      "overline": "Alur kemitraan",
-      "title": "5 Langkah Sampai Unitmu Aktif",
+      "overline": "Prosedur kemitraan",
+      "title": "{count} Langkah Jadi Mitra BEC",
       "lead": "Prosesnya jelas dari awal. Tim kemitraan mendampingimu di setiap langkah.",
-      "quota": {
-        "title": "Cek kuota desa",
-        "text": "Pastikan masih ada slot di desa tempat unitmu akan dibuka."
-      },
-      "apply": {
-        "title": "Isi formulir",
-        "text": "Kirim data singkat, tim kemitraan menerima pendaftaranmu."
-      },
-      "consult": {
-        "title": "Konsultasi & survei",
-        "text": "Diskusi lewat WhatsApp lalu survei lokasi bersama tim BEC."
-      },
-      "training": {
-        "title": "Pelatihan",
-        "text": "Kamu dan pengajar belajar metode dan sistem BEC."
-      },
-      "launch": {
-        "title": "Unit aktif",
-        "text": "Promosi pembukaan, kelas pertama dimulai, unitmu tampil di Cek Unit."
+      "actions": {
+        "quota": "Cek kuota desa",
+        "apply": "Isi formulir",
+        "whatsapp": "Chat tim kemitraan"
       }
     },
     "apply": {
@@ -874,6 +859,7 @@
         "leads": "Calon Mitra",
         "units": "Unit Mitra",
         "quota": "Kuota Wilayah",
+        "partnershipPage": "Halaman Kemitraan",
         "programs": "Program",
         "activities": "Kegiatan",
         "blog": "Artikel Blog",
@@ -1076,10 +1062,6 @@
       "officeHoursRequired": "Tambahkan minimal satu baris jam kantor.",
       "urlInvalid": "Masukkan tautan lengkap yang diawali https://.",
       "investmentInvalid": "Isi angka rupiah tanpa titik, atau kosongkan.",
-      "inclusionRequired": "Isi poin ini (minimal 3 karakter) atau hapus barisnya.",
-      "inclusionTooLong": "Satu poin maksimal {max} karakter.",
-      "inclusionsTooFew": "Tulis minimal {min} poin.",
-      "inclusionsTooMany": "Maksimal {max} poin.",
       "titleTooLong": "Judul maksimal {max} karakter.",
       "descriptionTooShort": "Deskripsi minimal {min} karakter supaya jelas di hasil pencarian.",
       "descriptionTooLong": "Deskripsi maksimal {max} karakter.",
@@ -1155,7 +1137,8 @@
       "selected": "Gambar terpilih",
       "cancelPick": "Batal",
       "upload": "Unggah gambar baru",
-      "backToLibrary": "Kembali ke pustaka"
+      "backToLibrary": "Kembali ke pustaka",
+      "remove": "Hapus gambar"
     },
     "preview": {
       "title": "Pratinjau di situs",
@@ -1197,7 +1180,13 @@
       "cancelled": "Pemindahan {item} dibatalkan.",
       "saved": "Urutan disimpan."
     },
-    "scrollMore": "Lihat lebih banyak di bawah"
+    "scrollMore": "Lihat lebih banyak di bawah",
+    "itemList": {
+      "localeId": "Indonesia",
+      "localeEn": "English",
+      "title": "Judul",
+      "text": "Teks singkat"
+    }
   },
   "AdminSettings": {
     "description": "Kontak kantor pusat dan paket kemitraan yang tampil di situs.",
@@ -1217,16 +1206,6 @@
       "removeHours": "Hapus baris jam {index}",
       "socialTitle": "Media sosial",
       "socialDescription": "Tautan profil di footer dan halaman Kontak."
-    },
-    "partnership": {
-      "title": "Paket kemitraan",
-      "description": "Investasi awal dan isi paket yang tampil di halaman Kemitraan.",
-      "investment": "Investasi awal (Rp)",
-      "investmentHint": "Kosongkan jika angka investasi dijelaskan saat konsultasi.",
-      "inclusions": "Yang didapat mitra",
-      "inclusionsHint": "Satu poin per baris, {min}–{max} poin.",
-      "addInclusion": "Tambah poin",
-      "inclusionLabel": "Poin {index}"
     },
     "locales": {
       "id": "Bahasa Indonesia",
@@ -1777,7 +1756,8 @@
         "activity": "Kegiatan",
         "unit": "Unit",
         "post": "Artikel",
-        "seo": "SEO"
+        "seo": "SEO",
+        "page": "Halaman"
       },
       "renameTitle": "Nama gambar",
       "renameDescription": "Hanya untuk mencari di pustaka; teks alternatif diisi di tempat gambar dipakai.",
@@ -2265,5 +2245,90 @@
     "saved": "Nama tersimpan.",
     "changePassword": "Ganti kata sandi",
     "passwordChanged": "Kata sandi diganti. Perangkat lain sudah dikeluarkan."
+  },
+  "AdminPartnershipPage": {
+    "description": "Isi halaman Kemitraan di situs. Setiap bagian disimpan sendiri; tata letak tetap diatur sistem.",
+    "viewOnSite": "Lihat di situs",
+    "jumpLabel": "Bagian halaman",
+    "fields": {
+      "icon": "Ikon",
+      "photo": "Foto (opsional)"
+    },
+    "benefits": {
+      "title": "Keuntungan",
+      "description": "Alasan bergabung. Keuntungan unggulan tampil lebih besar dan juga di bagian atas halaman.",
+      "item": "Keuntungan {index}",
+      "add": "Tambah keuntungan",
+      "featured": "Keuntungan unggulan",
+      "featuredHint": "Tampil sebagai kartu besar dan sebagai sorotan di bagian atas halaman."
+    },
+    "kit": {
+      "title": "Starter Kit & investasi",
+      "description": "Isi paket yang diterima setiap mitra, dikelompokkan supaya mudah disaring. Tanpa foto, kartu memakai ikonnya.",
+      "item": "Item {index}",
+      "add": "Tambah item",
+      "group": "Kelompok",
+      "investment": "Investasi awal (Rp)",
+      "investmentHint": "Kosongkan jika angka investasi dijelaskan saat konsultasi.",
+      "investmentPlaceholder": "Contoh: 7500000"
+    },
+    "training": {
+      "title": "Pelatihan",
+      "description": "Alur satu sesi kelas BEC yang dipelajari tutor, dan bentuk pelatihannya.",
+      "photo": "Foto pelatihan (opsional)",
+      "flowTitle": "Alur mengajar",
+      "flowHint": "Tahap satu sesi kelas, berurutan dari pembukaan sampai penutup.",
+      "flowItem": "Tahap {index}",
+      "addFlow": "Tambah tahap",
+      "formatsTitle": "Bentuk pelatihan",
+      "formatsHint": "Misalnya online/offline, administrasi, atau bedah buku.",
+      "formatItem": "Bentuk {index}",
+      "addFormat": "Tambah bentuk pelatihan"
+    },
+    "steps": {
+      "title": "Prosedur kemitraan",
+      "description": "Langkah dari cek kuota sampai bergabung. Langkah bisa diberi tautan ke cek kuota, formulir, atau WhatsApp.",
+      "item": "Langkah {index}",
+      "add": "Tambah langkah",
+      "action": "Tautan langkah",
+      "actionHint": "Tombol kecil di bawah langkah ini."
+    },
+    "groups": {
+      "materials": "Materi belajar",
+      "classroom": "Perlengkapan kelas",
+      "guides": "Panduan & administrasi"
+    },
+    "actions": {
+      "none": "Tanpa tautan",
+      "quota": "Cek kuota desa",
+      "apply": "Isi formulir",
+      "whatsapp": "Chat WhatsApp"
+    },
+    "icons": {
+      "book": "Buku",
+      "layers": "Jenjang",
+      "palette": "Warna",
+      "worksheet": "Lembar kerja",
+      "chat": "Diskusi",
+      "coins": "Uang",
+      "home": "Rumah",
+      "map": "Wilayah",
+      "graduation": "Pelatihan",
+      "monitor": "Online",
+      "users": "Kelompok",
+      "clipboard": "Formulir",
+      "bookSearch": "Bedah buku",
+      "dice": "Permainan",
+      "flag": "Bendera",
+      "sparkles": "Bintang",
+      "megaphone": "Promosi",
+      "shield": "Perlindungan",
+      "presentation": "Mengajar",
+      "package": "Paket",
+      "handshake": "Kemitraan",
+      "calendar": "Jadwal",
+      "rocket": "Mulai",
+      "folder": "Berkas"
+    }
   }
 }

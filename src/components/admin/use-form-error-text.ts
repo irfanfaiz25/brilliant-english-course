@@ -7,9 +7,6 @@ import { limits } from "@/config/limits";
 /** Values the error messages may mention (`{max}`, `{min}`), filled per code. */
 const errorValues: Record<string, Record<string, number>> = {
   addressTooLong: { max: limits.settings.addressMax },
-  inclusionTooLong: { max: limits.settings.inclusionMax },
-  inclusionsTooFew: { min: limits.settings.inclusionsMin },
-  inclusionsTooMany: { max: limits.settings.inclusionsMax },
   titleTooLong: { max: limits.seo.titleMax },
   descriptionTooShort: { min: limits.seo.descriptionMin },
   descriptionTooLong: { max: limits.seo.descriptionMax },

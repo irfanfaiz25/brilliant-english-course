@@ -1,7 +1,6 @@
 "use server";
 
 import { cacheTags } from "@/config/cache-tags";
-import { partnershipSettingSchema } from "@/features/partners/schema";
 import { guardedAction } from "@/features/users/guarded-action";
 
 import { contactSettingsSchema } from "./schema";
@@ -16,17 +15,5 @@ export async function updateContactSettings(input: unknown) {
     permission: ["update", "settings"],
     tags: [cacheTags.settings],
     run: (value, user) => saveSetting("contact", value, user.id),
-  });
-}
-
-/** The partnership package (investment and inclusions) shown on Kemitraan, per locale. */
-export async function updatePartnershipSettings(input: unknown) {
-  return guardedAction({
-    label: "settings",
-    schema: partnershipSettingSchema,
-    input,
-    permission: ["update", "settings"],
-    tags: [cacheTags.settings],
-    run: (value, user) => saveSetting("partnership", value, user.id),
   });
 }

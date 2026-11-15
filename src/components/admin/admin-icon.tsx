@@ -12,6 +12,7 @@ import {
   StoreIcon,
   UserPlusIcon,
   UsersIcon,
+  HandshakeIcon,
   type LucideProps,
 } from "lucide-react";
 import type { ComponentType } from "react";
@@ -23,6 +24,7 @@ const icons: Record<AdminIconName, ComponentType<LucideProps>> = {
   leads: UserPlusIcon,
   units: StoreIcon,
   quota: MapPinnedIcon,
+  partnershipPage: HandshakeIcon,
   programs: BookOpenIcon,
   activities: CalendarHeartIcon,
   blog: NewspaperIcon,

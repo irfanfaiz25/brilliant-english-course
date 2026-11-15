@@ -22,6 +22,8 @@ type MediaPickerProps = {
   disabled?: boolean;
   /** Offers uploading a new image inside the dialog (`media` create permission). */
   canUpload?: boolean;
+  /** The image is optional: offers removing it (the field then holds ""). */
+  optional?: boolean;
 };
 
 /** Image field: a preview of the picked image and the media library dialog to pick another. */
@@ -33,6 +35,7 @@ export function MediaPicker({
   error,
   disabled,
   canUpload = false,
+  optional = false,
 }: MediaPickerProps) {
   const t = useTranslations("AdminForms.media");
   const [open, setOpen] = useState(false);
@@ -66,8 +69,11 @@ export function MediaPicker({
             </span>
           )}
         </div>
-        <div className="flex min-w-0 flex-1 flex-col items-start gap-2">
-          <p className="max-w-full truncate text-body-sm text-muted-foreground" aria-live="polite">
+        <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
+          <p
+            className="w-full max-w-full truncate text-body-sm text-muted-foreground"
+            aria-live="polite"
+          >
             {selected ? selected.name : t("none")}
           </p>
           <Button
@@ -79,6 +85,17 @@ export function MediaPicker({
           >
             {selected ? t("change") : t("pick")}
           </Button>
+          {optional && value && (
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              disabled={disabled}
+              onClick={() => onChange("")}
+            >
+              {t("remove")}
+            </Button>
+          )}
           <MediaLibraryDialog
             open={open}
             onOpenChange={setOpen}

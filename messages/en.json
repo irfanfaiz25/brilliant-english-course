@@ -360,11 +360,14 @@
       "cities": "cities &<br></br> regencies",
       "quotaValue": "Max. {max}",
       "quota": "units per village,<br></br> protected area",
-      "imageBadge": "Small classes, homely feel"
+      "imageBadge": "Small classes, homely feel",
+      "highlightsLabel": "Partnership highlights"
     },
     "tabs": {
       "label": "Partnership page sections",
       "benefits": "Benefits",
+      "kit": "Starter kit",
+      "training": "Training",
       "fit": "Who fits",
       "steps": "Process",
       "apply": "Quota & apply",
@@ -373,32 +376,38 @@
     },
     "benefits": {
       "overline": "Benefits",
-      "title": "Everything You Need Is Ready",
-      "lead": "Start without building materials from scratch. You get a system already used in hundreds of BEC classes.",
-      "curriculum": {
-        "title": "Ready-to-use curriculum",
-        "text": "Kindy Class, Elementary and Secondary modules with lesson plans for every meeting."
+      "title": "Why Partner with BEC?",
+      "lead": "Start without building materials from scratch, with no profit sharing and a protected area."
+    },
+    "kit": {
+      "overline": "Starter kit",
+      "title": "Everything You Receive When You Join",
+      "lead": "One complete package to open your classes: materials, classroom kit, guides and training.",
+      "filter": "Filter the starter kit",
+      "all": "All",
+      "shown": "{count} items shown",
+      "groups": {
+        "materials": "Learning materials",
+        "classroom": "Classroom kit",
+        "guides": "Guides & admin"
       },
-      "training": {
-        "title": "Training & mentoring",
-        "text": "Teaching-method training for you and your teachers, plus regular mentoring."
-      },
-      "marketing": {
-        "title": "Marketing kit",
-        "text": "Ready-made brochure, banner and social-media designs."
-      },
-      "system": {
-        "title": "Admin system",
-        "text": "Student enrolment and clear progress reports for parents."
-      },
-      "brand": {
-        "title": "A trusted brand",
-        "text": "Parents already know BEC, so your new unit earns trust faster."
-      },
-      "territory": {
-        "title": "Protected area",
-        "text": "At most {max, plural, one {# unit} other {# units}} per village, so every unit has enough prospective students."
-      }
+      "packageTitle": "{count} items in one package",
+      "packageText": "Everything in the starter kit is included when you join.",
+      "investmentLabel": "Investment",
+      "investmentFrom": "From {amount}",
+      "investmentAsk": "Explained during the consultation",
+      "investmentNote": "The partnership team shares the fees and payment options with you directly.",
+      "cta": "Ask for details on WhatsApp"
+    },
+    "training": {
+      "overline": "Training",
+      "title": "Ready to Teach the BEC Way",
+      "lead": "You and your tutors are trained until you feel confident: teaching, admin and book walkthroughs.",
+      "flowTitle": "How one BEC lesson runs",
+      "progress": "Stage {current} of {total}",
+      "previous": "Previous",
+      "next": "Next",
+      "imageAlt": "A BEC tutor training session"
     },
     "fit": {
       "overline": "Who fits",
@@ -427,38 +436,14 @@
         "commitment": "Commitment to the training and BEC standards"
       }
     },
-    "package": {
-      "overline": "Partnership package",
-      "title": "What you get",
-      "investmentLabel": "Investment",
-      "investmentFrom": "From {amount}",
-      "investmentAsk": "Explained during the consultation",
-      "investmentNote": "Costs and payment options are shared directly by the partnership team.",
-      "cta": "Ask for details on WhatsApp"
-    },
     "steps": {
-      "overline": "Partnership process",
-      "title": "5 Steps to an Active Unit",
+      "overline": "Partnership procedure",
+      "title": "{count} Steps to Become a BEC Partner",
       "lead": "A clear process from the start. The partnership team guides you at every step.",
-      "quota": {
-        "title": "Check the village quota",
-        "text": "Make sure there is still a slot in the village where you will open."
-      },
-      "apply": {
-        "title": "Fill in the form",
-        "text": "Send a few details and the partnership team receives your application."
-      },
-      "consult": {
-        "title": "Consultation & visit",
-        "text": "A WhatsApp consultation, then a site visit with the BEC team."
-      },
-      "training": {
-        "title": "Training",
-        "text": "You and your teachers learn the BEC method and system."
-      },
-      "launch": {
-        "title": "Unit goes live",
-        "text": "Opening promotion, first classes start and your unit appears in Find a Unit."
+      "actions": {
+        "quota": "Check village quota",
+        "apply": "Fill in the form",
+        "whatsapp": "Chat with the partnership team"
       }
     },
     "apply": {
@@ -874,6 +859,7 @@
         "leads": "Prospective Partners",
         "units": "Partner Units",
         "quota": "Regional Quota",
+        "partnershipPage": "Kemitraan page",
         "programs": "Programs",
         "activities": "Activities",
         "blog": "Blog Posts",
@@ -1076,10 +1062,6 @@
       "officeHoursRequired": "Add at least one office-hours row.",
       "urlInvalid": "Enter a full link starting with https://.",
       "investmentInvalid": "Enter an amount in rupiah without separators, or leave it empty.",
-      "inclusionRequired": "Fill in this item (at least 3 characters) or remove the row.",
-      "inclusionTooLong": "An item can be at most {max} characters.",
-      "inclusionsTooFew": "Write at least {min} items.",
-      "inclusionsTooMany": "At most {max} items.",
       "titleTooLong": "The title can be at most {max} characters.",
       "descriptionTooShort": "Write at least {min} characters so search results stay clear.",
       "descriptionTooLong": "The description can be at most {max} characters.",
@@ -1155,7 +1137,8 @@
       "selected": "Selected image",
       "cancelPick": "Cancel",
       "upload": "Upload a new image",
-      "backToLibrary": "Back to the library"
+      "backToLibrary": "Back to the library",
+      "remove": "Remove image"
     },
     "preview": {
       "title": "Preview on the site",
@@ -1197,7 +1180,13 @@
       "cancelled": "Moving {item} cancelled.",
       "saved": "Order saved."
     },
-    "scrollMore": "See more below"
+    "scrollMore": "See more below",
+    "itemList": {
+      "localeId": "Indonesia",
+      "localeEn": "English",
+      "title": "Title",
+      "text": "Short text"
+    }
   },
   "AdminSettings": {
     "description": "Head-office contact details and the partnership package shown on the site.",
@@ -1217,16 +1206,6 @@
       "removeHours": "Remove hours row {index}",
       "socialTitle": "Social media",
       "socialDescription": "Profile links in the footer and on the Contact page."
-    },
-    "partnership": {
-      "title": "Partnership package",
-      "description": "Starting investment and package contents shown on the Partnership page.",
-      "investment": "Starting investment (IDR)",
-      "investmentHint": "Leave empty when the investment is explained during the consultation.",
-      "inclusions": "What partners get",
-      "inclusionsHint": "One item per row, {min}–{max} items.",
-      "addInclusion": "Add item",
-      "inclusionLabel": "Item {index}"
     },
     "locales": {
       "id": "Bahasa Indonesia",
@@ -1777,7 +1756,8 @@
         "activity": "Activity",
         "unit": "Unit",
         "post": "Article",
-        "seo": "SEO"
+        "seo": "SEO",
+        "page": "Page"
       },
       "renameTitle": "Image name",
       "renameDescription": "Only for searching the library; alt text is written where the image is used.",
@@ -2265,5 +2245,90 @@
     "saved": "Name saved.",
     "changePassword": "Change password",
     "passwordChanged": "Password changed. Other devices have been signed out."
+  },
+  "AdminPartnershipPage": {
+    "description": "Content of the Kemitraan page on the site. Each section saves on its own; the layout stays in code.",
+    "viewOnSite": "View on site",
+    "jumpLabel": "Page sections",
+    "fields": {
+      "icon": "Icon",
+      "photo": "Photo (optional)"
+    },
+    "benefits": {
+      "title": "Benefits",
+      "description": "Why join. Featured benefits are shown larger and at the top of the page.",
+      "item": "Benefit {index}",
+      "add": "Add benefit",
+      "featured": "Featured benefit",
+      "featuredHint": "Shown as a large card and highlighted at the top of the page."
+    },
+    "kit": {
+      "title": "Starter kit & investment",
+      "description": "What every partner receives, grouped so visitors can filter it. Without a photo, a card shows its icon.",
+      "item": "Item {index}",
+      "add": "Add item",
+      "group": "Group",
+      "investment": "Starting investment (IDR)",
+      "investmentHint": "Leave empty when the investment is explained during the consultation.",
+      "investmentPlaceholder": "E.g. 7500000"
+    },
+    "training": {
+      "title": "Training",
+      "description": "How a BEC lesson runs, as tutors learn it, and the training formats.",
+      "photo": "Training photo (optional)",
+      "flowTitle": "Lesson flow",
+      "flowHint": "The stages of one lesson, in order from opening to closing.",
+      "flowItem": "Stage {index}",
+      "addFlow": "Add stage",
+      "formatsTitle": "Training formats",
+      "formatsHint": "For example online/in person, admin or book walkthroughs.",
+      "formatItem": "Format {index}",
+      "addFormat": "Add format"
+    },
+    "steps": {
+      "title": "Partnership procedure",
+      "description": "The steps from checking the quota to joining. A step can link to the quota check, the form or WhatsApp.",
+      "item": "Step {index}",
+      "add": "Add step",
+      "action": "Step link",
+      "actionHint": "A small button under this step."
+    },
+    "groups": {
+      "materials": "Learning materials",
+      "classroom": "Classroom kit",
+      "guides": "Guides & admin"
+    },
+    "actions": {
+      "none": "No link",
+      "quota": "Check village quota",
+      "apply": "Fill in the form",
+      "whatsapp": "Chat on WhatsApp"
+    },
+    "icons": {
+      "book": "Book",
+      "layers": "Levels",
+      "palette": "Colour",
+      "worksheet": "Worksheet",
+      "chat": "Discussion",
+      "coins": "Money",
+      "home": "Home",
+      "map": "Area",
+      "graduation": "Training",
+      "monitor": "Online",
+      "users": "Group",
+      "clipboard": "Form",
+      "bookSearch": "Book review",
+      "dice": "Games",
+      "flag": "Flag",
+      "sparkles": "Sparkles",
+      "megaphone": "Promotion",
+      "shield": "Protection",
+      "presentation": "Teaching",
+      "package": "Package",
+      "handshake": "Partnership",
+      "calendar": "Schedule",
+      "rocket": "Launch",
+      "folder": "Files"
+    }
   }
 }

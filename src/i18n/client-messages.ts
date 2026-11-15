@@ -23,6 +23,7 @@ export const adminClientNamespaces = [
   "AdminUnits",
   "AdminQuota",
   "AdminLeads",
+  "AdminPartnershipPage",
   "AdminMedia",
   "AdminBlog",
   "AdminTestimonials",

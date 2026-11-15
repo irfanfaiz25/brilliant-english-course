@@ -9,13 +9,22 @@ import { Doodle } from "@/components/site/doodle";
 import { Button } from "@/components/ui/button";
 import { getQuotaRules } from "@/features/quota/queries";
 import { placeholderImages } from "@/config/placeholder-images";
+import { PartnershipIcon } from "@/features/partners/components/partnership-icon";
+import type { PartnershipPage } from "@/features/partners/queries";
 import type { NetworkStats } from "@/features/units/schema";
 
 /**
- * Partner landing header: the promise, the two partner actions (check quota → apply) and the
- * numbers that make it credible. Photo with a floating badge from `lg`, stats card below the copy.
+ * Partner landing header: the promise, the featured benefits (admin-picked, e.g. no profit
+ * sharing), the two partner actions (check quota → apply) and the numbers that make it credible.
+ * Photo with a floating badge from `lg`, stats card below the copy.
  */
-export async function PartnershipHero({ stats }: { stats: NetworkStats }) {
+export async function PartnershipHero({
+  stats,
+  highlights,
+}: {
+  stats: NetworkStats;
+  highlights: PartnershipPage["benefits"];
+}) {
   const rules = await getQuotaRules();
   const t = await getTranslations("Partnership.hero");
   const tNav = await getTranslations("Nav");
@@ -70,6 +79,22 @@ export async function PartnershipHero({ stats }: { stats: NetworkStats }) {
           <p className="max-w-2xl animate-lift-in text-body-lg text-muted-foreground [animation-delay:180ms]">
             {t("lead")}
           </p>
+          {highlights.length > 0 && (
+            <ul
+              aria-label={t("highlightsLabel")}
+              className="flex animate-rise-in flex-wrap gap-2 [animation-delay:225ms]"
+            >
+              {highlights.map((item) => (
+                <li
+                  key={item.title}
+                  className="inline-flex items-center gap-2 rounded-full border border-partner/25 bg-partner-soft px-3.5 py-1.5 text-label text-foreground"
+                >
+                  <PartnershipIcon name={item.icon} className="size-4 text-partner" />
+                  {item.title}
+                </li>
+              ))}
+            </ul>
+          )}
           <div className="flex animate-rise-in flex-col gap-3 pt-1 [animation-delay:270ms] sm:flex-row">
             <Button asChild size="lg" variant="partner" pop>
               <a href="#kuota">

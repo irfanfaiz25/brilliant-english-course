@@ -8,6 +8,7 @@ export type AdminIcon =
   | "leads"
   | "units"
   | "quota"
+  | "partnershipPage"
   | "programs"
   | "activities"
   | "blog"
@@ -47,6 +48,12 @@ export const adminNavigation: readonly AdminNavGroup[] = [
       { key: "leads", href: adminRoutes.leads, icon: "leads", resource: "leads" },
       { key: "units", href: adminRoutes.units, icon: "units", resource: "units" },
       { key: "quota", href: adminRoutes.quota, icon: "quota", resource: "quota" },
+      {
+        key: "partnershipPage",
+        href: adminRoutes.partnershipPage,
+        icon: "partnershipPage",
+        resource: "settings",
+      },
     ],
   },
   {

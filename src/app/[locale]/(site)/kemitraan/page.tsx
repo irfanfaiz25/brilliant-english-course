@@ -7,7 +7,7 @@ import { FaqSection } from "@/components/site/faq-section";
 import { PageCanvas } from "@/components/site/page-canvas";
 import { SectionTabs } from "@/components/site/section-tabs";
 import { getFaqItems } from "@/features/faq/queries";
-import { getPartnershipPackage } from "@/features/partners/queries";
+import { getPartnershipPage } from "@/features/partners/queries";
 import { TestimonialsSection } from "@/features/testimonials/components/testimonials-section";
 import { getTestimonials } from "@/features/testimonials/queries";
 import { getNetworkStats } from "@/features/units/queries";
@@ -18,7 +18,9 @@ import { ApplySection } from "./_sections/apply-section";
 import { BenefitsSection } from "./_sections/benefits-section";
 import { FitSection } from "./_sections/fit-section";
 import { PartnershipHero } from "./_sections/partnership-hero";
+import { StarterKitSection } from "./_sections/starter-kit-section";
 import { StepsSection } from "./_sections/steps-section";
+import { TrainingSection } from "./_sections/training-section";
 
 export async function generateMetadata({
   params,
@@ -29,9 +31,10 @@ export async function generateMetadata({
 }
 
 /**
- * Kemitraan (Phase 5d): the partner journey from promise to application — benefits, who fits and
- * the package, the five steps, then the village quota checker and the two-step form, followed by
- * partner stories, FAQ and a closing call to action. Sticky tabs jump between the sections.
+ * Kemitraan (Phase 5d, content from ADR-041): the partner journey from promise to application —
+ * benefits, the starter kit and investment, training, who fits, the procedure, then the village
+ * quota checker and the two-step form, followed by partner stories, FAQ and a closing call to
+ * action. Sticky tabs jump between the sections; the section content is edited in admin.
  */
 export default async function PartnershipPage(props: PageProps<"/[locale]/kemitraan">) {
   const { locale } = await props.params;
@@ -39,15 +42,17 @@ export default async function PartnershipPage(props: PageProps<"/[locale]/kemitr
 
   const t = await getTranslations("Partnership");
   const tWhatsApp = await getTranslations("WhatsApp");
-  const [stats, partnershipPackage, stories, faqItems] = await Promise.all([
+  const [stats, content, stories, faqItems] = await Promise.all([
     getNetworkStats(),
-    getPartnershipPackage(locale),
+    getPartnershipPage(locale),
     getTestimonials(locale, "partner"),
     getFaqItems(locale, "partners"),
   ]);
 
   const tabs = [
     { slug: "keuntungan", label: t("tabs.benefits") },
+    { slug: "starter-kit", label: t("tabs.kit") },
+    { slug: "pelatihan", label: t("tabs.training") },
     { slug: "cocok", label: t("tabs.fit") },
     { slug: "alur", label: t("tabs.steps") },
     { slug: "kuota", label: t("tabs.apply") },
@@ -57,11 +62,16 @@ export default async function PartnershipPage(props: PageProps<"/[locale]/kemitr
 
   return (
     <PageCanvas>
-      <PartnershipHero stats={stats} />
+      <PartnershipHero
+        stats={stats}
+        highlights={content.benefits.filter((benefit) => benefit.featured)}
+      />
       <SectionTabs label={t("tabs.label")} tabs={tabs} />
-      <BenefitsSection />
-      <FitSection partnershipPackage={partnershipPackage} />
-      <StepsSection />
+      <BenefitsSection benefits={content.benefits} />
+      <StarterKitSection kit={content.kit} />
+      <TrainingSection training={content.training} />
+      <FitSection />
+      <StepsSection steps={content.steps} />
       <ApplySection searchParams={props.searchParams} />
       <TestimonialsSection
         id="cerita"

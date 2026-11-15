@@ -14,6 +14,7 @@ export const adminRoutes = {
   units: "/admin/unit",
   newUnit: "/admin/unit/baru",
   quota: "/admin/kuota",
+  partnershipPage: "/admin/halaman-kemitraan",
   programs: "/admin/program",
   newProgram: "/admin/program/baru",
   activities: "/admin/kegiatan",

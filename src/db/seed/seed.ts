@@ -2,8 +2,8 @@
  * Development seed (`pnpm db:seed`): loads the sample content written during Phase 5 (programs,
  * activities, units, quota reservations, testimonials, FAQ, blog posts and their placeholder
  * photos) plus a few sample partner leads (`MTR-DEV-*`), so the public site and admin show
- * realistic data. Regions must be loaded first (`pnpm db:regions`); users, settings and real
- * leads are never touched.
+ * realistic data. Regions must be loaded first (`pnpm db:regions`); users and real leads are never
+ * touched, and settings are only added when missing (the Kemitraan page sample photos).
  *
  *   pnpm db:seed           # only into an empty content database
  *   pnpm db:seed --reset   # delete the seeded content tables first, then seed again
@@ -157,6 +157,17 @@ async function main() {
         classIds.set(`${key}/${item.name}`, item.id);
       }
     }
+
+    // Kemitraan page: the code defaults with sample photos, unless an admin already saved them.
+    const kit = content.partnershipKitFixture(mediaId);
+    const training = content.partnershipTrainingFixture(mediaId);
+    await tx
+      .insert(schema.settings)
+      .values([
+        { key: "partnership", value: kit },
+        { key: "partnershipTraining", value: training },
+      ])
+      .onConflictDoNothing();
 
     // Activities.
     for (const [index, { key, id, en }] of plan

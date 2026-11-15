@@ -5,6 +5,8 @@ import { cn } from "@/lib/utils";
 import { ScrollFade } from "./scroll-fade";
 
 type AdminPanelProps = {
+  /** Anchor for in-page links (`#id`). */
+  id?: string;
   title: string;
   description?: ReactNode;
   /** Small status line under the description, e.g. when the data was last changed. */
@@ -25,6 +27,7 @@ type AdminPanelProps = {
  * meta, then the panel body. One panel per independent form or list.
  */
 export function AdminPanel({
+  id,
   title,
   description,
   meta,
@@ -36,8 +39,12 @@ export function AdminPanel({
   const titleId = useId();
   return (
     <section
+      id={id}
       aria-labelledby={titleId}
-      className={cn("flex flex-col gap-6 rounded-2xl surface-glass-panel p-5 sm:p-6", className)}
+      className={cn(
+        "flex scroll-mt-24 flex-col gap-6 rounded-2xl surface-glass-panel p-5 sm:p-6",
+        className,
+      )}
     >
       <header className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex flex-col gap-1">

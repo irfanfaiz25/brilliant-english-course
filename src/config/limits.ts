@@ -48,9 +48,6 @@ export const limits = {
     addressMax: 200,
     /** Rows in the office-hours editor (one per group of days). */
     officeHoursMax: 7,
-    inclusionsMin: 3,
-    inclusionsMax: 10,
-    inclusionMax: 120,
   },
   programs: {
     ageMin: 3,
@@ -70,6 +67,20 @@ export const limits = {
     classesMax: 8,
     classNameMax: 60,
     classFocusMax: 120,
+  },
+  /** Kemitraan page lists (ADR-041). */
+  partnershipPage: {
+    titleMax: 60,
+    textMax: 220,
+    benefitsMin: 3,
+    benefitsMax: 9,
+    kitMin: 3,
+    kitMax: 12,
+    flowMin: 3,
+    flowMax: 8,
+    formatsMax: 6,
+    stepsMin: 3,
+    stepsMax: 8,
   },
   quota: {
     /** Upper bound of the per-village maximum an admin can set. */

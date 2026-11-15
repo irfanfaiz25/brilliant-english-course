@@ -8,6 +8,7 @@ export { postFixtures } from "./blog";
 export { faqFixtures } from "./faq";
 export { leadHistory } from "./lead-history";
 export { sampleLeads } from "./leads";
+export { partnershipKitFixture, partnershipTrainingFixture } from "./partnership";
 export { levelFixtures } from "./programs";
 export { quotaReservationFixtures } from "./quota";
 export { regionFixtures } from "./regions";
