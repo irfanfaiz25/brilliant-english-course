@@ -603,3 +603,45 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
   on the page they were reading, and the URL makes an activity shareable.
 - **Alternatives:** A page per activity (more SEO surface but thin content and another route to maintain); expanding
   the card in place (cramped on phones, no room for photos).
+
+### ADR-043 — Production deployment: one environment, images from CI, Caddy behind Cloudflare
+
+2026-11-15 · Accepted (refines ADR-002)
+
+- **Decision:** One production environment, no separate staging.
+  - **Where it runs:** first on `dash.beccourses.com` with indexing off, then on `beccourses.com` at
+    launch on the same server and database.
+  - **Server:** Sumopod/Tencent Jakarta, 2 vCPU / 2 GB / 40 GB, Ubuntu 24.04, upgradable in place.
+  - **Database:** dedicated Sumopod PostgreSQL 17, 1 vCPU / 2 GB, 2 GB storage, no TLS available.
+  - **Media:** R2 bucket `bec-production`.
+  - **Images:** GitHub Actions builds two images per commit on `main` and pushes them to GHCR: the
+    standalone `runner`, and `tools` (source + dependencies for migrations and one-off jobs).
+  - **Release:** the deploy key may only run `/srv/bec/deploy.sh`. The script pulls, migrates under an
+    advisory lock (`scripts/migrate.ts`, drizzle-orm migrator), starts the app, waits for
+    `/api/health` to report the new version, and restarts the previous release if it fails.
+  - **Proxy:** Caddy runs in the host network with a Cloudflare Origin Certificate. UFW lets 80/443
+    in from Cloudflare only, and the app listens on localhost.
+  - **Indexing:** `SITE_INDEXING` (default off) controls `robots.txt`, the `robots` meta tag and the
+    `X-Robots-Tag` header. Caddy also adds the header on `dash.`.
+  - **Database roles:** `bec_app` runs the app and migrations; the read-only `bec_build` prerenders
+    public pages during the image build.
+
+  Runbook: `docs/DEPLOY.md`.
+
+- **Why:** Cheapest setup with no data move at launch: the BEC team fills real content in place.
+  Building in CI keeps the 2 GB server free for serving. Prerendering needs the real database at
+  build time. A forced-command key limits what a leaked CI secret can do. Migrations before the
+  switch, plus a health-gated restart, keep a bad release from replacing a good one.
+- **Alternatives:**
+  - a separate staging on Sumopod's shared PostgreSQL 16 (version mismatch, extensions likely
+    blocked);
+  - Coolify (about 0.5–1 GB of RAM for itself);
+  - building on the server (`next build` needs most of the RAM);
+  - prerendering without the database (empty pages until the cache refreshes);
+  - copying deploy files from CI (the deploy key would need write access).
+- **Follow-up:**
+  - every migration must keep the previous release working (rollback never undoes migrations);
+  - releases replace the app container with a few seconds of downtime;
+  - test data must be removed before launch (APX-303);
+  - backups and monitoring before launch (APX-304);
+  - add `sslmode=require` if Sumopod offers TLS.

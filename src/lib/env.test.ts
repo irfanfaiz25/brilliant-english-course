@@ -29,6 +29,12 @@ describe("parseServerEnv", () => {
     expect(parseServerEnv(valid).ENABLE_DESIGN_PREVIEW).toBeUndefined();
   });
 
+  it("keeps the site closed to search engines unless indexing is turned on", () => {
+    expect(parseServerEnv(valid).SITE_INDEXING).toBe(false);
+    expect(parseServerEnv({ ...valid, SITE_INDEXING: "true" }).SITE_INDEXING).toBe(true);
+    expect(() => parseServerEnv({ ...valid, SITE_INDEXING: "maybe" })).toThrow(/SITE_INDEXING/);
+  });
+
   it("rejects a missing or non-postgres DATABASE_URL", () => {
     expect(() => parseServerEnv({})).toThrow(/DATABASE_URL/);
     expect(() => parseServerEnv({ ...valid, DATABASE_URL: "mysql://localhost/db" })).toThrow(

@@ -11,11 +11,11 @@ Status legend: ⬜ not started · 🟨 in progress · ✅ done
 | 1   | Scaffold & tooling                         | ✅         |
 | 2   | Design system in code & site shell         | ✅         |
 | 3   | Data model, regions & auth                 | ✅         |
-| 4   | Admin modules                              | ⬜         |
+| 4   | Admin modules                              | ✅         |
 | 5   | Public website                             | ✅         |
 | 6   | Notifications                              | ⬜         |
 | 7   | SEO, performance & accessibility hardening | ⬜         |
-| 8   | Deployment & operations                    | ⬜         |
+| 8   | Deployment & operations                    | 🟨         |
 | 9   | Partner (Mitra) portal                     | ⬜ (later) |
 
 ---
@@ -149,11 +149,18 @@ Sub-phases: 5a Beranda ✅ (5a-1 hero, stats, programs, activities · 5a-2 unit 
 
 ## Phase 8 — Deployment & operations
 
-- Multi-stage Dockerfile (standalone output), image built in GitHub Actions → GHCR.
-- VPS (2 vCPU / 2 GB, swap 2 GB): app + worker containers behind Caddy/Coolify; Cloudflare DNS/CDN/SSL.
-- Managed PostgreSQL 17 (Sumopod, same region); migrations applied by the deploy pipeline after review.
-- Backups (provider + weekly logical dump to R2), uptime monitoring, error tracking.
-- `staging` and `production` environments.
+Sub-phases: **8a** server setup ✅ (key-only SSH, fail2ban, UFW Cloudflare-only, Docker) · **8b** deploy
+pipeline 🟨 (ADR-043) · **8c** first deploy on `dash.beccourses.com` ⬜ · **8d** backups and monitoring ⬜ ·
+**8e** launch on `beccourses.com` ⬜. Runbook: `docs/DEPLOY.md`.
+
+- Multi-stage Dockerfile (standalone `runner` + `tools`), images built in GitHub Actions → GHCR.
+- VPS (2 vCPU / 2 GB, swap 2 GB): app (+ worker in Phase 6) behind Caddy; Cloudflare DNS/CDN/SSL.
+- Managed PostgreSQL 17 (Sumopod, same region); migrations applied by the deploy script before the
+  new release starts.
+- Backups (provider + daily logical dump to R2), uptime monitoring, error tracking.
+- One `production` environment; a preview on `dash.beccourses.com` (noindex) until launch.
+- **Done when:** a merge to `main` releases automatically with a health-gated restart, rollback is
+  one command, backups restore, and the site runs on `beccourses.com` with the old URLs redirected.
 
 ## Phase 9 — Partner (Mitra) portal _(later)_
 

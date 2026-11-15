@@ -11,6 +11,7 @@ import { getSeoDefaults } from "@/features/seo/queries";
 import { pickClientMessages } from "@/i18n/client-messages";
 import { localeRegion, routing } from "@/i18n/routing";
 import { brandColors } from "@/lib/design-tokens";
+import { env } from "@/lib/env";
 import { publicEnv } from "@/lib/public-env";
 import { poppins } from "@/styles/fonts";
 
@@ -41,6 +42,8 @@ export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Pr
       locale: localeRegion[locale],
       alternateLocale: routing.locales.filter((l) => l !== locale).map((l) => localeRegion[l]),
     },
+    // Closed to search engines until launch (ADR-043); pages never re-open it.
+    ...(env.SITE_INDEXING ? {} : { robots: { index: false, follow: false } }),
   };
 }
 

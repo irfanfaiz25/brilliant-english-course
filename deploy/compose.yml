@@ -1,0 +1,47 @@
+# Production stack on the VPS (ADR-043), installed at /srv/bec/compose.yml by an admin
+# (docs/DEPLOY.md). Releases are started by deploy.sh with BEC_TAG set to the image's git SHA.
+#
+# Docker-published ports bypass UFW, so only Caddy faces the internet and it runs in the host
+# network, where UFW lets 80/443 in from Cloudflare only. The app listens on localhost.
+
+name: bec
+
+x-logging: &logging
+  driver: json-file
+  options: { max-size: "10m", max-file: "3" }
+
+services:
+  app:
+    image: ghcr.io/irfanfaiz25/bec:${BEC_TAG:?BEC_TAG is set by deploy.sh}
+    env_file: .env
+    ports:
+      - "127.0.0.1:3000:3000"
+    restart: unless-stopped
+    mem_limit: 900m
+    init: true
+    logging: *logging
+
+  caddy:
+    image: caddy:2.10-alpine
+    network_mode: host
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./certs:/certs:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    restart: unless-stopped
+    mem_limit: 128m
+    logging: *logging
+
+  # One-off jobs from the tools image: migrations on every deploy, and by hand
+  # `docker compose run --rm tools pnpm db:regions` / `pnpm auth:create-user ...`.
+  tools:
+    image: ghcr.io/irfanfaiz25/bec-tools:${BEC_TAG:?BEC_TAG is set by deploy.sh}
+    profiles: [tools]
+    env_file: .env
+    mem_limit: 768m
+    logging: *logging
+
+volumes:
+  caddy-data:
+  caddy-config:

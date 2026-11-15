@@ -4,6 +4,7 @@ import { NextResponse, type NextRequest } from "next/server";
 
 import { adminRoutes, publicAdminPaths } from "@/config/admin-routes";
 import { routing } from "@/i18n/routing";
+import { env } from "@/lib/env";
 
 const intlMiddleware = createMiddleware(routing);
 
@@ -17,6 +18,13 @@ const AUTH_COOKIE_PREFIX = "bec";
  *   permissions on the server (`features/users/session.ts`, ADR-025).
  */
 export default function proxy(request: NextRequest) {
+  const response = route(request);
+  // Until launch every page also says "noindex" in a header (ADR-043), whatever its metadata.
+  if (!env.SITE_INDEXING) response.headers.set("X-Robots-Tag", "noindex, nofollow");
+  return response;
+}
+
+function route(request: NextRequest): NextResponse {
   const { pathname, search } = request.nextUrl;
   if (pathname !== adminRoutes.home && !pathname.startsWith(`${adminRoutes.home}/`)) {
     return intlMiddleware(request);

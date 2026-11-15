@@ -285,6 +285,7 @@ Create a local super admin with `pnpm auth:create-user --email you@example.com -
 | `pnpm test:e2e`                            | Playwright, desktop + mobile (Pixel 7); reuses a server on `E2E_PORT` (default 3000) |
 | `pnpm db:up` / `pnpm db:down`              | Local Postgres 17 in Docker (host port 5433)                                         |
 | `pnpm db:generate` / `pnpm db:migrate`     | Drizzle: create migration from schema / apply (local only)                           |
+| `pnpm db:migrate:deploy`                   | Apply migrations with an advisory lock (the deploy runs it from the tools image)     |
 | `pnpm db:studio`                           | Drizzle Studio                                                                       |
 | `pnpm db:regions`                          | Upsert the Kemendagri region dataset (~3 s) and print search timings                 |
 | `pnpm db:regions:build [commit]`           | Refresh `src/db/seed/regions/*` from upstream `cahyadsn/wilayah`; review the diff    |
@@ -294,6 +295,11 @@ Create a local super admin with `pnpm auth:create-user --email you@example.com -
 
 Git hooks (Husky): pre-commit runs lint-staged and checks `AGENTS.md` == `CLAUDE.md`;
 commit-msg runs commitlint (Conventional Commits, rejects AI co-author trailers).
+
+Deploy (`.github/workflows/deploy.yml`, ADR-043): after CI passes on `main`, images are built and pushed to GHCR
+and `deploy/deploy.sh` releases them on the server (migrate → start → health check → restart the previous release on
+failure). Server files live in `deploy/`, the runbook in `docs/DEPLOY.md`. There is one production environment; it is
+`noindex` (`SITE_INDEXING=false`) until launch.
 
 CI (`.github/workflows/ci.yml`) on PRs/pushes to `staging` and `main`: quality checks, migrations
 applied to a throwaway Postgres 17, production build and E2E (on a throwaway database with regions and the dev seed:
