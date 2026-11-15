@@ -645,3 +645,27 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
   - test data must be removed before launch (APX-303);
   - backups and monitoring before launch (APX-304);
   - add `sslmode=require` if Sumopod offers TLS.
+
+### ADR-044 — Release from `staging`; CI runs on pull requests only
+
+2026-11-15 · Accepted (amends ADR-043)
+
+- **Decision:**
+  - Every merge into `staging` deploys to production. The Deploy workflow runs on `push` to
+    `staging`, plus a manual run.
+  - CI runs on pull requests (and by hand), not again on the merge.
+  - Branch protection on `staging` requires pull requests, the three CI checks and an up-to-date
+    branch.
+  - In CI, the E2E job no longer waits for the quality job.
+  - The Playwright mobile project runs only the specs whose behaviour differs on phones
+    (navigation, bottom sheets, swipe rows, table/card switch) plus the accessibility sweep.
+- **Why:** With one environment, a second hop `staging` → `main` and a second CI run on the merge
+  added about ten minutes per release and tested nothing new. The up-to-date rule makes the merged
+  commit the one CI tested. E2E (about 200 s) was the long pole; desktop-identical specs on phones
+  doubled it.
+- **Alternatives:** keep `main` as the release branch (an extra PR per release); deploy after a CI
+  run on the merge commit (slower, same result with an up-to-date branch); drop mobile E2E entirely
+  (loses phone-only paths).
+- **Follow-up:** `main` stays unused until a separate release gate is wanted after launch; then the
+  Deploy trigger moves back to `main`. A spec that gains a phone-only path must be added to the
+  mobile project's `testMatch`.

@@ -275,33 +275,33 @@ non-developer need to change it? If yes → admin field with a sensible default 
 First run: `cp .env.example .env.local` (set `BETTER_AUTH_SECRET`), then `pnpm i && pnpm db:up && pnpm db:migrate && pnpm db:regions && pnpm db:seed && pnpm dev`.
 Create a local super admin with `pnpm auth:create-user --email you@example.com --role super_admin` and sign in at `/admin/masuk`.
 
-| Command                                    | Purpose                                                                              |
-| ------------------------------------------ | ------------------------------------------------------------------------------------ |
-| `pnpm dev`                                 | Dev server (Turbopack) on http://localhost:3000                                      |
-| `pnpm build` / `pnpm start`                | Production build / run                                                               |
-| `pnpm lint` / `pnpm typecheck`             | ESLint (zero warnings) / route typegen + `tsc`                                       |
-| `pnpm format` / `pnpm format:check`        | Prettier (with Tailwind class sorting)                                               |
-| `pnpm test` / `pnpm test:watch`            | Vitest (`*.test.ts` → node, `*.test.tsx` → jsdom)                                    |
-| `pnpm test:e2e`                            | Playwright, desktop + mobile (Pixel 7); reuses a server on `E2E_PORT` (default 3000) |
-| `pnpm db:up` / `pnpm db:down`              | Local Postgres 17 in Docker (host port 5433)                                         |
-| `pnpm db:generate` / `pnpm db:migrate`     | Drizzle: create migration from schema / apply (local only)                           |
-| `pnpm db:migrate:deploy`                   | Apply migrations with an advisory lock (the deploy runs it from the tools image)     |
-| `pnpm db:studio`                           | Drizzle Studio                                                                       |
-| `pnpm db:regions`                          | Upsert the Kemendagri region dataset (~3 s) and print search timings                 |
-| `pnpm db:regions:build [commit]`           | Refresh `src/db/seed/regions/*` from upstream `cahyadsn/wilayah`; review the diff    |
-| `pnpm auth:create-user --email … --role …` | Create a staff account or, with `--reset-password`, set a new password (local/CI)    |
-| `pnpm db:seed [--reset]`                   | Dev sample content (local/CI only); `--reset` replaces seeded content                |
-| `pnpm worker`                              | Added in Phase 6                                                                     |
+| Command                                    | Purpose                                                                                      |
+| ------------------------------------------ | -------------------------------------------------------------------------------------------- |
+| `pnpm dev`                                 | Dev server (Turbopack) on http://localhost:3000                                              |
+| `pnpm build` / `pnpm start`                | Production build / run                                                                       |
+| `pnpm lint` / `pnpm typecheck`             | ESLint (zero warnings) / route typegen + `tsc`                                               |
+| `pnpm format` / `pnpm format:check`        | Prettier (with Tailwind class sorting)                                                       |
+| `pnpm test` / `pnpm test:watch`            | Vitest (`*.test.ts` → node, `*.test.tsx` → jsdom)                                            |
+| `pnpm test:e2e`                            | Playwright: desktop, plus phone-specific specs on mobile (Pixel 7); reuses `E2E_PORT` (3000) |
+| `pnpm db:up` / `pnpm db:down`              | Local Postgres 17 in Docker (host port 5433)                                                 |
+| `pnpm db:generate` / `pnpm db:migrate`     | Drizzle: create migration from schema / apply (local only)                                   |
+| `pnpm db:migrate:deploy`                   | Apply migrations with an advisory lock (the deploy runs it from the tools image)             |
+| `pnpm db:studio`                           | Drizzle Studio                                                                               |
+| `pnpm db:regions`                          | Upsert the Kemendagri region dataset (~3 s) and print search timings                         |
+| `pnpm db:regions:build [commit]`           | Refresh `src/db/seed/regions/*` from upstream `cahyadsn/wilayah`; review the diff            |
+| `pnpm auth:create-user --email … --role …` | Create a staff account or, with `--reset-password`, set a new password (local/CI)            |
+| `pnpm db:seed [--reset]`                   | Dev sample content (local/CI only); `--reset` replaces seeded content                        |
+| `pnpm worker`                              | Added in Phase 6                                                                             |
 
 Git hooks (Husky): pre-commit runs lint-staged and checks `AGENTS.md` == `CLAUDE.md`;
 commit-msg runs commitlint (Conventional Commits, rejects AI co-author trailers).
 
-Deploy (`.github/workflows/deploy.yml`, ADR-043): after CI passes on `main`, images are built and pushed to GHCR
+Deploy (`.github/workflows/deploy.yml`, ADR-043/044): every merge into `staging` builds the images, pushes them to GHCR
 and `deploy/deploy.sh` releases them on the server (migrate → start → health check → restart the previous release on
 failure). Server files live in `deploy/`, the runbook in `docs/DEPLOY.md`. There is one production environment; it is
 `noindex` (`SITE_INDEXING=false`) until launch.
 
-CI (`.github/workflows/ci.yml`) on PRs/pushes to `staging` and `main`: quality checks, migrations
+CI (`.github/workflows/ci.yml`) on pull requests (branch protection requires it before a merge into `staging`): quality checks, migrations
 applied to a throwaway Postgres 17, production build and E2E (on a throwaway database with regions and the dev seed:
 public pages are prerendered from it; the E2E global setup creates the staff accounts, so `pnpm test:e2e` locally needs
 the migrated, seeded Docker database).
@@ -311,7 +311,7 @@ the migrated, seeded Docker database).
 - Work is delivered **phase by phase** (`docs/ROADMAP.md`). One phase (or sub-phase) = one branch = one PR.
 - Branches: `main` (production), `staging` (pre-production). Always pull the latest `staging`,
   then branch from it: `feat/<scope>`, `fix/<scope>`, `chore/<scope>`, `docs/<scope>`.
-- PRs target `staging`; `staging` → `main` for releases.
+- PRs target `staging`; merging one releases it to production (ADR-044). `main` is not used for releases yet.
 - Commits and PRs: **Conventional Commits, in English** (`feat(units): add quota check`).
   Do **not** add AI agents/models as co-authors or contributors, and no `Co-Authored-By` trailers.
 - Record any decision that later work must follow in `docs/DECISIONS.md` (next ADR number).

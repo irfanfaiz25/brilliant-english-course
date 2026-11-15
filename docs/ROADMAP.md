@@ -159,7 +159,7 @@ pipeline 🟨 (ADR-043) · **8c** first deploy on `dash.beccourses.com` ⬜ · *
   new release starts.
 - Backups (provider + daily logical dump to R2), uptime monitoring, error tracking.
 - One `production` environment; a preview on `dash.beccourses.com` (noindex) until launch.
-- **Done when:** a merge to `main` releases automatically with a health-gated restart, rollback is
+- **Done when:** a merge into `staging` releases automatically (ADR-044) with a health-gated restart, rollback is
   one command, backups restore, and the site runs on `beccourses.com` with the old URLs redirected.
 
 ## Phase 9 — Partner (Mitra) portal _(later)_
