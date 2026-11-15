@@ -29,15 +29,41 @@ test.describe("partnership page", () => {
       }),
     ).toBeVisible();
     const tabs = page.getByRole("navigation", { name: "Bagian halaman kemitraan" });
-    await expect(tabs.getByRole("link")).toHaveCount(6);
+    await expect(tabs.getByRole("link")).toHaveCount(8);
     await expect(
-      page.getByRole("heading", { name: "Semua yang Kamu Butuhkan Sudah Disiapkan" }),
+      page.getByRole("list", { name: "Keunggulan kemitraan" }).getByText("Tanpa bagi hasil"),
     ).toBeVisible();
-    await expect(
-      page.getByRole("heading", { name: "5 Langkah Sampai Unitmu Aktif" }),
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Kenapa Bergabung dengan BEC?" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "5 Langkah Jadi Mitra BEC" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Pertanyaan Calon Mitra" })).toBeVisible();
     await expect(visibleText(page, "Pilih desa untuk melihat kuota")).toBeVisible();
+  });
+
+  test("filters the starter kit and walks through a lesson", async ({ page }) => {
+    await page.goto("/kemitraan#starter-kit");
+
+    const kit = page.locator("#starter-kit");
+    const filters = kit.getByRole("group", { name: "Saring isi starter kit" });
+    await filters.getByRole("button", { name: /^Perlengkapan kelas/ }).click();
+    await expect(filters.getByRole("button", { name: /^Perlengkapan kelas/ })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
+    await expect(kit.getByRole("heading", { name: "Boardgames" })).toBeVisible();
+    await expect(kit.getByRole("heading", { name: "Silabus" })).toHaveCount(0);
+    await filters.getByRole("button", { name: /^Semua/ }).click();
+    await expect(kit.getByRole("heading", { name: "Silabus" })).toBeVisible();
+
+    const stages = page.getByRole("tablist", { name: "Alur satu sesi kelas BEC" });
+    await stages.getByRole("tab", { name: /Pembukaan/ }).focus();
+    await page.keyboard.press("ArrowRight");
+    await expect(stages.getByRole("tab", { name: /Apersepsi/ })).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
+    await expect(page.getByRole("tabpanel")).toContainText("Tahap 2 dari 6");
+    await page.getByRole("button", { name: "Berikutnya" }).click();
+    await expect(page.getByRole("tabpanel")).toContainText("Tahap 3 dari 6");
   });
 
   test("arrives from Cek Unit with the village pre-selected", async ({ page }) => {
