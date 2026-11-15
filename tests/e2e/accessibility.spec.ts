@@ -66,16 +66,18 @@ test.describe("reduced motion", () => {
   for (const path of pages) {
     test(`nothing moves and all content shows on ${path}`, async ({ page }) => {
       await page.goto(path);
-      // Reveals observe the viewport only once hydrated; scrolling earlier (a busy CI runner)
-      // would pass them by and leave them hidden.
-      await page.waitForLoadState("networkidle");
-      // Scroll through so scroll-triggered reveals run.
-      await page.evaluate(async () => {
-        for (let y = 0; y < document.body.scrollHeight; y += window.innerHeight / 2) {
-          window.scrollTo({ top: y, behavior: "instant" });
-          await new Promise((resolve) => setTimeout(resolve, 60));
-        }
-      });
+      // Scroll through so scroll-triggered reveals run. Repeated by the final check: on a busy
+      // runner the first pass can happen before hydration, when no reveal observes the viewport.
+      // (Not `networkidle`: Chrome's background revalidation of cached RSC prefetches never
+      // finishes for the page, so it would wait forever.)
+      const scrollThrough = () =>
+        page.evaluate(async () => {
+          for (let y = 0; y < document.body.scrollHeight; y += window.innerHeight / 2) {
+            window.scrollTo({ top: y, behavior: "instant" });
+            await new Promise((resolve) => setTimeout(resolve, 60));
+          }
+        });
+      await scrollThrough();
 
       const moving = await page.evaluate(() =>
         document
@@ -97,11 +99,12 @@ test.describe("reduced motion", () => {
       expect(moving).toEqual([]);
 
       await expect(async () => {
+        await scrollThrough();
         const hidden = await page
           .locator("[data-reveal]")
           .evaluateAll((els) => els.filter((el) => getComputedStyle(el).opacity !== "1").length);
         expect(hidden).toBe(0);
-      }).toPass({ timeout: 5000 });
+      }).toPass({ timeout: 10_000 });
     });
   }
 });
