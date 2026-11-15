@@ -48,9 +48,6 @@ export const limits = {
     addressMax: 200,
     /** Rows in the office-hours editor (one per group of days). */
     officeHoursMax: 7,
-    inclusionsMin: 3,
-    inclusionsMax: 10,
-    inclusionMax: 120,
   },
   programs: {
     ageMin: 3,
@@ -70,6 +67,23 @@ export const limits = {
     classesMax: 8,
     classNameMax: 60,
     classFocusMax: 120,
+  },
+  /** Kemitraan page lists (ADR-041). */
+  partnershipPage: {
+    titleMax: 60,
+    textMax: 220,
+    benefitsMin: 3,
+    benefitsMax: 9,
+    kitMin: 3,
+    kitMax: 12,
+    flowMin: 3,
+    flowMax: 8,
+    formatsMax: 6,
+    stepsMin: 3,
+    stepsMax: 8,
+    /** Training gallery (photos of sessions and partners). */
+    photosMax: 8,
+    captionMax: 80,
   },
   quota: {
     /** Upper bound of the per-village maximum an admin can set. */
@@ -100,6 +114,15 @@ export const limits = {
     nameMax: 80,
     summaryMax: 300,
     audienceMax: 60,
+    /** Detail popup (ADR-042). */
+    descriptionMax: 600,
+    scheduleMax: 80,
+    highlightsMax: 6,
+    highlightMax: 120,
+    skillsMax: 6,
+    skillMax: 40,
+    photosMax: 8,
+    captionMax: 80,
   },
   testimonials: {
     /** Matches `testimonials.author_name` / `testimonial_translations.role` (varchar 120). */

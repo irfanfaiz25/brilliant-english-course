@@ -31,6 +31,8 @@ import {
   type PartnerSpace,
 } from "./schema";
 import { fillBuckets, trendBuckets, type TrendBuckets, type TrendRange } from "./trend";
+import type { PartnershipPageContent } from "./page-schema";
+import { getPartnershipPageContent } from "./queries";
 
 /*
  * Admin reads of partner leads. Never cached across users: every call checks the caller's
@@ -562,4 +564,16 @@ export async function getRegionDemand(actor: SessionUser): Promise<RegionDemand[
     leads: row.leads,
     activeUnits: unitCounts.find((unit) => unit.code === row.code)?.count ?? 0,
   }));
+}
+
+/* ------------------------------------------------------------------------------------------------
+ * Kemitraan page content (ADR-041)
+ * ---------------------------------------------------------------------------------------------- */
+
+/** The page sections as the admin editor loads them (site settings: `read` on `settings`). */
+export async function getPartnershipPageForEdit(
+  actor: SessionUser,
+): Promise<PartnershipPageContent> {
+  assertCan(actor, "read", "settings");
+  return getPartnershipPageContent();
 }

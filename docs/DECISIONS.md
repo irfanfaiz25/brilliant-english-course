@@ -548,3 +548,58 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
 - **Alternatives:** Classes as levels of their own (seven top-level choices, overlapping ages break the age finder);
   free-text spans (inconsistent and untranslated); storing every opened class only (a new class would reach no unit);
   an age finder per class (spans overlap, so one chip could point at two classes).
+
+### ADR-041 — Kemitraan page content is edited in admin
+
+2026-11-15 · Accepted
+
+- **Decision:** The Kemitraan page follows BEC's real offer (beccourses.com/kemitraan-bec) and its content is admin
+  content, while the layout stays in code. Four settings, one per section and each saved by its own panel in
+  Halaman Kemitraan (`/admin/halaman-kemitraan`, `update` on `settings`):
+  - `partnershipBenefits`: benefits, where `featured` ones are large cards and hero highlights;
+  - `partnership`: the starter kit (items grouped as materials, classroom or guides, each with an optional photo)
+    plus the starting investment. It replaces the old inclusions list; a stored document in the old shape falls back
+    to the code defaults;
+  - `partnershipTraining`: the lesson flow, the training formats and a gallery of up to eight captioned photos
+    (training sessions, partners in the field; `PhotoGallery`). A document saved with the earlier single `imageId`
+    reads as a one-photo gallery;
+  - `partnershipSteps`: the procedure, where a step may link to the quota check, the form or WhatsApp.
+
+  Every item has fields shared by both locales (an icon from the fixed `partnershipIcons` set, picked from a visual grid,
+  or a custom icon image from the media library that replaces it; photo; group; link) and copy per locale. Custom
+  icons are media images (PNG/WebP/JPEG, never SVG, which the library does not accept); `iconImageId` defaults to ""
+  so sections saved before custom icons existed still parse. Admin lists use `ItemListField`, which shows Indonesian and English side by side. Photos are media
+  ids; `usage.ts` finds them in these settings, so the library will not delete a photo in use, and a missing photo
+  falls back to the item's icon. Code defaults (`page-defaults.ts`) carry the real copy without photos; the dev seed
+  adds sample photos only when the settings are missing. The procedure merges "submit the form to the admin" into
+  "fill in the form", because the form reaches the team online. The quota wording stays general ("one unit per
+  village, a second only under certain conditions") until BEC confirms the conditions.
+
+- **Why:** The real partnership offer (no profit sharing, starter kit, training) was missing from the site, and staff
+  must be able to keep it current without a release. Settings keep it to one validated document per section with no
+  migration; a fixed icon set and layout keep every edit on brand.
+- **Alternatives:** Content tables per section (a migration for structured copy that changes rarely, and relational
+  ordering for short lists); free-form rich text (breaks the layout and the bilingual pairing); copy in the message
+  files (needs a developer for every change).
+
+### ADR-042 — Activities open a detail popup with a gallery
+
+2026-11-15 · Accepted
+
+- **Decision:** An activity card opens a popup (`ActivityExplorer` + `ActivityDetail`, `features/activities/components`)
+  instead of linking to the Program page, where the same cards were shown again. The popup shows the card photo and up
+  to eight more photos (thumbnails switch the large photo, shown whole), the audience, a schedule line, a description,
+  "what children do" (up to six lines), the skills practised (up to six chips) and two actions: "find the nearest
+  unit" and a pre-filled WhatsApp message (`WhatsApp.activity`). On a unit's page the message goes to that unit and
+  "find the nearest unit" is hidden. Empty details are left out, so an activity saved before this change still opens.
+- The open activity lives in the URL (`?kegiatan=<slug>`): cards are real links to it, opening pushes a history entry so
+  the back button closes the popup, and a shared link opens it directly (closing then only removes the parameter). The
+  parameter is read on the client (`useSyncExternalStore`), so pages stay prerendered.
+- Data: `activity_translations` gains `description`, `highlights`, `skills` and `schedule` (defaults empty); photos are
+  `activity_photos` + `activity_photo_translations` (caption per locale), written as a whole with the activity
+  (migration `0009_activity_details`). Admin edits them in Kegiatan ("Detail kegiatan" with locale tabs, "Galeri popup"
+  with `PhotoListField`); photos count as media usage.
+- **Why:** Parents wanted more than the card, and a click that lands on the same cards felt broken. A popup keeps them
+  on the page they were reading, and the URL makes an activity shareable.
+- **Alternatives:** A page per activity (more SEO surface but thin content and another route to maintain); expanding
+  the card in place (cramped on phones, no room for photos).

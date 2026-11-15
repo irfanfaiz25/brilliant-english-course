@@ -9,13 +9,22 @@ import { Doodle } from "@/components/site/doodle";
 import { Button } from "@/components/ui/button";
 import { getQuotaRules } from "@/features/quota/queries";
 import { placeholderImages } from "@/config/placeholder-images";
+import { ItemIcon } from "@/features/partners/components/item-icon";
+import type { PartnershipPage } from "@/features/partners/queries";
 import type { NetworkStats } from "@/features/units/schema";
 
 /**
- * Partner landing header: the promise, the two partner actions (check quota → apply) and the
- * numbers that make it credible. Photo with a floating badge from `lg`, stats card below the copy.
+ * Partner landing header: the promise, the featured benefits (admin-picked, e.g. no profit
+ * sharing), the two partner actions (check quota → apply) and the numbers that make it credible.
+ * Photo with a floating badge from `lg`, stats card below the copy.
  */
-export async function PartnershipHero({ stats }: { stats: NetworkStats }) {
+export async function PartnershipHero({
+  stats,
+  highlights,
+}: {
+  stats: NetworkStats;
+  highlights: PartnershipPage["benefits"];
+}) {
   const rules = await getQuotaRules();
   const t = await getTranslations("Partnership.hero");
   const tNav = await getTranslations("Nav");
@@ -70,6 +79,23 @@ export async function PartnershipHero({ stats }: { stats: NetworkStats }) {
           <p className="max-w-2xl animate-lift-in text-body-lg text-muted-foreground [animation-delay:180ms]">
             {t("lead")}
           </p>
+          {highlights.length > 0 && (
+            // One strip, equal columns in a single row from `sm` and a tidy list on phones, so a
+            // highlight never ends up alone on a wrapped line, whatever admins feature.
+            <ul
+              aria-label={t("highlightsLabel")}
+              className="grid animate-rise-in divide-y divide-partner/15 overflow-hidden rounded-2xl border border-partner/20 bg-partner-soft/70 [animation-delay:225ms] sm:auto-cols-fr sm:grid-flow-col sm:divide-x sm:divide-y-0"
+            >
+              {highlights.map((item) => (
+                <li key={item.title} className="flex items-center gap-3 px-4 py-3">
+                  <span className="inline-flex size-9 shrink-0 items-center justify-center rounded-xl bg-card text-partner shadow-sm">
+                    <ItemIcon item={item} className="size-5" />
+                  </span>
+                  <span className="text-label leading-snug text-foreground">{item.title}</span>
+                </li>
+              ))}
+            </ul>
+          )}
           <div className="flex animate-rise-in flex-col gap-3 pt-1 [animation-delay:270ms] sm:flex-row">
             <Button asChild size="lg" variant="partner" pop>
               <a href="#kuota">

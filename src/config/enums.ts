@@ -59,6 +59,43 @@ export const leadStatuses = [
   "lost",
 ] as const;
 
+/**
+ * Icons the admin may pick for Kemitraan page items (ADR-041): a fixed set, drawn with Lucide by
+ * `PartnershipIcon`, so every card stays on brand.
+ */
+export const partnershipIcons = [
+  "book",
+  "layers",
+  "palette",
+  "worksheet",
+  "chat",
+  "coins",
+  "home",
+  "map",
+  "graduation",
+  "monitor",
+  "users",
+  "clipboard",
+  "bookSearch",
+  "dice",
+  "flag",
+  "sparkles",
+  "megaphone",
+  "shield",
+  "presentation",
+  "package",
+  "handshake",
+  "calendar",
+  "rocket",
+  "folder",
+] as const;
+
+/** Groups of the partner starter kit, used as filters on Kemitraan. */
+export const starterKitGroups = ["materials", "classroom", "guides"] as const;
+
+/** What a partnership step links to: the quota check, the form, WhatsApp, or nothing. */
+export const partnerStepActions = ["none", "quota", "apply", "whatsapp"] as const;
+
 export const postCategories = ["tips-belajar", "parenting", "kegiatan", "kemitraan"] as const;
 
 export const postStatuses = ["draft", "published", "archived"] as const;

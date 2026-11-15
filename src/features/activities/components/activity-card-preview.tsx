@@ -42,6 +42,12 @@ export function ActivityCardPreview({
         summary: filled(text?.summary, t("fields.summary")),
         audience: filled(text?.audience, t("fields.audience")),
         image: { src: image.src, width: image.width, height: image.height, alt: "" },
+        // The card shows none of the popup details.
+        description: "",
+        highlights: [],
+        skills: [],
+        schedule: "",
+        photos: [],
       }
     : null;
 
@@ -49,7 +55,14 @@ export function ActivityCardPreview({
     <CardPreview locale={locale} placement={t("previewPlacement")} className={className}>
       {activity && (
         <div className="mx-auto max-w-72">
-          <ActivityCard activity={activity} detailLabel={labels[locale].detailLink} />
+          <ActivityCard
+            activity={activity}
+            detail={{
+              label: labels[locale].detailLink,
+              href: "#",
+              onClick: (event) => event.preventDefault(),
+            }}
+          />
         </div>
       )}
     </CardPreview>

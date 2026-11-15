@@ -1,7 +1,12 @@
 import { eq } from "drizzle-orm";
 
 import { db } from "@/db/client";
-import { activities, activityTranslations } from "@/db/schema";
+import {
+  activities,
+  activityPhotos,
+  activityPhotoTranslations,
+  activityTranslations,
+} from "@/db/schema";
 import { routing } from "@/i18n/routing";
 import { ActionFailure } from "@/lib/action-result";
 import { writeAuditLog } from "@/lib/audit";
@@ -22,6 +27,25 @@ async function writeTexts(tx: Tx, activityId: string, texts: ActivityForm["texts
         target: [activityTranslations.activityId, activityTranslations.locale],
         set: text,
       });
+  }
+}
+
+/** Replaces an activity's popup photos with the form's, in order, with their captions. */
+async function writePhotos(tx: Tx, activityId: string, photos: ActivityForm["photos"]) {
+  await tx.delete(activityPhotos).where(eq(activityPhotos.activityId, activityId));
+  for (const [sortOrder, photo] of photos.entries()) {
+    const [row] = await tx
+      .insert(activityPhotos)
+      .values({ activityId, mediaId: photo.imageId, sortOrder })
+      .returning({ id: activityPhotos.id });
+    if (!row) throw new Error("Activity photo insert returned no row");
+    await tx.insert(activityPhotoTranslations).values(
+      routing.locales.map((locale) => ({
+        photoId: row.id,
+        locale,
+        caption: photo.caption[locale],
+      })),
+    );
   }
 }
 
@@ -57,6 +81,7 @@ export async function createActivity(
       .returning({ id: activities.id });
     if (!activity) throw new Error("Activity insert returned no row");
     await writeTexts(tx, activity.id, form.texts);
+    await writePhotos(tx, activity.id, form.photos);
     await writeAuditLog(tx, {
       actorId,
       action: "activity.create",
@@ -91,6 +116,7 @@ export async function updateActivity(
       .set({ imageId: form.imageId, isPublished, updatedAt: new Date() })
       .where(eq(activities.id, id));
     await writeTexts(tx, id, form.texts);
+    await writePhotos(tx, id, form.photos);
     await writeAuditLog(tx, {
       actorId,
       action: "activity.update",

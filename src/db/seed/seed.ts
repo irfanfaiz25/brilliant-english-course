@@ -2,8 +2,8 @@
  * Development seed (`pnpm db:seed`): loads the sample content written during Phase 5 (programs,
  * activities, units, quota reservations, testimonials, FAQ, blog posts and their placeholder
  * photos) plus a few sample partner leads (`MTR-DEV-*`), so the public site and admin show
- * realistic data. Regions must be loaded first (`pnpm db:regions`); users, settings and real
- * leads are never touched.
+ * realistic data. Regions must be loaded first (`pnpm db:regions`); users and real leads are never
+ * touched, and settings are only added when missing (the Kemitraan page sample photos).
  *
  *   pnpm db:seed           # only into an empty content database
  *   pnpm db:seed --reset   # delete the seeded content tables first, then seed again
@@ -158,6 +158,17 @@ async function main() {
       }
     }
 
+    // Kemitraan page: the code defaults with sample photos, unless an admin already saved them.
+    const kit = content.partnershipKitFixture(mediaId);
+    const training = content.partnershipTrainingFixture(mediaId);
+    await tx
+      .insert(schema.settings)
+      .values([
+        { key: "partnership", value: kit },
+        { key: "partnershipTraining", value: training },
+      ])
+      .onConflictDoNothing();
+
     // Activities.
     for (const [index, { key, id, en }] of plan
       .pairByKey(content.activityFixtures, (activity) => activity.slug)
@@ -175,8 +186,24 @@ async function main() {
           summary: text.summary,
           audience: text.audience,
           imageAlt: text.image.alt,
+          description: text.description,
+          highlights: text.highlights,
+          skills: text.skills,
+          schedule: text.schedule,
         })),
       );
+      // Popup photos (ADR-042): the same photos in both locales, captions per locale.
+      for (const [sortOrder, photo] of id.photos.entries()) {
+        const [photoRow] = await tx
+          .insert(schema.activityPhotos)
+          .values({ activityId: row.id, mediaId: mediaId(photo.image.src), sortOrder })
+          .returning({ id: schema.activityPhotos.id });
+        if (!photoRow) throw new Error(`Photo of activity ${key} was not inserted`);
+        await tx.insert(schema.activityPhotoTranslations).values([
+          { photoId: photoRow.id, locale: "id", caption: photo.caption },
+          { photoId: photoRow.id, locale: "en", caption: en.photos[sortOrder]?.caption ?? "" },
+        ]);
+      }
     }
 
     // Units, newest first in the sample list (the home page features the most recent ones).

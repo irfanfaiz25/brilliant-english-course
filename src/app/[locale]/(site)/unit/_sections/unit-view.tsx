@@ -263,7 +263,10 @@ export async function UnitView({
         </div>
       </Section>
 
-      <ActivitiesSection activities={activities} />
+      <ActivitiesSection
+        activities={activities}
+        unit={{ name: unit.name, whatsapp: unit.whatsapp }}
+      />
 
       {nearby.length > 0 && (
         <Section aria-labelledby="nearby-title" spacing="compact" className="pb-20 md:pb-28">

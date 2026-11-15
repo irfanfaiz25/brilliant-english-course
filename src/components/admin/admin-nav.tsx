@@ -64,13 +64,14 @@ export function AdminNav({ sections, variant, onNavigate }: AdminNavProps) {
                       "group flex min-h-11 items-center gap-3 rounded-lg px-3 text-label text-muted-foreground",
                       "transition-[background-color,color,box-shadow] duration-(--duration-fast) ease-out",
                       "hover:bg-white/70 hover:text-foreground",
-                      "aria-[current=page]:bg-white aria-[current=page]:text-primary aria-[current=page]:shadow-sm",
+                      // The current module is a solid teal pill, like the active tab on the public site.
+                      "aria-[current=page]:bg-primary aria-[current=page]:font-semibold aria-[current=page]:text-primary-foreground aria-[current=page]:shadow-glow-primary aria-[current=page]:hover:bg-primary",
                       rail && "justify-center xl:justify-start",
                     )}
                   >
                     <AdminIcon
                       name={item.icon}
-                      className="size-5 shrink-0 text-muted-foreground transition-colors group-hover:text-foreground group-aria-[current=page]:text-primary"
+                      className="size-5 shrink-0 text-muted-foreground transition-colors group-hover:text-foreground group-aria-[current=page]:text-primary-foreground"
                     />
                     <span className={cn("flex-1 truncate", rail && "sr-only xl:not-sr-only")}>
                       {item.label}

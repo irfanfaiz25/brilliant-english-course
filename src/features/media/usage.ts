@@ -1,11 +1,12 @@
 import "server-only";
 
-import { and, eq, exists, isNull, or, sql, type SQL } from "drizzle-orm";
+import { and, eq, exists, inArray, isNull, or, sql, type SQL } from "drizzle-orm";
 
 import { adminRoutes } from "@/config/admin-routes";
 import { db } from "@/db/client";
 import {
   activities,
+  activityPhotos,
   activityTranslations,
   postImages,
   posts,
@@ -13,15 +14,28 @@ import {
   programLevels,
   programLevelTranslations,
   seoOverrides,
+  settings,
   unitPhotos,
   units,
 } from "@/db/schema";
+import type { SettingKey } from "@/features/settings/keys";
 
 /*
  * Where an image is used. Every table that references `media_assets` is listed here once, so the
  * library's counts, the detail page and the delete guard always agree. Deleted units and posts do
  * not count: their rows stay only for the audit trail.
  */
+
+/**
+ * Settings whose JSON may hold photo or custom icon ids: the Kemitraan page sections (ADR-041). Ids are UUIDs, so
+ * a text search of the document finds exactly the photos it uses.
+ */
+const pagePhotoKeys: readonly SettingKey[] = [
+  "partnership",
+  "partnershipBenefits",
+  "partnershipTraining",
+  "partnershipSteps",
+];
 
 /** The library row in correlated subqueries (Drizzle leaves columns unqualified there). */
 const assetIdColumn = sql`"media_assets"."id"`;
@@ -41,17 +55,23 @@ export function usageCount(mediaId: string | SQL = assetIdColumn): SQL<number> {
     + (select count(*) from seo_overrides so where so.og_image_id = ${mediaId})
     + (select count(*) from unit_photos up join units u on u.id = up.unit_id
         where up.media_id = ${mediaId} and u.deleted_at is null)
+    + (select count(*) from settings st
+        where st.key in (${sql.join(
+          pagePhotoKeys.map((key) => sql`${key}`),
+          sql`, `,
+        )})
+        and position(${mediaId}::text in st.value::text) > 0)
   )::int`;
 }
 
-export type MediaUsageKind = "activity" | "program" | "post" | "seo" | "unit";
+export type MediaUsageKind = "activity" | "program" | "post" | "seo" | "unit" | "page";
 
 /** One place an image is used; `href` opens it in admin (`null` while its module is planned). */
 export type MediaUsage = { kind: MediaUsageKind; label: string; href: string | null };
 
 /** Every place using the asset, grouped by kind. */
 export async function listUsages(mediaId: string): Promise<MediaUsage[]> {
-  const [activityRows, levelRows, postRows, seoRows, unitRows] = await Promise.all([
+  const [activityRows, levelRows, postRows, seoRows, unitRows, pageRows] = await Promise.all([
     db
       .select({ id: activities.id, name: activityTranslations.name })
       .from(activities)
@@ -62,7 +82,22 @@ export async function listUsages(mediaId: string): Promise<MediaUsage[]> {
           eq(activityTranslations.locale, "id"),
         ),
       )
-      .where(eq(activities.imageId, mediaId)),
+      .where(
+        or(
+          eq(activities.imageId, mediaId),
+          exists(
+            db
+              .select({ one: sql`1` })
+              .from(activityPhotos)
+              .where(
+                and(
+                  eq(activityPhotos.activityId, activities.id),
+                  eq(activityPhotos.mediaId, mediaId),
+                ),
+              ),
+          ),
+        ),
+      ),
     db
       .select({ slug: programLevels.slug, name: programLevelTranslations.name })
       .from(programLevels)
@@ -108,6 +143,16 @@ export async function listUsages(mediaId: string): Promise<MediaUsage[]> {
       .from(unitPhotos)
       .innerJoin(units, eq(units.id, unitPhotos.unitId))
       .where(and(eq(unitPhotos.mediaId, mediaId), isNull(units.deletedAt))),
+    db
+      .select({ key: settings.key })
+      .from(settings)
+      .where(
+        and(
+          inArray(settings.key, [...pagePhotoKeys]),
+          sql`position(${mediaId} in ${settings.value}::text) > 0`,
+        ),
+      )
+      .limit(1),
   ]);
 
   return [
@@ -130,6 +175,11 @@ export async function listUsages(mediaId: string): Promise<MediaUsage[]> {
       kind: "post" as const,
       label: row.title,
       href: `${adminRoutes.blog}/${row.id}`,
+    })),
+    ...pageRows.map(() => ({
+      kind: "page" as const,
+      label: "Kemitraan",
+      href: adminRoutes.partnershipPage,
     })),
     ...seoRows.map((row) => ({
       kind: "seo" as const,

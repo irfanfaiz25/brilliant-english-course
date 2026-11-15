@@ -53,9 +53,11 @@ export async function SiteHeader() {
             <Button asChild variant="partner" size="sm" className="hidden lg:inline-flex">
               <Link href="/kemitraan">{t("joinPartner")}</Link>
             </Button>
-            <Button asChild variant="secondary" size="icon-sm" className="lg:hidden">
-              <Link href="/cek-unit" aria-label={t("findUnit")}>
+            {/* Labelled, not icon-only: a pin alone does not say "find a unit near you". */}
+            <Button asChild variant="secondary" size="sm" className="gap-1.5 px-3 lg:hidden">
+              <Link href="/cek-unit">
                 <MapPinIcon aria-hidden />
+                {t("findUnit")}
               </Link>
             </Button>
             <div className="lg:hidden">

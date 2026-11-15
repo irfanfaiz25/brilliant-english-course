@@ -1,7 +1,15 @@
 import { describe, expect, it } from "vitest";
 
-import { partnershipPackageDefaults } from "./defaults";
-import { partnerApplicationSchema, partnershipPackageSchema } from "./schema";
+import { partnershipPageDefaults } from "./page-defaults";
+import {
+  partnershipBenefitsSchema,
+  partnershipKitFormSchema,
+  partnershipKitSchema,
+  partnershipStepsSchema,
+  partnershipTrainingSchema,
+  toInvestment,
+} from "./page-schema";
+import { partnerApplicationSchema } from "./schema";
 import { createLeadReference } from "./reference";
 
 const valid = {
@@ -65,11 +73,83 @@ describe("createLeadReference", () => {
   });
 });
 
-describe("partnership package defaults", () => {
-  it("are valid and aligned across locales", () => {
-    const { id, en } = partnershipPackageDefaults;
-    expect(partnershipPackageSchema.parse(id)).toEqual(id);
-    expect(partnershipPackageSchema.parse(en)).toEqual(en);
-    expect(en.inclusions).toHaveLength(id.inclusions.length);
+describe("Kemitraan page defaults", () => {
+  it("are valid settings with copy in both locales", () => {
+    const { benefits, kit, training, steps } = partnershipPageDefaults;
+    expect(partnershipBenefitsSchema.parse(benefits)).toEqual(benefits);
+    expect(partnershipKitSchema.parse(kit)).toEqual(kit);
+    expect(partnershipTrainingSchema.parse(training)).toEqual(training);
+    expect(partnershipStepsSchema.parse(steps)).toEqual(steps);
+  });
+
+  it("lead the hero with at least one featured benefit", () => {
+    expect(partnershipPageDefaults.benefits.items.some((item) => item.featured)).toBe(true);
+  });
+});
+
+describe("Kemitraan page forms", () => {
+  const kit = partnershipPageDefaults.kit;
+
+  it("turns the typed investment into a number, or null when empty", () => {
+    expect(toInvestment("")).toBeNull();
+    expect(toInvestment(" 7500000 ")).toBe(7500000);
+  });
+
+  it("accepts digits only for the investment", () => {
+    const form = (investment: string) =>
+      partnershipKitFormSchema.safeParse({ ...kit, investment }).success;
+    expect(form("7500000")).toBe(true);
+    expect(form("")).toBe(true);
+    expect(form("7.500.000")).toBe(false);
+  });
+
+  it("needs copy in both locales and keeps lists within their limits", () => {
+    const [first] = partnershipPageDefaults.benefits.items;
+    if (!first) throw new Error("Missing benefit");
+    const noEnglish = { ...first, texts: { ...first.texts, en: { title: "", text: "" } } };
+    const result = partnershipBenefitsSchema.safeParse({
+      items: [noEnglish, ...partnershipPageDefaults.benefits.items.slice(1)],
+    });
+    expect(result.success).toBe(false);
+    expect(result.error?.issues[0]?.path).toEqual(["items", 0, "texts", "en", "title"]);
+    expect(partnershipStepsSchema.safeParse({ items: [] }).success).toBe(false);
+  });
+});
+
+describe("Kemitraan item icons", () => {
+  it("reads a section saved before custom icons existed", () => {
+    const items = partnershipPageDefaults.steps.items.map(({ iconImageId: _, ...item }) => item);
+    const parsed = partnershipStepsSchema.parse({ items });
+    expect(parsed.items.every((item) => item.iconImageId === "")).toBe(true);
+  });
+
+  it("accepts a media id as a custom icon and refuses anything else", () => {
+    const [step, ...rest] = partnershipPageDefaults.steps.items;
+    if (!step) throw new Error("Missing step");
+    const withIcon = (iconImageId: string) =>
+      partnershipStepsSchema.safeParse({ items: [{ ...step, iconImageId }, ...rest] }).success;
+    expect(withIcon("8f14e45f-ceea-4672-8b67-6d1b1c5f8c11")).toBe(true);
+    expect(withIcon("not-an-id")).toBe(false);
+  });
+});
+
+describe("Kemitraan training gallery", () => {
+  const { photos: _, ...training } = partnershipPageDefaults.training;
+  const photoId = "8f14e45f-ceea-4672-8b67-6d1b1c5f8c11";
+
+  it("reads the single photo saved before the gallery as a one-photo gallery", () => {
+    expect(partnershipTrainingSchema.parse({ ...training, imageId: photoId }).photos).toEqual([
+      { imageId: photoId, caption: { id: "", en: "" } },
+    ]);
+    expect(partnershipTrainingSchema.parse({ ...training, imageId: "" }).photos).toEqual([]);
+  });
+
+  it("needs a photo on every row and keeps the gallery within its limit", () => {
+    const row = (imageId: string) => ({ imageId, caption: { id: "", en: "" } });
+    const parse = (photos: unknown[]) =>
+      partnershipTrainingSchema.safeParse({ ...training, photos }).success;
+    expect(parse([row(photoId)])).toBe(true);
+    expect(parse([row("")])).toBe(false);
+    expect(parse(Array.from({ length: 9 }, () => row(photoId)))).toBe(false);
   });
 });

@@ -7,11 +7,8 @@ import { AdminPanel } from "@/components/admin/admin-panel";
 import { LastSaved } from "@/components/admin/last-saved";
 import { Skeleton } from "@/components/ui/skeleton";
 import { adminLocale, adminRoutes } from "@/config/admin-routes";
-import { getPartnershipSetting } from "@/features/partners/queries";
 import { getSettingMeta } from "@/features/settings/admin-queries";
 import { ContactSettingsForm } from "@/features/settings/components/contact-settings-form";
-import { PartnershipSettingsForm } from "@/features/settings/components/partnership-settings-form";
-import { toPartnershipFormValues } from "@/features/settings/partnership-form";
 import { getContactSettings } from "@/features/settings/queries";
 import { requirePermission } from "@/features/users/session";
 import { can } from "@/lib/permissions";
@@ -23,7 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 /**
  * Pengaturan (Phase 4a): site-wide settings that are content, not layout (ADR-008). Each panel
- * saves one `settings` key on its own, so a mistake in one form never blocks the other.
+ * saves one `settings` key on its own. The Kemitraan page content has its own editor (ADR-041).
  */
 export default async function SettingsPage() {
   const [tNav, t] = await Promise.all([
@@ -42,11 +39,10 @@ export default async function SettingsPage() {
 
 async function SettingsContent() {
   const user = await requirePermission("read", "settings", adminRoutes.settings);
-  const [t, contact, partnership, meta] = await Promise.all([
+  const [t, contact, meta] = await Promise.all([
     getTranslations({ locale: adminLocale, namespace: "AdminSettings" }),
     getContactSettings(),
-    getPartnershipSetting(),
-    getSettingMeta(user, "settings", ["contact", "partnership"]),
+    getSettingMeta(user, "settings", ["contact"]),
   ]);
   const canEdit = can(user, "update", "settings");
 
@@ -59,16 +55,6 @@ async function SettingsContent() {
       >
         <ContactSettingsForm defaultValues={contact} canEdit={canEdit} />
       </AdminPanel>
-      <AdminPanel
-        title={t("partnership.title")}
-        description={t("partnership.description")}
-        meta={<LastSaved meta={meta.partnership} />}
-      >
-        <PartnershipSettingsForm
-          defaultValues={toPartnershipFormValues(partnership)}
-          canEdit={canEdit}
-        />
-      </AdminPanel>
     </div>
   );
 }
@@ -77,7 +63,6 @@ function SettingsSkeleton() {
   return (
     <div aria-hidden className="flex flex-col gap-6">
       <Skeleton className="h-[32rem] rounded-2xl" />
-      <Skeleton className="h-80 rounded-2xl" />
     </div>
   );
 }

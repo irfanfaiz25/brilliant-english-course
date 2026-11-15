@@ -1,18 +1,26 @@
 import { ArrowUpRightIcon } from "lucide-react";
 import Image from "next/image";
-
-import { Link } from "@/i18n/navigation";
+import type { MouseEventHandler } from "react";
 
 import type { Activity } from "../schema";
 
-/** Photo-led activity card with the text on a dark gradient for depth and legibility. */
+type ActivityCardDetail = {
+  label: string;
+  /** Link to the activity's popup (`?kegiatan=slug`). */
+  href: string;
+  onClick?: MouseEventHandler<HTMLAnchorElement>;
+};
+
+/**
+ * Photo-led activity card with the text on a dark gradient for depth and legibility. A pure view:
+ * with `detail` the whole card is a link that opens the activity's popup (ADR-042).
+ */
 export function ActivityCard({
   activity,
-  detailLabel,
+  detail,
 }: {
   activity: Activity;
-  /** Label of the link to the Program page; without it the card is not a link. */
-  detailLabel?: string;
+  detail?: ActivityCardDetail;
 }) {
   return (
     <article className="group relative isolate flex aspect-[3/4] h-full flex-col justify-end overflow-hidden rounded-xl shadow-card transition-[transform,box-shadow] duration-(--duration-base) ease-out hover:-translate-y-1 hover:shadow-lg has-[a:focus-visible]:-translate-y-1">
@@ -35,17 +43,20 @@ export function ActivityCard({
       <div className="flex flex-col gap-2 p-5">
         <h3 className="text-h4 text-inverse-foreground">{activity.name}</h3>
         <p className="text-body-sm text-inverse-muted">{activity.summary}</p>
-        {detailLabel && (
-          <Link
-            href={{ pathname: "/program", hash: "kegiatan" }}
+        {detail && (
+          <a
+            href={detail.href}
+            onClick={detail.onClick}
+            aria-haspopup="dialog"
             className="mt-1 inline-flex items-center gap-1 text-label text-sunny-300 after:absolute after:inset-0 after:rounded-xl focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:outline-offset-2 focus-visible:after:outline-ring"
           >
-            {detailLabel}
+            {detail.label}
+            <span className="sr-only">: {activity.name}</span>
             <ArrowUpRightIcon
               aria-hidden
               className="size-4 transition-transform duration-(--duration-fast) group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
             />
-          </Link>
+          </a>
         )}
       </div>
     </article>

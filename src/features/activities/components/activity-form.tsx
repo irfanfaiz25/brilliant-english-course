@@ -9,6 +9,8 @@ import { AdminPanel } from "@/components/admin/admin-panel";
 import { FormFooter } from "@/components/admin/form-footer";
 import { LocaleTabs } from "@/components/admin/locale-tabs";
 import { MediaPicker } from "@/components/admin/media-picker";
+import { PhotoListField } from "@/components/admin/photo-list-field";
+import { StringListField } from "@/components/admin/string-list-field";
 import { PublishedCheckbox } from "@/components/admin/published-checkbox";
 import { UnsavedChangesGuard } from "@/components/admin/unsaved-changes-guard";
 import { useFormErrorText } from "@/components/admin/use-form-error-text";
@@ -43,7 +45,7 @@ type ActivityFormProps = {
   previewLabels: ActivityCardLabels;
 };
 
-/** Add or edit an activity: photo, visibility and bilingual copy. */
+/** Add or edit an activity: photo, visibility, bilingual card copy and the popup details. */
 export function ActivityForm({
   id,
   defaultValues,
@@ -181,6 +183,87 @@ export function ActivityForm({
                 );
               }}
             </LocaleTabs>
+          </AdminPanel>
+
+          <AdminPanel
+            title={t("sections.details.title")}
+            description={t("sections.details.description")}
+          >
+            <LocaleTabs value={tabs.locale} onValueChange={tabs.setLocale} invalid={tabs.invalid}>
+              {(locale) => {
+                const text = errors.texts?.[locale];
+                return (
+                  <>
+                    <Field
+                      label={t("fields.description")}
+                      description={t("fields.descriptionHint")}
+                      error={errorText(text?.description?.message)}
+                    >
+                      {(control) => (
+                        <Textarea
+                          {...control}
+                          {...form.register(`texts.${locale}.description`)}
+                          rows={4}
+                          maxLength={A.descriptionMax}
+                        />
+                      )}
+                    </Field>
+                    <Field
+                      label={t("fields.schedule")}
+                      description={t("fields.scheduleHint")}
+                      error={errorText(text?.schedule?.message)}
+                      className="max-w-md"
+                    >
+                      {(control) => (
+                        <Input
+                          {...control}
+                          {...form.register(`texts.${locale}.schedule`)}
+                          maxLength={A.scheduleMax}
+                        />
+                      )}
+                    </Field>
+                    <div className="grid items-start gap-6 lg:grid-cols-2">
+                      <StringListField
+                        form={form}
+                        name={`texts.${locale}.highlights`}
+                        label={t("fields.highlights")}
+                        description={t("fields.highlightsHint")}
+                        itemLabel={(index) => t("fields.highlightLabel", { index })}
+                        addLabel={t("fields.addHighlight")}
+                        min={0}
+                        max={A.highlightsMax}
+                        maxLength={A.highlightMax}
+                      />
+                      <StringListField
+                        form={form}
+                        name={`texts.${locale}.skills`}
+                        label={t("fields.skills")}
+                        description={t("fields.skillsHint")}
+                        itemLabel={(index) => t("fields.skillLabel", { index })}
+                        addLabel={t("fields.addSkill")}
+                        min={0}
+                        max={A.skillsMax}
+                        maxLength={A.skillMax}
+                      />
+                    </div>
+                  </>
+                );
+              }}
+            </LocaleTabs>
+          </AdminPanel>
+
+          <AdminPanel
+            title={t("sections.photos.title")}
+            description={t("sections.photos.description")}
+          >
+            <PhotoListField
+              form={form}
+              name="photos"
+              mediaOptions={mediaOptions}
+              canUpload={canUploadMedia}
+              max={A.photosMax}
+              captionMax={A.captionMax}
+            />
           </AdminPanel>
         </div>
       </div>

@@ -235,8 +235,12 @@ test.describe("admin activities", () => {
         ],
       ],
     ] as const) {
-      await page.getByRole("tab", { name: new RegExp(`^${tab}`) }).click();
-      const panel = page.getByRole("tabpanel", { name: new RegExp(`^${tab}`) });
+      // The card copy is the first set of locale tabs; the popup details have their own.
+      await page
+        .getByRole("tab", { name: new RegExp(`^${tab}`) })
+        .first()
+        .click();
+      const panel = page.getByRole("tabpanel", { name: new RegExp(`^${tab}`) }).first();
       await panel.getByLabel(/^Nama kegiatan/).fill(values[0]);
       await panel.getByLabel(/^Untuk siapa/).fill(values[1]);
       await panel.getByLabel(/^Ringkasan/).fill(values[2]);
@@ -244,7 +248,10 @@ test.describe("admin activities", () => {
       // The live preview shows the public card in the language of the open tab.
       await expect(page.locator("[inert]")).toContainText(values[1]);
     }
-    await page.getByRole("tab", { name: /^Indonesia/ }).click();
+    await page
+      .getByRole("tab", { name: /^Indonesia/ })
+      .first()
+      .click();
     await expect(page.locator("[inert]")).toContainText("Semua level");
     await page.getByRole("button", { name: "Tambah kegiatan" }).click();
     await saved(page);
