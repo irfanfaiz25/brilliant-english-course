@@ -6,19 +6,9 @@ import { routing } from "@/i18n/routing";
 import { ActionFailure } from "@/lib/action-result";
 import { writeAuditLog } from "@/lib/audit";
 import { isSameList } from "@/lib/ordering";
-import { slugify } from "@/lib/slug";
+import { slugify, uniqueSlug } from "@/lib/slug";
 
 import type { ActivityForm } from "./schema";
-
-/** `base`, or `base-2`, `base-3`, … whichever is not taken yet. */
-export function uniqueSlug(base: string, taken: ReadonlySet<string>): string {
-  const root = base || "kegiatan";
-  if (!taken.has(root)) return root;
-  for (let suffix = 2; ; suffix += 1) {
-    const candidate = `${root}-${suffix}`;
-    if (!taken.has(candidate)) return candidate;
-  }
-}
 
 type Tx = Parameters<Parameters<typeof db.transaction>[0]>[0];
 
@@ -50,7 +40,11 @@ export async function createActivity(
     const existing = await tx
       .select({ slug: activities.slug, sortOrder: activities.sortOrder })
       .from(activities);
-    const slug = uniqueSlug(slugify(form.texts.id.name), new Set(existing.map((row) => row.slug)));
+    const slug = uniqueSlug(
+      slugify(form.texts.id.name),
+      new Set(existing.map((row) => row.slug)),
+      "kegiatan",
+    );
     const sortOrder = Math.max(-1, ...existing.map((row) => row.sortOrder)) + 1;
     const [activity] = await tx
       .insert(activities)

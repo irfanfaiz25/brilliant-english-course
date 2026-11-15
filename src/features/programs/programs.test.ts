@@ -3,8 +3,8 @@ import { describe, expect, it, vi } from "vitest";
 import { levelFixtures } from "@/db/seed/content/programs";
 import { toRows } from "@/lib/form-schemas";
 
-import { levelFormSchema, levelSchema, levelSlugs, type LevelFormInput } from "./schema";
-import { findLevelForAge, overlapsAgeRange } from "./service";
+import { levelFormSchema, levelSchema, levelUpdateSchema, type LevelFormInput } from "./schema";
+import { findLevelForAge, overlapsAgeRange, reservedLevelSlugs } from "./service";
 
 // `service.ts` also writes levels; these checks do not need the database.
 vi.mock("@/db/client", () => ({ db: {} }));
@@ -14,7 +14,7 @@ describe("program levels", () => {
   it.each(["id", "en"] as const)("%s fixtures are valid and complete", (locale) => {
     const levels = levelFixtures[locale];
     levels.forEach((level) => expect(() => levelSchema.parse(level)).not.toThrow());
-    expect(levels.map((level) => level.slug)).toEqual([...levelSlugs]);
+    expect(levels.map((level) => level.slug)).toEqual(["kindy", "intro", "secondary"]);
   });
 
   it("age ranges cover 4–15 without gaps or overlaps", () => {
@@ -29,6 +29,20 @@ describe("program levels", () => {
     expect(findLevelForAge(levelFixtures.id, 9)).toBe("intro");
     expect(findLevelForAge(levelFixtures.id, 12)).toBe("secondary");
     expect(findLevelForAge(levelFixtures.id, 17)).toBeUndefined();
+  });
+
+  it("leaves levels outside the age finder out of the match", () => {
+    const [kindy, ...rest] = levelFixtures.id;
+    if (!kindy) throw new Error("Missing level fixture");
+    const club = { ...kindy, slug: "speaking-club", inAgeFinder: false, ageMin: 4, ageMax: 15 };
+    expect(findLevelForAge([club, kindy, ...rest], 5)).toBe("kindy");
+    expect(findLevelForAge([{ ...kindy, inAgeFinder: false }], 5)).toBeUndefined();
+  });
+
+  it("keeps slugs that other Program page sections use", () => {
+    for (const slug of ["baru", "kegiatan", "faq", "why", "compare"]) {
+      expect(reservedLevelSlugs.has(slug)).toBe(true);
+    }
   });
 });
 
@@ -62,7 +76,8 @@ describe("levelFormSchema", () => {
     imageAlt: fixture.image.alt,
   };
   const valid: LevelFormInput = {
-    slug: "kindy",
+    theme: "sunny",
+    inAgeFinder: true,
     ageMin: 4,
     ageMax: 6,
     sessionsPerWeek: 2,
@@ -97,5 +112,15 @@ describe("levelFormSchema", () => {
     expect(errorsOf({ ...valid, sessionsPerWeek: Number.NaN })).toEqual({
       sessionsPerWeek: "numberRequired",
     });
+  });
+
+  it("only offers the fixed theme palette", () => {
+    expect(errorsOf({ ...valid, theme: "#ff0000" })).toHaveProperty("theme");
+  });
+
+  it("identifies an existing level by id when saving it", () => {
+    expect(levelUpdateSchema.safeParse(valid).success).toBe(false);
+    const id = "8f14e45f-ceea-4672-8b67-6d1b1c5f8c12";
+    expect(levelUpdateSchema.parse({ ...valid, id }).id).toBe(id);
   });
 });

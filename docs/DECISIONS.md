@@ -239,7 +239,7 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
 
 ### ADR-028 — Program levels and activities in admin
 
-2026-11-14 · Accepted
+2026-11-14 · Accepted (levels: superseded by ADR-038)
 
 - **Decision:** The three program levels are fixed (`levelSlugs` drive URLs, anchors and the level colors): admins edit
   a level's ages, sessions, class size, photo, visibility and bilingual copy, but cannot add, rename or delete one. A
@@ -482,3 +482,26 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
 - **Alternatives:** Recharts or another chart library (heavier, harder to theme and to make keyboard-accessible);
   more charts (unit growth, articles per month: little to act on); counting conversions from the lead's
   `updated_at` (moves with any later edit).
+
+### ADR-038 — Program levels are added in admin, drawn from a fixed theme palette
+
+2026-11-15 · Accepted
+
+- **Decision:** Admins add, reorder (drag, `SortableList`) and delete program levels; the three seeded ones are no
+  longer fixed (`levelSlugs` is gone). A new level's slug is derived once from its Indonesian name (`uniqueSlug`, now in
+  `lib/slug.ts`), never changes afterwards (it is the `/program#<slug>` anchor and the admin URL) and skips
+  `reservedLevelSlugs` (ids the Program page already uses). The color is a `theme` column (`level_theme` enum: `sunny`,
+  `teal`, `orange`, `blue`, `green`, `berry`) picked from labelled swatches; migration `0006` backfills the original
+  three. `in_age_finder` decides whether the hero age chips list a level: finder levels may not share an age, levels
+  outside it (special programs such as a speaking club) may overlap any range. A level any unit offers cannot be
+  deleted (`levelInUse`; hide it instead); deleting is hard with the names kept in the audit row. Unit cards, the unit
+  list and unit pages name levels from the database instead of a hard-coded map. Programs follow the content matrix
+  (`rcudp`) for admin and editor. Public layout adapts to the count: Beranda shows one to four levels in a balanced
+  grid and five or more in a `ScrollRail` from `md`; the Program tabs scroll with faded edges; the comparison table
+  scrolls with a pinned first column beyond three levels; copy no longer says "three levels".
+- **Why:** BEC may add levels or special programs later; the fixed list would have needed a developer each time. A fixed
+  palette keeps every level on brand and readable (strong on soft ≥ 4.5:1) without admins choosing raw colors, and an
+  immutable slug keeps shared links and anchors working.
+- **Alternatives:** Keep three fixed levels (needs a release per program); a free color picker (off-brand, contrast not
+  guaranteed); editable slugs (breaks links already shared); soft delete for levels (nothing refers to a deleted level
+  once no unit offers it, and the audit row keeps its names).

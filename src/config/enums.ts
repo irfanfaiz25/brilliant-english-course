@@ -15,7 +15,11 @@ export const userRoles = ["super_admin", "admin", "editor", "mitra"] as const;
 
 export const regionLevels = ["province", "regency", "district", "village"] as const;
 
-export const levelSlugs = ["kindy", "intro", "secondary"] as const;
+/**
+ * Color identity a program level is drawn in (ADR-038). A fixed palette of brand tokens, so an
+ * admin picks a theme, never a raw color.
+ */
+export const levelThemes = ["sunny", "teal", "orange", "blue", "green", "berry"] as const;
 
 /** Lifecycle of a partner unit; only `active` units are public and count toward quota. */
 export const unitStatuses = ["onboarding", "active", "inactive"] as const;

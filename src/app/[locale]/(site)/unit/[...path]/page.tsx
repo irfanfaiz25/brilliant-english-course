@@ -4,6 +4,7 @@ import { hasLocale } from "next-intl";
 import { getTranslations } from "next-intl/server";
 
 import { PageCanvas } from "@/components/site/page-canvas";
+import { getLevels } from "@/features/programs/queries";
 import { directoryPaths, directoryUnits, resolveDirectoryPath } from "@/features/units/directory";
 import { getUnitDirectory } from "@/features/units/queries";
 import { routing } from "@/i18n/routing";
@@ -13,8 +14,6 @@ import { AreaView } from "../_sections/area-view";
 import { UnitView } from "../_sections/unit-view";
 
 type Props = PageProps<"/[locale]/unit/[...path]">;
-
-const levelNames = { kindy: "Kindy", intro: "Intro", secondary: "Secondary" } as const;
 
 /** Prerender every province, regency and unit page; areas without units have no page. */
 export async function generateStaticParams() {
@@ -37,12 +36,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const alternates = localizedAlternates(href, locale);
 
   if (match.kind === "unit") {
-    const t = await getTranslations({ locale, namespace: "UnitPages.unit" });
+    const [t, levels] = await Promise.all([
+      getTranslations({ locale, namespace: "UnitPages.unit" }),
+      getLevels(locale),
+    ]);
     const values = {
       unit: match.unit.name,
       district: match.unit.district,
       regency: match.regency.name,
-      levels: match.unit.levels.map((level) => levelNames[level]).join(", "),
+      levels: levels
+        .filter((level) => match.unit.levels.includes(level.slug))
+        .map((level) => level.name)
+        .join(", "),
     };
     return {
       title: { absolute: t("metaTitle", values) },

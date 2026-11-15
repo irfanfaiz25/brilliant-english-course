@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { useWatch, type Control } from "react-hook-form";
 
 import { CardPreview } from "@/components/admin/card-preview";
+import type { LevelBadge } from "@/features/programs/schema";
 import { fillTemplate } from "@/lib/template";
 import { buildWhatsAppUrl, normalizeWhatsAppNumber } from "@/lib/whatsapp";
 
@@ -14,7 +15,7 @@ import { UnitCardView, type UnitCardText } from "./unit-card-view";
 /** Texts of the public unit card as templates (`Kode Unit {code}`), filled in the browser. */
 export type UnitCardTemplates = Omit<
   UnitCardText,
-  "code" | "manager" | "enrollment" | "schedule" | "whatsappUrl"
+  "code" | "manager" | "enrollment" | "schedule" | "whatsappUrl" | "levelBadges"
 > & {
   code: string;
   manager: string;
@@ -25,6 +26,8 @@ export type UnitCardTemplates = Omit<
 type UnitCardPreviewProps = {
   control: Control<UnitFormInput, unknown, UnitForm>;
   templates: UnitCardTemplates;
+  /** Every level in display order; the card shows the ones ticked in the form. */
+  levelOptions: readonly LevelBadge[];
   /** Code of the unit being edited; a new unit shows a sample code until it is saved. */
   code: string;
   /** Location line of the card (district, regency) for the chosen village. */
@@ -37,6 +40,7 @@ type UnitCardPreviewProps = {
 export function UnitCardPreview({
   control,
   templates,
+  levelOptions,
   code,
   district,
   regency,
@@ -83,6 +87,7 @@ export function UnitCardPreview({
             unit.whatsapp || "0",
             fillTemplate(templates.whatsappMessage, { unit: name }),
           ),
+          levelBadges: levelOptions.filter((level) => unit.levels.includes(level.slug)),
           labels: templates.labels,
         }}
       />

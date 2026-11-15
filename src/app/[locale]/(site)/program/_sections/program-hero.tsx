@@ -6,7 +6,7 @@ import { DecorBlob } from "@/components/site/decor-blob";
 import { Doodle } from "@/components/site/doodle";
 
 /** Page header: breadcrumb, title and the two facts that frame the curriculum. */
-export async function ProgramHero() {
+export async function ProgramHero({ levelCount }: { levelCount: number }) {
   const t = await getTranslations("Program.hero");
   const tNav = await getTranslations("Nav");
 
@@ -41,7 +41,7 @@ export async function ProgramHero() {
         <ul className="flex animate-rise-in flex-wrap gap-2 [animation-delay:270ms]">
           <li className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-card px-4 py-2 text-label text-foreground shadow-sm">
             <LayersIcon aria-hidden className="size-4 text-primary" />
-            {t("levelsCount")}
+            {t("levelsCount", { count: levelCount })}
           </li>
           <li className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-card px-4 py-2 text-label text-foreground shadow-sm">
             <BookOpenCheckIcon aria-hidden className="size-4 text-partner" />

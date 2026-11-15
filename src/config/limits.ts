@@ -65,6 +65,7 @@ export const limits = {
     skillMax: 60,
     curriculumMax: 8,
     curriculumItemMax: 120,
+    slugMax: 40,
   },
   quota: {
     /** Upper bound of the per-village maximum an admin can set. */

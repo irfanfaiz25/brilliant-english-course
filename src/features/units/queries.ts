@@ -65,7 +65,7 @@ async function loadPublicUnits(): Promise<UnitSummary[]> {
   const levelsByUnit = new Map<string, UnitSummary["levels"]>();
   for (const level of levels) {
     const list = levelsByUnit.get(level.unitId) ?? [];
-    list.push(level.slug as UnitSummary["levels"][number]);
+    list.push(level.slug);
     levelsByUnit.set(level.unitId, list);
   }
 

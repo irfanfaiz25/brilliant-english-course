@@ -35,9 +35,9 @@ test.describe("home page — top sections", () => {
     await expect(stats.getByText("Siswa belajar")).toBeVisible();
   });
 
-  test("programs list three levels linking to their details", async ({ page }) => {
+  test("programs list the seeded levels linking to their details", async ({ page }) => {
     await page.goto("/");
-    const programs = page.getByRole("region", { name: "Tiga Level, Sesuai Usia Anak" });
+    const programs = page.getByRole("region", { name: "Level Sesuai Usia Anak" });
 
     await expect(programs.getByRole("article")).toHaveCount(3);
     await expect(

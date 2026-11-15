@@ -48,7 +48,7 @@ describe("normalizeActions", () => {
 
   it("drops actions a module does not have and repeats", () => {
     expect(normalizeActions("leads", ["create", "read", "read"])).toEqual(["read"]);
-    expect(normalizeActions("programs", ["delete"])).toEqual([]);
+    expect(normalizeActions("dashboard", ["delete"])).toEqual([]);
   });
 
   it("keeps account management with super admins", () => {

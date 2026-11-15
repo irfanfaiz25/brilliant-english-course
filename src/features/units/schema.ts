@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { enrollmentStatuses, unitStatuses } from "@/config/enums";
 import { limits } from "@/config/limits";
-import { levelSlugs } from "@/features/programs/schema";
+import { levelSlugSchema } from "@/features/programs/schema";
 import { regionCodeSchema, villageCodeField } from "@/features/regions/schema";
 import {
   integerField,
@@ -46,7 +46,7 @@ export const unitSummarySchema = z.object({
   openDays: z.array(z.number().int().min(1).max(7)).min(1),
   opensAt: timeSchema,
   closesAt: timeSchema,
-  levels: z.array(z.enum(levelSlugs)).min(1),
+  levels: z.array(levelSlugSchema).min(1),
   enrollment: z.enum(enrollmentStatuses),
 });
 
@@ -88,7 +88,7 @@ export const unitFormSchema = z
     openDays: weekdaysField,
     opensAt: timeField,
     closesAt: timeField,
-    levels: z.array(z.enum(levelSlugs)).min(1, "levelsRequired"),
+    levels: z.array(levelSlugSchema).min(1, "levelsRequired"),
     studentsCount: integerField(0, U.studentsMax),
     /** `YYYY-MM-DD`, or "" when the opening date is not known yet. */
     openedAt: z.union([z.literal(""), z.iso.date("dateInvalid")]),

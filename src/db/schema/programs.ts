@@ -2,6 +2,7 @@ import { sql } from "drizzle-orm";
 import {
   boolean,
   check,
+  pgEnum,
   pgTable,
   primaryKey,
   smallint,
@@ -10,16 +11,26 @@ import {
   varchar,
 } from "drizzle-orm/pg-core";
 
+// Relative import on purpose: drizzle-kit loads this folder without the `@/` alias.
+import { levelThemes } from "../../config/enums";
 import { id, localeEnum, timestamps } from "./_helpers";
 import { mediaAssets } from "./media";
 
-/** Program levels (Kindy, Intro, Secondary). Structured fields only; copy is in translations. */
+export const levelThemeEnum = pgEnum("level_theme", levelThemes);
+
+/** Program levels (Kindy, Intro, Secondary, …). Structured fields only; copy is in translations. */
 export const programLevels = pgTable(
   "program_levels",
   {
     id: id(),
-    /** URL segment and stable key (`levelSlugs`); admins cannot rename it. */
+    /** Anchor on the Program page and stable key; set once from the name, never renamed. */
     slug: varchar({ length: 40 }).notNull().unique(),
+    theme: levelThemeEnum().notNull().default("teal"),
+    /**
+     * Listed by the hero age chips. Levels in the finder may not share an age; levels outside it
+     * (special programs) may overlap any range.
+     */
+    inAgeFinder: boolean().notNull().default(true),
     ageMin: smallint().notNull(),
     ageMax: smallint().notNull(),
     sessionsPerWeek: smallint().notNull(),

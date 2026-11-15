@@ -1,5 +1,6 @@
 import { getLocale, getTranslations } from "next-intl/server";
 
+import { getLevels } from "@/features/programs/queries";
 import type { Locale } from "@/i18n/routing";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
@@ -20,6 +21,7 @@ export async function UnitCard({ unit, distanceLabel, path }: UnitCardProps) {
   const t = await getTranslations("Units");
   const tWhatsApp = await getTranslations("WhatsApp");
   const locale = (await getLocale()) as Locale;
+  const levels = await getLevels(locale);
 
   return (
     <UnitCardView
@@ -32,6 +34,9 @@ export async function UnitCard({ unit, distanceLabel, path }: UnitCardProps) {
         manager: t("manager", { name: unit.manager }),
         schedule: formatUnitSchedule(unit, locale),
         whatsappUrl: buildWhatsAppUrl(unit.whatsapp, tWhatsApp("unit", { unit: unit.name })),
+        levelBadges: levels
+          .filter((level) => unit.levels.includes(level.slug))
+          .map(({ slug, name, theme }) => ({ slug, name, theme })),
         labels: {
           address: t("address"),
           manager: t("managerLabel"),

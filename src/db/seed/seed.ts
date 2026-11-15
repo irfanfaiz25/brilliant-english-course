@@ -109,6 +109,8 @@ async function main() {
         .insert(schema.programLevels)
         .values({
           slug: key,
+          theme: id.theme,
+          inAgeFinder: id.inAgeFinder,
           ageMin: id.ageMin,
           ageMax: id.ageMax,
           sessionsPerWeek: id.sessionsPerWeek,

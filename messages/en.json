@@ -77,7 +77,7 @@
       "agePrompt": "Child's age:",
       "ageOption": "{min}–{max} yrs",
       "ageOptionHint": "see the {level} level",
-      "badgeLevels": "3 levels by age",
+      "badgeLevels": "{count, plural, one {# level} other {# levels}} by age",
       "badgeNearby": "Units near you",
       "badgeSmallClass": "Small, fun classes",
       "imageAlt": "A smiling girl writing in class",
@@ -91,10 +91,13 @@
     },
     "programs": {
       "overline": "BEC Programs",
-      "title": "Three Levels, Matched to Your Child's Age",
+      "title": "Levels Matched to Your Child's Age",
       "lead": "The BEC curriculum teaches conversation and grammar step by step — children learn through play, then move up a level with confidence.",
       "ageRange": "Ages {min}–{max}",
-      "detailLink": "See level details"
+      "detailLink": "See level details",
+      "railLabel": "All program levels",
+      "previous": "Previous levels",
+      "next": "Next levels"
     },
     "unitFinder": {
       "overline": "Find a BEC Unit",
@@ -214,8 +217,8 @@
     "hero": {
       "overline": "BEC Curriculum",
       "title": "BEC Programs",
-      "lead": "A real English course — conversation and grammar from the basics to fluency, split into three levels by age. Every BEC unit uses the same curriculum.",
-      "levelsCount": "3 levels",
+      "lead": "A real English course — conversation and grammar from the basics to fluency, split into levels by age. Every BEC unit uses the same curriculum.",
+      "levelsCount": "{count, plural, one {# level} other {# levels}}",
       "sameCurriculum": "Same curriculum at every unit"
     },
     "tabs": {
@@ -246,7 +249,7 @@
     },
     "compare": {
       "overline": "Comparison",
-      "title": "Compare the Three Levels",
+      "title": "Compare the Levels",
       "lead": "See the differences at a glance and pick the level that best fits your child's age and skills.",
       "feature": "Feature",
       "age": "Age",
@@ -256,7 +259,7 @@
       "topics": "Sample topics",
       "sessionsValue": "{count}× / week",
       "classSizeValue": "Max. {count} students",
-      "caption": "Comparison of the Kindy, Intro and Secondary levels"
+      "caption": "Comparison of the {levels} levels"
     },
     "faq": {
       "overline": "FAQ",
@@ -731,7 +734,7 @@
       "units": "{count, plural, one {# active unit} other {# active units}}",
       "regencyCount": "{count, plural, one {# city/regency} other {# cities/regencies}}",
       "districtCount": "{count, plural, one {# district} other {# districts}}",
-      "levels": "Kindy · Intro · Secondary",
+      "levels": "{levels}",
       "regenciesTitle": "Cities & Regencies in {area}",
       "unitsTitle": "BEC Units in {area}",
       "unitsLead": "Open a unit for details, or chat with its admin straight away.",
@@ -1077,7 +1080,8 @@
       "numberMax": "At most {limit}.",
       "imageRequired": "Pick an image from the media library.",
       "ageRange": "The maximum age cannot be lower than the minimum age.",
-      "ageOverlap": "This age range overlaps another level.",
+      "ageOverlap": "This age range overlaps another level in the age finder.",
+      "levelInUse": "Units still offer this level. Hide it instead, or take it off those units first.",
       "notFound": "This item no longer exists. Reload the page.",
       "villageRequired": "Choose a village / kelurahan down to the last level.",
       "slugInvalid": "Use lowercase letters, numbers and hyphens only (e.g. sukamaju-indah).",
@@ -1257,8 +1261,19 @@
     }
   },
   "AdminPrograms": {
-    "description": "The three course levels shown on Home, the Programs page and the age finder.",
-    "fixedNote": "Kindy, Intro and Secondary are fixed levels. Here you edit each level's copy, ages, schedule and photo.",
+    "description": "Course levels shown on Home, the Programs page, the age finder and unit cards.",
+    "orderHint": "Drag ⠿ to reorder. The order here is the order on the site.",
+    "add": "Add level",
+    "empty": "No levels yet. Add the first one to show it on the site.",
+    "createTitle": "Add level",
+    "createDescription": "A new level goes to the end of the list. Its address on the Programs page is made from the Indonesian name and does not change afterwards.",
+    "deleteLabel": "Delete the {name} level",
+    "deleteTitle": "Delete the {name} level?",
+    "deleteBody": "The level and its copy are deleted for good. A level units still offer cannot be deleted; hide it instead.",
+    "deleteConfirm": "Delete level",
+    "deleted": "Level deleted.",
+    "unitCount": "{count, plural, =0 {Not offered by any unit yet} one {Offered by # unit} other {Offered by # units}}",
+    "outsideFinder": "Outside the age finder",
     "ages": "Ages {min}–{max}",
     "schedule": "{sessions}× a week · max. {students} students",
     "noImage": "No photo yet",
@@ -1271,6 +1286,10 @@
       "details": {
         "title": "Class details",
         "description": "Numbers on the level card and the comparison table."
+      },
+      "appearance": {
+        "title": "Appearance",
+        "description": "The level color on cards, Programs page tabs and unit badges."
       },
       "photo": {
         "title": "Photo",
@@ -1286,6 +1305,18 @@
       "ageMax": "Maximum age",
       "sessionsPerWeek": "Sessions per week",
       "maxStudentsPerClass": "Max. students per class",
+      "theme": "Level color",
+      "themeHint": "Pick from the BEC palette so colors stay in harmony and easy to read.",
+      "themes": {
+        "sunny": "Yellow",
+        "teal": "Teal",
+        "orange": "Orange",
+        "blue": "Blue",
+        "green": "Green",
+        "berry": "Berry"
+      },
+      "inAgeFinder": "Show in the age finder",
+      "inAgeFinderHint": "The age chips on Home point at this level. Turn it off for a special program whose ages may overlap other levels, such as a Speaking Club.",
       "image": "Level photo",
       "isPublished": "Show this level on the site",
       "isPublishedHint": "Hidden levels do not appear on Home, the Programs page or the age finder.",

@@ -38,23 +38,24 @@ export function LevelCardPreview({
   const ageMin = Number.isFinite(values.ageMin) ? Number(values.ageMin) : 0;
   const ageMax = Number.isFinite(values.ageMax) ? Number(values.ageMax) : 0;
 
-  const level: Level | null =
-    image && values.slug
-      ? {
-          slug: values.slug,
-          name: filled(text?.name, t("fields.name")),
-          ageMin,
-          ageMax,
-          tagline: filled(text?.tagline, t("fields.tagline")),
-          summary: filled(text?.summary, t("fields.summary")),
-          skills: (text?.skills ?? []).flatMap((row) => (row?.value?.trim() ? [row.value] : [])),
-          description: text?.description ?? "",
-          curriculum: [],
-          sessionsPerWeek: Number(values.sessionsPerWeek) || 0,
-          maxStudentsPerClass: Number(values.maxStudentsPerClass) || 0,
-          image: { src: image.src, width: image.width, height: image.height, alt: "" },
-        }
-      : null;
+  const level: Level | null = image
+    ? {
+        slug: "preview",
+        theme: values.theme ?? "teal",
+        inAgeFinder: values.inAgeFinder ?? true,
+        name: filled(text?.name, t("fields.name")),
+        ageMin,
+        ageMax,
+        tagline: filled(text?.tagline, t("fields.tagline")),
+        summary: filled(text?.summary, t("fields.summary")),
+        skills: (text?.skills ?? []).flatMap((row) => (row?.value?.trim() ? [row.value] : [])),
+        description: text?.description ?? "",
+        curriculum: [],
+        sessionsPerWeek: Number(values.sessionsPerWeek) || 0,
+        maxStudentsPerClass: Number(values.maxStudentsPerClass) || 0,
+        image: { src: image.src, width: image.width, height: image.height, alt: "" },
+      }
+    : null;
 
   return (
     <CardPreview locale={locale} placement={t("previewPlacement")} className={className}>
