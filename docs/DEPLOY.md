@@ -43,7 +43,7 @@ Visitor ──► Cloudflare (DNS proxied, SSL Full (strict), cache)
 | Secret   | `BUILD_DATABASE_URL`    | `postgres://bec_build:…@<host>:<port>/bec` (read-only role, see § 4)    |
 | Secret   | `DEPLOY_SSH_KEY`        | Private key whose public half is the `deploy` user's forced-command key |
 | Secret   | `DEPLOY_KNOWN_HOSTS`    | `ssh-keyscan -t ed25519 <server ip>` output                             |
-| Variable | `DEPLOY_HOST`           | Server IP                                                               |
+| Variable | `DEPLOY_HOST`           | Server IP. Also a **repository** variable: it switches Deploy on        |
 | Variable | `NEXT_PUBLIC_SITE_URL`  | `https://dash.beccourses.com` (at launch: `https://beccourses.com`)     |
 | Variable | `NEXT_PUBLIC_MEDIA_URL` | `https://media.beccourses.com`                                          |
 | Variable | `SITE_INDEXING`         | `false` (at launch: `true`)                                             |
@@ -64,22 +64,34 @@ timezone Asia/Jakarta.
 Docker-published ports bypass UFW. That is why Caddy runs in the host network and the app
 listens on `127.0.0.1` only. Never publish another port on `0.0.0.0`.
 
-Still to do once:
+One-time setup (2026-11-15):
 
-1. **Deploy user.** Create `deploy` (group `docker`, no password, no sudo) and make it the owner of
-   `/srv/bec`. Its `~/.ssh/authorized_keys` has a single line:
+1. **Deploy user.** `deploy` (group `docker`, no password, no sudo) owns `/srv/bec`. Its
+   `~/.ssh/authorized_keys` has a single line:
    ```
    command="/srv/bec/deploy.sh",restrict ssh-ed25519 AAAA… github-actions-deploy
    ```
-2. **Registry.** As `deploy`: `docker login ghcr.io -u <github user>` with a token that only has
-   `read:packages`.
-3. **Files.** Copy `deploy/compose.yml`, `deploy/Caddyfile` and `deploy/deploy.sh` to `/srv/bec`
-   (`deploy.sh` mode 750). Write `.env` (§ 2).
-4. **TLS.** Cloudflare → SSL/TLS → Origin Server → create a certificate for `beccourses.com` and
-   `*.beccourses.com` (15 years). Save it as `/srv/bec/certs/origin.pem` and `origin.key` (mode
-   600). Set SSL/TLS mode to **Full (strict)** and turn on Always Use HTTPS.
-5. **DNS.** `dash` → A record to the server IP, **proxied**. `media` → the R2 bucket's custom domain.
-6. **R2 CORS** on `bec-production` (browser uploads use presigned URLs): allow `PUT` and `GET` from
+2. **Registry.** The images on GHCR are **public**, like the repository, so the server pulls them
+   without a token. They hold no secrets: the build reads the database through a BuildKit secret,
+   and `.env` files are excluded from the context. After the first build, set both packages
+   (`bec`, `bec-tools`) to Public under the user's GitHub packages, Package settings.
+3. **Files.** `deploy/compose.yml`, `deploy/Caddyfile`, `deploy/deploy.sh` and
+   `deploy/setup-env.sh` are copied to `/srv/bec` from the repository at a reviewed commit.
+4. **Secrets.** A person runs `sudo /srv/bec/setup-env.sh` in their own terminal. It:
+   - asks for the R2 credentials and the Origin Certificate;
+   - generates the database passwords and the auth secret;
+   - writes `.env` and `certs/` (mode 600);
+   - prints the two `alter role … password` statements to run on the database, and the
+     `BUILD_DATABASE_URL` secret for GitHub.
+
+   No AI or CI sees these values.
+
+5. **TLS.** A Cloudflare Origin Certificate for `beccourses.com` and `dash.beccourses.com` sits in
+   `/srv/bec/certs/`. SSL mode **Full (strict)** is set with a Cloudflare **Configuration Rule**
+   for `dash.beccourses.com` only (Rules → Configuration Rules), not zone-wide, so other subdomains
+   keep their current mode. At launch, the rule extends to `beccourses.com`.
+6. **DNS.** `dash` → A record to the server IP, **proxied**. `media` → the R2 bucket's custom domain.
+7. **R2 CORS** on `bec-production` (browser uploads use presigned URLs): allow `PUT` and `GET` from
    `https://dash.beccourses.com` (add `https://beccourses.com` at launch), header `Content-Type`.
 
 When `deploy/` changes in the repo, an admin copies the changed files to `/srv/bec`. The deploy
@@ -87,18 +99,23 @@ key can only start `deploy.sh`, never replace it.
 
 ## 4. Database
 
-The Sumopod admin user creates the database and two roles once:
+Created on 2026-11-15 through APX (approved statements), without passwords. `setup-env.sh` (§ 3)
+generates the passwords and prints the statements that set them.
 
 ```sql
 -- As the Sumopod admin user, on the "postgres" database:
-create role bec_app login password '<long random>';
-create role bec_build login password '<long random>';
+create role bec_app login;
+create role bec_build login;
+grant bec_app to current_user;              -- lets the admin act as the owner below
 create database bec owner bec_app;
 
--- Then on the "bec" database, as bec_app (the owner):
+-- Then on the "bec" database:
+revoke all on database bec from public;
 grant connect on database bec to bec_build;
+set role bec_app;
 grant usage on schema public to bec_build;
 alter default privileges in schema public grant select on tables to bec_build;
+reset role;
 ```
 
 - `bec_app` runs the app and the migrations. It owns the database, so it can create the trusted
@@ -109,18 +126,21 @@ alter default privileges in schema public grant select on tables to bec_build;
 
 ## 5. Releasing
 
-1. Merge a pull request into `staging`. Its CI already passed (branch protection, § 5.1). **Deploy**
-   builds both images and calls `deploy.sh deploy <sha>` on the server; it is not tested again.
-2. `deploy.sh`:
-   1. pulls the images;
-   2. runs the migrations from the tools image under an advisory lock (if they fail, the running
-      release stays);
-   3. starts the new app;
-   4. waits up to 120 s for `/api/health` to report the new version.
+1. Merge a pull request into `staging`. Its CI already passed (branch protection, § 5.1), so it is not
+   tested again. **Deploy** runs four jobs in order (ADR-045):
+   1. **Tools image**: build and push `bec-tools:<sha>`.
+   2. **Migrate**: `deploy.sh migrate <sha>` applies the migrations on the server, under an
+      advisory lock. If they fail, nothing else runs and the current release stays.
+   3. **App image**: build `bec:<sha>`, prerendering public pages from the now up-to-date database
+      (read-only role), and push it.
+   4. **Release**: `deploy.sh deploy <sha>` pulls the app, runs migrations again (a no-op, so a
+      manual deploy is always complete), starts the app and waits up to 120 s for `/api/health` to
+      report the new version. If it is not healthy, the previous release starts again and the
+      workflow fails.
+2. The workflow then checks that the public URL serves the new version.
 
-   If the new release is not healthy, it starts the previous one again and the workflow fails.
-
-3. The workflow then checks the public URL serves the new version.
+Between steps 2 and 4 the running release works against the new schema. That is why migrations must
+be additive (§ Rollback).
 
 Manual release of a commit on `staging`, e.g. to rebuild after changing a GitHub variable: Actions →
 Deploy → Run workflow (optional `ref`). Deploys queue: one runs at a time.
@@ -189,7 +209,8 @@ Tracked in tasks APX-301 (noindex), APX-302 (redirects), APX-303 (launch checkli
 4. Caddyfile: switch to the launch blocks at the end of `deploy/Caddyfile`, plus the 301 redirects
    from the old WordPress URLs.
 5. R2 CORS: add `https://beccourses.com`.
-6. DNS: `beccourses.com` and `www` → server IP (proxied).
+6. DNS: `beccourses.com` → server IP (proxied). Cloudflare: extend the Full (strict) Configuration Rule
+   to `beccourses.com`, and add a Redirect Rule `www.beccourses.com/*` → `https://beccourses.com/$1` (301).
 7. Run the Deploy workflow (new build with the new URL), then reload Caddy:
    `docker compose exec caddy caddy reload --config /etc/caddy/Caddyfile`.
 8. Check:

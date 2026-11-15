@@ -669,3 +669,23 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
 - **Follow-up:** `main` stays unused until a separate release gate is wanted after launch; then the
   Deploy trigger moves back to `main`. A spec that gains a phone-only path must be added to the
   mobile project's `testMatch`.
+
+### ADR-045 — Migrations run before the app image is built
+
+2026-11-15 · Accepted (amends ADR-043)
+
+- **Decision:** The Deploy workflow runs four jobs: tools image → migrate on the server
+  (`deploy.sh migrate <sha>`) → app image → release (`deploy.sh deploy <sha>`, which migrates again
+  as a no-op). `DEPLOY_HOST` is also a repository variable, because a job's `if` cannot see the
+  variables of an environment.
+- **Why:** The app build prerenders public pages from the production database. With migrations
+  after the build, the first deploy failed on an empty database ("relation posts does not
+  exist"), and any later migration that adds a table or column used by a public page would fail the
+  same way.
+- **Alternatives:**
+  - prerender without the database (pages empty until their cache refreshes);
+  - run migrations from GitHub Actions (CI would need the app role's credentials);
+  - build on the server (not enough memory).
+- **Follow-up:** The running release meets the new schema before it is replaced, which the
+  additive-migration rule already requires. A failed build after a successful migration leaves the
+  old release running on the new schema: fix forward.

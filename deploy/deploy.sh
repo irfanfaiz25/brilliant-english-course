@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Starts a release on the server (ADR-043), installed at /srv/bec/deploy.sh.
 #
+#   deploy.sh migrate <sha>    pull the tools image and apply its migrations (before the app build)
 #   deploy.sh deploy <sha>     pull the images, migrate, start the app, wait until healthy
 #   deploy.sh rollback         start the previous release again (no migrations)
 #   deploy.sh status           show the running release
@@ -63,14 +64,24 @@ prune_images() {
   docker image prune -f >/dev/null
 }
 
+migrate() {
+  log "Applying migrations of $1"
+  compose "$1" --profile tools pull --quiet tools
+  compose "$1" --profile tools run --rm tools pnpm --silent db:migrate:deploy
+}
+
 case "$action" in
+  migrate)
+    [[ "$tag" =~ ^[0-9a-f]{7,40}$ ]] || fail "usage: migrate <git sha>"
+    migrate "$tag" || fail "migrations failed; ${current:-nothing} keeps running"
+    ;;
   deploy)
     [[ "$tag" =~ ^[0-9a-f]{7,40}$ ]] || fail "usage: deploy <git sha>"
     log "Deploying $tag (running: ${current:-none})"
-    compose "$tag" --profile tools pull --quiet app tools
-    log "Applying migrations"
-    compose "$tag" --profile tools run --rm tools pnpm --silent db:migrate:deploy \
-      || fail "migrations failed; ${current:-nothing} keeps running"
+    compose "$tag" pull --quiet app
+    # Normally a no-op (the workflow migrated before building the app); kept so a manual
+    # `deploy` is always complete.
+    migrate "$tag" || fail "migrations failed; ${current:-nothing} keeps running"
     log "Starting the app"
     start_release "$tag"
     if ! wait_healthy "$tag"; then
@@ -107,6 +118,6 @@ case "$action" in
     echo
     ;;
   *)
-    fail "usage: deploy <git sha> | rollback | status"
+    fail "usage: migrate <git sha> | deploy <git sha> | rollback | status"
     ;;
 esac

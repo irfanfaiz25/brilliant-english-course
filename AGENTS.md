@@ -297,8 +297,8 @@ Git hooks (Husky): pre-commit runs lint-staged and checks `AGENTS.md` == `CLAUDE
 commit-msg runs commitlint (Conventional Commits, rejects AI co-author trailers).
 
 Deploy (`.github/workflows/deploy.yml`, ADR-043/044): every merge into `staging` builds the images, pushes them to GHCR
-and `deploy/deploy.sh` releases them on the server (migrate → start → health check → restart the previous release on
-failure). Server files live in `deploy/`, the runbook in `docs/DEPLOY.md`. There is one production environment; it is
+and `deploy/deploy.sh` releases them on the server (migrate before the app build → start → health check → restart the
+previous release on failure, ADR-045). Server files live in `deploy/`, the runbook in `docs/DEPLOY.md`. There is one production environment; it is
 `noindex` (`SITE_INDEXING=false`) until launch.
 
 CI (`.github/workflows/ci.yml`) on pull requests (branch protection requires it before a merge into `staging`): quality checks, migrations
