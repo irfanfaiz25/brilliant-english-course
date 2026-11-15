@@ -79,6 +79,61 @@ test.describe("admin leads", () => {
     await expect(
       page.getByRole("main").getByRole("link", { name: e2eLead.name }).first(),
     ).toBeVisible();
+
+    // A unit created from the lead in Persiapan keeps the village slot until it is active
+    // (ADR-039). Same test as above: the fixture lead must not be worked on in parallel.
+    await page.goto("/admin/calon-mitra");
+    await openFixture(page);
+    await page.getByLabel(/^Status/).selectOption({ label: "Persiapan" });
+    await page.getByRole("button", { name: "Simpan" }).click();
+    await expect(page.getByText("Perubahan tersimpan.")).toBeVisible();
+    await page.getByRole("link", { name: "Buat unit dari calon mitra ini" }).click();
+    await expect(page).toHaveURL(/\/admin\/unit\/baru\?lead=/);
+    await page.waitForLoadState("networkidle");
+    // The page left behind may still be in the DOM (hidden): scope to the unit form.
+    const unitStatus = page.getByRole("region", { name: "Identitas" }).getByLabel(/^Status/);
+
+    const unitName = `Unit Uji Mitra ${Date.now() % 10000}`;
+    await page.getByLabel(/^Nama unit/).fill(unitName);
+    await page.getByLabel(/^Lintang/).fill("-6.55");
+    await page.getByLabel(/^Bujur/).fill("106.95");
+    await page.getByLabel("Kindy").check();
+    await expect(unitStatus).toHaveValue("onboarding");
+    await page.getByRole("button", { name: "Tambah unit" }).click();
+    await expect(page.getByText("Perubahan tersimpan dan sudah tampil di situs.")).toBeVisible();
+    // Back on the lead: converted, linked to the unit, the slot no longer held by the lead.
+    await expect(page).toHaveURL(/\/admin\/calon-mitra\/[\w-]+$/);
+    await expect(page.getByRole("link", { name: new RegExp(unitName) })).toBeVisible();
+    await expect(page.getByText("Satu slot kuota desa dipesan untuk calon mitra ini.")).toHaveCount(
+      0,
+    );
+
+    const unitRow = page.getByRole("main").getByRole("row").filter({ hasText: unitName });
+    const heldByUnit = page.getByText(`Unit ${unitName} (persiapan)`);
+    try {
+      await page.goto("/admin/kuota");
+      await expect(heldByUnit).toBeVisible();
+
+      // Turning the unit active hands the slot to the unit itself.
+      await page.goto("/admin/unit");
+      await page.getByRole("main").getByRole("link", { name: unitName }).first().click();
+      await page.waitForLoadState("networkidle");
+      await unitStatus.selectOption({ label: "Aktif" });
+      await page.getByRole("button", { name: "Simpan perubahan" }).click();
+      await expect(page.getByText("Perubahan tersimpan dan sudah tampil di situs.")).toBeVisible();
+      await page.goto("/admin/kuota");
+      await expect(page.getByRole("heading", { name: "Pesanan slot" })).toBeVisible();
+      await expect(heldByUnit).toHaveCount(0);
+    } finally {
+      await page.goto("/admin/unit");
+      await page.waitForLoadState("networkidle");
+      await unitRow.getByRole("button", { name: `Hapus ${unitName}` }).click();
+      await page
+        .getByRole("alertdialog", { name: `Hapus ${unitName}?` })
+        .getByRole("button", { name: "Hapus unit" })
+        .click();
+      await expect(page.getByText("Unit dihapus.")).toBeVisible();
+    }
   });
 
   test("exports the filtered list as CSV", async ({ page }, testInfo) => {

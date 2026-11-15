@@ -13,12 +13,15 @@ import {
 import { id, timestamps } from "./_helpers";
 import { partnerLeads } from "./partners";
 import { regions } from "./regions";
+import { units } from "./units";
 import { users } from "./users";
 
 /**
  * Slots held in a village by partners who are onboarding but not yet listed as active units.
  * Village quota = active units + open reservations, capped by the `unitsPerVillage` setting
- * (`limits.unitsPerVillage` until Phase 4c). Expired reservations no longer count.
+ * (`limits.unitsPerVillage` until Phase 4c). Expired reservations no longer count. A row with a
+ * `unit_id` is held by a unit in `onboarding` that was created from a lead (ADR-039); one with
+ * only a `lead_id` is held by the lead itself.
  */
 export const quotaReservations = pgTable(
   "quota_reservations",
@@ -29,6 +32,7 @@ export const quotaReservations = pgTable(
       .references(() => regions.code),
     slots: smallint().notNull().default(1),
     leadId: uuid().references(() => partnerLeads.id, { onDelete: "set null" }),
+    unitId: uuid().references(() => units.id, { onDelete: "set null" }),
     note: text().notNull().default(""),
     /** `null` = held until released by an admin. */
     expiresAt: timestamp({ withTimezone: true }),

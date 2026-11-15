@@ -92,6 +92,8 @@ export type ReservationRow = Place & {
   createdAt: Date;
   createdBy: string | null;
   leadReference: string | null;
+  /** The unit in `onboarding` holding the slot (ADR-039), if any. */
+  unitName: string | null;
 };
 
 const reservationColumns = {
@@ -103,6 +105,7 @@ const reservationColumns = {
   createdAt: quotaReservations.createdAt,
   createdBy: users.name,
   leadReference: partnerLeads.reference,
+  unitName: units.name,
 };
 
 function reservationsQuery() {
@@ -113,7 +116,8 @@ function reservationsQuery() {
     .innerJoin(district, sql`${district.code} = left(${quotaReservations.villageCode}, 8)`)
     .innerJoin(regency, sql`${regency.code} = left(${quotaReservations.villageCode}, 5)`)
     .leftJoin(users, eq(users.id, quotaReservations.createdById))
-    .leftJoin(partnerLeads, eq(partnerLeads.id, quotaReservations.leadId));
+    .leftJoin(partnerLeads, eq(partnerLeads.id, quotaReservations.leadId))
+    .leftJoin(units, eq(units.id, quotaReservations.unitId));
 }
 
 /** Reservations still holding slots, the ones ending soonest first (no end date last). */

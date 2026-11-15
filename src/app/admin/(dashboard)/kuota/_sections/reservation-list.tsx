@@ -49,10 +49,16 @@ export async function ReservationList({
                   ? t("until", { date: day(reservation.expiresAt) })
                   : t("untilReleased")}
               </span>
-              {reservation.leadReference && (
+              {reservation.unitName ? (
                 <span className="text-muted-foreground">
-                  {t("lead", { reference: reservation.leadReference })}
+                  {t("unit", { name: reservation.unitName })}
                 </span>
+              ) : (
+                reservation.leadReference && (
+                  <span className="text-muted-foreground">
+                    {t("lead", { reference: reservation.leadReference })}
+                  </span>
+                )
               )}
             </p>
             {reservation.note && (

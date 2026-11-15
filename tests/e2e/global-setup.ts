@@ -58,15 +58,16 @@ export default async function globalSetup() {
 
 /**
  * Puts the lead the admin leads spec works on back to a fresh application: status `new`, no
- * assignee, notes or quota reservation, in a village no other spec reads (Singajaya, Kab. Bogor).
+ * assignee, notes or quota reservation, in a village no other spec reads (Sukasirna, Kab. Bogor).
  */
 async function resetLeadFixture(client: pg.Client) {
   const { rows } = await client.query<{ id: string }>(
     `insert into partner_leads
        (reference, full_name, whatsapp, background, space, motivation, village_code, locale)
-     values ($1, $2, '6281200009999', 'educator', 'ready', 'Fixture for the E2E specs.', '32.01.06.2003', 'id')
+     values ($1, $2, '6281200009999', 'educator', 'ready', 'Fixture for the E2E specs.', '32.01.06.2004', 'id')
      on conflict (reference) do update set
        status = 'new', assigned_to_id = null, unit_id = null, deleted_at = null,
+       village_code = excluded.village_code,
        created_at = now(), updated_at = now()
      returning id`,
     [e2eLead.reference, e2eLead.name],
