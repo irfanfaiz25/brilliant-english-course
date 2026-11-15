@@ -11,8 +11,6 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: isCI,
   retries: isCI ? 2 : 0,
-  // GitHub's runner has 4 vCPUs; Playwright would use half of them.
-  workers: isCI ? 4 : undefined,
   reporter: isCI ? [["github"], ["html", { open: "never" }]] : "list",
   use: {
     baseURL: `http://localhost:${PORT}`,
