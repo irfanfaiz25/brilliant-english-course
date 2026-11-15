@@ -31,7 +31,11 @@ RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \
 # ---- tools: source + dependencies for one-off jobs (no build output) ----
 FROM deps AS tools
 COPY . .
-ENV NODE_ENV=production
+# Dependencies are installed above. Without this, pnpm compares file times before every script,
+# finds `package.json` newer than the install (COPY above), and tries to reinstall into the
+# read-only /app as the unprivileged user (EACCES).
+ENV NODE_ENV=production \
+    pnpm_config_verify_deps_before_run=false
 USER node
 CMD ["pnpm", "db:migrate:deploy"]
 
