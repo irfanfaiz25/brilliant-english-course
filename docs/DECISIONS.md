@@ -548,3 +548,32 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
 - **Alternatives:** Classes as levels of their own (seven top-level choices, overlapping ages break the age finder);
   free-text spans (inconsistent and untranslated); storing every opened class only (a new class would reach no unit);
   an age finder per class (spans overlap, so one chip could point at two classes).
+
+### ADR-041 — Kemitraan page content is edited in admin
+
+2026-11-15 · Accepted
+
+- **Decision:** The Kemitraan page follows BEC's real offer (beccourses.com/kemitraan-bec) and its content is admin
+  content, while the layout stays in code. Four settings, one per section and each saved by its own panel in
+  Halaman Kemitraan (`/admin/halaman-kemitraan`, `update` on `settings`):
+  - `partnershipBenefits`: benefits, where `featured` ones are large cards and hero highlights;
+  - `partnership`: the starter kit (items grouped as materials, classroom or guides, each with an optional photo)
+    plus the starting investment. It replaces the old inclusions list; a stored document in the old shape falls back
+    to the code defaults;
+  - `partnershipTraining`: the lesson flow, the training formats and a photo;
+  - `partnershipSteps`: the procedure, where a step may link to the quota check, the form or WhatsApp.
+
+  Every item has fields shared by both locales (an icon from the fixed `partnershipIcons` set, photo, group, link) and
+  copy per locale. Admin lists use `ItemListField`, which shows Indonesian and English side by side. Photos are media
+  ids; `usage.ts` finds them in these settings, so the library will not delete a photo in use, and a missing photo
+  falls back to the item's icon. Code defaults (`page-defaults.ts`) carry the real copy without photos; the dev seed
+  adds sample photos only when the settings are missing. The procedure merges "submit the form to the admin" into
+  "fill in the form", because the form reaches the team online. The quota wording stays general ("one unit per
+  village, a second only under certain conditions") until BEC confirms the conditions.
+
+- **Why:** The real partnership offer (no profit sharing, starter kit, training) was missing from the site, and staff
+  must be able to keep it current without a release. Settings keep it to one validated document per section with no
+  migration; a fixed icon set and layout keep every edit on brand.
+- **Alternatives:** Content tables per section (a migration for structured copy that changes rarely, and relational
+  ordering for short lists); free-form rich text (breaks the layout and the bilingual pairing); copy in the message
+  files (needs a developer for every change).

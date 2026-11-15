@@ -161,6 +161,9 @@ Rules:
   Program levels group classes (ADR-040): school-year labels come from `formatGradeSpan()` (`features/programs/grades.ts`,
   templates from `gradeLabelsFor()` / `useGradeLabels()`), shown with `LearningPath` and `ClassPath`; a unit's classes
   are picked with `LevelOfferField` and stored through `resolveLevelOffers()`.
+  The Kemitraan page content (benefits, starter kit + investment, training, procedure) is four settings edited in
+  Halaman Kemitraan (ADR-041): lists use `ItemListField` (`components/admin`, both locales side by side), icons come
+  from the fixed `partnershipIcons` set (`PartnershipIcon`), and photos in settings count as media usage (`usage.ts`).
   Charts are hand-built SVG (`components/admin/charts`, geometry in `lib/chart.ts`, colours `chart-1`/`chart-2`): no chart
   library; follow `DESIGN.md` § 6 Charts (legend, hover and keyboard tooltip, table view).
 - Public pages render inside `SiteShell` (`src/app/[locale]/(site)/layout.tsx`); page content starts below the header,
