@@ -14,12 +14,17 @@ import type { LeadNote, LeadUpdate } from "./schema";
 /*
  * Lead writes for the admin pipeline (Phase 4d, ADR-030). A lead in `onboarding` holds one quota
  * slot in its village through a reservation linked to it; leaving `onboarding` (or converting,
- * or deleting the lead) releases it.
+ * or deleting the lead) releases it. A slot already handed to a unit created from the lead
+ * (`unit_id` set, ADR-039) belongs to that unit and is never touched from here.
  */
 
 type Tx = Parameters<Parameters<typeof db.transaction>[0]>[0];
 
 const liveLead = (id: string) => and(eq(partnerLeads.id, id), isNull(partnerLeads.deletedAt));
+
+/** Open reservations the lead holds itself (not yet handed to a unit). */
+const heldByLead = (leadId: string) =>
+  and(eq(quotaReservations.leadId, leadId), isNull(quotaReservations.unitId), openReservation);
 
 async function lockVillage(tx: Tx, villageCode: string) {
   await tx.execute(sql`select pg_advisory_xact_lock(hashtext(${`quota:${villageCode}`}))`);
@@ -27,17 +32,14 @@ async function lockVillage(tx: Tx, villageCode: string) {
 
 /** Open reservations made for a lead (normally zero or one). */
 async function leadReservations(tx: Tx, leadId: string) {
-  return tx
-    .select({ id: quotaReservations.id })
-    .from(quotaReservations)
-    .where(and(eq(quotaReservations.leadId, leadId), openReservation));
+  return tx.select({ id: quotaReservations.id }).from(quotaReservations).where(heldByLead(leadId));
 }
 
 /** Releases every open reservation of a lead; returns how many were released. */
 async function releaseLeadReservations(tx: Tx, leadId: string): Promise<number> {
   const released = await tx
     .delete(quotaReservations)
-    .where(and(eq(quotaReservations.leadId, leadId), openReservation))
+    .where(heldByLead(leadId))
     .returning({ id: quotaReservations.id });
   return released.length;
 }

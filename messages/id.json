@@ -1090,6 +1090,7 @@
       "longitudeInvalid": "Bujur harus di antara 94,5 dan 141,5 (wilayah Indonesia).",
       "levelsRequired": "Pilih minimal satu level yang dibuka unit ini.",
       "quotaFull": "Kuota desa ini sudah penuh, jadi unit belum bisa diaktifkan. Lepas pesanan slot di Kuota Wilayah (jika pesanan itu untuk unit ini) atau pilih status lain.",
+      "quotaFullHold": "Kuota desa ini sudah penuh, jadi slot untuk unit dalam persiapan ini tidak bisa dipesan. Pilih desa lain atau lepas pesanan slot lain di Kuota Wilayah.",
       "quotaExceeded": "Slot yang tersisa di desa ini hanya {limit}.",
       "dateInvalid": "Tanggal belum benar.",
       "almostFullTooHigh": "Batas \"hampir penuh\" harus lebih kecil dari maksimal unit per desa.",
@@ -1395,7 +1396,7 @@
       "inactive": "Nonaktif"
     },
     "statusHint": {
-      "onboarding": "Belum tampil di situs dan belum memakai kuota desa.",
+      "onboarding": "Belum tampil di situs. Unit yang dibuat dari calon mitra tetap memegang satu slot kuota desa sampai aktif.",
       "active": "Tampil di situs dan memakai satu slot kuota desa.",
       "inactive": "Disembunyikan dari situs; slot kuota desa kembali tersedia."
     },
@@ -1527,6 +1528,7 @@
       "by": "Dibuat {date} oleh {name}",
       "byUnknown": "Dibuat {date}",
       "lead": "Calon mitra {reference}",
+      "unit": "Unit {name} (persiapan)",
       "expiredHint": "{count, plural, one {# pesanan} other {# pesanan}} berakhir dalam 30 hari terakhir dan tidak dihitung lagi.",
       "releaseLabel": "Lepas pesanan {village}",
       "releaseTitle": "Lepas pesanan di {village}?",

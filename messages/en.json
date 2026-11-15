@@ -1090,6 +1090,7 @@
       "longitudeInvalid": "Longitude must be between 94.5 and 141.5 (Indonesia).",
       "levelsRequired": "Choose at least one level this unit offers.",
       "quotaFull": "This village's quota is full, so the unit cannot be active yet. Release a reservation in Regional Quota (if it was made for this unit) or choose another status.",
+      "quotaFullHold": "This village's quota is full, so no slot can be held for this onboarding unit. Choose another village or release another reservation in Regional Quota.",
       "quotaExceeded": "Only {limit} slots are left in this village.",
       "dateInvalid": "This date is not valid.",
       "almostFullTooHigh": "The \"almost full\" threshold must be lower than the maximum units per village.",
@@ -1395,7 +1396,7 @@
       "inactive": "Inactive"
     },
     "statusHint": {
-      "onboarding": "Not on the site yet and not using a village quota slot.",
+      "onboarding": "Not on the site yet. A unit created from a lead keeps holding one village quota slot until it is active.",
       "active": "Shown on the site and uses one village quota slot.",
       "inactive": "Hidden from the site; the village quota slot is free again."
     },
@@ -1527,6 +1528,7 @@
       "by": "Made {date} by {name}",
       "byUnknown": "Made {date}",
       "lead": "Lead {reference}",
+      "unit": "Unit {name} (onboarding)",
       "expiredHint": "{count, plural, one {# reservation} other {# reservations}} ended in the last 30 days and no longer count.",
       "releaseLabel": "Release the reservation in {village}",
       "releaseTitle": "Release the reservation in {village}?",

@@ -295,7 +295,7 @@ export async function getLeadDetail(actor: SessionUser, id: string): Promise<Lea
   const [reservation] = await db
     .select({ id: quotaReservations.id })
     .from(quotaReservations)
-    .where(and(eq(quotaReservations.leadId, id), openReservation))
+    .where(and(eq(quotaReservations.leadId, id), isNull(quotaReservations.unitId), openReservation))
     .limit(1);
   const { lead } = row;
   return {
