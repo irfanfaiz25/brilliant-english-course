@@ -22,7 +22,7 @@ export const unitFixtures: UnitSummary[] = [
     openDays: WEEKDAYS_AND_SATURDAY,
     opensAt: "14:00",
     closesAt: "18:00",
-    levels: ["kindy", "intro", "secondary"],
+    levels: ["kindy", "elementary", "secondary"],
     enrollment: "open",
   },
   {
@@ -39,7 +39,7 @@ export const unitFixtures: UnitSummary[] = [
     openDays: WEEKDAYS,
     opensAt: "15:00",
     closesAt: "19:00",
-    levels: ["kindy", "intro"],
+    levels: ["kindy", "elementary"],
     enrollment: "limited",
   },
   {
@@ -57,7 +57,7 @@ export const unitFixtures: UnitSummary[] = [
     openDays: [1, 3, 5],
     opensAt: "15:30",
     closesAt: "18:30",
-    levels: ["intro", "secondary"],
+    levels: ["elementary", "secondary"],
     enrollment: "open",
   },
   {
@@ -75,7 +75,7 @@ export const unitFixtures: UnitSummary[] = [
     openDays: WEEKDAYS_AND_SATURDAY,
     opensAt: "14:00",
     closesAt: "17:00",
-    levels: ["kindy", "intro"],
+    levels: ["kindy", "elementary"],
     enrollment: "full",
   },
   {
@@ -92,7 +92,7 @@ export const unitFixtures: UnitSummary[] = [
     openDays: WEEKDAYS,
     opensAt: "15:00",
     closesAt: "19:00",
-    levels: ["kindy", "intro", "secondary"],
+    levels: ["kindy", "elementary", "secondary"],
     enrollment: "open",
   },
   {
@@ -127,7 +127,7 @@ export const unitFixtures: UnitSummary[] = [
     openDays: WEEKDAYS,
     opensAt: "14:30",
     closesAt: "18:30",
-    levels: ["kindy", "intro"],
+    levels: ["kindy", "elementary"],
     enrollment: "limited",
   },
   {
@@ -144,7 +144,15 @@ export const unitFixtures: UnitSummary[] = [
     openDays: WEEKDAYS_AND_SATURDAY,
     opensAt: "13:00",
     closesAt: "17:00",
-    levels: ["kindy", "intro", "secondary"],
+    levels: ["kindy", "elementary", "secondary"],
     enrollment: "open",
   },
 ];
+
+/**
+ * Units that open only some classes of a level (ADR-040), by unit code → level slug → class
+ * names. Every other offered level opens all its classes.
+ */
+export const unitClassFixtures: Record<string, Record<string, string[]>> = {
+  "BEC-JB-0098": { elementary: ["Smart Kindy 3", "Intro 1"] },
+};

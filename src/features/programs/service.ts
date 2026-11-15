@@ -1,14 +1,21 @@
-import { and, eq, ne } from "drizzle-orm";
+import { and, eq, inArray, ne } from "drizzle-orm";
 
 import { db } from "@/db/client";
-import { programLevels, programLevelTranslations, unitLevels } from "@/db/schema";
+import {
+  programClasses,
+  programClassTranslations,
+  programLevels,
+  programLevelTranslations,
+  unitClasses,
+  unitLevels,
+} from "@/db/schema";
 import { routing } from "@/i18n/routing";
 import { ActionFailure } from "@/lib/action-result";
 import { writeAuditLog } from "@/lib/audit";
 import { isSameList } from "@/lib/ordering";
 import { slugify, uniqueSlug } from "@/lib/slug";
 
-import type { Level, LevelForm } from "./schema";
+import type { ClassRow, Level, LevelForm } from "./schema";
 
 /**
  * Slugs a new level may not take: admin routes beside `/admin/program/[slug]` and the ids other
@@ -73,6 +80,72 @@ async function writeTexts(tx: Tx, levelId: string, texts: LevelForm["texts"]) {
   }
 }
 
+/** What the audit row keeps of a level's classes. */
+type ClassSnapshot = Pick<ClassRow, "name" | "gradeFrom" | "gradeTo"> & { id: string };
+
+/**
+ * Replaces a level's classes with the form's rows, in their order (ADR-040): rows with a
+ * `classId` update that class, new rows are added, missing ones are removed. A class a unit
+ * opened by name (`unit_classes`) cannot be removed (`classInUse`); units offering the whole
+ * level simply stop listing it.
+ */
+async function writeClasses(tx: Tx, levelId: string, rows: ClassRow[]): Promise<ClassSnapshot[]> {
+  const existing = await tx
+    .select({
+      id: programClasses.id,
+      name: programClasses.name,
+      gradeFrom: programClasses.gradeFrom,
+      gradeTo: programClasses.gradeTo,
+    })
+    .from(programClasses)
+    .where(eq(programClasses.levelId, levelId));
+  const known = new Set(existing.map((row) => row.id));
+  if (rows.some((row) => row.classId && !known.has(row.classId))) {
+    throw new ActionFailure("invalid", { classes: "orderChanged" });
+  }
+
+  const kept = new Set(rows.map((row) => row.classId).filter(Boolean));
+  const removed = existing.filter((row) => !kept.has(row.id)).map((row) => row.id);
+  if (removed.length > 0) {
+    const [opened] = await tx
+      .select({ classId: unitClasses.classId })
+      .from(unitClasses)
+      .where(inArray(unitClasses.classId, removed))
+      .limit(1);
+    if (opened) throw new ActionFailure("invalid", { classes: "classInUse" });
+    await tx.delete(programClasses).where(inArray(programClasses.id, removed));
+  }
+
+  for (const [sortOrder, row] of rows.entries()) {
+    const fields = { name: row.name, gradeFrom: row.gradeFrom, gradeTo: row.gradeTo, sortOrder };
+    let classId = row.classId;
+    if (classId) {
+      await tx
+        .update(programClasses)
+        .set({ ...fields, updatedAt: new Date() })
+        .where(eq(programClasses.id, classId));
+    } else {
+      const [created] = await tx
+        .insert(programClasses)
+        .values({ levelId, ...fields })
+        .returning({ id: programClasses.id });
+      if (!created) throw new Error("Program class insert returned no row");
+      classId = created.id;
+    }
+    for (const locale of routing.locales) {
+      const focus = row.focus[locale];
+      await tx
+        .insert(programClassTranslations)
+        .values({ classId, locale, focus })
+        .onConflictDoUpdate({
+          target: [programClassTranslations.classId, programClassTranslations.locale],
+          set: { focus },
+        });
+    }
+  }
+  return existing;
+}
+
 /** The columns of `program_levels` a form sets. */
 const fieldsOf = (form: LevelForm) => ({
   theme: form.theme,
@@ -113,19 +186,20 @@ export async function createLevel(
       .returning({ id: programLevels.id, slug: programLevels.slug });
     if (!level) throw new Error("Program level insert returned no row");
     await writeTexts(tx, level.id, form.texts);
+    await writeClasses(tx, level.id, form.classes);
     await writeAuditLog(tx, {
       actorId,
       action: "program.create",
       entityType: "program_level",
       entityId: level.id,
-      changes: { after: { slug, ...fields, texts: form.texts } },
+      changes: { after: { slug, ...fields, texts: form.texts, classes: form.classes } },
     });
     return level;
   });
 }
 
 /**
- * Saves a level's numbers, theme, photo and copy in every locale with one audit row. Throws
+ * Saves a level's numbers, theme, photo, copy in every locale and classes with one audit row. Throws
  * `ActionFailure("notFound")` for an unknown level and an `ageOverlap` field error when its range
  * collides with another level in the age finder.
  */
@@ -156,6 +230,7 @@ export async function updateLevel(
       .set({ ...fields, updatedAt: new Date() })
       .where(eq(programLevels.id, id));
     await writeTexts(tx, id, form.texts);
+    const beforeClasses = await writeClasses(tx, id, form.classes);
 
     await writeAuditLog(tx, {
       actorId,
@@ -175,8 +250,9 @@ export async function updateLevel(
           texts: Object.fromEntries(
             before.map(({ locale, levelId: _, ...text }) => [locale, text]),
           ),
+          classes: beforeClasses,
         },
-        after: { ...fields, texts: form.texts },
+        after: { ...fields, texts: form.texts, classes: form.classes },
       },
     });
   });

@@ -38,6 +38,7 @@ const emptyUnit: UnitFormInput = {
   opensAt: "14:00",
   closesAt: "18:00",
   levels: [],
+  classIds: [],
   studentsCount: 0,
   openedAt: "",
 };

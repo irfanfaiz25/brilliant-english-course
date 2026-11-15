@@ -1,4 +1,4 @@
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 
 import { Reveal } from "@/components/motion/reveal";
 import { Stagger, StaggerItem } from "@/components/motion/stagger";
@@ -8,7 +8,10 @@ import { ScrollRail } from "@/components/site/scroll-rail";
 import { Section } from "@/components/site/section";
 import { SectionHeader } from "@/components/site/section-header";
 import { LevelCard } from "@/features/programs/components/level-card";
+import { gradeLabelsFor } from "@/features/programs/grade-labels";
+import { formatGradeSpan, gradeSpanOf } from "@/features/programs/grades";
 import type { Level } from "@/features/programs/schema";
+import type { Locale } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 
 /** From this many levels the cards scroll in a row (from `md`) instead of wrapping. */
@@ -28,13 +31,19 @@ const gridColumns: Record<number, string> = {
  */
 export async function ProgramsSection({ levels }: { levels: Level[] }) {
   const t = await getTranslations("Home.programs");
-  const card = (level: Level) => (
-    <LevelCard
-      level={level}
-      ageLabel={t("ageRange", { min: level.ageMin, max: level.ageMax })}
-      detailLabel={t("detailLink")}
-    />
-  );
+  const grades = await gradeLabelsFor((await getLocale()) as Locale);
+  const card = (level: Level) => {
+    const span = gradeSpanOf(level.classes);
+    return (
+      <LevelCard
+        level={level}
+        ageLabel={t("ageRange", { min: level.ageMin, max: level.ageMax })}
+        detailLabel={t("detailLink")}
+        classesLabel={t("classesLabel")}
+        gradeLabel={span ? formatGradeSpan(span.from, span.to, grades) : undefined}
+      />
+    );
+  };
 
   return (
     <Section id="program" aria-labelledby="programs-title" className="scroll-mt-20">

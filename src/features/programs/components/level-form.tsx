@@ -24,6 +24,7 @@ import type { MediaOption } from "@/features/media/admin-queries";
 
 import { createLevelAction, updateLevelAction } from "../actions";
 import { levelFormSchema, type LevelForm as LevelFormOutput, type LevelFormInput } from "../schema";
+import { ClassListField } from "./class-list-field";
 import { LevelCardPreview, type LevelCardLabels } from "./level-card-preview";
 import { LevelThemePicker } from "./level-theme-picker";
 
@@ -41,9 +42,14 @@ type LevelFormProps = {
   canPublish: boolean;
   /** Card labels for the live preview, in every locale. */
   previewLabels: LevelCardLabels;
+  /** Classes a unit opened by name (they cannot be removed). */
+  classesInUse?: readonly string[];
 };
 
-/** Add or edit a program level: class details, color, photo and bilingual copy, saved together. */
+/**
+ * Add or edit a program level: class details, its classes, color, photo and bilingual copy,
+ * saved together.
+ */
 export function LevelForm({
   id,
   defaultValues,
@@ -52,6 +58,7 @@ export function LevelForm({
   canEdit,
   canPublish,
   previewLabels,
+  classesInUse = [],
 }: LevelFormProps) {
   const t = useTranslations("AdminPrograms");
   const errorText = useFormErrorText();
@@ -183,6 +190,13 @@ export function LevelForm({
             </AdminPanel>
           </div>
         </div>
+
+        <AdminPanel
+          title={t("sections.classes.title")}
+          description={t("sections.classes.description")}
+        >
+          <ClassListField form={form} classesInUse={classesInUse} />
+        </AdminPanel>
 
         <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_22rem]">
           <LevelCardPreview

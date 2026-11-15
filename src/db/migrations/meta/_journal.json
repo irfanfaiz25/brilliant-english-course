@@ -57,6 +57,13 @@
       "when": 1794707252632,
       "tag": "0007_reservation_unit",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1794726833600,
+      "tag": "0008_program_classes",
+      "breakpoints": true
     }
   ]
 }

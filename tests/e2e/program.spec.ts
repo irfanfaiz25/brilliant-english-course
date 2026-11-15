@@ -15,7 +15,7 @@ test.describe("program page", () => {
         .getByRole("navigation", { name: "Jejak navigasi" })
         .getByRole("link", { name: "Program" }),
     ).toHaveAttribute("aria-current", "page");
-    for (const slug of ["kindy", "intro", "secondary", "kegiatan"]) {
+    for (const slug of ["kindy", "elementary", "secondary", "kegiatan"]) {
       await expect(page.locator(`#${slug}`)).toBeAttached();
     }
   });
@@ -49,9 +49,9 @@ test.describe("program page", () => {
   });
 
   test("jumping between levels never flashes the levels in between", async ({ page }) => {
-    await page.goto("/program#intro");
+    await page.goto("/program#elementary");
     const tabs = page.getByRole("navigation", { name: "Level program" });
-    await expect(tabs.getByRole("link", { name: /Intro/ })).toHaveAttribute(
+    await expect(tabs.getByRole("link", { name: /Elementary/ })).toHaveAttribute(
       "aria-current",
       "location",
     );
@@ -77,11 +77,13 @@ test.describe("program page", () => {
   });
 
   test("home links land on the matching level", async ({ page }) => {
-    await page.goto("/program#intro");
+    await page.goto("/program#elementary");
     await expect(
-      page.getByRole("navigation", { name: "Level program" }).getByRole("link", { name: /Intro/ }),
+      page
+        .getByRole("navigation", { name: "Level program" })
+        .getByRole("link", { name: /Elementary/ }),
     ).toHaveAttribute("aria-current", "location");
-    await expect(page.locator("#intro-title")).toBeInViewport();
+    await expect(page.locator("#elementary-title")).toBeInViewport();
   });
 
   test("activity cards on the program page are not self-links", async ({ page }) => {
@@ -104,10 +106,13 @@ test.describe("program comparison", () => {
     test.skip(isMobile, "table is desktop-only");
     await page.goto("/program");
     const table = page.getByRole("table", {
-      name: "Perbandingan level Kindy, Intro, dan Secondary",
+      name: "Perbandingan level Kindy Class, Elementary Level, dan Secondary Level",
     });
 
     await expect(table.getByRole("columnheader")).toHaveCount(4);
     await expect(table.getByRole("rowheader", { name: "Usia" })).toBeVisible();
+    await expect(table.getByRole("row", { name: /^Kelas/ })).toContainText(
+      "Smart Kindy 3 → Intro 1 → Intro 2",
+    );
   });
 });

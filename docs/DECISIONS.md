@@ -524,3 +524,27 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
 - **Alternatives:** Count every onboarding unit toward the quota (changes the meaning for units added by hand, which
   may be placeholders); force units from a lead to start active (shows them on the site before they are ready); keep
   the reservation on the lead (a later lead edit or delete would free the unit's slot).
+
+### ADR-040 — Program levels group classes; units open all or some of them
+
+2026-11-15 · Accepted
+
+- **Decision:** A program level (Kindy Class, Elementary Level, Secondary Level, …) holds an ordered list of classes
+  (`program_classes`: a proper name shared by both locales, a school-year span `grade_from`–`grade_to` on the
+  `school_grade` enum `tk`, `sd1`…`sd6`, `smp1`…`smp3`, and an optional focus line per locale in
+  `program_class_translations`; migration `0008`). Spans may overlap, inside a level and across levels (Smart Kindy 2 is
+  SD 1–3, Smart Kindy 3 in Elementary is SD 1–2): placement also follows ability, which the site says once. Classes are
+  edited inside the level form (a sortable list) and saved with the level; a class a unit opened by name cannot be
+  removed (`classInUse`). Labels such as "TK – SD kelas 1" are built by `formatGradeSpan()` from the `Grades` messages,
+  never typed. A unit offers levels as before (`unit_levels`) plus `all_classes`: every class ticked means the whole
+  level, including classes added later; a subset is stored in `unit_classes`; a level with classes needs at least one
+  (`resolveLevelOffers()`, `classesRequired`). Public pages: Home cards add the school-year span and class chips; the
+  Program hero shows the learning path of every class grouped by level (`LearningPath`), each level section its classes
+  as a numbered path (`ClassPath`); the comparison table has a Classes row; unit pages name the classes the unit opens;
+  the footer lists levels from the database. The age finder stays per level (recommended ages, no overlap).
+- **Why:** BEC teaches named classes inside each level and partners do not always open all of them. Grouping keeps the
+  site calm (three choices first, the path second) while showing the full ladder; structured spans keep wording
+  identical in both languages; `all_classes` means a new class reaches every unit that opens the whole level.
+- **Alternatives:** Classes as levels of their own (seven top-level choices, overlapping ages break the age finder);
+  free-text spans (inconsistent and untranslated); storing every opened class only (a new class would reach no unit);
+  an age finder per class (spans overlap, so one chip could point at two classes).

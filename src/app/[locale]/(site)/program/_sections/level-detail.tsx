@@ -18,6 +18,8 @@ import { Section } from "@/components/site/section";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
+import { ClassPath } from "@/features/programs/components/class-path";
+import { gradeLabelsFor } from "@/features/programs/grade-labels";
 import { levelTheme } from "@/features/programs/level-theme";
 import type { Level } from "@/features/programs/schema";
 import { getContactSettings } from "@/features/settings/queries";
@@ -49,6 +51,7 @@ export async function LevelDetail({
   const tWhatsApp = await getTranslations("WhatsApp");
   const contact = await getContactSettings();
   const locale = (await getLocale()) as Locale;
+  const grades = await gradeLabelsFor(locale);
   const theme = levelTheme[level.theme];
   const headingId = `${level.slug}-title`;
 
@@ -155,34 +158,52 @@ export async function LevelDetail({
 
         <Reveal
           immediate={aboveFold}
-          className={cn("relative mx-auto w-full max-w-md lg:max-w-none", reversed && "lg:order-1")}
+          className={cn(
+            "mx-auto flex w-full max-w-md flex-col gap-12 lg:max-w-none",
+            reversed && "lg:order-1",
+          )}
         >
-          <span
-            aria-hidden
-            className={cn(
-              "parallax-soft absolute -inset-3 -z-10 rounded-3xl",
-              reversed ? "-rotate-3" : "rotate-3",
-              theme.frame,
-            )}
-          />
-          <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border-4 border-background shadow-lg">
-            <Image
-              src={level.image.src}
-              alt={level.image.alt}
-              fill
-              sizes="(min-width: 1024px) 45vw, 90vw"
-              className="object-cover transition-transform duration-(--duration-slow) ease-out hover:scale-105"
+          {/* The photo, its tilted frame and the floating age badge belong together. */}
+          <div className="relative">
+            <span
+              aria-hidden
+              className={cn(
+                "parallax-soft absolute -inset-3 -z-10 rounded-3xl",
+                reversed ? "-rotate-3" : "rotate-3",
+                theme.frame,
+              )}
             />
+            <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border-4 border-background shadow-lg">
+              <Image
+                src={level.image.src}
+                alt={level.image.alt}
+                fill
+                sizes="(min-width: 1024px) 45vw, 90vw"
+                className="object-cover transition-transform duration-(--duration-slow) ease-out hover:scale-105"
+              />
+            </div>
+            <p
+              className={cn(
+                "absolute -bottom-5 inline-flex animate-float items-center gap-2 rounded-2xl border border-border/60 surface-glass px-4 py-2.5 text-label text-foreground shadow-lg motion-reduce:animate-none",
+                reversed ? "-right-3 sm:-right-6" : "-left-3 sm:-left-6",
+              )}
+            >
+              <Badge variant={theme.badge}>{level.name}</Badge>
+              {t("ages", { min: level.ageMin, max: level.ageMax })}
+            </p>
           </div>
-          <p
-            className={cn(
-              "absolute -bottom-5 inline-flex animate-float items-center gap-2 rounded-2xl border border-border/60 surface-glass px-4 py-2.5 text-label text-foreground shadow-lg motion-reduce:animate-none",
-              reversed ? "-right-3 sm:-right-6" : "-left-3 sm:-left-6",
-            )}
-          >
-            <Badge variant={theme.badge}>{level.name}</Badge>
-            {t("ages", { min: level.ageMin, max: level.ageMax })}
-          </p>
+          {level.classes.length > 0 && (
+            <div className="flex flex-col gap-4">
+              <h3 className="text-overline text-muted-foreground uppercase">
+                {t("classesTitle", { count: level.classes.length })}
+              </h3>
+              <ClassPath
+                level={level}
+                grades={grades}
+                label={t("classesLabel", { level: level.name })}
+              />
+            </div>
+          )}
         </Reveal>
       </div>
     </Section>

@@ -45,9 +45,7 @@
     "followUs": "Ikuti kami di {network}",
     "rights": "© {year} Brilliant English Course. Hak cipta dilindungi.",
     "chatWhatsApp": "Chat WhatsApp",
-    "levelKindy": "Kindy · 4–6 tahun",
-    "levelIntro": "Intro · 7–9 tahun",
-    "levelSecondary": "Secondary · 10–15 tahun",
+    "level": "{name} · {min}–{max} tahun",
     "language": "Bahasa"
   },
   "MobileBar": {
@@ -61,7 +59,7 @@
     "general": "Halo BEC, saya ingin bertanya tentang kursus bahasa Inggris anak.",
     "partner": "Halo BEC, saya tertarik membuka unit BEC (kemitraan). Boleh minta informasinya?",
     "unit": "Halo {unit}, saya ingin bertanya tentang kelas bahasa Inggris untuk anak saya.",
-    "level": "Halo BEC, saya ingin bertanya tentang kelas {level} untuk anak saya.",
+    "level": "Halo BEC, saya ingin bertanya tentang program {level} untuk anak saya.",
     "partnerApplication": "Halo BEC, saya {name} baru saja mendaftar kemitraan untuk Desa {village} (no. pendaftaran {reference}). Mohon info langkah selanjutnya."
   },
   "Home": {
@@ -76,7 +74,7 @@
       "partnerLink": "Pelajari kemitraan",
       "agePrompt": "Usia anak:",
       "ageOption": "{min}–{max} th",
-      "ageOptionHint": "lihat level {level}",
+      "ageOptionHint": "lihat {level}",
       "badgeLevels": "{count, plural, other {# level}} sesuai usia",
       "badgeNearby": "Unit dekat rumah",
       "badgeSmallClass": "Kelas kecil & seru",
@@ -97,7 +95,8 @@
       "detailLink": "Lihat detail level",
       "railLabel": "Semua level program",
       "previous": "Level sebelumnya",
-      "next": "Level berikutnya"
+      "next": "Level berikutnya",
+      "classesLabel": "Kelas"
     },
     "unitFinder": {
       "overline": "Cek Unit BEC",
@@ -133,13 +132,13 @@
         "chatName": "Admin BEC Cibinong",
         "chatStatus": "online",
         "chatParent": "Halo, saya mau tanya kelas untuk anak usia 6 tahun.",
-        "chatAdmin": "Halo Bunda! Ada kelas Kindy Senin & Rabu jam 15.00. Mau coba kelas gratis dulu?",
+        "chatAdmin": "Halo Bunda! Ada kelas Smart Kindy 1 Senin & Rabu jam 15.00. Mau coba kelas gratis dulu?",
         "chatTime": "10.12",
         "placementTitle": "Hasil placement",
         "skillSpeaking": "Speaking",
         "skillVocabulary": "Vocabulary",
         "skillListening": "Listening",
-        "placementLevel": "Level yang pas: Intro",
+        "placementLevel": "Kelas yang pas: Intro 1",
         "placementStart": "Kelas pertama: Senin, 15.00"
       }
     },
@@ -174,6 +173,14 @@
       "primary": "Cek Unit Terdekat",
       "secondary": "Chat via WhatsApp"
     }
+  },
+  "Grades": {
+    "tk": "TK",
+    "sd": "SD kelas {number}",
+    "smp": "SMP kelas {number}",
+    "sdRange": "SD kelas {from}–{to}",
+    "smpRange": "SMP kelas {from}–{to}",
+    "span": "{from} – {to}"
   },
   "Units": {
     "code": "Kode Unit {code}",
@@ -212,14 +219,17 @@
     "choose": "Pilih {level}"
   },
   "Program": {
-    "metaTitle": "Program Kursus Bahasa Inggris Anak: Kindy, Intro, Secondary",
-    "metaDescription": "Tiga level kursus bahasa Inggris anak usia 4–15 tahun: Kindy, Intro, dan Secondary. Conversation dan grammar bertahap dengan kurikulum yang sama di semua unit BEC.",
+    "metaTitle": "Program Kursus Bahasa Inggris Anak: Kindy Class, Elementary, Secondary",
+    "metaDescription": "Program kursus bahasa Inggris anak usia 4–15 tahun: Kindy Class, Elementary Level, dan Secondary Level, masing-masing dengan kelas berjenjang. Kurikulum yang sama di semua unit BEC.",
     "hero": {
       "overline": "Kurikulum BEC",
       "title": "Program BEC",
       "lead": "Real English Course — conversation dan grammar dari dasar sampai mahir, dibagi per level sesuai usia anak. Semua unit BEC memakai kurikulum yang sama.",
       "levelsCount": "{count, plural, other {# level}}",
-      "sameCurriculum": "Kurikulum sama di semua unit"
+      "sameCurriculum": "Kurikulum sama di semua unit",
+      "classesCount": "{count, plural, other {# kelas}} berjenjang",
+      "pathTitle": "Jalur belajar BEC",
+      "placement": "Rentang kelas sekolah hanya patokan. Penempatan kelas menyesuaikan kemampuan anak, dan unit akan membantu memilih kelas yang pas."
     },
     "tabs": {
       "label": "Level program",
@@ -232,7 +242,9 @@
       "classSize": "Maks. {count} siswa / kelas",
       "materials": "Modul BEC",
       "findUnit": "Cek Unit Terdekat",
-      "askWhatsApp": "Tanya via WhatsApp"
+      "askWhatsApp": "Tanya via WhatsApp",
+      "classesTitle": "Jalur kelas · {count, plural, other {# kelas}}",
+      "classesLabel": "Kelas di {level}"
     },
     "why": {
       "overline": "Kenapa BEC",
@@ -254,6 +266,7 @@
       "feature": "Aspek",
       "age": "Usia",
       "focus": "Fokus",
+      "classes": "Kelas",
       "sessions": "Pertemuan",
       "classSize": "Ukuran kelas",
       "topics": "Contoh materi",
@@ -364,7 +377,7 @@
       "lead": "Mulai tanpa menyusun materi dari nol. Kamu mendapat sistem yang sudah dipakai ratusan kelas BEC.",
       "curriculum": {
         "title": "Kurikulum siap pakai",
-        "text": "Modul Kindy, Intro, dan Secondary lengkap dengan rencana pertemuan."
+        "text": "Modul Kindy Class, Elementary, dan Secondary lengkap dengan rencana pertemuan."
       },
       "training": {
         "title": "Pelatihan & pendampingan",
@@ -727,7 +740,7 @@
     },
     "area": {
       "metaTitle": "Kursus Bahasa Inggris Anak di {area}",
-      "metaDescription": "{count} unit BEC di {area} untuk anak usia 4–15 tahun: kelas Kindy, Intro, dan Secondary. Lihat alamat, jadwal, dan chat WhatsApp unit terdekat.",
+      "metaDescription": "{count} unit BEC di {area} untuk anak usia 4–15 tahun: Kindy Class, Elementary, dan Secondary. Lihat alamat, jadwal, dan chat WhatsApp unit terdekat.",
       "overline": "Unit BEC · {area}",
       "title": "Kursus Bahasa Inggris Anak di {area}",
       "lead": "{count, plural, other {# unit BEC aktif}} di {area} untuk anak usia 4–15 tahun. Pilih unit terdekat dan tanyakan jadwal langsung lewat WhatsApp.",
@@ -1105,7 +1118,11 @@
       "userInactive": "Akun ini nonaktif. Aktifkan kembali sebelum membuat tautan.",
       "emailTaken": "Email ini sudah dipakai akun lain.",
       "unitRequired": "Pilih unit untuk akun mitra.",
-      "unitMissing": "Unit ini sudah tidak ada. Pilih unit lain."
+      "unitMissing": "Unit ini sudah tidak ada. Pilih unit lain.",
+      "gradeRange": "Kelas akhir tidak boleh lebih awal dari kelas awal.",
+      "classNameTaken": "Nama kelas ini sudah dipakai di program yang sama.",
+      "classInUse": "Ada kelas yang dibuka unit secara khusus. Lepas kelas itu dari unitnya dulu sebelum menghapusnya.",
+      "classesRequired": "Pilih minimal satu kelas di setiap level yang dibuka."
     },
     "back": "Kembali",
     "removeItem": "Hapus {item}",
@@ -1299,6 +1316,10 @@
       "content": {
         "title": "Isi",
         "description": "Teks level dalam dua bahasa. Tab bertanda titik merah berisi kolom yang perlu diperbaiki."
+      },
+      "classes": {
+        "title": "Kelas dalam program",
+        "description": "Urutan kelas dari yang paling dasar. Rentang kelas sekolah boleh beririsan; penempatan tetap menyesuaikan kemampuan anak."
       }
     },
     "fields": {
@@ -1338,7 +1359,22 @@
       "imageAlt": "Teks alternatif foto",
       "imageAltHint": "Jelaskan isi foto untuk pembaca layar dan mesin pencari."
     },
-    "previewPlacement": "Beranda"
+    "previewPlacement": "Beranda",
+    "classes": {
+      "item": "Kelas {index}",
+      "empty": "Belum ada kelas. Tambahkan kelas seperti \"Smart Kindy 1\" beserta kelas sekolahnya.",
+      "name": "Nama kelas",
+      "namePlaceholder": "Contoh: Smart Kindy 1",
+      "gradeFrom": "Dari",
+      "gradeTo": "Sampai",
+      "remove": "Hapus kelas {name}",
+      "focusId": "Fokus belajar (Indonesia)",
+      "focusEn": "Fokus belajar (English)",
+      "inUse": "Ada unit yang membuka kelas ini secara khusus, jadi belum bisa dihapus.",
+      "add": "Tambah kelas"
+    },
+    "classList": "Kelas: {names}",
+    "noClasses": "Belum ada kelas"
   },
   "AdminActivities": {
     "description": "Kegiatan rutin unit yang tampil di Beranda dan halaman Program.",
@@ -1375,7 +1411,7 @@
       "name": "Nama kegiatan",
       "summary": "Ringkasan",
       "audience": "Untuk siapa",
-      "audienceHint": "Contoh: Semua level, Kindy & Intro.",
+      "audienceHint": "Contoh: Semua level, Kindy Class & Elementary.",
       "imageAlt": "Teks alternatif foto",
       "imageAltHint": "Jelaskan isi foto untuk pembaca layar dan mesin pencari."
     },
@@ -1471,7 +1507,11 @@
       "studentsCount": "Jumlah siswa aktif",
       "studentsHint": "Dijumlahkan menjadi statistik siswa di Beranda.",
       "openedAt": "Tanggal mulai beroperasi",
-      "openedAtHint": "Kosongkan jika belum diketahui."
+      "openedAtHint": "Kosongkan jika belum diketahui.",
+      "levelsHint": "Centang level, lalu pilih kelas yang dibuka. Semua kelas dicentang berarti seluruh level, termasuk kelas yang ditambahkan nanti.",
+      "allClasses": "Semua kelas",
+      "someClasses": "{count} dari {total} kelas",
+      "classesOf": "Kelas {level}"
     }
   },
   "AdminQuota": {
@@ -1989,7 +2029,7 @@
       "quote": "Kutipan",
       "quoteHint": "Kata-kata pemberi testimoni, tanpa tanda kutip.",
       "role": "Keterangan",
-      "roleHint": "Contoh: Orang tua siswa Kindy · Kab. Bogor.",
+      "roleHint": "Contoh: Orang tua siswa Smart Kindy 2 · Kab. Bogor.",
       "isPublished": "Tampilkan testimoni ini di situs",
       "isPublishedHint": "Testimoni yang disembunyikan tetap tersimpan, tapi tidak muncul di situs."
     }

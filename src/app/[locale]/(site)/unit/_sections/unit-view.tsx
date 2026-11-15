@@ -23,6 +23,7 @@ import { ActivitiesSection } from "@/features/activities/components/activities-s
 import { getActivities } from "@/features/activities/queries";
 import { levelTheme } from "@/features/programs/level-theme";
 import { getLevels } from "@/features/programs/queries";
+import type { Level } from "@/features/programs/schema";
 import type {
   DirectoryProvince,
   DirectoryRegency,
@@ -82,6 +83,11 @@ export async function UnitView({
   const [levels, activities] = await Promise.all([getLevels(locale), getActivities(locale)]);
 
   const offered = levels.filter((level) => unit.levels.includes(level.slug));
+  // The classes the unit opens in a level: all of them unless it opens only some (ADR-040).
+  const classesOf = (level: Level) => {
+    const some = unit.someClasses?.[level.slug];
+    return some ? level.classes.filter((item) => some.includes(item.id)) : level.classes;
+  };
   const nearby = allUnits
     .filter((other) => other.code !== unit.code)
     .map((other) => ({ unit: other, km: distanceKm(unit.location, other.location) }))
@@ -236,6 +242,13 @@ export async function UnitView({
                         <span className="text-caption text-muted-foreground">
                           {t("levelAge", { min: level.ageMin, max: level.ageMax })}
                         </span>
+                        {classesOf(level).length > 0 && (
+                          <span className={cn("text-caption font-semibold", theme.accent)}>
+                            {classesOf(level)
+                              .map((item) => item.name)
+                              .join(" · ")}
+                          </span>
+                        )}
                       </span>
                       <ArrowRightIcon
                         aria-hidden

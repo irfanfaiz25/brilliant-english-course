@@ -158,6 +158,9 @@ Rules:
   through `storage` (`lib/storage`: R2, or `.storage/` when the `R2_*` variables are unset); image URLs come from `mediaUrl()`; selects use `NativeSelect`, weekdays `WeekdayPicker`, and a
   village is chosen with `RegionPicker` (`features/regions/components`, initial state from `getRegionPickerLevels()`).
   Public cards an admin edits are pure views (`LevelCard`, `ActivityCard`, `UnitCardView`) so forms can preview them.
+  Program levels group classes (ADR-040): school-year labels come from `formatGradeSpan()` (`features/programs/grades.ts`,
+  templates from `gradeLabelsFor()` / `useGradeLabels()`), shown with `LearningPath` and `ClassPath`; a unit's classes
+  are picked with `LevelOfferField` and stored through `resolveLevelOffers()`.
   Charts are hand-built SVG (`components/admin/charts`, geometry in `lib/chart.ts`, colours `chart-1`/`chart-2`): no chart
   library; follow `DESIGN.md` § 6 Charts (legend, hover and keyboard tooltip, table view).
 - Public pages render inside `SiteShell` (`src/app/[locale]/(site)/layout.tsx`); page content starts below the header,

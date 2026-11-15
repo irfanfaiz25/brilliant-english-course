@@ -34,6 +34,11 @@ export async function CompareSection({ levels }: { levels: Level[] }) {
     { label: t("age"), value: (level) => `${level.ageMin}–${level.ageMax}` },
     { label: t("focus"), value: (level) => level.tagline },
     {
+      label: t("classes"),
+      value: (level) =>
+        level.classes.length > 0 ? level.classes.map((item) => item.name).join(" → ") : "—",
+    },
+    {
       label: t("sessions"),
       value: (level) => t("sessionsValue", { count: level.sessionsPerWeek }),
     },

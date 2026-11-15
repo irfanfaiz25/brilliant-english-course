@@ -80,9 +80,9 @@ test.describe("admin shell", () => {
 
   test("shows where a page sits with a breadcrumb trail", async ({ page, isMobile }, testInfo) => {
     const users = e2eUsers(testInfo.project.name);
-    await page.goto("/admin/masuk?next=%2Fadmin%2Fprogram%2Fintro");
+    await page.goto("/admin/masuk?next=%2Fadmin%2Fprogram%2Felementary");
     await signIn(page, users.admin.email);
-    await expect(page).toHaveURL(/\/admin\/program\/intro$/);
+    await expect(page).toHaveURL(/\/admin\/program\/elementary$/);
 
     const trail = page.getByRole("navigation", { name: "Jejak navigasi" });
     const level = await page.getByRole("heading", { level: 1 }).textContent();

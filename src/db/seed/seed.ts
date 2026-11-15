@@ -57,6 +57,7 @@ async function main() {
       for (const table of [
         schema.quotaReservations,
         schema.unitPhotos,
+        schema.unitClasses,
         schema.unitLevels,
         schema.units,
         schema.programLevels,
@@ -104,6 +105,7 @@ async function main() {
     // Program levels.
     const levels = plan.pairByKey(content.levelFixtures, (level) => level.slug);
     const levelIds = new Map<string, string>();
+    const classIds = new Map<string, string>();
     for (const [index, { key, id, en }] of levels.entries()) {
       const [row] = await tx
         .insert(schema.programLevels)
@@ -137,6 +139,23 @@ async function main() {
           };
         }),
       );
+      // Classes: one row per class, its focus line per locale (the ids are shared by both).
+      for (const [sortOrder, item] of id.classes.entries()) {
+        const english = en.classes.find((other) => other.id === item.id);
+        await tx.insert(schema.programClasses).values({
+          id: item.id,
+          levelId: row.id,
+          name: item.name,
+          gradeFrom: item.gradeFrom,
+          gradeTo: item.gradeTo,
+          sortOrder,
+        });
+        await tx.insert(schema.programClassTranslations).values([
+          { classId: item.id, locale: "id", focus: item.focus },
+          { classId: item.id, locale: "en", focus: english?.focus ?? "" },
+        ]);
+        classIds.set(`${key}/${item.name}`, item.id);
+      }
     }
 
     // Activities.
@@ -187,13 +206,22 @@ async function main() {
         .returning({ id: schema.units.id });
       if (!row) throw new Error(`Unit ${unit.code} was not inserted`);
       unitIds.push(row.id);
+      const someClasses = content.unitClassFixtures[unit.code] ?? {};
       await tx.insert(schema.unitLevels).values(
         unit.levels.map((slug) => {
           const levelId = levelIds.get(slug);
           if (!levelId) throw new Error(`Unknown level ${slug}`);
-          return { unitId: row.id, levelId };
+          return { unitId: row.id, levelId, allClasses: !someClasses[slug] };
         }),
       );
+      const opened = Object.entries(someClasses).flatMap(([slug, names]) =>
+        names.map((name) => {
+          const classId = classIds.get(`${slug}/${name}`);
+          if (!classId) throw new Error(`Unknown class ${slug}/${name}`);
+          return { unitId: row.id, classId };
+        }),
+      );
+      if (opened.length > 0) await tx.insert(schema.unitClasses).values(opened);
     }
 
     if (content.quotaReservationFixtures.length > 0) {

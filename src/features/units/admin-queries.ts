@@ -6,7 +6,15 @@ import { alias } from "drizzle-orm/pg-core";
 import { adminLocale } from "@/config/admin-routes";
 import { limits } from "@/config/limits";
 import { db } from "@/db/client";
-import { programLevels, programLevelTranslations, regions, unitLevels, units } from "@/db/schema";
+import {
+  programClasses,
+  programLevels,
+  programLevelTranslations,
+  regions,
+  unitClasses,
+  unitLevels,
+  units,
+} from "@/db/schema";
 import { shortRegionName } from "@/features/regions/service";
 import type { SessionUser } from "@/features/users/schema";
 import { assertCan } from "@/lib/permissions";
@@ -149,6 +157,22 @@ export async function getAdminUnits(
   };
 }
 
+/**
+ * The classes a unit opens, as the form ticks them: every class of a level it offers whole, and
+ * the listed ones of a level it offers partly (ADR-040).
+ */
+async function openedClassIds(unitId: string): Promise<string[]> {
+  const [whole, listed] = await Promise.all([
+    db
+      .select({ id: programClasses.id })
+      .from(unitLevels)
+      .innerJoin(programClasses, eq(programClasses.levelId, unitLevels.levelId))
+      .where(and(eq(unitLevels.unitId, unitId), eq(unitLevels.allClasses, true))),
+    db.select({ id: unitClasses.classId }).from(unitClasses).where(eq(unitClasses.unitId, unitId)),
+  ]);
+  return [...whole, ...listed].map((row) => row.id);
+}
+
 export type UnitForEdit = {
   values: UnitFormInput;
   code: string;
@@ -163,7 +187,7 @@ export async function getUnitForEdit(actor: SessionUser, id: string): Promise<Un
     .from(units)
     .where(and(eq(units.id, id), isLive));
   if (!unit) return null;
-  const levels = await levelsOf([id]);
+  const [levels, classIds] = await Promise.all([levelsOf([id]), openedClassIds(id)]);
   return {
     code: unit.code,
     updatedAt: unit.updatedAt,
@@ -182,6 +206,7 @@ export async function getUnitForEdit(actor: SessionUser, id: string): Promise<Un
       opensAt: timeOfDay(unit.opensAt),
       closesAt: timeOfDay(unit.closesAt),
       levels: (levels.get(id) ?? []).map((level) => level.slug),
+      classIds,
       studentsCount: unit.studentsCount,
       openedAt: unit.openedAt ?? "",
     },

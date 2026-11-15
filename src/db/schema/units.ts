@@ -8,6 +8,7 @@ import {
   pgEnum,
   pgTable,
   primaryKey,
+  boolean,
   smallint,
   text,
   time,
@@ -18,7 +19,7 @@ import {
 import { enrollmentStatuses, unitStatuses } from "../../config/enums";
 import { id, softDelete, timestamps } from "./_helpers";
 import { mediaAssets } from "./media";
-import { programLevels } from "./programs";
+import { programClasses, programLevels } from "./programs";
 import { regions } from "./regions";
 
 export const unitStatusEnum = pgEnum("unit_status", unitStatuses);
@@ -72,7 +73,10 @@ export const units = pgTable(
   ],
 );
 
-/** Which program levels a unit offers. */
+/**
+ * Which program levels a unit offers. `all_classes`: every class of the level, including ones
+ * added later; otherwise only the classes listed in `unit_classes` (ADR-040).
+ */
 export const unitLevels = pgTable(
   "unit_levels",
   {
@@ -82,8 +86,26 @@ export const unitLevels = pgTable(
     levelId: uuid()
       .notNull()
       .references(() => programLevels.id, { onDelete: "cascade" }),
+    allClasses: boolean().notNull().default(true),
   },
   (table) => [primaryKey({ columns: [table.unitId, table.levelId] })],
+);
+
+/** The classes a unit opens in a level it offers only partly (`unit_levels.all_classes` off). */
+export const unitClasses = pgTable(
+  "unit_classes",
+  {
+    unitId: uuid()
+      .notNull()
+      .references(() => units.id, { onDelete: "cascade" }),
+    classId: uuid()
+      .notNull()
+      .references(() => programClasses.id, { onDelete: "cascade" }),
+  },
+  (table) => [
+    primaryKey({ columns: [table.unitId, table.classId] }),
+    index("unit_classes_class_id_idx").on(table.classId),
+  ],
 );
 
 export const unitPhotos = pgTable(

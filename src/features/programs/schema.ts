@@ -1,12 +1,26 @@
 import { z } from "zod";
 
-import { levelThemes } from "@/config/enums";
+import { levelThemes, schoolGrades } from "@/config/enums";
 import { limits } from "@/config/limits";
 import { imageIdField, integerField, rowListField, textField } from "@/lib/form-schemas";
 import { imageSchema } from "@/lib/schemas";
 
-export { levelThemes };
+export { levelThemes, schoolGrades };
 export type LevelTheme = (typeof levelThemes)[number];
+/** A school year: `tk`, `sd1`…`sd6`, `smp1`…`smp3` (ADR-040). */
+export type SchoolGrade = (typeof schoolGrades)[number];
+
+/** A class inside a level, as shown on the public site (resolved to one locale). */
+export const levelClassSchema = z.object({
+  id: z.uuid(),
+  name: z.string().min(1),
+  gradeFrom: z.enum(schoolGrades),
+  gradeTo: z.enum(schoolGrades),
+  /** One optional line on what the class works on. */
+  focus: z.string(),
+});
+
+export type LevelClass = z.infer<typeof levelClassSchema>;
 
 /** A level's slug: its anchor on the Program page (`/program#<slug>`) and its admin URL. */
 export const levelSlugSchema = z
@@ -36,6 +50,8 @@ export const levelSchema = z
     sessionsPerWeek: z.number().int().positive(),
     maxStudentsPerClass: z.number().int().positive(),
     image: imageSchema,
+    /** Its classes in teaching order (may be empty). */
+    classes: z.array(levelClassSchema),
   })
   .refine((level) => level.ageMin <= level.ageMax, { message: "ageMin must not exceed ageMax" });
 
@@ -63,6 +79,44 @@ const levelTextSchema = z.object({
   imageAlt: textField(3, limits.imageAltMax),
 });
 
+/** Whether `from` comes no later than `to` on the school-year scale. */
+export const isGradeSpan = (from: SchoolGrade, to: SchoolGrade) =>
+  schoolGrades.indexOf(from) <= schoolGrades.indexOf(to);
+
+/**
+ * One class row of the level form. `classId` is the stored class ("" for a new row), so a save
+ * updates, adds and removes classes without losing what units opened. The name is a proper name
+ * shared by both locales; the focus line is optional per locale.
+ */
+const classRowSchema = z
+  .object({
+    classId: z.union([z.literal(""), z.uuid()]),
+    name: textField(1, L.classNameMax),
+    gradeFrom: z.enum(schoolGrades),
+    gradeTo: z.enum(schoolGrades),
+    focus: z.object({ id: textField(0, L.classFocusMax), en: textField(0, L.classFocusMax) }),
+  })
+  .refine((row) => isGradeSpan(row.gradeFrom, row.gradeTo), {
+    message: "gradeRange",
+    path: ["gradeTo"],
+  });
+
+const classListSchema = z
+  .array(classRowSchema)
+  .max(L.classesMax, `tooMany:${L.classesMax}`)
+  .superRefine((rows, context) => {
+    const seen = new Set<string>();
+    rows.forEach((row, index) => {
+      const key = row.name.toLocaleLowerCase("id");
+      if (seen.has(key)) {
+        context.addIssue({ code: "custom", message: "classNameTaken", path: [index, "name"] });
+      }
+      seen.add(key);
+    });
+  });
+
+export type ClassRow = z.output<typeof classRowSchema>;
+
 const levelFields = z.object({
   theme: z.enum(levelThemes),
   inAgeFinder: z.boolean(),
@@ -73,6 +127,7 @@ const levelFields = z.object({
   imageId: imageIdField,
   isPublished: z.boolean(),
   texts: z.object({ id: levelTextSchema, en: levelTextSchema }),
+  classes: classListSchema,
 });
 
 const validAgeRange = (level: { ageMin: number; ageMax: number }) => level.ageMin <= level.ageMax;

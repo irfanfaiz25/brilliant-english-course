@@ -2,6 +2,7 @@ import { sql } from "drizzle-orm";
 import {
   boolean,
   check,
+  index,
   pgEnum,
   pgTable,
   primaryKey,
@@ -12,13 +13,14 @@ import {
 } from "drizzle-orm/pg-core";
 
 // Relative import on purpose: drizzle-kit loads this folder without the `@/` alias.
-import { levelThemes } from "../../config/enums";
+import { levelThemes, schoolGrades } from "../../config/enums";
 import { id, localeEnum, timestamps } from "./_helpers";
 import { mediaAssets } from "./media";
 
 export const levelThemeEnum = pgEnum("level_theme", levelThemes);
+export const schoolGradeEnum = pgEnum("school_grade", schoolGrades);
 
-/** Program levels (Kindy, Intro, Secondary, …). Structured fields only; copy is in translations. */
+/** Program levels (Kindy Class, Elementary, Secondary, …), each grouping its classes. Structured fields only; copy is in translations. */
 export const programLevels = pgTable(
   "program_levels",
   {
@@ -63,5 +65,44 @@ export const programLevelTranslations = pgTable(
   (table) => [primaryKey({ columns: [table.levelId, table.locale] })],
 );
 
+/**
+ * The classes inside a level, in teaching order (Smart Kindy 1, Smart Kindy 2, …), each for a span
+ * of school years (ADR-040). Spans may overlap: placement also follows the child's ability.
+ */
+export const programClasses = pgTable(
+  "program_classes",
+  {
+    id: id(),
+    levelId: uuid()
+      .notNull()
+      .references(() => programLevels.id, { onDelete: "cascade" }),
+    /** A proper name, the same in every locale ("Smart Kindy 1", "Basic"). */
+    name: varchar({ length: 60 }).notNull(),
+    gradeFrom: schoolGradeEnum().notNull(),
+    gradeTo: schoolGradeEnum().notNull(),
+    sortOrder: smallint().notNull().default(0),
+    ...timestamps,
+  },
+  (table) => [
+    index("program_classes_level_id_idx").on(table.levelId),
+    // Enum values compare in declaration order (TK < SD 1 < … < SMP 3).
+    check("program_classes_grade_range", sql`${table.gradeFrom} <= ${table.gradeTo}`),
+  ],
+);
+
+/** A class's optional one-line focus, per locale. */
+export const programClassTranslations = pgTable(
+  "program_class_translations",
+  {
+    classId: uuid()
+      .notNull()
+      .references(() => programClasses.id, { onDelete: "cascade" }),
+    locale: localeEnum().notNull(),
+    focus: varchar({ length: 120 }).notNull().default(""),
+  },
+  (table) => [primaryKey({ columns: [table.classId, table.locale] })],
+);
+
 export type ProgramLevelRow = typeof programLevels.$inferSelect;
 export type ProgramLevelTranslationRow = typeof programLevelTranslations.$inferSelect;
+export type ProgramClassRow = typeof programClasses.$inferSelect;

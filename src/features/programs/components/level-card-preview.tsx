@@ -8,11 +8,15 @@ import type { MediaOption } from "@/features/media/admin-queries";
 import type { Locale } from "@/i18n/routing";
 import { fillTemplate } from "@/lib/template";
 
+import { formatGradeSpan, gradeSpanOf, type GradeLabels } from "../grades";
 import type { Level, LevelForm, LevelFormInput } from "../schema";
 import { LevelCard } from "./level-card";
 
 /** Labels of the public level card in each locale, as plain templates (`{min}–{max} tahun`). */
-export type LevelCardLabels = Record<Locale, { ageRange: string; detailLink: string }>;
+export type LevelCardLabels = Record<
+  Locale,
+  { ageRange: string; detailLink: string; classes: string; grades: GradeLabels }
+>;
 
 type LevelCardPreviewProps = {
   control: Control<LevelFormInput, unknown, LevelForm>;
@@ -37,6 +41,12 @@ export function LevelCardPreview({
   const filled = (value: string | undefined, label: string) => value?.trim() || label;
   const ageMin = Number.isFinite(values.ageMin) ? Number(values.ageMin) : 0;
   const ageMax = Number.isFinite(values.ageMax) ? Number(values.ageMax) : 0;
+  const classes = (values.classes ?? []).flatMap((row) =>
+    row?.name?.trim() && row.gradeFrom && row.gradeTo
+      ? [{ name: row.name.trim(), gradeFrom: row.gradeFrom, gradeTo: row.gradeTo }]
+      : [],
+  );
+  const span = gradeSpanOf(classes);
 
   const level: Level | null = image
     ? {
@@ -54,6 +64,7 @@ export function LevelCardPreview({
         sessionsPerWeek: Number(values.sessionsPerWeek) || 0,
         maxStudentsPerClass: Number(values.maxStudentsPerClass) || 0,
         image: { src: image.src, width: image.width, height: image.height, alt: "" },
+        classes: classes.map((item, index) => ({ id: String(index), focus: "", ...item })),
       }
     : null;
 
@@ -64,6 +75,8 @@ export function LevelCardPreview({
           level={level}
           ageLabel={fillTemplate(labels[locale].ageRange, { min: ageMin, max: ageMax })}
           detailLabel={labels[locale].detailLink}
+          classesLabel={labels[locale].classes}
+          gradeLabel={span ? formatGradeSpan(span.from, span.to, labels[locale].grades) : undefined}
         />
       )}
     </CardPreview>

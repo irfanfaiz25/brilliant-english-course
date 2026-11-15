@@ -6,7 +6,14 @@ import { cacheLife, cacheTag } from "next/cache";
 
 import { cacheTags } from "@/config/cache-tags";
 import { db } from "@/db/client";
-import { programLevels, regions, unitLevels, units } from "@/db/schema";
+import {
+  programClasses,
+  programLevels,
+  regions,
+  unitClasses,
+  unitLevels,
+  units,
+} from "@/db/schema";
 import { getRegionsByCodes } from "@/features/regions/queries";
 import { regionCodePath, shortRegionName } from "@/features/regions/service";
 
@@ -43,7 +50,7 @@ export async function getNetworkStats(): Promise<NetworkStats> {
 
 /** Every public unit with its district/regency names and levels, newest first. */
 async function loadPublicUnits(): Promise<UnitSummary[]> {
-  const [rows, levels] = await Promise.all([
+  const [rows, levels, opened] = await Promise.all([
     db
       .select({
         unit: units,
@@ -60,6 +67,15 @@ async function loadPublicUnits(): Promise<UnitSummary[]> {
       .from(unitLevels)
       .innerJoin(programLevels, eq(programLevels.id, unitLevels.levelId))
       .orderBy(asc(programLevels.sortOrder)),
+    db
+      .select({
+        unitId: unitClasses.unitId,
+        classId: unitClasses.classId,
+        slug: programLevels.slug,
+      })
+      .from(unitClasses)
+      .innerJoin(programClasses, eq(programClasses.id, unitClasses.classId))
+      .innerJoin(programLevels, eq(programLevels.id, programClasses.levelId)),
   ]);
 
   const levelsByUnit = new Map<string, UnitSummary["levels"]>();
@@ -67,6 +83,13 @@ async function loadPublicUnits(): Promise<UnitSummary[]> {
     const list = levelsByUnit.get(level.unitId) ?? [];
     list.push(level.slug);
     levelsByUnit.set(level.unitId, list);
+  }
+
+  const someClasses = new Map<string, Record<string, string[]>>();
+  for (const { unitId, classId, slug } of opened) {
+    const byLevel = someClasses.get(unitId) ?? {};
+    byLevel[slug] = [...(byLevel[slug] ?? []), classId];
+    someClasses.set(unitId, byLevel);
   }
 
   return rows.flatMap(({ unit, districtName, regencyName }) => {
@@ -89,6 +112,7 @@ async function loadPublicUnits(): Promise<UnitSummary[]> {
         opensAt: timeOfDay(unit.opensAt),
         closesAt: timeOfDay(unit.closesAt),
         levels: unitLevelSlugs,
+        ...(someClasses.has(unit.id) && { someClasses: someClasses.get(unit.id) }),
         enrollment: unit.enrollment,
       },
     ];

@@ -30,6 +30,7 @@ export const adminClientNamespaces = [
   "AdminUsers",
   "AdminAccount",
   "Regions",
+  "Grades",
 ] as const satisfies readonly (keyof Messages)[];
 
 export function pickClientMessages(

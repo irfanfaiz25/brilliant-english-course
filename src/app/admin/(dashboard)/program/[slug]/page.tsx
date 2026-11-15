@@ -89,6 +89,7 @@ async function EditLevel({ params }: { params: Promise<{ slug: string }> }) {
         canEdit
         canPublish={can(user, "publish", "programs")}
         previewLabels={previewLabels}
+        classesInUse={level.classesInUse}
       />
     </>
   );

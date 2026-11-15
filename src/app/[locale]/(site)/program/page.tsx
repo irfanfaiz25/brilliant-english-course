@@ -27,8 +27,8 @@ export async function generateMetadata({
 }
 
 /**
- * Program page (Phase 5b): sticky level tabs with scroll-spy over one detail section per level
- * (anchors `#kindy`, `#intro`, `#secondary`), then activities (`#kegiatan`), why BEC, a level
+ * Program page (Phase 5b): the learning path of every class, sticky level tabs with scroll-spy
+ * over one detail section per level (anchors `#<slug>`, its classes as a path), then activities (`#kegiatan`), why BEC, a level
  * comparison, FAQ and a closing call to action.
  */
 export default async function ProgramPage({ params }: PageProps<"/[locale]/program">) {
@@ -45,7 +45,7 @@ export default async function ProgramPage({ params }: PageProps<"/[locale]/progr
 
   return (
     <PageCanvas>
-      <ProgramHero levelCount={levels.length} />
+      <ProgramHero levels={levels} />
       <SectionTabs
         label={t("tabs.label")}
         tabs={levels.map((level) => ({

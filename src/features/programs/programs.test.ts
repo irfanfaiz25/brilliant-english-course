@@ -14,7 +14,7 @@ describe("program levels", () => {
   it.each(["id", "en"] as const)("%s fixtures are valid and complete", (locale) => {
     const levels = levelFixtures[locale];
     levels.forEach((level) => expect(() => levelSchema.parse(level)).not.toThrow());
-    expect(levels.map((level) => level.slug)).toEqual(["kindy", "intro", "secondary"]);
+    expect(levels.map((level) => level.slug)).toEqual(["kindy", "elementary", "secondary"]);
   });
 
   it("age ranges cover 4–15 without gaps or overlaps", () => {
@@ -26,7 +26,7 @@ describe("program levels", () => {
 
   it("finds the level for an age", () => {
     expect(findLevelForAge(levelFixtures.id, 5)).toBe("kindy");
-    expect(findLevelForAge(levelFixtures.id, 9)).toBe("intro");
+    expect(findLevelForAge(levelFixtures.id, 9)).toBe("elementary");
     expect(findLevelForAge(levelFixtures.id, 12)).toBe("secondary");
     expect(findLevelForAge(levelFixtures.id, 17)).toBeUndefined();
   });
@@ -85,6 +85,7 @@ describe("levelFormSchema", () => {
     imageId: "8f14e45f-ceea-4672-8b67-6d1b1c5f8c11",
     isPublished: true,
     texts: { id: text, en: text },
+    classes: [],
   };
   const errorsOf = (input: unknown) => {
     const result = levelFormSchema.safeParse(input);

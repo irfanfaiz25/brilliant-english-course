@@ -12,4 +12,4 @@ export { levelFixtures } from "./programs";
 export { quotaReservationFixtures } from "./quota";
 export { regionFixtures } from "./regions";
 export { testimonialFixtures } from "./testimonials";
-export { unitFixtures } from "./units";
+export { unitClassFixtures, unitFixtures } from "./units";

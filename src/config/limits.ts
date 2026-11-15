@@ -66,6 +66,10 @@ export const limits = {
     curriculumMax: 8,
     curriculumItemMax: 120,
     slugMax: 40,
+    /** Classes inside one level (ADR-040). */
+    classesMax: 8,
+    classNameMax: 60,
+    classFocusMax: 120,
   },
   quota: {
     /** Upper bound of the per-village maximum an admin can set. */

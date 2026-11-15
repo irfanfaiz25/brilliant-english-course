@@ -10,7 +10,7 @@ export const faqFixtures: Record<Locale, FaqItem[]> = {
       topic: "parents",
       question: "Mulai usia berapa anak bisa ikut kelas BEC?",
       answer:
-        "Anak bisa mulai dari usia 4 tahun di level Kindy, lalu lanjut ke Intro (7–9 tahun) dan Secondary (10–15 tahun).",
+        "Anak bisa mulai dari usia 4 tahun di Kindy Class (Smart Kindy 1), lalu naik bertahap ke Elementary Level dan Secondary Level. Penempatan kelas menyesuaikan kemampuan anak.",
     },
     {
       id: "schedule",
@@ -117,7 +117,7 @@ export const faqFixtures: Record<Locale, FaqItem[]> = {
       topic: "parents",
       question: "From what age can children join BEC?",
       answer:
-        "Children can start at age 4 in Kindy, then move on to Intro (ages 7–9) and Secondary (ages 10–15).",
+        "Children can start at age 4 in Kindy Class (Smart Kindy 1), then move up step by step through Elementary Level and Secondary Level. Each child is placed by ability.",
     },
     {
       id: "schedule",

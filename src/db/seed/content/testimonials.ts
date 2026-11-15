@@ -11,7 +11,7 @@ export const testimonialFixtures: Record<Locale, Testimonial[]> = {
       quote:
         "Dulu Naura malu kalau disuruh ngomong bahasa Inggris. Sekarang dia yang semangat cerita pakai bahasa Inggris tiap pulang les.",
       author: "Ibu Sari",
-      role: "Orang tua siswa Kindy · Kab. Bogor",
+      role: "Orang tua siswa Smart Kindy 2 · Kab. Bogor",
       rating: 5,
     },
     {
@@ -20,7 +20,7 @@ export const testimonialFixtures: Record<Locale, Testimonial[]> = {
       quote:
         "Kegiatan Market Day jadi favorit anak saya. Belajarnya tidak terasa seperti les, tapi nilainya di sekolah ikut naik.",
       author: "Bapak Dimas",
-      role: "Orang tua siswa Intro · Kota Depok",
+      role: "Orang tua siswa Intro 1 · Kota Depok",
       rating: 5,
     },
     {
@@ -29,7 +29,7 @@ export const testimonialFixtures: Record<Locale, Testimonial[]> = {
       quote:
         "Kelasnya kecil jadi gurunya kenal tiap anak. Laporan perkembangannya jelas dan admin unitnya cepat dihubungi lewat WhatsApp.",
       author: "Ibu Wulan",
-      role: "Orang tua siswa Secondary · Kab. Bekasi",
+      role: "Orang tua siswa Basic · Kab. Bekasi",
       rating: 5,
     },
     {
@@ -67,7 +67,7 @@ export const testimonialFixtures: Record<Locale, Testimonial[]> = {
       quote:
         "Naura used to be shy about speaking English. Now she's the one excitedly telling stories in English after every class.",
       author: "Mrs. Sari",
-      role: "Parent of a Kindy student · Bogor Regency",
+      role: "Parent of a Smart Kindy 2 student · Bogor Regency",
       rating: 5,
     },
     {
@@ -76,7 +76,7 @@ export const testimonialFixtures: Record<Locale, Testimonial[]> = {
       quote:
         "Market Day is my son's favourite. It doesn't feel like a course, yet his English grades at school went up too.",
       author: "Mr. Dimas",
-      role: "Parent of an Intro student · Depok",
+      role: "Parent of an Intro 1 student · Depok",
       rating: 5,
     },
     {
@@ -85,7 +85,7 @@ export const testimonialFixtures: Record<Locale, Testimonial[]> = {
       quote:
         "Small classes mean the teacher knows every child. Progress reports are clear and the unit admin replies quickly on WhatsApp.",
       author: "Mrs. Wulan",
-      role: "Parent of a Secondary student · Bekasi Regency",
+      role: "Parent of a Basic student · Bekasi Regency",
       rating: 5,
     },
     {

@@ -3,6 +3,11 @@ import type { Locale } from "@/i18n/routing";
 
 import type { Level } from "@/features/programs/schema";
 
+/** Stable ids of the sample classes, shared by both locales (`b2` → Intro 1). */
+function classId(key: string): string {
+  return `0c1a55e5-0000-4000-8000-0000000000${key}`;
+}
+
 /**
  * PLACEHOLDER content from the Penpot design, used by `queries.ts` until the programs table
  * and admin module exist (Phases 3–4b). Shape matches what the database will return.
@@ -13,7 +18,7 @@ export const levelFixtures: Record<Locale, Level[]> = {
       slug: "kindy",
       theme: "sunny",
       inAgeFinder: true,
-      name: "Kindy",
+      name: "Kindy Class",
       ageMin: 4,
       ageMax: 6,
       tagline: "Kenalan dengan Bahasa Inggris",
@@ -34,14 +39,30 @@ export const levelFixtures: Record<Locale, Level[]> = {
         ...placeholderImages.levelKindy,
         alt: "Anak-anak duduk di lantai kelas mendengarkan cerita",
       },
+      classes: [
+        {
+          id: classId("a1"),
+          name: "Smart Kindy 1",
+          gradeFrom: "tk",
+          gradeTo: "sd1",
+          focus: "Kenal huruf, angka, dan kosakata pertama",
+        },
+        {
+          id: classId("a2"),
+          name: "Smart Kindy 2",
+          gradeFrom: "sd1",
+          gradeTo: "sd3",
+          focus: "Kosakata sehari-hari dan kalimat pendek",
+        },
+      ],
     },
     {
-      slug: "intro",
+      slug: "elementary",
       theme: "teal",
       inAgeFinder: true,
-      name: "Intro",
+      name: "Elementary Level",
       ageMin: 7,
-      ageMax: 9,
+      ageMax: 11,
       tagline: "Mulai Bercakap dan Membaca",
       summary: "Kalimat sederhana, membaca cerita pendek, dan percakapan sehari-hari di kelas.",
       skills: ["Basic grammar", "Reading & story", "Daily conversation"],
@@ -59,13 +80,36 @@ export const levelFixtures: Record<Locale, Level[]> = {
         ...placeholderImages.levelIntro,
         alt: "Anak-anak mengangkat tangan dengan antusias di kelas",
       },
+      classes: [
+        {
+          id: classId("b1"),
+          name: "Smart Kindy 3",
+          gradeFrom: "sd1",
+          gradeTo: "sd2",
+          focus: "Membaca dan bercakap sederhana",
+        },
+        {
+          id: classId("b2"),
+          name: "Intro 1",
+          gradeFrom: "sd3",
+          gradeTo: "sd4",
+          focus: "Grammar dasar dan cerita pendek",
+        },
+        {
+          id: classId("b3"),
+          name: "Intro 2",
+          gradeFrom: "sd5",
+          gradeTo: "sd6",
+          focus: "Menulis kalimat dan percakapan sehari-hari",
+        },
+      ],
     },
     {
       slug: "secondary",
       theme: "orange",
       inAgeFinder: true,
-      name: "Secondary",
-      ageMin: 10,
+      name: "Secondary Level",
+      ageMin: 12,
       ageMax: 15,
       tagline: "Lancar Bicara, Kuat Grammar",
       summary: "Grammar lebih dalam, menulis paragraf, presentasi, dan persiapan ujian sekolah.",
@@ -84,6 +128,22 @@ export const levelFixtures: Record<Locale, Level[]> = {
         ...placeholderImages.levelSecondary,
         alt: "Siswa mengangkat tangan menjawab pertanyaan guru",
       },
+      classes: [
+        {
+          id: classId("c1"),
+          name: "Basic",
+          gradeFrom: "smp1",
+          gradeTo: "smp2",
+          focus: "Tenses dan menulis paragraf",
+        },
+        {
+          id: classId("c2"),
+          name: "Beginner",
+          gradeFrom: "smp3",
+          gradeTo: "smp3",
+          focus: "Presentasi dan persiapan ujian sekolah",
+        },
+      ],
     },
   ],
   en: [
@@ -91,7 +151,7 @@ export const levelFixtures: Record<Locale, Level[]> = {
       slug: "kindy",
       theme: "sunny",
       inAgeFinder: true,
-      name: "Kindy",
+      name: "Kindy Class",
       ageMin: 4,
       ageMax: 6,
       tagline: "First Steps in English",
@@ -112,14 +172,30 @@ export const levelFixtures: Record<Locale, Level[]> = {
         ...placeholderImages.levelKindy,
         alt: "Children sitting on the classroom floor listening to a story",
       },
+      classes: [
+        {
+          id: classId("a1"),
+          name: "Smart Kindy 1",
+          gradeFrom: "tk",
+          gradeTo: "sd1",
+          focus: "Letters, numbers and first words",
+        },
+        {
+          id: classId("a2"),
+          name: "Smart Kindy 2",
+          gradeFrom: "sd1",
+          gradeTo: "sd3",
+          focus: "Everyday words and short sentences",
+        },
+      ],
     },
     {
-      slug: "intro",
+      slug: "elementary",
       theme: "teal",
       inAgeFinder: true,
-      name: "Intro",
+      name: "Elementary Level",
       ageMin: 7,
-      ageMax: 9,
+      ageMax: 11,
       tagline: "Start Talking and Reading",
       summary: "Simple sentences, short stories and everyday conversation in class.",
       skills: ["Basic grammar", "Reading & story", "Daily conversation"],
@@ -137,13 +213,36 @@ export const levelFixtures: Record<Locale, Level[]> = {
         ...placeholderImages.levelIntro,
         alt: "Children eagerly raising their hands in class",
       },
+      classes: [
+        {
+          id: classId("b1"),
+          name: "Smart Kindy 3",
+          gradeFrom: "sd1",
+          gradeTo: "sd2",
+          focus: "Simple reading and conversation",
+        },
+        {
+          id: classId("b2"),
+          name: "Intro 1",
+          gradeFrom: "sd3",
+          gradeTo: "sd4",
+          focus: "Basic grammar and short stories",
+        },
+        {
+          id: classId("b3"),
+          name: "Intro 2",
+          gradeFrom: "sd5",
+          gradeTo: "sd6",
+          focus: "Writing sentences and everyday conversation",
+        },
+      ],
     },
     {
       slug: "secondary",
       theme: "orange",
       inAgeFinder: true,
-      name: "Secondary",
-      ageMin: 10,
+      name: "Secondary Level",
+      ageMin: 12,
       ageMax: 15,
       tagline: "Fluent Speaking, Strong Grammar",
       summary: "Deeper grammar, paragraph writing, presentations and school exam preparation.",
@@ -162,6 +261,22 @@ export const levelFixtures: Record<Locale, Level[]> = {
         ...placeholderImages.levelSecondary,
         alt: "Students raising their hands to answer the teacher",
       },
+      classes: [
+        {
+          id: classId("c1"),
+          name: "Basic",
+          gradeFrom: "smp1",
+          gradeTo: "smp2",
+          focus: "Tenses and paragraph writing",
+        },
+        {
+          id: classId("c2"),
+          name: "Beginner",
+          gradeFrom: "smp3",
+          gradeTo: "smp3",
+          focus: "Presentations and school exam preparation",
+        },
+      ],
     },
   ],
 };

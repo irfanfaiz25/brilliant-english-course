@@ -266,7 +266,7 @@ export const postFixtures: PostRecord[] = [
             "Remaja melatih tata bahasa, menulis, dan presentasi — sekaligus menyiapkan diri untuk pelajaran di sekolah.",
           ),
           p(
-            "Program BEC mengikuti tahapan ini lewat level Kindy, Intro, dan Secondary. ",
+            "Program BEC mengikuti tahapan ini lewat Kindy Class, Elementary Level, dan Secondary Level. ",
             link("Lihat detail program", "/program"),
             ".",
           ),
@@ -297,7 +297,7 @@ export const postFixtures: PostRecord[] = [
             "Teenagers practise grammar, writing and presenting — while preparing for English at school.",
           ),
           p(
-            "BEC programs follow these stages with the Kindy, Intro and Secondary levels. ",
+            "BEC programs follow these stages with Kindy Class, Elementary Level and Secondary Level. ",
             link("See the programs", "/en/programs"),
             ".",
           ),
