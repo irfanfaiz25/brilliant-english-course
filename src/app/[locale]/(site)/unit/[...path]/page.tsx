@@ -9,6 +9,7 @@ import { directoryPaths, directoryUnits, resolveDirectoryPath } from "@/features
 import { getUnitDirectory } from "@/features/units/queries";
 import { routing } from "@/i18n/routing";
 import { localizedAlternates } from "@/lib/seo/alternates";
+import { atLeastOneParam, placeholderParam } from "@/lib/static-params";
 
 import { AreaView } from "../_sections/area-view";
 import { UnitView } from "../_sections/unit-view";
@@ -18,7 +19,10 @@ type Props = PageProps<"/[locale]/unit/[...path]">;
 /** Prerender every province, regency and unit page; areas without units have no page. */
 export async function generateStaticParams() {
   const directory = await getUnitDirectory();
-  return directoryPaths(directory).map((path) => ({ path }));
+  return atLeastOneParam(
+    directoryPaths(directory).map((path) => ({ path })),
+    { path: [placeholderParam] },
+  );
 }
 
 async function resolve(path: string[]) {
