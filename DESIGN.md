@@ -342,6 +342,9 @@ Implementation rules:
   shows its classes under the photo as a numbered vertical path (`ClassPath`, a line in the level color, span on the
   right, focus line below). Admins never type spans: they pick school years and the label is generated.
 - **Activities:** photo-led cards with text on a dark gradient; CSS scroll-snap row on phones, grid from `md`.
+  A card opens a detail popup (ADR-042): photo with thumbnails (whole picture, never cropped), audience, schedule,
+  description, "what children do" checklist, skill chips, then "find the nearest unit" + WhatsApp. Side by side from
+  `lg`, stacked below; the URL carries `?kegiatan=<slug>` and back closes it.
 
 **Beranda, 5a-2:**
 
@@ -372,7 +375,7 @@ Implementation rules:
 - **Level detail** (one per level, photo side alternates): level-colored blob, frame, badge and checks; curriculum as
   small cards (stagger); fact chips (classes/week, class size, modules); "find a unit" + level-specific WhatsApp
   (`pop` pair); `Course` JSON-LD per level.
-- **Activities** reuse the shared section with `id="kegiatan"` (target of "see program details") and no card links.
+- **Activities** reuse the shared section with `id="kegiatan"`; cards open the same detail popup as on Beranda.
 - **Why BEC:** four benefit cards with tinted icons that tilt on hover.
 - **Comparison:** a real `<table>` (caption, row/column headers) from `md`, stacked definition-list cards on phones —
   both generated from the same level data. Beyond three levels the table keeps readable columns, scrolls sideways in a

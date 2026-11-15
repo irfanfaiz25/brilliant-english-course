@@ -17,11 +17,21 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: t("createTitle") };
 }
 
-const emptyText = { name: "", summary: "", audience: "", imageAlt: "" };
+const emptyText = {
+  name: "",
+  summary: "",
+  audience: "",
+  imageAlt: "",
+  description: "",
+  schedule: "",
+  highlights: [],
+  skills: [],
+};
 const emptyActivity: ActivityFormInput = {
   imageId: "",
   isPublished: true,
   texts: { id: emptyText, en: emptyText },
+  photos: [],
 };
 
 /** Add an activity (Phase 4b). */

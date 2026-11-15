@@ -6,6 +6,7 @@ import { adminRoutes } from "@/config/admin-routes";
 import { db } from "@/db/client";
 import {
   activities,
+  activityPhotos,
   activityTranslations,
   postImages,
   posts,
@@ -81,7 +82,22 @@ export async function listUsages(mediaId: string): Promise<MediaUsage[]> {
           eq(activityTranslations.locale, "id"),
         ),
       )
-      .where(eq(activities.imageId, mediaId)),
+      .where(
+        or(
+          eq(activities.imageId, mediaId),
+          exists(
+            db
+              .select({ one: sql`1` })
+              .from(activityPhotos)
+              .where(
+                and(
+                  eq(activityPhotos.activityId, activities.id),
+                  eq(activityPhotos.mediaId, mediaId),
+                ),
+              ),
+          ),
+        ),
+      ),
     db
       .select({ slug: programLevels.slug, name: programLevelTranslations.name })
       .from(programLevels)

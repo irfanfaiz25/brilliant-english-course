@@ -62,7 +62,7 @@ export default async function ProgramPage({ params }: PageProps<"/[locale]/progr
           aboveFold={index === 0}
         />
       ))}
-      <ActivitiesSection activities={activities} id="kegiatan" linkToProgram={false} />
+      <ActivitiesSection activities={activities} id="kegiatan" />
       <WhySection />
       <CompareSection levels={levels} />
       <FaqSection

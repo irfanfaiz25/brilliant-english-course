@@ -186,8 +186,24 @@ async function main() {
           summary: text.summary,
           audience: text.audience,
           imageAlt: text.image.alt,
+          description: text.description,
+          highlights: text.highlights,
+          skills: text.skills,
+          schedule: text.schedule,
         })),
       );
+      // Popup photos (ADR-042): the same photos in both locales, captions per locale.
+      for (const [sortOrder, photo] of id.photos.entries()) {
+        const [photoRow] = await tx
+          .insert(schema.activityPhotos)
+          .values({ activityId: row.id, mediaId: mediaId(photo.image.src), sortOrder })
+          .returning({ id: schema.activityPhotos.id });
+        if (!photoRow) throw new Error(`Photo of activity ${key} was not inserted`);
+        await tx.insert(schema.activityPhotoTranslations).values([
+          { photoId: photoRow.id, locale: "id", caption: photo.caption },
+          { photoId: photoRow.id, locale: "en", caption: en.photos[sortOrder]?.caption ?? "" },
+        ]);
+      }
     }
 
     // Units, newest first in the sample list (the home page features the most recent ones).

@@ -86,10 +86,41 @@ test.describe("program page", () => {
     await expect(page.locator("#elementary-title")).toBeInViewport();
   });
 
-  test("activity cards on the program page are not self-links", async ({ page }) => {
+  test("an activity card opens its detail popup, and back closes it", async ({ page }) => {
     await page.goto("/program");
-    await expect(page.locator("#kegiatan").getByRole("article")).toHaveCount(4);
-    await expect(page.locator("#kegiatan").getByRole("link")).toHaveCount(0);
+    const activities = page.locator("#kegiatan");
+    await expect(activities.getByRole("article")).toHaveCount(4);
+
+    await activities.getByRole("link", { name: /Market Day/ }).click();
+    const dialog = page.getByRole("dialog", { name: "Market Day" });
+    await expect(dialog).toBeVisible();
+    await expect(page).toHaveURL(/\/program\?kegiatan=market-day$/);
+    await expect(dialog.getByRole("heading", { name: "Yang dilakukan anak" })).toBeVisible();
+    await expect(dialog.getByRole("link", { name: "Cek unit terdekat" })).toBeVisible();
+    await expect(dialog.getByRole("link", { name: "Tanya via WhatsApp" })).toHaveAttribute(
+      "href",
+      /wa\.me\/\d+\?text=.*Market\+Day/,
+    );
+
+    await page.goBack();
+    await expect(dialog).toBeHidden();
+    await expect(page).toHaveURL(/\/program$/);
+  });
+
+  test("a shared activity link opens the popup and closing keeps the page", async ({ page }) => {
+    await page.goto("/program?kegiatan=book-day");
+    const dialog = page.getByRole("dialog", { name: "Book Day" });
+    await expect(dialog).toBeVisible();
+
+    await dialog.getByRole("button", { name: "Foto 2" }).click();
+    await expect(dialog.getByRole("button", { name: "Foto 2" })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
+
+    await page.keyboard.press("Escape");
+    await expect(dialog).toBeHidden();
+    await expect(page).toHaveURL(/\/program$/);
   });
 
   test("English program page uses its localized URL", async ({ page }) => {

@@ -60,7 +60,8 @@
     "partner": "Hi BEC, I'm interested in opening a BEC unit (partnership). Could you share more information?",
     "unit": "Hi {unit}, I'd like to ask about English classes for my child.",
     "level": "Hi BEC, I'd like to ask about the {level} program for my child.",
-    "partnerApplication": "Hello BEC, I'm {name} and I just applied for a partnership in {village} (application no. {reference}). Could you share the next steps?"
+    "partnerApplication": "Hello BEC, I'm {name} and I just applied for a partnership in {village} (application no. {reference}). Could you share the next steps?",
+    "activity": "Hello {to}, I'd like to ask about the {activity} activity for my child."
   },
   "Home": {
     "metaTitle": "English Courses for Kids Aged 4–15",
@@ -197,8 +198,15 @@
     "overline": "Fun Activities",
     "title": "Learning Through Experience",
     "lead": "Beyond regular classes, every BEC unit runs regular activities so children dare to use English in real life.",
-    "detailLink": "See program details",
-    "scrollHint": "Swipe to see more activities"
+    "detailLink": "See activity details",
+    "scrollHint": "Swipe to see more activities",
+    "detail": {
+      "photo": "Photo {index}",
+      "highlights": "What children do",
+      "skills": "Skills practised",
+      "findUnit": "Find the nearest unit",
+      "askWhatsApp": "Ask on WhatsApp"
+    }
   },
   "Testimonials": {
     "rating": "Rated {rating} out of 5"
@@ -1398,6 +1406,14 @@
       "content": {
         "title": "Content",
         "description": "The activity's copy in both languages. A tab with a red dot has fields to fix."
+      },
+      "details": {
+        "title": "Activity details",
+        "description": "Content of the popup that opens when the activity card is clicked. All optional; empty parts are left out."
+      },
+      "photos": {
+        "title": "Popup gallery",
+        "description": "Extra photos in the popup, after the card photo. Drag to order and add captions."
       }
     },
     "fields": {
@@ -1409,7 +1425,19 @@
       "audience": "For whom",
       "audienceHint": "E.g. All levels, Kindy Class & Elementary.",
       "imageAlt": "Photo alt text",
-      "imageAltHint": "Describe the photo for screen readers and search engines."
+      "imageAltHint": "Describe the photo for screen readers and search engines.",
+      "description": "Description",
+      "descriptionHint": "2–3 sentences on how the activity runs.",
+      "schedule": "When it is held",
+      "scheduleHint": "E.g. Once a month, End of every term.",
+      "highlights": "What children do",
+      "highlightsHint": "Short points, up to 6.",
+      "highlightLabel": "Point {index}",
+      "addHighlight": "Add point",
+      "skills": "Skills practised",
+      "skillsHint": "Shown as labels, e.g. Speaking or Confidence.",
+      "skillLabel": "Skill {index}",
+      "addSkill": "Add skill"
     },
     "previewPlacement": "Home and the Programs page"
   },

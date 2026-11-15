@@ -114,6 +114,15 @@ export const limits = {
     nameMax: 80,
     summaryMax: 300,
     audienceMax: 60,
+    /** Detail popup (ADR-042). */
+    descriptionMax: 600,
+    scheduleMax: 80,
+    highlightsMax: 6,
+    highlightMax: 120,
+    skillsMax: 6,
+    skillMax: 40,
+    photosMax: 8,
+    captionMax: 80,
   },
   testimonials: {
     /** Matches `testimonials.author_name` / `testimonial_translations.role` (varchar 120). */

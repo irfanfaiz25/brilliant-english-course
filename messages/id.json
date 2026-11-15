@@ -60,7 +60,8 @@
     "partner": "Halo BEC, saya tertarik membuka unit BEC (kemitraan). Boleh minta informasinya?",
     "unit": "Halo {unit}, saya ingin bertanya tentang kelas bahasa Inggris untuk anak saya.",
     "level": "Halo BEC, saya ingin bertanya tentang program {level} untuk anak saya.",
-    "partnerApplication": "Halo BEC, saya {name} baru saja mendaftar kemitraan untuk Desa {village} (no. pendaftaran {reference}). Mohon info langkah selanjutnya."
+    "partnerApplication": "Halo BEC, saya {name} baru saja mendaftar kemitraan untuk Desa {village} (no. pendaftaran {reference}). Mohon info langkah selanjutnya.",
+    "activity": "Halo {to}, saya ingin bertanya tentang kegiatan {activity} untuk anak saya."
   },
   "Home": {
     "metaTitle": "Kursus Bahasa Inggris Anak Usia 4–15 Tahun",
@@ -197,8 +198,15 @@
     "overline": "Kegiatan Seru",
     "title": "Belajar Lewat Pengalaman",
     "lead": "Selain kelas rutin, setiap unit BEC mengadakan kegiatan berkala supaya anak berani memakai bahasa Inggris di dunia nyata.",
-    "detailLink": "Lihat detail program",
-    "scrollHint": "Geser untuk melihat kegiatan lain"
+    "detailLink": "Lihat detail kegiatan",
+    "scrollHint": "Geser untuk melihat kegiatan lain",
+    "detail": {
+      "photo": "Foto {index}",
+      "highlights": "Yang dilakukan anak",
+      "skills": "Kemampuan yang dilatih",
+      "findUnit": "Cek unit terdekat",
+      "askWhatsApp": "Tanya via WhatsApp"
+    }
   },
   "Testimonials": {
     "rating": "Rating {rating} dari 5"
@@ -1398,6 +1406,14 @@
       "content": {
         "title": "Isi",
         "description": "Teks kegiatan dalam dua bahasa. Tab bertanda titik merah berisi kolom yang perlu diperbaiki."
+      },
+      "details": {
+        "title": "Detail kegiatan",
+        "description": "Isi popup yang muncul saat kartu kegiatan diklik. Semua opsional; bagian yang kosong tidak ditampilkan."
+      },
+      "photos": {
+        "title": "Galeri popup",
+        "description": "Foto tambahan di popup, setelah foto kartu. Bisa diurutkan dan diberi keterangan."
       }
     },
     "fields": {
@@ -1409,7 +1425,19 @@
       "audience": "Untuk siapa",
       "audienceHint": "Contoh: Semua level, Kindy Class & Elementary.",
       "imageAlt": "Teks alternatif foto",
-      "imageAltHint": "Jelaskan isi foto untuk pembaca layar dan mesin pencari."
+      "imageAltHint": "Jelaskan isi foto untuk pembaca layar dan mesin pencari.",
+      "description": "Deskripsi",
+      "descriptionHint": "2–3 kalimat tentang jalannya kegiatan.",
+      "schedule": "Kapan diadakan",
+      "scheduleHint": "Contoh: Sebulan sekali, Setiap akhir semester.",
+      "highlights": "Yang dilakukan anak",
+      "highlightsHint": "Poin singkat, maksimal 6.",
+      "highlightLabel": "Poin {index}",
+      "addHighlight": "Tambah poin",
+      "skills": "Skill yang dilatih",
+      "skillsHint": "Tampil sebagai label, misalnya Speaking atau Percaya diri.",
+      "skillLabel": "Skill {index}",
+      "addSkill": "Tambah skill"
     },
     "previewPlacement": "Beranda dan halaman Program"
   },

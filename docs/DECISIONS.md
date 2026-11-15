@@ -581,3 +581,25 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
 - **Alternatives:** Content tables per section (a migration for structured copy that changes rarely, and relational
   ordering for short lists); free-form rich text (breaks the layout and the bilingual pairing); copy in the message
   files (needs a developer for every change).
+
+### ADR-042 — Activities open a detail popup with a gallery
+
+2026-11-15 · Accepted
+
+- **Decision:** An activity card opens a popup (`ActivityExplorer` + `ActivityDetail`, `features/activities/components`)
+  instead of linking to the Program page, where the same cards were shown again. The popup shows the card photo and up
+  to eight more photos (thumbnails switch the large photo, shown whole), the audience, a schedule line, a description,
+  "what children do" (up to six lines), the skills practised (up to six chips) and two actions: "find the nearest
+  unit" and a pre-filled WhatsApp message (`WhatsApp.activity`). On a unit's page the message goes to that unit and
+  "find the nearest unit" is hidden. Empty details are left out, so an activity saved before this change still opens.
+- The open activity lives in the URL (`?kegiatan=<slug>`): cards are real links to it, opening pushes a history entry so
+  the back button closes the popup, and a shared link opens it directly (closing then only removes the parameter). The
+  parameter is read on the client (`useSyncExternalStore`), so pages stay prerendered.
+- Data: `activity_translations` gains `description`, `highlights`, `skills` and `schedule` (defaults empty); photos are
+  `activity_photos` + `activity_photo_translations` (caption per locale), written as a whole with the activity
+  (migration `0009_activity_details`). Admin edits them in Kegiatan ("Detail kegiatan" with locale tabs, "Galeri popup"
+  with `PhotoListField`); photos count as media usage.
+- **Why:** Parents wanted more than the card, and a click that lands on the same cards felt broken. A popup keeps them
+  on the page they were reading, and the URL makes an activity shareable.
+- **Alternatives:** A page per activity (more SEO surface but thin content and another route to maintain); expanding
+  the card in place (cramped on phones, no room for photos).

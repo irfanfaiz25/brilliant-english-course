@@ -1,12 +1,19 @@
 import "server-only";
 
-import { asc, eq } from "drizzle-orm";
+import { asc, eq, inArray } from "drizzle-orm";
 
 import { db } from "@/db/client";
-import { activities, activityTranslations, mediaAssets } from "@/db/schema";
+import {
+  activities,
+  activityPhotos,
+  activityPhotoTranslations,
+  activityTranslations,
+  mediaAssets,
+} from "@/db/schema";
 import { mediaUrl } from "@/features/media/service";
 import type { SessionUser } from "@/features/users/schema";
 import type { Locale } from "@/i18n/routing";
+import { toRows } from "@/lib/form-schemas";
 import { assertCan } from "@/lib/permissions";
 import { groupTranslations, pickTranslation } from "@/lib/translations";
 
@@ -72,10 +79,27 @@ export async function getActivityForEdit(
     .leftJoin(mediaAssets, eq(mediaAssets.id, activities.imageId))
     .where(eq(activities.id, id));
   if (!row) return null;
-  const translations = await db
-    .select()
-    .from(activityTranslations)
-    .where(eq(activityTranslations.activityId, id));
+  const [translations, photos] = await Promise.all([
+    db.select().from(activityTranslations).where(eq(activityTranslations.activityId, id)),
+    db
+      .select()
+      .from(activityPhotos)
+      .where(eq(activityPhotos.activityId, id))
+      .orderBy(asc(activityPhotos.sortOrder)),
+  ]);
+  const photoTexts = photos.length
+    ? await db
+        .select()
+        .from(activityPhotoTranslations)
+        .where(
+          inArray(
+            activityPhotoTranslations.photoId,
+            photos.map((photo) => photo.id),
+          ),
+        )
+    : [];
+  const caption = (photoId: string, locale: Locale) =>
+    photoTexts.find((row) => row.photoId === photoId && row.locale === locale)?.caption ?? "";
   const textFor = (locale: Locale) => {
     const text = translations.find((translation) => translation.locale === locale);
     return {
@@ -83,6 +107,10 @@ export async function getActivityForEdit(
       summary: text?.summary ?? "",
       audience: text?.audience ?? "",
       imageAlt: text?.imageAlt ?? "",
+      description: text?.description ?? "",
+      schedule: text?.schedule ?? "",
+      highlights: toRows(text?.highlights ?? []),
+      skills: toRows(text?.skills ?? []),
     };
   };
   return {
@@ -90,6 +118,10 @@ export async function getActivityForEdit(
       imageId: row.activity.imageId ?? "",
       isPublished: row.activity.isPublished,
       texts: { id: textFor("id"), en: textFor("en") },
+      photos: photos.map((photo) => ({
+        imageId: photo.mediaId,
+        caption: { id: caption(photo.id, "id"), en: caption(photo.id, "en") },
+      })),
     },
     imageSrc: row.imageKey ? mediaUrl(row.imageKey) : null,
     updatedAt: row.activity.updatedAt,

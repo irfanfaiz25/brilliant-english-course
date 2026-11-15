@@ -1,32 +1,43 @@
 import { getTranslations } from "next-intl/server";
 
-import { Stagger, StaggerItem } from "@/components/motion/stagger";
 import { DecorBlob } from "@/components/site/decor-blob";
 import { Doodle } from "@/components/site/doodle";
 import { Section } from "@/components/site/section";
 import { SectionHeader } from "@/components/site/section-header";
+import { getContactSettings } from "@/features/settings/queries";
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
+
 import type { Activity } from "../schema";
 
-import { ActivityCard } from "./activity-card";
+import { ActivityExplorer } from "./activity-explorer";
 
 type ActivitiesSectionProps = {
   activities: readonly Activity[];
-  /** Anchor id (the Program page uses "kegiatan", the target of "see program details" links). */
+  /** Anchor id (the Program page uses "kegiatan"). */
   id?: string;
-  /** Show the "see program details" link on cards (off on the Program page itself). */
-  linkToProgram?: boolean;
+  /** On a unit's page: questions go to that unit and "find the nearest unit" is hidden. */
+  unit?: { name: string; whatsapp: string };
 };
 
 /**
- * Activities: a CSS scroll-snap row on phones (no carousel JS), a grid from `md` up.
- * Shared by Home and Program.
+ * Activities: a CSS scroll-snap row on phones (no carousel JS), a grid from `md` up. Each card
+ * opens the activity's detail popup (ADR-042). Shared by Home, Program and unit pages.
  */
-export async function ActivitiesSection({
-  activities,
-  id,
-  linkToProgram = true,
-}: ActivitiesSectionProps) {
-  const t = await getTranslations("Activities");
+export async function ActivitiesSection({ activities, id, unit }: ActivitiesSectionProps) {
+  const [t, tWhatsApp, contact] = await Promise.all([
+    getTranslations("Activities"),
+    getTranslations("WhatsApp"),
+    getContactSettings(),
+  ]);
+  const whatsappUrls = Object.fromEntries(
+    activities.map((activity) => [
+      activity.slug,
+      buildWhatsAppUrl(
+        unit?.whatsapp ?? contact.whatsapp,
+        tWhatsApp("activity", { to: unit?.name ?? "BEC", activity: activity.name }),
+      ),
+    ]),
+  );
 
   return (
     <Section id={id} aria-labelledby="activities-title" className="scroll-mt-(--header-offset)">
@@ -54,23 +65,19 @@ export async function ActivitiesSection({
         lead={t("lead")}
       />
 
-      <Stagger
-        as="ul"
-        className="-mx-5 mt-10 flex snap-x snap-mandatory scroll-px-5 [scrollbar-width:none] gap-4 overflow-x-auto px-5 pb-4 md:mx-0 md:grid md:grid-cols-2 md:gap-6 md:overflow-visible md:px-0 md:pb-0 lg:mt-14 lg:grid-cols-4"
-      >
-        {activities.map((activity) => (
-          <StaggerItem
-            key={activity.slug}
-            as="li"
-            className="w-[78%] shrink-0 snap-start sm:w-[46%] md:w-auto"
-          >
-            <ActivityCard
-              activity={activity}
-              detailLabel={linkToProgram ? t("detailLink") : undefined}
-            />
-          </StaggerItem>
-        ))}
-      </Stagger>
+      <ActivityExplorer
+        activities={activities}
+        whatsappUrls={whatsappUrls}
+        showFindUnit={!unit}
+        openLabel={t("detailLink")}
+        detailLabels={{
+          photo: t.raw("detail.photo") as string,
+          highlights: t("detail.highlights"),
+          skills: t("detail.skills"),
+          findUnit: t("detail.findUnit"),
+          askWhatsApp: t("detail.askWhatsApp"),
+        }}
+      />
       <p className="mt-2 text-center text-caption text-muted-foreground md:hidden">
         {t("scrollHint")}
       </p>
