@@ -161,6 +161,13 @@ In code use Tailwind's numeric scale (1 unit = 4 px): `1` `2` `3` `4` `6` `8` `1
 
 Container max width **1248 px**. Section vertical padding: 64 px mobile → 96–120 px desktop.
 
+**Balanced grids.** A card list whose length admins decide never leaves one card alone on the last row. Use
+`balancedGridClass` + `balancedItemClass()` (`src/lib/balanced-grid.ts`): twelve tracks; up to four cards share one
+row, longer lists take the widest column count whose last row holds two or more (5 → 3 + 2, 7 → 4 + 3), and the cards
+of a short last row share it evenly. Cards that may grow wide lay out side by side with a container query
+(`@container`, `@md:flex-row`). A row of highlights (e.g. the Kemitraan hero) is one strip with equal columns from
+`sm` and a divided list on phones, never wrapping pills.
+
 ### 2.4 Radius & shadow
 
 Radius: `xs` 4 · `sm` 8 · `md` 12 · `lg` 16 · `xl` 24 · `2xl` 32 · `full`.
@@ -398,9 +405,11 @@ Implementation rules:
   Benefits, starter kit, training and procedure are admin content (ADR-041); layout stays in code.
 - **Hero:** partner-colored CTA pair "Cek Kuota Desamu" (`#kuota`) + "Daftar Jadi Mitra" (`#daftar`), stats card with
   CountUp (joined units, cities) and the quota rule "Maks. 2 unit per desa". Photo + floating badge from `lg` only.
-- **Hero highlights:** the featured benefits (e.g. "Tanpa bagi hasil") as partner-soft chips under the lead.
-- **Benefits (bento):** featured benefits on large deep-teal cards (one to four balance in a row), the rest on light
-  cards in a grid; icons come from the fixed `PartnershipIcon` set.
+- **Hero highlights:** the featured benefits (e.g. "Tanpa bagi hasil") as one partner-soft strip under the lead: equal
+  columns with dividers from `sm`, a divided list on phones (§ 2.3 Balanced grids).
+- **Benefits (bento):** featured benefits on large deep-teal cards, the rest on light cards; both are balanced grids, so
+  the last row is always full (a widened card puts its icon beside the text). Icons come from the fixed
+  `PartnershipIcon` set.
 - **Starter kit:** filter chips per group with counts (`aria-pressed`, a polite live count) over item cards that always
   show name and description; a card without a photo shows its icon on a tile in the group colour; compact image-left
   rows on phones. Beside it (sticky from `lg`) the package card: item count, investment (only when admins publish it,

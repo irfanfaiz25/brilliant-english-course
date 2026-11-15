@@ -164,6 +164,8 @@ Rules:
   The Kemitraan page content (benefits, starter kit + investment, training, procedure) is four settings edited in
   Halaman Kemitraan (ADR-041): lists use `ItemListField` (`components/admin`, both locales side by side), icons come
   from the fixed `partnershipIcons` set (`PartnershipIcon`), and photos in settings count as media usage (`usage.ts`).
+  Card lists whose length admins decide use `balancedGridClass` + `balancedItemClass()` (`lib/balanced-grid.ts`), so
+  the last row is always full (`DESIGN.md` § 2.3 Balanced grids).
   Charts are hand-built SVG (`components/admin/charts`, geometry in `lib/chart.ts`, colours `chart-1`/`chart-2`): no chart
   library; follow `DESIGN.md` § 6 Charts (legend, hover and keyboard tooltip, table view).
 - Public pages render inside `SiteShell` (`src/app/[locale]/(site)/layout.tsx`); page content starts below the header,

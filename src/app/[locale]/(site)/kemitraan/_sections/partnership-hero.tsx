@@ -80,17 +80,18 @@ export async function PartnershipHero({
             {t("lead")}
           </p>
           {highlights.length > 0 && (
+            // One strip, equal columns in a single row from `sm` and a tidy list on phones, so a
+            // highlight never ends up alone on a wrapped line, whatever admins feature.
             <ul
               aria-label={t("highlightsLabel")}
-              className="flex animate-rise-in flex-wrap gap-2 [animation-delay:225ms]"
+              className="grid animate-rise-in divide-y divide-partner/15 overflow-hidden rounded-2xl border border-partner/20 bg-partner-soft/70 [animation-delay:225ms] sm:auto-cols-fr sm:grid-flow-col sm:divide-x sm:divide-y-0"
             >
               {highlights.map((item) => (
-                <li
-                  key={item.title}
-                  className="inline-flex items-center gap-2 rounded-full border border-partner/25 bg-partner-soft px-3.5 py-1.5 text-label text-foreground"
-                >
-                  <PartnershipIcon name={item.icon} className="size-4 text-partner" />
-                  {item.title}
+                <li key={item.title} className="flex items-center gap-3 px-4 py-3">
+                  <span className="inline-flex size-9 shrink-0 items-center justify-center rounded-xl bg-card text-partner shadow-sm">
+                    <PartnershipIcon name={item.icon} className="size-5" />
+                  </span>
+                  <span className="text-label leading-snug text-foreground">{item.title}</span>
                 </li>
               ))}
             </ul>

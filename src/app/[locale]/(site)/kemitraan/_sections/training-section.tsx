@@ -8,6 +8,8 @@ import { Section } from "@/components/site/section";
 import { SectionHeader } from "@/components/site/section-header";
 import { PartnershipIcon } from "@/features/partners/components/partnership-icon";
 import type { PartnershipPage } from "@/features/partners/queries";
+import { balancedGridClass, balancedItemClass } from "@/lib/balanced-grid";
+import { cn } from "@/lib/utils";
 
 import { LessonFlow } from "./lesson-flow";
 
@@ -41,12 +43,20 @@ export async function TrainingSection({ training }: { training: PartnershipPage[
               />
             </Reveal>
           )}
-          <Stagger as="ul" className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-            {training.formats.map((format) => (
+          <Stagger as="ul" className={cn(balancedGridClass, "gap-3")}>
+            {training.formats.map((format, index) => (
               <StaggerItem
                 key={format.title}
                 as="li"
-                className="flex items-start gap-3 rounded-2xl border border-border/60 bg-card p-4 shadow-card"
+                className={cn(
+                  "flex items-start gap-3 rounded-2xl border border-border/60 bg-card p-4 shadow-card",
+                  balancedItemClass(index, training.formats.length, {
+                    base: 1,
+                    sm: 2,
+                    lg: 1,
+                    xl: 2,
+                  }),
+                )}
               >
                 <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary-soft text-primary">
                   <PartnershipIcon name={format.icon} className="size-5" />
