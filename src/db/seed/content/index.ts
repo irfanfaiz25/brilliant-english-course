@@ -1,7 +1,8 @@
 /**
  * Sample content for the development seed and for unit tests (PLACEHOLDER: written for review in
  * Phase 5, names and contacts are fictional). Production content is entered through the admin
- * modules (Phase 4); nothing here is shipped to users except through `pnpm db:seed`.
+ * modules. Only the programs, activities and FAQ are also used by the production starter content
+ * (`pnpm db:starter`, ADR-046); the fictional units, testimonials, posts and leads never are.
  */
 export { activityFixtures } from "./activities";
 export { postFixtures } from "./blog";
