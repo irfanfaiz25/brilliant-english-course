@@ -292,7 +292,8 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
   Entering `onboarding` reserves one slot in the lead's village (a `quota_reservations` row linked by `lead_id`, under
   the same per-village advisory lock and full-village check as units); leaving it, or deleting the lead, releases the
   slot. "Buat unit dari calon mitra ini" opens the unit form prefilled from the lead; saving it releases the lead's
-  slot before the quota check and marks the lead `converted` with its `unit_id`, in the same transaction. Leads are
+  slot before the quota check and marks the lead `converted` with its `unit_id`, in the same transaction (an onboarding
+  unit keeps the slot until it is active: ADR-039). Leads are
   soft-deleted. The CSV export follows the list's filters, is capped at `limits.leads.exportMax` rows, is written with
   a BOM and CRLF for Excel, prefixes cells starting with `= + - @` (or tab/CR) with `'` against formula injection,
   is served `no-store` from a route that answers 404 without `read` on leads, and is recorded in the audit log.
@@ -505,3 +506,21 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
 - **Alternatives:** Keep three fixed levels (needs a release per program); a free color picker (off-brand, contrast not
   guaranteed); editable slugs (breaks links already shared); soft delete for levels (nothing refers to a deleted level
   once no unit offers it, and the audit row keeps its names).
+
+### ADR-039 — An onboarding unit created from a lead keeps the village slot
+
+2026-11-15 · Accepted
+
+- **Decision:** When a unit is created from a lead in `onboarding`, the lead's slot is released and, in the same
+  transaction and under the village lock, a reservation with the unit's `unit_id` (migration `0007`) is held for the
+  unit (note = unit code, `lead_id` kept for the trail; refused with `quotaFullHold` when the village is full). The
+  slot stays while the unit is onboarding, follows it when its village changes, and is released when it turns active
+  (before the quota check, so the unit takes the slot), turns inactive or is deleted. Lead writes only touch
+  reservations without a `unit_id`, so editing or deleting a converted lead never frees the unit's slot. Regional Quota
+  lists such a reservation as "Unit … (persiapan)". A unit added by hand in `onboarding` still holds nothing.
+- **Why:** ADR-030 promised that a slot turns into the unit without a gap, but onboarding units do not count toward the
+  quota, and a new unit starts in onboarding: converting a lead freed the village for anyone else while the partner was
+  still setting up.
+- **Alternatives:** Count every onboarding unit toward the quota (changes the meaning for units added by hand, which
+  may be placeholders); force units from a lead to start active (shows them on the site before they are ready); keep
+  the reservation on the lead (a later lead edit or delete would free the unit's slot).

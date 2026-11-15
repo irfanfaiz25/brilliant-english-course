@@ -211,7 +211,8 @@ effective grants and `can()` reads them; the guard rails (`normalizeRoleGrants()
 - Regions are reference data (ADR-023): `pnpm db:regions` upserts `src/db/seed/regions/regions.csv` (91,599 Kemendagri codes with official names); `pnpm db:regions:build` refreshes that file from the pinned upstream commit. Never edit regions in admin or by hand.
 - Settings are one JSON document per key in `settings`, validated by a Zod schema with code defaults in `features/settings` (no migration for a new setting).
 - Quota rules (units per village, "almost full" threshold) are the `quota` setting (`getQuotaRules()`); never read
-  `limits.unitsPerVillage` directly. A unit's DB writes live in `features/units/admin-service.ts` because
+  `limits.unitsPerVillage` directly. A unit created from a lead holds the lead's slot while it is onboarding (ADR-039).
+  A unit's DB writes live in `features/units/admin-service.ts` because
   `units/service.ts` also runs in the browser.
 - Production storage is small (1–2 GB): no binary data in the DB, prune job/audit tables on a schedule.
 - Never run migrations or seeds against a production database from a local machine.
