@@ -91,3 +91,39 @@ test.describe("site shell on mobile", () => {
     );
   });
 });
+
+test.describe("page layout on phones", () => {
+  test.skip(({ isMobile }) => !isMobile, "phone layout");
+
+  for (const path of ["/", "/program", "/kemitraan", "/kontak", "/unit", "/blog"]) {
+    test(`${path} never scrolls sideways`, async ({ page }) => {
+      await page.goto(path);
+      const extra = await page.evaluate(
+        () => document.documentElement.scrollWidth - window.innerWidth,
+      );
+      expect(extra).toBe(0);
+    });
+  }
+
+  // iPhone Safari shakes a sticky bar that sits under an `overflow` clip while the page scrolls.
+  for (const path of ["/program", "/kemitraan"]) {
+    test(`${path} section tabs have no clipped ancestor`, async ({ page }) => {
+      await page.goto(path);
+      const clipped = await page
+        .getByRole("navigation", { name: /./ })
+        .filter({ has: page.locator('a[href^="#"]') })
+        .first()
+        .evaluate((nav) => {
+          const found: string[] = [];
+          for (let el = nav.parentElement; el && el !== document.body; el = el.parentElement) {
+            const { overflowX, overflowY } = getComputedStyle(el);
+            if (overflowX !== "visible" || overflowY !== "visible") {
+              found.push(`${el.tagName.toLowerCase()}.${el.className}`);
+            }
+          }
+          return found;
+        });
+      expect(clipped).toEqual([]);
+    });
+  }
+});

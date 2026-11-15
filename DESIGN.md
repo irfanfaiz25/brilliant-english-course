@@ -368,6 +368,8 @@ Implementation rules:
 
 - **Header:** breadcrumb (`Breadcrumbs`, with `BreadcrumbList` JSON-LD), overline, title, lead, two fact chips.
 - **Sticky level tabs** (shared `SectionTabs`, `components/site/section-tabs.tsx`): plain `#<slug>` anchors under the header, glass bar;
+  A sticky bar must have no clipped ancestor (`overflow` other than `visible`): on iPhone Safari it then shakes while
+  scrolling. `PageCanvas` clips only its decor layer; sections clip their own decoration.
   a pill slides to the current tab (measured offsets); when the tabs do not fit the bar scrolls, keeps the current tab
   in view and fades the edge where more tabs wait. Scroll-spy with
   IntersectionObserver: the current level is the last one whose top passed the top 40% of the viewport. Level sections
