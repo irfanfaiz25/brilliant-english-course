@@ -3,7 +3,14 @@ import "server-only";
 import { and, eq, inArray, isNull, ne, sql } from "drizzle-orm";
 
 import { db } from "@/db/client";
-import { programLevels, quotaReservations, unitLevels, units } from "@/db/schema";
+import {
+  programClasses,
+  programLevels,
+  quotaReservations,
+  unitClasses,
+  unitLevels,
+  units,
+} from "@/db/schema";
 import {
   convertLeadInTransaction,
   releaseLeadSlotInTransaction,
@@ -15,6 +22,7 @@ import { writeAuditLog } from "@/lib/audit";
 
 import { nextUnitCode } from "./codes";
 import type { UnitForm } from "./schema";
+import { resolveLevelOffers } from "./service";
 
 /*
  * Unit writes for the admin (Phase 4c). Kept apart from `service.ts`, whose pure helpers also run
@@ -107,15 +115,44 @@ async function holdUnitSlot(
   });
 }
 
-async function writeLevels(tx: Tx, unitId: string, slugs: UnitForm["levels"]) {
+/**
+ * Stores the levels and classes a unit offers (ADR-040): a level whose classes are all ticked is
+ * offered whole, otherwise only its ticked classes; a level with classes but none ticked is
+ * refused (`classesRequired`).
+ */
+async function writeLevels(tx: Tx, unitId: string, form: Pick<UnitForm, "levels" | "classIds">) {
   const levels = await tx
     .select({ id: programLevels.id })
     .from(programLevels)
-    .where(inArray(programLevels.slug, [...slugs]));
+    .where(inArray(programLevels.slug, [...form.levels]));
+  const classes = levels.length
+    ? await tx
+        .select({ id: programClasses.id, levelId: programClasses.levelId })
+        .from(programClasses)
+        .where(
+          inArray(
+            programClasses.levelId,
+            levels.map((level) => level.id),
+          ),
+        )
+    : [];
+  const offers = resolveLevelOffers(
+    levels.map((level) => ({
+      id: level.id,
+      classIds: classes.filter((item) => item.levelId === level.id).map((item) => item.id),
+    })),
+    form.classIds,
+  );
+  if (!offers) throw new ActionFailure("invalid", { levels: "classesRequired" });
+
+  await tx.delete(unitClasses).where(eq(unitClasses.unitId, unitId));
   await tx.delete(unitLevels).where(eq(unitLevels.unitId, unitId));
-  if (levels.length > 0) {
-    await tx.insert(unitLevels).values(levels.map((level) => ({ unitId, levelId: level.id })));
-  }
+  if (offers.length === 0) return;
+  await tx
+    .insert(unitLevels)
+    .values(offers.map(({ levelId, allClasses }) => ({ unitId, levelId, allClasses })));
+  const opened = offers.flatMap((offer) => offer.classIds.map((classId) => ({ unitId, classId })));
+  if (opened.length > 0) await tx.insert(unitClasses).values(opened);
 }
 
 const columns = (form: UnitForm) => ({
@@ -167,7 +204,7 @@ export async function createUnit(
       .values({ code, ...columns(form) })
       .returning({ id: units.id });
     if (!unit) throw new Error("Unit insert returned no row");
-    await writeLevels(tx, unit.id, form.levels);
+    await writeLevels(tx, unit.id, form);
     const holdsSlot = Boolean(leadId) && form.status === "onboarding";
     if (holdsSlot) {
       await holdUnitSlot(
@@ -219,7 +256,7 @@ export async function updateUnit(id: string, form: UnitForm, rules: QuotaRules, 
       .update(units)
       .set({ ...columns(form), updatedAt: new Date() })
       .where(eq(units.id, id));
-    await writeLevels(tx, id, form.levels);
+    await writeLevels(tx, id, form);
 
     const { createdAt: _created, updatedAt: _updated, deletedAt: _deleted, ...previous } = before;
     await writeAuditLog(tx, {

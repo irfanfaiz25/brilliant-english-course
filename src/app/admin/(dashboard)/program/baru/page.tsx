@@ -38,6 +38,7 @@ const emptyLevel: LevelFormInput = {
   imageId: "",
   isPublished: true,
   texts: { id: emptyText, en: emptyText },
+  classes: [],
 };
 
 /** Add a program level (ADR-038). */

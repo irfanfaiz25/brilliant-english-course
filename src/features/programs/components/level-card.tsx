@@ -1,4 +1,4 @@
-import { ArrowRightIcon, CheckIcon } from "lucide-react";
+import { ArrowRightIcon, CheckIcon, GraduationCapIcon } from "lucide-react";
 import Image from "next/image";
 
 import { Badge } from "@/components/ui/badge";
@@ -12,13 +12,23 @@ type LevelCardProps = {
   level: Level;
   ageLabel: string;
   detailLabel: string;
+  /** Heading of the class chips, e.g. "Kelas"; the chips show only with it. */
+  classesLabel?: string;
+  /** School years the classes cover, e.g. "TK – SD kelas 3" (`formatGradeSpan`). */
+  gradeLabel?: string;
 };
 
 /**
  * Program level card. The whole card is one link (stretched) to the level on the Program page.
  * Its id (`level-<slug>`) is the target of the hero age chips, which highlight it via `:target`.
  */
-export function LevelCard({ level, ageLabel, detailLabel }: LevelCardProps) {
+export function LevelCard({
+  level,
+  ageLabel,
+  detailLabel,
+  classesLabel,
+  gradeLabel,
+}: LevelCardProps) {
   const theme = levelTheme[level.theme];
 
   return (
@@ -52,8 +62,36 @@ export function LevelCard({ level, ageLabel, detailLabel }: LevelCardProps) {
             {level.name}
           </Badge>
           <h3 className="text-h4 text-foreground">{level.tagline}</h3>
+          {gradeLabel && (
+            <p className="flex items-center gap-1.5 text-body-sm font-semibold text-foreground">
+              <GraduationCapIcon aria-hidden className={cn("size-4 shrink-0", theme.accent)} />
+              {gradeLabel}
+            </p>
+          )}
           <p className="text-body text-muted-foreground">{level.summary}</p>
         </div>
+
+        {classesLabel && level.classes.length > 0 && (
+          <div className="flex flex-col gap-2">
+            <p className="text-caption font-semibold tracking-wide text-muted-foreground uppercase">
+              {classesLabel}
+            </p>
+            <ul className="flex flex-wrap gap-1.5">
+              {level.classes.map((item) => (
+                <li
+                  key={item.id}
+                  className={cn(
+                    "rounded-full px-3 py-1 text-caption font-semibold",
+                    theme.soft,
+                    theme.accent,
+                  )}
+                >
+                  {item.name}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         <ul className="flex flex-col gap-2">
           {level.skills.map((skill) => (

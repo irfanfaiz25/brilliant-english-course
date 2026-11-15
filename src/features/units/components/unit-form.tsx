@@ -19,8 +19,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { adminRoutes } from "@/config/admin-routes";
 import { limits } from "@/config/limits";
-import { levelTheme } from "@/features/programs/level-theme";
-import type { LevelBadge } from "@/features/programs/schema";
 import { RegionPicker } from "@/features/regions/components/region-picker";
 import type { RegionPickerLevel } from "@/features/regions/picker";
 import { cn } from "@/lib/utils";
@@ -33,8 +31,10 @@ import {
   unitStatuses,
   type UnitForm as UnitFormOutput,
   type UnitFormInput,
+  type UnitLevelOption,
 } from "../schema";
 import { buildMapUrl } from "../service";
+import { LevelOfferField } from "./level-offer-field";
 import { UnitCardPreview, type UnitCardTemplates } from "./unit-card-preview";
 
 const U = limits.units;
@@ -50,7 +50,7 @@ type UnitFormProps = {
   regionLevels: readonly RegionPickerLevel[];
   /** District and regency names of the saved village, for the preview. */
   place: { district: string; regency: string };
-  levelOptions: readonly LevelBadge[];
+  levelOptions: readonly UnitLevelOption[];
   templates: UnitCardTemplates;
 };
 
@@ -317,57 +317,7 @@ export function UnitForm({
             title={t("sections.program.title")}
             description={t("sections.program.description")}
           >
-            <Controller
-              control={form.control}
-              name="levels"
-              render={({ field, fieldState }) => (
-                <fieldset className="flex flex-col gap-3">
-                  <legend className="mb-1 text-label text-foreground">{t("fields.levels")}</legend>
-                  <div className="flex flex-wrap gap-2">
-                    {levelOptions.map((level) => {
-                      const checked = field.value.includes(level.slug);
-                      return (
-                        <label
-                          key={level.slug}
-                          className={cn(
-                            "flex h-11 cursor-pointer items-center gap-2.5 rounded-lg border px-4 text-body-sm font-semibold transition-colors duration-(--duration-fast)",
-                            "has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-ring",
-                            checked
-                              ? cn("border-transparent", levelTheme[level.theme].soft)
-                              : "border-border bg-background hover:border-primary/60",
-                          )}
-                        >
-                          <input
-                            type="checkbox"
-                            checked={checked}
-                            onChange={() =>
-                              field.onChange(
-                                checked
-                                  ? field.value.filter((slugValue) => slugValue !== level.slug)
-                                  : levelOptions
-                                      .map((option) => option.slug)
-                                      .filter(
-                                        (slugValue) =>
-                                          slugValue === level.slug ||
-                                          field.value.includes(slugValue),
-                                      ),
-                              )
-                            }
-                            className="size-5 cursor-pointer accent-primary"
-                          />
-                          {level.name}
-                        </label>
-                      );
-                    })}
-                  </div>
-                  {fieldState.error?.message && (
-                    <p role="alert" className="text-body-sm font-medium text-destructive-strong">
-                      {errorText(fieldState.error.message)}
-                    </p>
-                  )}
-                </fieldset>
-              )}
-            />
+            <LevelOfferField control={form.control} levelOptions={levelOptions} />
             <div className="grid gap-5 sm:grid-cols-2">
               <Field
                 label={t("fields.studentsCount")}

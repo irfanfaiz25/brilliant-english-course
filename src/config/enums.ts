@@ -21,6 +21,23 @@ export const regionLevels = ["province", "regency", "district", "village"] as co
  */
 export const levelThemes = ["sunny", "teal", "orange", "blue", "green", "berry"] as const;
 
+/**
+ * School years in order, from kindergarten (TK) through elementary (SD 1–6) to junior high
+ * (SMP 1–3). A program class targets a span of them (ADR-040); the order is the enum's order.
+ */
+export const schoolGrades = [
+  "tk",
+  "sd1",
+  "sd2",
+  "sd3",
+  "sd4",
+  "sd5",
+  "sd6",
+  "smp1",
+  "smp2",
+  "smp3",
+] as const;
+
 /** Lifecycle of a partner unit; only `active` units are public and count toward quota. */
 export const unitStatuses = ["onboarding", "active", "inactive"] as const;
 

@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { nextUnitCode, provinceAbbreviations, unitSlugFromName } from "./codes";
 import { unitFormSchema, type UnitFormInput } from "./schema";
+import { resolveLevelOffers } from "./service";
 
 describe("nextUnitCode", () => {
   it("continues after the highest code of the same province", () => {
@@ -42,7 +43,8 @@ describe("unitFormSchema", () => {
     openDays: [1, 2, 3, 4, 5, 6],
     opensAt: "14:00",
     closesAt: "18:00",
-    levels: ["kindy", "intro"],
+    levels: ["kindy", "elementary"],
+    classIds: [],
     studentsCount: 40,
     openedAt: "",
   };
@@ -74,5 +76,27 @@ describe("unitFormSchema", () => {
 
   it("only accepts URL-safe slugs", () => {
     expect(errorsOf({ ...valid, slug: "Suka Maju!" })).toEqual({ slug: "slugInvalid" });
+  });
+});
+
+describe("resolveLevelOffers", () => {
+  const kindy = { id: "kindy", classIds: ["k1", "k2"] };
+  const club = { id: "club", classIds: [] };
+
+  it("offers a level whole when every class is ticked (or it has none)", () => {
+    expect(resolveLevelOffers([kindy, club], ["k1", "k2"])).toEqual([
+      { levelId: "kindy", allClasses: true, classIds: [] },
+      { levelId: "club", allClasses: true, classIds: [] },
+    ]);
+  });
+
+  it("keeps only the ticked classes of a partly offered level", () => {
+    expect(resolveLevelOffers([kindy], ["k2", "other-level-class"])).toEqual([
+      { levelId: "kindy", allClasses: false, classIds: ["k2"] },
+    ]);
+  });
+
+  it("refuses a level with classes but none ticked", () => {
+    expect(resolveLevelOffers([kindy], [])).toBeNull();
   });
 });

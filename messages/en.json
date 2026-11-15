@@ -45,9 +45,7 @@
     "followUs": "Follow us on {network}",
     "rights": "© {year} Brilliant English Course. All rights reserved.",
     "chatWhatsApp": "Chat on WhatsApp",
-    "levelKindy": "Kindy · ages 4–6",
-    "levelIntro": "Intro · ages 7–9",
-    "levelSecondary": "Secondary · ages 10–15",
+    "level": "{name} · ages {min}–{max}",
     "language": "Language"
   },
   "MobileBar": {
@@ -61,7 +59,7 @@
     "general": "Hi BEC, I'd like to ask about your English courses for kids.",
     "partner": "Hi BEC, I'm interested in opening a BEC unit (partnership). Could you share more information?",
     "unit": "Hi {unit}, I'd like to ask about English classes for my child.",
-    "level": "Hi BEC, I'd like to ask about the {level} class for my child.",
+    "level": "Hi BEC, I'd like to ask about the {level} program for my child.",
     "partnerApplication": "Hello BEC, I'm {name} and I just applied for a partnership in {village} (application no. {reference}). Could you share the next steps?"
   },
   "Home": {
@@ -76,7 +74,7 @@
       "partnerLink": "Explore the partnership",
       "agePrompt": "Child's age:",
       "ageOption": "{min}–{max} yrs",
-      "ageOptionHint": "see the {level} level",
+      "ageOptionHint": "see {level}",
       "badgeLevels": "{count, plural, one {# level} other {# levels}} by age",
       "badgeNearby": "Units near you",
       "badgeSmallClass": "Small, fun classes",
@@ -97,7 +95,8 @@
       "detailLink": "See level details",
       "railLabel": "All program levels",
       "previous": "Previous levels",
-      "next": "Next levels"
+      "next": "Next levels",
+      "classesLabel": "Classes"
     },
     "unitFinder": {
       "overline": "Find a BEC Unit",
@@ -133,13 +132,13 @@
         "chatName": "BEC Cibinong Admin",
         "chatStatus": "online",
         "chatParent": "Hi, I'd like to ask about classes for my 6-year-old.",
-        "chatAdmin": "Hi! There's a Kindy class on Monday & Wednesday at 15:00. Would you like a free trial class first?",
+        "chatAdmin": "Hi! There's a Smart Kindy 1 class on Monday & Wednesday at 15:00. Would you like a free trial class first?",
         "chatTime": "10:12",
         "placementTitle": "Placement result",
         "skillSpeaking": "Speaking",
         "skillVocabulary": "Vocabulary",
         "skillListening": "Listening",
-        "placementLevel": "Best fit: Intro",
+        "placementLevel": "Best fit: Intro 1",
         "placementStart": "First class: Monday, 15:00"
       }
     },
@@ -174,6 +173,14 @@
       "primary": "Find the Nearest Unit",
       "secondary": "Chat on WhatsApp"
     }
+  },
+  "Grades": {
+    "tk": "Kindergarten",
+    "sd": "Elementary grade {number}",
+    "smp": "Junior high grade {number}",
+    "sdRange": "Elementary grades {from}–{to}",
+    "smpRange": "Junior high grades {from}–{to}",
+    "span": "{from} – {to}"
   },
   "Units": {
     "code": "Unit code {code}",
@@ -212,14 +219,17 @@
     "choose": "Choose a {level}"
   },
   "Program": {
-    "metaTitle": "English Programs for Kids: Kindy, Intro, Secondary",
-    "metaDescription": "Three English levels for children aged 4–15: Kindy, Intro and Secondary. Step-by-step conversation and grammar with the same curriculum at every BEC unit.",
+    "metaTitle": "English Programs for Kids: Kindy Class, Elementary, Secondary",
+    "metaDescription": "English programs for children aged 4–15: Kindy Class, Elementary Level and Secondary Level, each with step-by-step classes. The same curriculum at every BEC unit.",
     "hero": {
       "overline": "BEC Curriculum",
       "title": "BEC Programs",
       "lead": "A real English course — conversation and grammar from the basics to fluency, split into levels by age. Every BEC unit uses the same curriculum.",
       "levelsCount": "{count, plural, one {# level} other {# levels}}",
-      "sameCurriculum": "Same curriculum at every unit"
+      "sameCurriculum": "Same curriculum at every unit",
+      "classesCount": "{count, plural, one {# step-by-step class} other {# step-by-step classes}}",
+      "pathTitle": "The BEC learning path",
+      "placement": "School years are a guide. Each child is placed by ability, and the unit helps choose the right class."
     },
     "tabs": {
       "label": "Program levels",
@@ -232,7 +242,9 @@
       "classSize": "Max. {count} students / class",
       "materials": "BEC modules",
       "findUnit": "Find the Nearest Unit",
-      "askWhatsApp": "Ask on WhatsApp"
+      "askWhatsApp": "Ask on WhatsApp",
+      "classesTitle": "Class path · {count, plural, one {# class} other {# classes}}",
+      "classesLabel": "Classes in {level}"
     },
     "why": {
       "overline": "Why BEC",
@@ -254,6 +266,7 @@
       "feature": "Feature",
       "age": "Age",
       "focus": "Focus",
+      "classes": "Classes",
       "sessions": "Classes",
       "classSize": "Class size",
       "topics": "Sample topics",
@@ -364,7 +377,7 @@
       "lead": "Start without building materials from scratch. You get a system already used in hundreds of BEC classes.",
       "curriculum": {
         "title": "Ready-to-use curriculum",
-        "text": "Kindy, Intro and Secondary modules with lesson plans for every meeting."
+        "text": "Kindy Class, Elementary and Secondary modules with lesson plans for every meeting."
       },
       "training": {
         "title": "Training & mentoring",
@@ -727,7 +740,7 @@
     },
     "area": {
       "metaTitle": "Kids' English Courses in {area}",
-      "metaDescription": "{count} BEC units in {area} for children aged 4–15: Kindy, Intro and Secondary classes. See addresses and schedules, and chat with the nearest unit on WhatsApp.",
+      "metaDescription": "{count} BEC units in {area} for children aged 4–15: Kindy Class, Elementary and Secondary. See addresses and schedules, and chat with the nearest unit on WhatsApp.",
       "overline": "BEC units · {area}",
       "title": "Kids' English Courses in {area}",
       "lead": "{count, plural, one {# active BEC unit} other {# active BEC units}} in {area} for children aged 4–15. Pick the nearest one and ask about schedules on WhatsApp.",
@@ -1105,7 +1118,11 @@
       "userInactive": "This account is disabled. Enable it before creating a link.",
       "emailTaken": "This email is already used by another account.",
       "unitRequired": "Choose a unit for the partner account.",
-      "unitMissing": "This unit no longer exists. Choose another one."
+      "unitMissing": "This unit no longer exists. Choose another one.",
+      "gradeRange": "The last school year cannot come before the first.",
+      "classNameTaken": "This class name is already used in this program.",
+      "classInUse": "A class is opened specifically by a unit. Remove it from that unit before deleting it.",
+      "classesRequired": "Choose at least one class in each level offered."
     },
     "back": "Back",
     "removeItem": "Remove {item}",
@@ -1299,6 +1316,10 @@
       "content": {
         "title": "Content",
         "description": "The level's copy in both languages. A tab with a red dot has fields to fix."
+      },
+      "classes": {
+        "title": "Classes in this program",
+        "description": "Classes in order, from the most basic. School-year spans may overlap; placement still follows each child's ability."
       }
     },
     "fields": {
@@ -1338,7 +1359,22 @@
       "imageAlt": "Photo alt text",
       "imageAltHint": "Describe the photo for screen readers and search engines."
     },
-    "previewPlacement": "Home"
+    "previewPlacement": "Home",
+    "classes": {
+      "item": "Class {index}",
+      "empty": "No classes yet. Add classes such as \"Smart Kindy 1\" with their school years.",
+      "name": "Class name",
+      "namePlaceholder": "E.g. Smart Kindy 1",
+      "gradeFrom": "From",
+      "gradeTo": "To",
+      "remove": "Remove class {name}",
+      "focusId": "Learning focus (Indonesian)",
+      "focusEn": "Learning focus (English)",
+      "inUse": "A unit opens this class specifically, so it cannot be removed yet.",
+      "add": "Add class"
+    },
+    "classList": "Classes: {names}",
+    "noClasses": "No classes yet"
   },
   "AdminActivities": {
     "description": "Recurring unit activities shown on Home and the Programs page.",
@@ -1375,7 +1411,7 @@
       "name": "Activity name",
       "summary": "Summary",
       "audience": "For whom",
-      "audienceHint": "E.g. All levels, Kindy & Intro.",
+      "audienceHint": "E.g. All levels, Kindy Class & Elementary.",
       "imageAlt": "Photo alt text",
       "imageAltHint": "Describe the photo for screen readers and search engines."
     },
@@ -1471,7 +1507,11 @@
       "studentsCount": "Active students",
       "studentsHint": "Added up into the student count on Home.",
       "openedAt": "First day of operation",
-      "openedAtHint": "Leave empty if not known yet."
+      "openedAtHint": "Leave empty if not known yet.",
+      "levelsHint": "Tick a level, then choose the classes it opens. All classes ticked means the whole level, including classes added later.",
+      "allClasses": "All classes",
+      "someClasses": "{count} of {total} classes",
+      "classesOf": "{level} classes"
     }
   },
   "AdminQuota": {
@@ -1989,7 +2029,7 @@
       "quote": "Quote",
       "quoteHint": "The person's own words, without quotation marks.",
       "role": "Context",
-      "roleHint": "E.g. Parent of a Kindy student · Kab. Bogor.",
+      "roleHint": "E.g. Parent of a Smart Kindy 2 student · Kab. Bogor.",
       "isPublished": "Show this testimonial on the site",
       "isPublishedHint": "Hidden testimonials are kept but do not appear on the site."
     }

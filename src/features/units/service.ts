@@ -134,3 +134,26 @@ export function searchUnits(units: readonly UnitSummary[], search: UnitSearch): 
   }
   return [...matches].sort((a, b) => a.name.localeCompare(b.name, "id"));
 }
+
+/** What a unit offers in one level: every class (also later ones) or only `classIds`. */
+export type LevelOffer = { levelId: string; allClasses: boolean; classIds: string[] };
+
+/**
+ * Turns the levels and classes ticked in the unit form into what is stored (ADR-040). A level
+ * whose classes are all ticked (or that has none) is offered whole; a level with some ticked
+ * keeps exactly those; a level with classes but none ticked is refused (`null`).
+ */
+export function resolveLevelOffers(
+  levels: readonly { id: string; classIds: readonly string[] }[],
+  chosen: readonly string[],
+): LevelOffer[] | null {
+  const picked = new Set(chosen);
+  const offers: LevelOffer[] = [];
+  for (const level of levels) {
+    const classIds = level.classIds.filter((id) => picked.has(id));
+    if (level.classIds.length > 0 && classIds.length === 0) return null;
+    const allClasses = classIds.length === level.classIds.length;
+    offers.push({ levelId: level.id, allClasses, classIds: allClasses ? [] : classIds });
+  }
+  return offers;
+}

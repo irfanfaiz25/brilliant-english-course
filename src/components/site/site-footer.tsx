@@ -1,13 +1,15 @@
 import { MailIcon, MapPinIcon } from "lucide-react";
 import { cacheLife } from "next/cache";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 
 import { BrandIcon } from "@/components/icons/brand-icon";
 import { Button } from "@/components/ui/button";
 import { mainNav } from "@/config/navigation";
 import { socialNetworkNames, type SocialNetwork } from "@/config/site";
+import { getLevels } from "@/features/programs/queries";
 import { getContactSettings } from "@/features/settings/queries";
 import { Link } from "@/i18n/navigation";
+import type { Locale } from "@/i18n/routing";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 import { DecorBlob } from "./decor-blob";
@@ -31,7 +33,7 @@ export async function SiteFooter() {
   const contact = await getContactSettings();
   const year = await getCopyrightYear();
 
-  const levels = [t("levelKindy"), t("levelIntro"), t("levelSecondary")];
+  const levels = await getLevels((await getLocale()) as Locale);
 
   return (
     <footer className="relative isolate overflow-hidden bg-gradient-teal-deep text-inverse-foreground">
@@ -67,9 +69,9 @@ export async function SiteFooter() {
           </h2>
           <ul className="flex flex-col gap-3">
             {levels.map((level) => (
-              <li key={level}>
-                <Link href="/program" className={footerLinkClass}>
-                  {level}
+              <li key={level.slug}>
+                <Link href={{ pathname: "/program", hash: level.slug }} className={footerLinkClass}>
+                  {t("level", { name: level.name, min: level.ageMin, max: level.ageMax })}
                 </Link>
               </li>
             ))}

@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { enrollmentStatuses, unitStatuses } from "@/config/enums";
 import { limits } from "@/config/limits";
-import { levelSlugSchema } from "@/features/programs/schema";
+import { levelSlugSchema, type LevelBadge } from "@/features/programs/schema";
 import { regionCodeSchema, villageCodeField } from "@/features/regions/schema";
 import {
   integerField,
@@ -47,10 +47,17 @@ export const unitSummarySchema = z.object({
   opensAt: timeSchema,
   closesAt: timeSchema,
   levels: z.array(levelSlugSchema).min(1),
+  /** Levels the unit opens only partly → the class ids it opens there (ADR-040). */
+  someClasses: z.record(levelSlugSchema, z.array(z.uuid())).optional(),
   enrollment: z.enum(enrollmentStatuses),
 });
 
 export type UnitSummary = z.infer<typeof unitSummarySchema>;
+
+/** A level in the unit form with the classes a unit may open. */
+export type UnitLevelOption = LevelBadge & {
+  classes: { id: string; name: string; grades: string }[];
+};
 
 /*
  * Admin form (Phase 4c). The unit code is assigned once when the unit is created; the slug
@@ -89,6 +96,11 @@ export const unitFormSchema = z
     opensAt: timeField,
     closesAt: timeField,
     levels: z.array(levelSlugSchema).min(1, "levelsRequired"),
+    /**
+     * Classes the unit opens (ADR-040). Every class of a level = the whole level, including
+     * classes added later; a subset = only those. Ids outside the chosen levels are ignored.
+     */
+    classIds: z.array(z.uuid()),
     studentsCount: integerField(0, U.studentsMax),
     /** `YYYY-MM-DD`, or "" when the opening date is not known yet. */
     openedAt: z.union([z.literal(""), z.iso.date("dateInvalid")]),

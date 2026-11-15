@@ -114,6 +114,11 @@ async function LevelList() {
                   )}
                 </div>
                 <span className="truncate text-body-sm text-muted-foreground">{level.tagline}</span>
+                <span className="text-body-sm text-foreground">
+                  {level.classes.length > 0
+                    ? t("classList", { names: level.classes.map((item) => item.name).join(" · ") })
+                    : t("noClasses")}
+                </span>
                 <span className="text-caption text-muted-foreground">
                   {t("schedule", {
                     sessions: level.sessionsPerWeek,

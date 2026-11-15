@@ -1,14 +1,20 @@
-import { BookOpenCheckIcon, LayersIcon } from "lucide-react";
+import { BookOpenCheckIcon, InfoIcon, LayersIcon, ListOrderedIcon } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
 import { DecorBlob } from "@/components/site/decor-blob";
 import { Doodle } from "@/components/site/doodle";
+import { LearningPath } from "@/features/programs/components/learning-path";
+import type { Level } from "@/features/programs/schema";
 
-/** Page header: breadcrumb, title and the two facts that frame the curriculum. */
-export async function ProgramHero({ levelCount }: { levelCount: number }) {
+/**
+ * Page header: breadcrumb, title, the facts that frame the curriculum and the learning path of
+ * every class in order (ADR-040).
+ */
+export async function ProgramHero({ levels }: { levels: Level[] }) {
   const t = await getTranslations("Program.hero");
   const tNav = await getTranslations("Nav");
+  const classCount = levels.reduce((total, level) => total + level.classes.length, 0);
 
   return (
     <section aria-labelledby="program-title" className="relative isolate overflow-x-clip">
@@ -41,13 +47,29 @@ export async function ProgramHero({ levelCount }: { levelCount: number }) {
         <ul className="flex animate-rise-in flex-wrap gap-2 [animation-delay:270ms]">
           <li className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-card px-4 py-2 text-label text-foreground shadow-sm">
             <LayersIcon aria-hidden className="size-4 text-primary" />
-            {t("levelsCount", { count: levelCount })}
+            {t("levelsCount", { count: levels.length })}
           </li>
+          {classCount > 0 && (
+            <li className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-card px-4 py-2 text-label text-foreground shadow-sm">
+              <ListOrderedIcon aria-hidden className="size-4 text-primary" />
+              {t("classesCount", { count: classCount })}
+            </li>
+          )}
           <li className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-card px-4 py-2 text-label text-foreground shadow-sm">
             <BookOpenCheckIcon aria-hidden className="size-4 text-partner" />
             {t("sameCurriculum")}
           </li>
         </ul>
+        {classCount > 0 && (
+          <div className="mt-4 flex animate-rise-in flex-col gap-3 [animation-delay:360ms]">
+            <h2 className="text-overline text-muted-foreground uppercase">{t("pathTitle")}</h2>
+            <LearningPath levels={levels} label={t("pathTitle")} />
+            <p className="flex items-start gap-2 text-body-sm text-muted-foreground">
+              <InfoIcon aria-hidden className="mt-0.5 size-4 shrink-0 text-primary" />
+              {t("placement")}
+            </p>
+          </div>
+        )}
       </div>
     </section>
   );
