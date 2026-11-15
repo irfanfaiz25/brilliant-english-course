@@ -327,6 +327,13 @@ Implementation rules:
 - **Level cards:** photo, level color bar, age chip, skills with level-colored checks; whole card is one link to `/program#<slug>`.
   One to four levels sit in a balanced grid (one centered, two side by side, four in a row from `xl`); five or more
   scroll in a `ScrollRail` from `md` (about 3.2 cards per view, so the next one peeks) and stay stacked on phones.
+  With classes (ADR-040) a card adds the school-year span under its tagline ("TK – SD kelas 3") and the class names as
+  level-colored chips; the card stays one link.
+- **Classes on the Program page:** the hero ends with the learning path (`LearningPath`): every class in order, one
+  rounded strip per level with its name as a link, chevrons between classes, strips that hug their content below `lg`
+  and share the row from `lg`; then one line on placement by ability (said once, never per class). Each level section
+  shows its classes under the photo as a numbered vertical path (`ClassPath`, a line in the level color, span on the
+  right, focus line below). Admins never type spans: they pick school years and the label is generated.
 - **Activities:** photo-led cards with text on a dark gradient; CSS scroll-snap row on phones, grid from `md`.
 
 **Beranda, 5a-2:**
