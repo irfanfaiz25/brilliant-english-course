@@ -291,6 +291,7 @@ Create a local super admin with `pnpm auth:create-user --email you@example.com -
 | `pnpm db:regions:build [commit]`           | Refresh `src/db/seed/regions/*` from upstream `cahyadsn/wilayah`; review the diff            |
 | `pnpm auth:create-user --email … --role …` | Create a staff account or, with `--reset-password`, set a new password (local/CI)            |
 | `pnpm db:seed [--reset]`                   | Dev sample content (local/CI only); `--reset` replaces seeded content                        |
+| `pnpm db:starter [--confirm]`              | Production starter content into an empty database, once (ADR-046); dry run without the flag  |
 | `pnpm worker`                              | Added in Phase 6                                                                             |
 
 Git hooks (Husky): pre-commit runs lint-staged and checks `AGENTS.md` == `CLAUDE.md`;

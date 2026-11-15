@@ -173,30 +173,39 @@ release, once no running code uses them).
 
 ## 6. One-off jobs
 
-Run on the server in `/srv/bec`, with the tag of the running release:
+Run on the server as `deploy` (it owns `/srv/bec`), with the tag of the running release:
 
 ```bash
-cd /srv/bec && export BEC_TAG="$(cat current-release)"
-docker compose --profile tools run --rm tools pnpm db:regions               # region dataset (first deploy)
-docker compose --profile tools run --rm tools pnpm auth:create-user \
-  --email you@example.com --name "Name" --role super_admin                  # first super admin
+sudo -u deploy bash -c 'cd /srv/bec && BEC_TAG=$(cat current-release) \
+  docker compose --profile tools run --rm tools pnpm --silent <command>'
 ```
 
-Never run `pnpm db:seed` in production: it refuses to, and sample content must not reach real
+| `<command>`                                                                 | When                                                          |
+| --------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| `db:regions`                                                                | First deploy, and after the region dataset changes            |
+| `db:starter` / `db:starter --confirm`                                       | Once, into the empty database: starter content (ADR-046)      |
+| `auth:create-user --email you@example.com --name "Name" --role super_admin` | First super admin only; it prints a password, run it yourself |
+
+Public pages are cached for hours, so data written outside admin (`db:starter`) appears after the
+next build: run the Deploy workflow by hand afterwards.
+
+Never run `pnpm db:seed` in production: it refuses to, and its sample content must not reach real
 data. The first super admin creates everyone else in Pengguna.
 
 ## 7. First deploy
 
 1. Database roles (§ 4) and `.env` (§ 2).
 2. Run the Deploy workflow by hand. It applies every migration on the empty database.
-3. `pnpm db:regions` and `pnpm auth:create-user` (§ 6).
+3. `db:regions`, then `db:starter --confirm`, then a manual Deploy run so the pages show it (§ 6).
+   The owner runs `auth:create-user` for the first super admin.
 4. Smoke test:
    - public pages and `/admin/masuk`;
    - upload a photo (R2);
    - send a test partner application (delete it before launch);
    - `curl -sI https://dash.beccourses.com | grep -i x-robots` → `noindex`;
    - `/robots.txt` → `Disallow: /`.
-5. The BEC team fills in the real content in admin.
+5. The BEC team checks the starter content (dummy parts are listed in
+   `src/db/seed/starter/content.ts`), replaces the sample photos and adds the rest in admin.
 
 ## 8. Launch on beccourses.com
 

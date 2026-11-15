@@ -689,3 +689,36 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
 - **Follow-up:** The running release meets the new schema before it is replaced, which the
   additive-migration rule already requires. A failed build after a successful migration leaves the
   old release running on the new schema: fix forward.
+
+### ADR-046 — Starter content for production
+
+2026-11-15 · Accepted
+
+- **Decision:** `pnpm db:starter` (`src/db/seed/starter.ts`) loads a one-time starter set into the
+  empty production database, from the tools image:
+  - program levels and classes, activities and FAQ: the reviewed copy of `src/db/seed/content`,
+    with the placeholder photos;
+  - three real partner units from the old site's list (beccourses.com/daftar-mitra-bec-course):
+    BEC-JB-0002 Tanah Baru, BEC-LA-0101 Sukabumi Indah and BEC-JT-0116 Singorojo, keeping their
+    old unit numbers;
+  - the head office contact from the old site.
+
+  What the old site lacks is dummy and listed in `src/db/seed/starter/content.ts`: coordinates,
+  hours, levels, enrollment and student counts of the units; email, office hours and social
+  links. The script shows a dry run without `--confirm`, refuses if any content table already has
+  rows, never updates or deletes, and keeps a contact setting already saved in admin.
+  Testimonials, blog posts and leads are not included: they must be real. The insert logic is
+  shared with the dev seed (`src/db/seed/insert.ts`).
+
+- **Why:** An empty production site cannot be reviewed or shown, and entering three levels with
+  their classes, the activities and the FAQ by hand is slow and error-prone. Real units and contact
+  from the old site keep the preview credible. The dev seed stays local-only because its units,
+  people and testimonials are fictional.
+- **Alternatives:** Running the dev seed in production (fictional people and quotes in real
+  data); everything by hand in admin (slow); importing all 89 old units (unverified data, and the
+  partners must confirm their details first).
+- **Follow-up:**
+  - public pages are cached for hours, so a manual Deploy run follows the import;
+  - the old site links two different head office WhatsApp numbers (0877-8424-1961 on the home
+    page, 0877-4824-1961 on Kontak Kami): BEC confirms one in Pengaturan;
+  - the BEC team replaces the sample photos and dummy unit details.
