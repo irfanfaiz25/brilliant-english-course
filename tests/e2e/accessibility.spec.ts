@@ -66,6 +66,9 @@ test.describe("reduced motion", () => {
   for (const path of pages) {
     test(`nothing moves and all content shows on ${path}`, async ({ page }) => {
       await page.goto(path);
+      // Reveals observe the viewport only once hydrated; scrolling earlier (a busy CI runner)
+      // would pass them by and leave them hidden.
+      await page.waitForLoadState("networkidle");
       // Scroll through so scroll-triggered reveals run.
       await page.evaluate(async () => {
         for (let y = 0; y < document.body.scrollHeight; y += window.innerHeight / 2) {
