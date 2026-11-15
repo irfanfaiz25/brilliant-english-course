@@ -2,20 +2,19 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
-import { Controller, useForm, useWatch } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 
 import { FormFooter } from "@/components/admin/form-footer";
 import { ItemListField } from "@/components/admin/item-list-field";
-import { MediaPicker } from "@/components/admin/media-picker";
+import { PhotoListField } from "@/components/admin/photo-list-field";
 import { UnsavedChangesGuard } from "@/components/admin/unsaved-changes-guard";
-import { useFormErrorText } from "@/components/admin/use-form-error-text";
 import { useSaveForm } from "@/components/admin/use-save-form";
 import { limits } from "@/config/limits";
 import type { MediaOption } from "@/features/media/admin-queries";
 
 import { updatePartnershipTraining } from "../page-actions";
 import {
-  partnershipTrainingSchema,
+  partnershipTrainingFormSchema,
   type PartnershipTraining,
   type PartnershipTrainingInput,
 } from "../page-schema";
@@ -31,7 +30,7 @@ type TrainingFormProps = {
   canEdit: boolean;
 };
 
-/** BEC training: the lesson flow tutors learn, the training formats and a photo. */
+/** BEC training: a photo gallery, the lesson flow tutors learn and the training formats. */
 export function TrainingForm({
   defaultValues,
   mediaOptions,
@@ -39,9 +38,8 @@ export function TrainingForm({
   canEdit,
 }: TrainingFormProps) {
   const t = useTranslations("AdminPartnershipPage");
-  const errorText = useFormErrorText();
   const form = useForm<PartnershipTrainingInput, unknown, PartnershipTraining>({
-    resolver: zodResolver(partnershipTrainingSchema),
+    resolver: zodResolver(partnershipTrainingFormSchema),
     defaultValues,
   });
   const formats = useWatch({ control: form.control, name: "formats" });
@@ -51,22 +49,21 @@ export function TrainingForm({
     <form onSubmit={onSubmit} noValidate>
       <UnsavedChangesGuard when={form.formState.isDirty && !isPending} />
       <fieldset disabled={!canEdit} className="flex flex-col gap-8">
-        <Controller
-          control={form.control}
-          name="imageId"
-          render={({ field, fieldState }) => (
-            <MediaPicker
-              value={field.value}
-              onChange={field.onChange}
-              options={mediaOptions}
-              canUpload={canUploadMedia}
-              label={t("training.photo")}
-              error={errorText(fieldState.error?.message)}
-              disabled={!canEdit}
-              optional
-            />
-          )}
-        />
+        <section className="flex flex-col gap-3">
+          <div className="flex flex-col gap-1">
+            <h3 className="text-label text-foreground">{t("training.photosTitle")}</h3>
+            <p className="text-body-sm text-muted-foreground">{t("training.photosHint")}</p>
+          </div>
+          <PhotoListField
+            form={form}
+            name="photos"
+            mediaOptions={mediaOptions}
+            canUpload={canUploadMedia}
+            max={P.photosMax}
+            captionMax={P.captionMax}
+            disabled={!canEdit}
+          />
+        </section>
         <section className="flex flex-col gap-3">
           <div className="flex flex-col gap-1">
             <h3 className="text-label text-foreground">{t("training.flowTitle")}</h3>

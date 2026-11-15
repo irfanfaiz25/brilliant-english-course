@@ -407,7 +407,14 @@
       "progress": "Tahap {current} dari {total}",
       "previous": "Sebelumnya",
       "next": "Berikutnya",
-      "imageAlt": "Sesi pelatihan tutor BEC"
+      "gallery": {
+        "label": "Momen pelatihan & mitra",
+        "open": "Buka foto {index}",
+        "more": "+{count} foto",
+        "position": "Foto {current} dari {total}",
+        "previous": "Foto sebelumnya",
+        "next": "Foto berikutnya"
+      }
     },
     "fit": {
       "overline": "Siapa cocok",
@@ -1186,6 +1193,16 @@
       "localeEn": "English",
       "title": "Judul",
       "text": "Teks singkat"
+    },
+    "photoList": {
+      "empty": "Belum ada foto. Tambahkan foto pelatihan atau mitra di lapangan.",
+      "item": "Foto {index}",
+      "lead": "Foto utama (tampil besar)",
+      "remove": "Hapus foto {index}",
+      "captionId": "Keterangan (Indonesia)",
+      "captionEn": "Keterangan (English)",
+      "captionPlaceholder": "Contoh: Pelatihan mitra · Unit BEC Boyolali",
+      "add": "Tambah foto"
     }
   },
   "AdminSettings": {
@@ -2282,7 +2299,6 @@
     "training": {
       "title": "Pelatihan",
       "description": "Alur satu sesi kelas BEC yang dipelajari tutor, dan bentuk pelatihannya.",
-      "photo": "Foto pelatihan (opsional)",
       "flowTitle": "Alur mengajar",
       "flowHint": "Tahap satu sesi kelas, berurutan dari pembukaan sampai penutup.",
       "flowItem": "Tahap {index}",
@@ -2290,7 +2306,9 @@
       "formatsTitle": "Bentuk pelatihan",
       "formatsHint": "Misalnya online/offline, administrasi, atau bedah buku.",
       "formatItem": "Bentuk {index}",
-      "addFormat": "Tambah bentuk pelatihan"
+      "addFormat": "Tambah bentuk pelatihan",
+      "photosTitle": "Galeri pelatihan",
+      "photosHint": "Foto sesi pelatihan dan mitra di lapangan. Foto pertama tampil besar; lebih dari tiga foto bisa dilihat lewat tombol \"+N\". Maksimal 8 foto."
     },
     "steps": {
       "title": "Prosedur kemitraan",

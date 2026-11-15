@@ -132,3 +132,24 @@ describe("Kemitraan item icons", () => {
     expect(withIcon("not-an-id")).toBe(false);
   });
 });
+
+describe("Kemitraan training gallery", () => {
+  const { photos: _, ...training } = partnershipPageDefaults.training;
+  const photoId = "8f14e45f-ceea-4672-8b67-6d1b1c5f8c11";
+
+  it("reads the single photo saved before the gallery as a one-photo gallery", () => {
+    expect(partnershipTrainingSchema.parse({ ...training, imageId: photoId }).photos).toEqual([
+      { imageId: photoId, caption: { id: "", en: "" } },
+    ]);
+    expect(partnershipTrainingSchema.parse({ ...training, imageId: "" }).photos).toEqual([]);
+  });
+
+  it("needs a photo on every row and keeps the gallery within its limit", () => {
+    const row = (imageId: string) => ({ imageId, caption: { id: "", en: "" } });
+    const parse = (photos: unknown[]) =>
+      partnershipTrainingSchema.safeParse({ ...training, photos }).success;
+    expect(parse([row(photoId)])).toBe(true);
+    expect(parse([row("")])).toBe(false);
+    expect(parse(Array.from({ length: 9 }, () => row(photoId)))).toBe(false);
+  });
+});

@@ -64,6 +64,15 @@ test.describe("partnership page", () => {
     await expect(page.getByRole("tabpanel")).toContainText("Tahap 2 dari 6");
     await page.getByRole("button", { name: "Berikutnya" }).click();
     await expect(page.getByRole("tabpanel")).toContainText("Tahap 3 dari 6");
+
+    // The training gallery opens a viewer that moves with the arrow keys (the dev seed has photos).
+    await page.getByRole("button", { name: "Buka foto 1" }).filter({ visible: true }).click();
+    const viewer = page.getByRole("dialog");
+    await expect(viewer).toContainText(/Foto 1 dari \d+/);
+    await page.keyboard.press("ArrowRight");
+    await expect(viewer).toContainText(/Foto 2 dari \d+/);
+    await page.keyboard.press("Escape");
+    await expect(viewer).toHaveCount(0);
   });
 
   test("arrives from Cek Unit with the village pre-selected", async ({ page }) => {

@@ -81,6 +81,9 @@ export const limits = {
     formatsMax: 6,
     stepsMin: 3,
     stepsMax: 8,
+    /** Training gallery (photos of sessions and partners). */
+    photosMax: 8,
+    captionMax: 80,
   },
   quota: {
     /** Upper bound of the per-village maximum an admin can set. */

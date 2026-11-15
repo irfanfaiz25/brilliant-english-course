@@ -407,7 +407,14 @@
       "progress": "Stage {current} of {total}",
       "previous": "Previous",
       "next": "Next",
-      "imageAlt": "A BEC tutor training session"
+      "gallery": {
+        "label": "Training & partner moments",
+        "open": "Open photo {index}",
+        "more": "+{count} photos",
+        "position": "Photo {current} of {total}",
+        "previous": "Previous photo",
+        "next": "Next photo"
+      }
     },
     "fit": {
       "overline": "Who fits",
@@ -1186,6 +1193,16 @@
       "localeEn": "English",
       "title": "Title",
       "text": "Short text"
+    },
+    "photoList": {
+      "empty": "No photos yet. Add photos of training sessions or partners in the field.",
+      "item": "Photo {index}",
+      "lead": "Main photo (shown large)",
+      "remove": "Remove photo {index}",
+      "captionId": "Caption (Indonesian)",
+      "captionEn": "Caption (English)",
+      "captionPlaceholder": "E.g. Partner training · BEC unit Boyolali",
+      "add": "Add photo"
     }
   },
   "AdminSettings": {
@@ -2282,7 +2299,6 @@
     "training": {
       "title": "Training",
       "description": "How a BEC lesson runs, as tutors learn it, and the training formats.",
-      "photo": "Training photo (optional)",
       "flowTitle": "Lesson flow",
       "flowHint": "The stages of one lesson, in order from opening to closing.",
       "flowItem": "Stage {index}",
@@ -2290,7 +2306,9 @@
       "formatsTitle": "Training formats",
       "formatsHint": "For example online/in person, admin or book walkthroughs.",
       "formatItem": "Format {index}",
-      "addFormat": "Add format"
+      "addFormat": "Add format",
+      "photosTitle": "Training gallery",
+      "photosHint": "Photos of training sessions and partners in the field. The first is shown large; more than three open from the \"+N\" tile. Up to 8 photos."
     },
     "steps": {
       "title": "Partnership procedure",

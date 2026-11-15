@@ -70,7 +70,8 @@ export type PartnershipPage = {
     items: (Copy & ItemIcon & { group: StarterKitGroup; image: ImageRef | null })[];
   };
   training: {
-    image: ImageRef | null;
+    /** The gallery, photos missing from the library left out. */
+    photos: { image: ImageRef; caption: string }[];
     flow: Copy[];
     formats: (Copy & ItemIcon)[];
   };
@@ -87,7 +88,11 @@ export async function getPartnershipPage(locale: Locale): Promise<PartnershipPag
     (item) => item.iconImageId,
   );
   const media = await getMediaRows(
-    [training.imageId, ...kit.items.map((item) => item.imageId), ...iconImageIds].filter(Boolean),
+    [
+      ...training.photos.map((photo) => photo.imageId),
+      ...kit.items.map((item) => item.imageId),
+      ...iconImageIds,
+    ].filter(Boolean),
   );
   const image = (id: string, alt: string) => {
     const row = id ? media[id] : undefined;
@@ -110,8 +115,11 @@ export async function getPartnershipPage(locale: Locale): Promise<PartnershipPag
       })),
     },
     training: {
-      // Alt text comes from the page copy where the photo is shown.
-      image: image(training.imageId, ""),
+      // The caption is the alt text; the section adds a generic one when a caption is empty.
+      photos: training.photos.flatMap(({ imageId, caption }) => {
+        const ref = image(imageId, caption[locale]);
+        return ref ? [{ image: ref, caption: caption[locale] }] : [];
+      }),
       flow: training.flow.map(({ texts }) => texts[locale]),
       formats: training.formats.map(localize),
     },

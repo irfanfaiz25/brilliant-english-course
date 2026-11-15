@@ -560,7 +560,9 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
   - `partnership`: the starter kit (items grouped as materials, classroom or guides, each with an optional photo)
     plus the starting investment. It replaces the old inclusions list; a stored document in the old shape falls back
     to the code defaults;
-  - `partnershipTraining`: the lesson flow, the training formats and a photo;
+  - `partnershipTraining`: the lesson flow, the training formats and a gallery of up to eight captioned photos
+    (training sessions, partners in the field; `PhotoGallery`). A document saved with the earlier single `imageId`
+    reads as a one-photo gallery;
   - `partnershipSteps`: the procedure, where a step may link to the quota check, the form or WhatsApp.
 
   Every item has fields shared by both locales (an icon from the fixed `partnershipIcons` set, picked from a visual grid,

@@ -417,8 +417,13 @@ Implementation rules:
   show name and description; a card without a photo shows its icon on a tile in the group colour; compact image-left
   rows on phones. Beside it (sticky from `lg`) the package card: item count, investment (only when admins publish it,
   otherwise "explained during the consultation") and WhatsApp.
+- **Training gallery (`PhotoGallery`, `components/site`):** real moments (training, partners at their unit) beside the
+  lesson flow. From `sm` a collage of one large photo and two beside it, the last saying "+N" when more follow; on phones
+  a swipeable row with the next photo peeking. Captions sit on a small pill and are the alt text. Every photo opens a
+  viewer that shows the whole picture (`object-contain`, never cropped) with its caption, position, previous/next and
+  arrow keys.
 - **Training:** the lesson flow as a tab list of numbered stages (arrow/Home/End keys, roving tabindex, the active tab
-  scrolls into view) over a panel with a progress bar and previous/next; no autoplay. Beside it a photo and the training
+  scrolls into view) over a panel with a progress bar and previous/next; no autoplay. Beside it the gallery and the training
   formats; on phones the flow comes first.
 - **Procedure:** the shared timeline, one column per step up to six (rows of four beyond); a step may link to `#kuota`,
   `#daftar` or WhatsApp.
@@ -488,6 +493,8 @@ as an analytics event (`whatsapp_click` with `context`).
 Baseline: Penpot `02 · Dashboard` (Ringkasan, Calon Mitra, Unit Mitra, Kuota Wilayah, Artikel Blog, Tulis Artikel, Ubah Unit, Testimoni).
 
 - **Layout:** collapsible sidebar (icons-only at `lg`, sheet on mobile), top bar with search (⌘K command palette), user menu. Content max width 1280 px.
+- **Current module:** a solid teal pill (`bg-primary`, white label and icon, `shadow-glow-primary`), the same language
+  as the active tab on the public site; other items get only a soft white hover, so the current one always stands out.
 - **Tables:** TanStack Table — server-side pagination, sorting and filters reflected in the URL; column visibility; row actions in a menu; bulk actions where useful (leads status); CSV export for leads.
 - **Forms:** two-column on desktop, single column on mobile; sticky footer with Save/Cancel; unsaved-changes guard; optimistic toasts; destructive actions behind a confirm dialog that names the item.
 - **Localized fields:** tabs `ID | EN` inside the form, with a dot indicator for missing EN translation.

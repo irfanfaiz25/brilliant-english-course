@@ -91,12 +91,43 @@ export type PartnershipKitFormInput = z.input<typeof partnershipKitFormSchema>;
 export const toInvestment = (raw: string): number | null =>
   raw.trim() === "" ? null : Number(raw.trim());
 
-/** `partnershipTraining`: how a BEC lesson runs, step by step, and the training formats. */
-export const partnershipTrainingSchema = z.object({
-  imageId: optionalImageField,
+/**
+ * `partnershipTraining`: how a BEC lesson runs, step by step, the training formats and a gallery
+ * of training photos.
+ */
+const trainingFields = z.object({
+  /** Gallery of training sessions and partners in the field; the first is the large photo. */
+  photos: z
+    .array(
+      z.object({
+        imageId: z.uuid("imageRequired"),
+        caption: z.object({
+          id: textField(0, P.captionMax),
+          en: textField(0, P.captionMax),
+        }),
+      }),
+    )
+    .max(P.photosMax, `tooMany:${P.photosMax}`),
   flow: list(z.object({ texts: itemTextsSchema }), P.flowMin, P.flowMax),
   formats: list(z.object({ ...iconFields, texts: itemTextsSchema }), 1, P.formatsMax),
 });
+
+/**
+ * Before the gallery the section held one `imageId`: such a document reads as a gallery of that
+ * one photo without a caption, so nothing saved is lost.
+ */
+function fromSinglePhoto(value: unknown): unknown {
+  if (typeof value !== "object" || value === null || "photos" in value) return value;
+  const { imageId, ...rest } = value as { imageId?: unknown };
+  const photos =
+    typeof imageId === "string" && imageId ? [{ imageId, caption: { id: "", en: "" } }] : [];
+  return { ...rest, photos };
+}
+
+export const partnershipTrainingSchema = z.preprocess(fromSinglePhoto, trainingFields);
+
+/** The same section as the admin form edits it (always in the gallery shape). */
+export const partnershipTrainingFormSchema = trainingFields;
 
 /** `partnershipSteps`: the procedure from checking the quota to joining the partner group. */
 export const partnershipStepsSchema = z.object({
@@ -118,7 +149,7 @@ export type PartnershipSteps = z.output<typeof partnershipStepsSchema>;
 
 export type PartnershipBenefitsInput = z.input<typeof partnershipBenefitsSchema>;
 export type PartnershipKitInput = z.input<typeof partnershipKitSchema>;
-export type PartnershipTrainingInput = z.input<typeof partnershipTrainingSchema>;
+export type PartnershipTrainingInput = z.input<typeof trainingFields>;
 export type PartnershipStepsInput = z.input<typeof partnershipStepsSchema>;
 
 /** Every editable section of the page, as stored. */

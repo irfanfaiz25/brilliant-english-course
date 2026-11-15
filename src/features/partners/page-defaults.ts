@@ -222,7 +222,7 @@ export const partnershipKitDefaults: PartnershipKit = {
 };
 
 export const partnershipTrainingDefaults: PartnershipTraining = {
-  imageId: "",
+  photos: [],
   flow: [
     {
       texts: texts(

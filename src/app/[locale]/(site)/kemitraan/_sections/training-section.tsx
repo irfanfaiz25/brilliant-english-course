@@ -1,9 +1,9 @@
-import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 
 import { Reveal } from "@/components/motion/reveal";
 import { Stagger, StaggerItem } from "@/components/motion/stagger";
 import { DecorBlob } from "@/components/site/decor-blob";
+import { PhotoGallery } from "@/components/site/photo-gallery";
 import { Section } from "@/components/site/section";
 import { SectionHeader } from "@/components/site/section-header";
 import { ItemIcon } from "@/features/partners/components/item-icon";
@@ -15,7 +15,7 @@ import { LessonFlow } from "./lesson-flow";
 
 /**
  * BEC training (ADR-041): the lesson flow tutors learn as an interactive walk-through, beside a
- * photo of a session and the training formats (online/offline, admin, book walkthroughs).
+ * gallery of real training moments and the training formats (online/offline, admin, books).
  */
 export async function TrainingSection({ training }: { training: PartnershipPage["training"] }) {
   const t = await getTranslations("Partnership.training");
@@ -32,17 +32,19 @@ export async function TrainingSection({ training }: { training: PartnershipPage[
 
       <div className="mt-10 grid grid-cols-1 items-start gap-8 lg:mt-14 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-10">
         <div className="flex min-w-0 flex-col gap-4">
-          {training.image && (
-            <Reveal className="relative aspect-[16/10] overflow-hidden rounded-3xl border-4 border-background shadow-lg">
-              <Image
-                src={training.image.src}
-                alt={t("imageAlt")}
-                fill
-                sizes="(min-width: 1024px) 40vw, 100vw"
-                className="object-cover"
-              />
-            </Reveal>
-          )}
+          <Reveal>
+            <PhotoGallery
+              photos={training.photos}
+              labels={{
+                gallery: t("gallery.label"),
+                open: t.raw("gallery.open") as string,
+                more: t.raw("gallery.more") as string,
+                position: t.raw("gallery.position") as string,
+                previous: t("gallery.previous"),
+                next: t("gallery.next"),
+              }}
+            />
+          </Reveal>
           <Stagger as="ul" className={cn(balancedGridClass, "gap-3")}>
             {training.formats.map((format, index) => (
               <StaggerItem
