@@ -43,7 +43,7 @@ Visitor ──► Cloudflare (DNS proxied, SSL Full (strict), cache)
 | Secret   | `BUILD_DATABASE_URL`    | `postgres://bec_build:…@<host>:<port>/bec` (read-only role, see § 4)    |
 | Secret   | `DEPLOY_SSH_KEY`        | Private key whose public half is the `deploy` user's forced-command key |
 | Secret   | `DEPLOY_KNOWN_HOSTS`    | `ssh-keyscan -t ed25519 <server ip>` output                             |
-| Variable | `DEPLOY_HOST`           | Server IP                                                               |
+| Variable | `DEPLOY_HOST`           | Server IP. Also a **repository** variable: it switches Deploy on        |
 | Variable | `NEXT_PUBLIC_SITE_URL`  | `https://dash.beccourses.com` (at launch: `https://beccourses.com`)     |
 | Variable | `NEXT_PUBLIC_MEDIA_URL` | `https://media.beccourses.com`                                          |
 | Variable | `SITE_INDEXING`         | `false` (at launch: `true`)                                             |
@@ -126,18 +126,21 @@ reset role;
 
 ## 5. Releasing
 
-1. Merge a pull request into `staging`. Its CI already passed (branch protection, § 5.1). **Deploy**
-   builds both images and calls `deploy.sh deploy <sha>` on the server; it is not tested again.
-2. `deploy.sh`:
-   1. pulls the images;
-   2. runs the migrations from the tools image under an advisory lock (if they fail, the running
-      release stays);
-   3. starts the new app;
-   4. waits up to 120 s for `/api/health` to report the new version.
+1. Merge a pull request into `staging`. Its CI already passed (branch protection, § 5.1), so it is not
+   tested again. **Deploy** runs four jobs in order (ADR-045):
+   1. **Tools image**: build and push `bec-tools:<sha>`.
+   2. **Migrate**: `deploy.sh migrate <sha>` applies the migrations on the server, under an
+      advisory lock. If they fail, nothing else runs and the current release stays.
+   3. **App image**: build `bec:<sha>`, prerendering public pages from the now up-to-date database
+      (read-only role), and push it.
+   4. **Release**: `deploy.sh deploy <sha>` pulls the app, runs migrations again (a no-op, so a
+      manual deploy is always complete), starts the app and waits up to 120 s for `/api/health` to
+      report the new version. If it is not healthy, the previous release starts again and the
+      workflow fails.
+2. The workflow then checks that the public URL serves the new version.
 
-   If the new release is not healthy, it starts the previous one again and the workflow fails.
-
-3. The workflow then checks the public URL serves the new version.
+Between steps 2 and 4 the running release works against the new schema. That is why migrations must
+be additive (§ Rollback).
 
 Manual release of a commit on `staging`, e.g. to rebuild after changing a GitHub variable: Actions →
 Deploy → Run workflow (optional `ref`). Deploys queue: one runs at a time.
