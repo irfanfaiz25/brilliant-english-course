@@ -46,6 +46,9 @@ ARG NEXT_PUBLIC_SITE_URL
 ARG NEXT_PUBLIC_MEDIA_URL
 ARG SITE_INDEXING=false
 ARG APP_VERSION=dev
+# Changes on every CI run, so the build below never comes from the layer cache: it prerenders from
+# the database, whose content can change while the source does not (ADR-046).
+ARG BUILD_ID=local
 ENV NODE_ENV=production \
     NEXT_OUTPUT=standalone \
     NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL} \
@@ -55,6 +58,7 @@ ENV NODE_ENV=production \
 # The auth secret only has to pass validation here: nothing is signed during the build.
 RUN --mount=type=secret,id=database_url,required=true \
     --mount=type=cache,id=next-cache,target=/app/.next/cache \
+    echo "Build ${BUILD_ID}" && \
     DATABASE_URL="$(cat /run/secrets/database_url)" \
     BETTER_AUTH_SECRET="$(head -c 48 /dev/urandom | base64)" \
     pnpm build

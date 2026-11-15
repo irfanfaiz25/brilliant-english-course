@@ -718,7 +718,9 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
   data); everything by hand in admin (slow); importing all 89 old units (unverified data, and the
   partners must confirm their details first).
 - **Follow-up:**
-  - public pages are cached for hours, so a manual Deploy run follows the import;
+  - public pages are cached for hours, so a manual Deploy run follows the import. The app build
+    never comes from the layer cache (`BUILD_ID` = the workflow run), otherwise a rebuild of an
+    unchanged commit reuses the old prerender and the new data never shows;
   - the old site links two different head office WhatsApp numbers (0877-8424-1961 on the home
     page, 0877-4824-1961 on Kontak Kami): BEC confirms one in Pengaturan;
   - the BEC team replaces the sample photos and dummy unit details.
