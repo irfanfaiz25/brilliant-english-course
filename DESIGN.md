@@ -409,7 +409,10 @@ Implementation rules:
   columns with dividers from `sm`, a divided list on phones (§ 2.3 Balanced grids).
 - **Benefits (bento):** featured benefits on large deep-teal cards, the rest on light cards; both are balanced grids, so
   the last row is always full (a widened card puts its icon beside the text). Icons come from the fixed
-  `PartnershipIcon` set.
+  `PartnershipIcon` set or are a custom image (shown whole, `object-contain`, in the same tile).
+- **Admin icon picker:** a segmented "Ikon bawaan / Gambar sendiri" switch; built-in icons as a wrapping grid of 44 px
+  radio tiles (arrow keys move, the chosen tile turns partner-soft), custom icons through `MediaPicker` with the square
+  `icon` preview. Going back to the built-in icon clears the custom image.
 - **Starter kit:** filter chips per group with counts (`aria-pressed`, a polite live count) over item cards that always
   show name and description; a card without a photo shows its icon on a tile in the group colour; compact image-left
   rows on phones. Beside it (sticky from `lg`) the package card: item count, investment (only when admins publish it,

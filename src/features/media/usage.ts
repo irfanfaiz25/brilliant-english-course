@@ -26,10 +26,15 @@ import type { SettingKey } from "@/features/settings/keys";
  */
 
 /**
- * Settings whose JSON may hold photo ids: the Kemitraan page sections (ADR-041). Ids are UUIDs, so
+ * Settings whose JSON may hold photo or custom icon ids: the Kemitraan page sections (ADR-041). Ids are UUIDs, so
  * a text search of the document finds exactly the photos it uses.
  */
-const pagePhotoKeys: readonly SettingKey[] = ["partnership", "partnershipTraining"];
+const pagePhotoKeys: readonly SettingKey[] = [
+  "partnership",
+  "partnershipBenefits",
+  "partnershipTraining",
+  "partnershipSteps",
+];
 
 /** The library row in correlated subqueries (Drizzle leaves columns unqualified there). */
 const assetIdColumn = sql`"media_assets"."id"`;

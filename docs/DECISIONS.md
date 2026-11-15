@@ -563,8 +563,10 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
   - `partnershipTraining`: the lesson flow, the training formats and a photo;
   - `partnershipSteps`: the procedure, where a step may link to the quota check, the form or WhatsApp.
 
-  Every item has fields shared by both locales (an icon from the fixed `partnershipIcons` set, photo, group, link) and
-  copy per locale. Admin lists use `ItemListField`, which shows Indonesian and English side by side. Photos are media
+  Every item has fields shared by both locales (an icon from the fixed `partnershipIcons` set, picked from a visual grid,
+  or a custom icon image from the media library that replaces it; photo; group; link) and copy per locale. Custom
+  icons are media images (PNG/WebP/JPEG, never SVG, which the library does not accept); `iconImageId` defaults to ""
+  so sections saved before custom icons existed still parse. Admin lists use `ItemListField`, which shows Indonesian and English side by side. Photos are media
   ids; `usage.ts` finds them in these settings, so the library will not delete a photo in use, and a missing photo
   falls back to the item's icon. Code defaults (`page-defaults.ts`) carry the real copy without photos; the dev seed
   adds sample photos only when the settings are missing. The procedure merges "submit the form to the admin" into

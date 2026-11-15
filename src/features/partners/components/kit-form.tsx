@@ -25,8 +25,7 @@ import {
   type PartnershipKitFormInput,
   type PartnershipKitInput,
 } from "../page-schema";
-import { IconSelect } from "./icon-select";
-import { PartnershipIcon } from "./partnership-icon";
+import { IconPicker, ItemIconBadge } from "./icon-picker";
 
 const P = limits.partnershipPage;
 const blank = { title: "", text: "" };
@@ -85,18 +84,20 @@ export function KitForm({ defaultValues, mediaOptions, canUploadMedia, canEdit }
           newItem={() => ({
             group: "materials" as const,
             icon: "package" as const,
+            iconImageId: "",
             imageId: "",
             texts: { id: blank, en: blank },
           })}
-          renderBadge={(index) => {
-            const icon = items?.[index]?.icon;
-            return icon ? (
-              <PartnershipIcon name={icon} className="size-4 shrink-0 text-partner" />
-            ) : null;
-          }}
+          renderBadge={(index) => (
+            <ItemIconBadge
+              icon={items?.[index]?.icon}
+              iconImageId={items?.[index]?.iconImageId}
+              mediaOptions={mediaOptions}
+            />
+          )}
           renderShared={(index) => (
-            <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]">
-              <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4">
+              <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]">
                 <Field label={t("kit.group")}>
                   {(control) => (
                     <NativeSelect {...control} {...form.register(`items.${index}.group`)}>
@@ -108,27 +109,30 @@ export function KitForm({ defaultValues, mediaOptions, canUploadMedia, canEdit }
                     </NativeSelect>
                   )}
                 </Field>
-                <IconSelect
-                  field={form.register(`items.${index}.icon`)}
-                  value={items?.[index]?.icon}
-                  label={t("fields.icon")}
+                <Controller
+                  control={form.control}
+                  name={`items.${index}.imageId`}
+                  render={({ field, fieldState }) => (
+                    <MediaPicker
+                      value={field.value}
+                      onChange={field.onChange}
+                      options={mediaOptions}
+                      canUpload={canUploadMedia}
+                      label={t("fields.photo")}
+                      error={errorText(fieldState.error?.message)}
+                      disabled={!canEdit}
+                      optional
+                    />
+                  )}
                 />
               </div>
-              <Controller
+              <IconPicker
                 control={form.control}
-                name={`items.${index}.imageId`}
-                render={({ field, fieldState }) => (
-                  <MediaPicker
-                    value={field.value}
-                    onChange={field.onChange}
-                    options={mediaOptions}
-                    canUpload={canUploadMedia}
-                    label={t("fields.photo")}
-                    error={errorText(fieldState.error?.message)}
-                    disabled={!canEdit}
-                    optional
-                  />
-                )}
+                iconName={`items.${index}.icon`}
+                imageName={`items.${index}.iconImageId`}
+                mediaOptions={mediaOptions}
+                canUpload={canUploadMedia}
+                disabled={!canEdit}
               />
             </div>
           )}

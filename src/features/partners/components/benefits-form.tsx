@@ -10,6 +10,7 @@ import { PublishedCheckbox } from "@/components/admin/published-checkbox";
 import { UnsavedChangesGuard } from "@/components/admin/unsaved-changes-guard";
 import { useSaveForm } from "@/components/admin/use-save-form";
 import { limits } from "@/config/limits";
+import type { MediaOption } from "@/features/media/admin-queries";
 
 import { updatePartnershipBenefits } from "../page-actions";
 import {
@@ -17,8 +18,7 @@ import {
   type PartnershipBenefits,
   type PartnershipBenefitsInput,
 } from "../page-schema";
-import { IconSelect } from "./icon-select";
-import { PartnershipIcon } from "./partnership-icon";
+import { IconPicker, ItemIconBadge } from "./icon-picker";
 
 const P = limits.partnershipPage;
 const blank = { title: "", text: "" };
@@ -26,9 +26,13 @@ const blank = { title: "", text: "" };
 /** Why join BEC: the benefit cards; `featured` ones are large and also lead the hero. */
 export function BenefitsForm({
   defaultValues,
+  mediaOptions,
+  canUploadMedia,
   canEdit,
 }: {
   defaultValues: PartnershipBenefitsInput;
+  mediaOptions: readonly MediaOption[];
+  canUploadMedia: boolean;
   canEdit: boolean;
 }) {
   const t = useTranslations("AdminPartnershipPage");
@@ -55,21 +59,26 @@ export function BenefitsForm({
           disabled={!canEdit}
           newItem={() => ({
             icon: "sparkles" as const,
+            iconImageId: "",
             featured: false,
             texts: { id: blank, en: blank },
           })}
-          renderBadge={(index) => {
-            const icon = items?.[index]?.icon;
-            return icon ? (
-              <PartnershipIcon name={icon} className="size-4 shrink-0 text-partner" />
-            ) : null;
-          }}
+          renderBadge={(index) => (
+            <ItemIconBadge
+              icon={items?.[index]?.icon}
+              iconImageId={items?.[index]?.iconImageId}
+              mediaOptions={mediaOptions}
+            />
+          )}
           renderShared={(index) => (
-            <div className="grid gap-4 md:grid-cols-2 md:items-end">
-              <IconSelect
-                field={form.register(`items.${index}.icon`)}
-                value={items?.[index]?.icon}
-                label={t("fields.icon")}
+            <div className="flex flex-col gap-4">
+              <IconPicker
+                control={form.control}
+                iconName={`items.${index}.icon`}
+                imageName={`items.${index}.iconImageId`}
+                mediaOptions={mediaOptions}
+                canUpload={canUploadMedia}
+                disabled={!canEdit}
               />
               <PublishedCheckbox
                 label={t("benefits.featured")}

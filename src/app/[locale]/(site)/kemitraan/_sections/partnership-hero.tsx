@@ -9,7 +9,7 @@ import { Doodle } from "@/components/site/doodle";
 import { Button } from "@/components/ui/button";
 import { getQuotaRules } from "@/features/quota/queries";
 import { placeholderImages } from "@/config/placeholder-images";
-import { PartnershipIcon } from "@/features/partners/components/partnership-icon";
+import { ItemIcon } from "@/features/partners/components/item-icon";
 import type { PartnershipPage } from "@/features/partners/queries";
 import type { NetworkStats } from "@/features/units/schema";
 
@@ -89,7 +89,7 @@ export async function PartnershipHero({
               {highlights.map((item) => (
                 <li key={item.title} className="flex items-center gap-3 px-4 py-3">
                   <span className="inline-flex size-9 shrink-0 items-center justify-center rounded-xl bg-card text-partner shadow-sm">
-                    <PartnershipIcon name={item.icon} className="size-5" />
+                    <ItemIcon item={item} className="size-5" />
                   </span>
                   <span className="text-label leading-snug text-foreground">{item.title}</span>
                 </li>

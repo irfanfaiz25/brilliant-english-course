@@ -19,8 +19,7 @@ import {
   type PartnershipTraining,
   type PartnershipTrainingInput,
 } from "../page-schema";
-import { IconSelect } from "./icon-select";
-import { PartnershipIcon } from "./partnership-icon";
+import { IconPicker, ItemIconBadge } from "./icon-picker";
 
 const P = limits.partnershipPage;
 const blank = { title: "", text: "" };
@@ -101,21 +100,27 @@ export function TrainingForm({
             titleMax={P.titleMax}
             textMax={P.textMax}
             disabled={!canEdit}
-            newItem={() => ({ icon: "graduation" as const, texts: { id: blank, en: blank } })}
-            renderBadge={(index) => {
-              const icon = formats?.[index]?.icon;
-              return icon ? (
-                <PartnershipIcon name={icon} className="size-4 shrink-0 text-partner" />
-              ) : null;
-            }}
+            newItem={() => ({
+              icon: "graduation" as const,
+              iconImageId: "",
+              texts: { id: blank, en: blank },
+            })}
+            renderBadge={(index) => (
+              <ItemIconBadge
+                icon={formats?.[index]?.icon}
+                iconImageId={formats?.[index]?.iconImageId}
+                mediaOptions={mediaOptions}
+              />
+            )}
             renderShared={(index) => (
-              <div className="max-w-md">
-                <IconSelect
-                  field={form.register(`formats.${index}.icon`)}
-                  value={formats?.[index]?.icon}
-                  label={t("fields.icon")}
-                />
-              </div>
+              <IconPicker
+                control={form.control}
+                iconName={`formats.${index}.icon`}
+                imageName={`formats.${index}.iconImageId`}
+                mediaOptions={mediaOptions}
+                canUpload={canUploadMedia}
+                disabled={!canEdit}
+              />
             )}
           />
         </section>

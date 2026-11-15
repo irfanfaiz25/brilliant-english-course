@@ -24,6 +24,8 @@ type MediaPickerProps = {
   canUpload?: boolean;
   /** The image is optional: offers removing it (the field then holds ""). */
   optional?: boolean;
+  /** `icon`: a small square preview showing the whole image (custom icons), not a photo crop. */
+  preview?: "photo" | "icon";
 };
 
 /** Image field: a preview of the picked image and the media library dialog to pick another. */
@@ -36,6 +38,7 @@ export function MediaPicker({
   disabled,
   canUpload = false,
   optional = false,
+  preview = "photo",
 }: MediaPickerProps) {
   const t = useTranslations("AdminForms.media");
   const [open, setOpen] = useState(false);
@@ -54,14 +57,19 @@ export function MediaPicker({
           error ? "border-destructive" : "border-border/70",
         )}
       >
-        <div className="relative aspect-[3/2] w-full shrink-0 overflow-hidden rounded-lg bg-muted @sm:w-48">
+        <div
+          className={cn(
+            "relative shrink-0 overflow-hidden rounded-lg bg-muted",
+            preview === "icon" ? "size-20 bg-dots p-3" : "aspect-[3/2] w-full @sm:w-48",
+          )}
+        >
           {selected ? (
             <Image
               src={selected.src}
               alt=""
               fill
-              sizes="(min-width: 640px) 352px, 100vw"
-              className="object-cover"
+              sizes={preview === "icon" ? "5rem" : "(min-width: 640px) 352px, 100vw"}
+              className={preview === "icon" ? "object-contain p-3" : "object-cover"}
             />
           ) : (
             <span className="flex size-full items-center justify-center text-muted-foreground">

@@ -2254,6 +2254,13 @@
       "icon": "Ikon",
       "photo": "Foto (opsional)"
     },
+    "iconPicker": {
+      "mode": "Jenis ikon",
+      "icon": "Ikon bawaan",
+      "image": "Gambar sendiri",
+      "icons": "Pilih ikon",
+      "imageHint": "Unggah PNG atau WebP persegi berlatar transparan (minimal 128 × 128 px). Gambar ini menggantikan ikon di situs; hapus gambarnya untuk kembali ke ikon bawaan."
+    },
     "benefits": {
       "title": "Keuntungan",
       "description": "Alasan bergabung. Keuntungan unggulan tampil lebih besar dan juga di bagian atas halaman.",

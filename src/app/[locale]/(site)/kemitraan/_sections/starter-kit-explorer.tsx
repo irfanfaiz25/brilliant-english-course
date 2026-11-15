@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 
-import { PartnershipIcon } from "@/features/partners/components/partnership-icon";
+import { ItemIcon } from "@/features/partners/components/item-icon";
 import type { PartnershipPage } from "@/features/partners/queries";
 import type { StarterKitGroup } from "@/features/partners/page-schema";
 import { fillTemplate } from "@/lib/template";
@@ -108,7 +108,7 @@ export function StarterKitExplorer({ items, labels }: StarterKitExplorerProps) {
                   )}
                 >
                   <span className="inline-flex size-11 items-center justify-center rounded-xl bg-card shadow-card transition-transform duration-(--duration-base) ease-out group-hover:-rotate-6 sm:size-14 sm:rounded-2xl">
-                    <PartnershipIcon name={item.icon} className="size-5 sm:size-7" />
+                    <ItemIcon item={item} className="size-5 sm:size-7" />
                   </span>
                 </span>
               )}

@@ -2254,6 +2254,13 @@
       "icon": "Icon",
       "photo": "Photo (optional)"
     },
+    "iconPicker": {
+      "mode": "Icon type",
+      "icon": "Built-in icon",
+      "image": "Own image",
+      "icons": "Choose an icon",
+      "imageHint": "Upload a square PNG or WebP with a transparent background (at least 128 × 128 px). It replaces the icon on the site; remove it to go back to the built-in icon."
+    },
     "benefits": {
       "title": "Benefits",
       "description": "Why join. Featured benefits are shown larger and at the top of the page.",

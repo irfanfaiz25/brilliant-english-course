@@ -6,7 +6,7 @@ import { Stagger, StaggerItem } from "@/components/motion/stagger";
 import { DecorBlob } from "@/components/site/decor-blob";
 import { Section } from "@/components/site/section";
 import { SectionHeader } from "@/components/site/section-header";
-import { PartnershipIcon } from "@/features/partners/components/partnership-icon";
+import { ItemIcon } from "@/features/partners/components/item-icon";
 import type { PartnershipPage } from "@/features/partners/queries";
 import { getContactSettings } from "@/features/settings/queries";
 import { cn } from "@/lib/utils";
@@ -114,7 +114,7 @@ export async function StepsSection({ steps }: { steps: PartnershipPage["steps"] 
                     : "border border-border/60 bg-card text-partner",
                 )}
               >
-                <PartnershipIcon name={step.icon} className="size-6" />
+                <ItemIcon item={step} className="size-6" />
                 <span className="absolute -top-2 -right-2 inline-flex size-6 items-center justify-center rounded-full bg-primary text-caption font-semibold text-primary-foreground">
                   {index + 1}
                 </span>

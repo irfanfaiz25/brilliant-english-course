@@ -162,8 +162,9 @@ Rules:
   templates from `gradeLabelsFor()` / `useGradeLabels()`), shown with `LearningPath` and `ClassPath`; a unit's classes
   are picked with `LevelOfferField` and stored through `resolveLevelOffers()`.
   The Kemitraan page content (benefits, starter kit + investment, training, procedure) is four settings edited in
-  Halaman Kemitraan (ADR-041): lists use `ItemListField` (`components/admin`, both locales side by side), icons come
-  from the fixed `partnershipIcons` set (`PartnershipIcon`), and photos in settings count as media usage (`usage.ts`).
+  Halaman Kemitraan (ADR-041): lists use `ItemListField` (`components/admin`, both locales side by side), icons are
+  picked with `IconPicker` (the fixed `partnershipIcons` grid, or a custom image) and shown with `ItemIcon`, and photos
+  and custom icons in settings count as media usage (`usage.ts`).
   Card lists whose length admins decide use `balancedGridClass` + `balancedItemClass()` (`lib/balanced-grid.ts`), so
   the last row is always full (`DESIGN.md` § 2.3 Balanced grids).
   Charts are hand-built SVG (`components/admin/charts`, geometry in `lib/chart.ts`, colours `chart-1`/`chart-2`): no chart

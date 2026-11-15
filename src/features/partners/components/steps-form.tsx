@@ -11,6 +11,7 @@ import { UnsavedChangesGuard } from "@/components/admin/unsaved-changes-guard";
 import { useSaveForm } from "@/components/admin/use-save-form";
 import { Field } from "@/components/ui/field";
 import { limits } from "@/config/limits";
+import type { MediaOption } from "@/features/media/admin-queries";
 
 import { updatePartnershipSteps } from "../page-actions";
 import {
@@ -19,8 +20,7 @@ import {
   type PartnershipSteps,
   type PartnershipStepsInput,
 } from "../page-schema";
-import { IconSelect } from "./icon-select";
-import { PartnershipIcon } from "./partnership-icon";
+import { IconPicker, ItemIconBadge } from "./icon-picker";
 
 const P = limits.partnershipPage;
 const blank = { title: "", text: "" };
@@ -28,9 +28,13 @@ const blank = { title: "", text: "" };
 /** The partnership procedure, step by step; a step may link to the quota check, form or WhatsApp. */
 export function StepsForm({
   defaultValues,
+  mediaOptions,
+  canUploadMedia,
   canEdit,
 }: {
   defaultValues: PartnershipStepsInput;
+  mediaOptions: readonly MediaOption[];
+  canUploadMedia: boolean;
   canEdit: boolean;
 }) {
   const t = useTranslations("AdminPartnershipPage");
@@ -57,23 +61,32 @@ export function StepsForm({
           disabled={!canEdit}
           newItem={() => ({
             icon: "flag" as const,
+            iconImageId: "",
             action: "none" as const,
             texts: { id: blank, en: blank },
           })}
-          renderBadge={(index) => {
-            const icon = items?.[index]?.icon;
-            return icon ? (
-              <PartnershipIcon name={icon} className="size-4 shrink-0 text-partner" />
-            ) : null;
-          }}
+          renderBadge={(index) => (
+            <ItemIconBadge
+              icon={items?.[index]?.icon}
+              iconImageId={items?.[index]?.iconImageId}
+              mediaOptions={mediaOptions}
+            />
+          )}
           renderShared={(index) => (
-            <div className="grid gap-4 md:grid-cols-2">
-              <IconSelect
-                field={form.register(`items.${index}.icon`)}
-                value={items?.[index]?.icon}
-                label={t("fields.icon")}
+            <div className="flex flex-col gap-4">
+              <IconPicker
+                control={form.control}
+                iconName={`items.${index}.icon`}
+                imageName={`items.${index}.iconImageId`}
+                mediaOptions={mediaOptions}
+                canUpload={canUploadMedia}
+                disabled={!canEdit}
               />
-              <Field label={t("steps.action")} description={t("steps.actionHint")}>
+              <Field
+                label={t("steps.action")}
+                description={t("steps.actionHint")}
+                className="max-w-md"
+              >
                 {(control) => (
                   <NativeSelect {...control} {...form.register(`items.${index}.action`)}>
                     {partnerStepActions.map((action) => (

@@ -93,7 +93,12 @@ async function Editor() {
         description={t("benefits.description")}
         meta={<LastSaved meta={meta.partnershipBenefits} />}
       >
-        <BenefitsForm defaultValues={content.benefits} canEdit={canEdit} />
+        <BenefitsForm
+          defaultValues={content.benefits}
+          mediaOptions={mediaOptions}
+          canUploadMedia={canUploadMedia}
+          canEdit={canEdit}
+        />
       </AdminPanel>
       <AdminPanel
         id="kit"
@@ -127,7 +132,12 @@ async function Editor() {
         description={t("steps.description")}
         meta={<LastSaved meta={meta.partnershipSteps} />}
       >
-        <StepsForm defaultValues={content.steps} canEdit={canEdit} />
+        <StepsForm
+          defaultValues={content.steps}
+          mediaOptions={mediaOptions}
+          canUploadMedia={canUploadMedia}
+          canEdit={canEdit}
+        />
       </AdminPanel>
     </div>
   );

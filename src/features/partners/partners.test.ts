@@ -115,3 +115,20 @@ describe("Kemitraan page forms", () => {
     expect(partnershipStepsSchema.safeParse({ items: [] }).success).toBe(false);
   });
 });
+
+describe("Kemitraan item icons", () => {
+  it("reads a section saved before custom icons existed", () => {
+    const items = partnershipPageDefaults.steps.items.map(({ iconImageId: _, ...item }) => item);
+    const parsed = partnershipStepsSchema.parse({ items });
+    expect(parsed.items.every((item) => item.iconImageId === "")).toBe(true);
+  });
+
+  it("accepts a media id as a custom icon and refuses anything else", () => {
+    const [step, ...rest] = partnershipPageDefaults.steps.items;
+    if (!step) throw new Error("Missing step");
+    const withIcon = (iconImageId: string) =>
+      partnershipStepsSchema.safeParse({ items: [{ ...step, iconImageId }, ...rest] }).success;
+    expect(withIcon("8f14e45f-ceea-4672-8b67-6d1b1c5f8c11")).toBe(true);
+    expect(withIcon("not-an-id")).toBe(false);
+  });
+});

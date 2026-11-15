@@ -59,48 +59,62 @@ async function getMediaRows(ids: readonly string[]): Promise<Record<string, Medi
 
 type Copy = { title: string; text: string };
 
-/** The Kemitraan page content resolved to one locale, photos as image refs. */
+/** An item's icon: the fixed one, and the uploaded image that replaces it when set. */
+export type ItemIcon = { icon: PartnershipIcon; iconImage: ImageRef | null };
+
+/** The Kemitraan page content resolved to one locale, photos and custom icons as image refs. */
 export type PartnershipPage = {
-  benefits: (Copy & { icon: PartnershipIcon; featured: boolean })[];
+  benefits: (Copy & ItemIcon & { featured: boolean })[];
   kit: {
     investment: number | null;
-    items: (Copy & { group: StarterKitGroup; icon: PartnershipIcon; image: ImageRef | null })[];
+    items: (Copy & ItemIcon & { group: StarterKitGroup; image: ImageRef | null })[];
   };
   training: {
     image: ImageRef | null;
     flow: Copy[];
-    formats: (Copy & { icon: PartnershipIcon })[];
+    formats: (Copy & ItemIcon)[];
   };
-  steps: (Copy & { icon: PartnershipIcon; action: PartnerStepAction })[];
+  steps: (Copy & ItemIcon & { action: PartnerStepAction })[];
 };
 
-/** The page content in `locale`. A photo deleted from the library simply falls back to the icon. */
+/**
+ * The page content in `locale`. A photo or custom icon deleted from the library simply falls back
+ * to the item's fixed icon.
+ */
 export async function getPartnershipPage(locale: Locale): Promise<PartnershipPage> {
   const { benefits, kit, training, steps } = await getPartnershipPageContent();
+  const iconImageIds = [...benefits.items, ...kit.items, ...training.formats, ...steps.items].map(
+    (item) => item.iconImageId,
+  );
   const media = await getMediaRows(
-    [training.imageId, ...kit.items.map((item) => item.imageId)].filter(Boolean),
+    [training.imageId, ...kit.items.map((item) => item.imageId), ...iconImageIds].filter(Boolean),
   );
   const image = (id: string, alt: string) => {
     const row = id ? media[id] : undefined;
     return row ? toImageRef(row, alt) : null;
   };
+  // Decorative like the fixed icons: the item's title already says what it is.
+  const localize = <T extends { texts: Record<Locale, Copy>; iconImageId: string }>({
+    texts,
+    iconImageId,
+    ...item
+  }: T) => ({ ...item, ...texts[locale], iconImage: image(iconImageId, "") });
 
   return {
-    benefits: benefits.items.map(({ texts, ...item }) => ({ ...item, ...texts[locale] })),
+    benefits: benefits.items.map(localize),
     kit: {
       investment: kit.investment,
-      items: kit.items.map(({ texts, imageId, ...item }) => ({
-        ...item,
-        ...texts[locale],
-        image: image(imageId, texts[locale].title),
+      items: kit.items.map(({ imageId, ...item }) => ({
+        ...localize(item),
+        image: image(imageId, item.texts[locale].title),
       })),
     },
     training: {
       // Alt text comes from the page copy where the photo is shown.
       image: image(training.imageId, ""),
       flow: training.flow.map(({ texts }) => texts[locale]),
-      formats: training.formats.map(({ texts, ...item }) => ({ ...item, ...texts[locale] })),
+      formats: training.formats.map(localize),
     },
-    steps: steps.items.map(({ texts, ...item }) => ({ ...item, ...texts[locale] })),
+    steps: steps.items.map(localize),
   };
 }

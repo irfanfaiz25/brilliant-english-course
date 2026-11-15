@@ -4,7 +4,7 @@ import { Stagger, StaggerItem } from "@/components/motion/stagger";
 import { DecorBlob } from "@/components/site/decor-blob";
 import { Section } from "@/components/site/section";
 import { SectionHeader } from "@/components/site/section-header";
-import { PartnershipIcon } from "@/features/partners/components/partnership-icon";
+import { ItemIcon } from "@/features/partners/components/item-icon";
 import type { PartnershipPage } from "@/features/partners/queries";
 import { balancedGridClass, balancedItemClass } from "@/lib/balanced-grid";
 import { cn } from "@/lib/utils";
@@ -48,7 +48,7 @@ export async function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
                   className="absolute -top-10 -right-10 -z-10 size-40 rounded-full bg-partner/25 blur-2xl transition-transform duration-(--duration-slow) ease-out group-hover:scale-125"
                 />
                 <span className="inline-flex size-12 items-center justify-center rounded-xl bg-partner text-partner-foreground shadow-glow-partner transition-transform duration-(--duration-base) ease-out group-hover:-rotate-6">
-                  <PartnershipIcon name={item.icon} className="size-6" />
+                  <ItemIcon item={item} className="size-6" />
                 </span>
                 <h3 className="text-h4">{item.title}</h3>
                 {item.text && <p className="text-body text-inverse-muted">{item.text}</p>}
@@ -73,7 +73,7 @@ export async function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
               <article className="group @container h-full rounded-2xl border border-border/60 bg-card p-5 shadow-card transition-[translate,box-shadow] duration-(--duration-base) ease-out hover:-translate-y-1 hover:shadow-lg">
                 <div className="flex flex-col gap-3 @md:flex-row @md:items-start @md:gap-4">
                   <span className="inline-flex size-11 shrink-0 items-center justify-center rounded-xl bg-primary-soft text-primary transition-transform duration-(--duration-base) ease-out group-hover:scale-110 group-hover:-rotate-6">
-                    <PartnershipIcon name={item.icon} className="size-5" />
+                    <ItemIcon item={item} className="size-5" />
                   </span>
                   <div className="flex flex-col gap-1.5">
                     <h3 className="text-h5 text-foreground">{item.title}</h3>

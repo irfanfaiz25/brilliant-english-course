@@ -6,7 +6,7 @@ import { textField } from "@/lib/form-schemas";
 
 /*
  * Content of the Kemitraan page that admins edit (ADR-041): one setting per section, each a list
- * of items whose shared fields (icon, photo, group, link) are stored once and whose copy is stored
+ * of items whose shared fields (icon or custom icon, photo, group, link) are stored once and whose copy is stored
  * per locale. Messages are codes (`lib/form-schemas`), translated by `useFormErrorText()`.
  */
 
@@ -32,6 +32,15 @@ export type ItemTexts = z.output<typeof itemTextsSchema>;
 /** A media library id, or "" for none (the card then shows its icon). */
 const optionalImageField = z.union([z.literal(""), z.uuid()]);
 
+/**
+ * An item's icon: one of the fixed set, optionally replaced by an uploaded image from the media
+ * library (`iconImageId`). Documents saved before custom icons existed read as "" (none).
+ */
+const iconFields = {
+  icon: z.enum(partnershipIcons),
+  iconImageId: optionalImageField.default(""),
+};
+
 const list = <T extends z.ZodType>(item: T, min: number, max: number) =>
   z.array(item).min(min, `tooFew:${min}`).max(max, `tooMany:${max}`);
 
@@ -39,7 +48,7 @@ const list = <T extends z.ZodType>(item: T, min: number, max: number) =>
 export const partnershipBenefitsSchema = z.object({
   items: list(
     z.object({
-      icon: z.enum(partnershipIcons),
+      ...iconFields,
       featured: z.boolean(),
       texts: itemTextsSchema,
     }),
@@ -59,7 +68,7 @@ export const partnershipKitSchema = z.object({
   items: list(
     z.object({
       group: z.enum(starterKitGroups),
-      icon: z.enum(partnershipIcons),
+      ...iconFields,
       imageId: optionalImageField,
       texts: itemTextsSchema,
     }),
@@ -86,18 +95,14 @@ export const toInvestment = (raw: string): number | null =>
 export const partnershipTrainingSchema = z.object({
   imageId: optionalImageField,
   flow: list(z.object({ texts: itemTextsSchema }), P.flowMin, P.flowMax),
-  formats: list(
-    z.object({ icon: z.enum(partnershipIcons), texts: itemTextsSchema }),
-    1,
-    P.formatsMax,
-  ),
+  formats: list(z.object({ ...iconFields, texts: itemTextsSchema }), 1, P.formatsMax),
 });
 
 /** `partnershipSteps`: the procedure from checking the quota to joining the partner group. */
 export const partnershipStepsSchema = z.object({
   items: list(
     z.object({
-      icon: z.enum(partnershipIcons),
+      ...iconFields,
       action: z.enum(partnerStepActions),
       texts: itemTextsSchema,
     }),

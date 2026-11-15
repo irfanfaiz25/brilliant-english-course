@@ -22,6 +22,7 @@ export const partnershipBenefitsDefaults: PartnershipBenefits = {
   items: [
     {
       icon: "coins",
+      iconImageId: "",
       featured: true,
       texts: texts(
         [
@@ -33,6 +34,7 @@ export const partnershipBenefitsDefaults: PartnershipBenefits = {
     },
     {
       icon: "home",
+      iconImageId: "",
       featured: true,
       texts: texts(
         [
@@ -47,6 +49,7 @@ export const partnershipBenefitsDefaults: PartnershipBenefits = {
     },
     {
       icon: "map",
+      iconImageId: "",
       featured: true,
       texts: texts(
         [
@@ -61,6 +64,7 @@ export const partnershipBenefitsDefaults: PartnershipBenefits = {
     },
     {
       icon: "book",
+      iconImageId: "",
       featured: false,
       texts: texts(
         ["Materi lengkap & siap pakai", "Modul, silabus, dan rencana pertemuan sudah disiapkan."],
@@ -72,6 +76,7 @@ export const partnershipBenefitsDefaults: PartnershipBenefits = {
     },
     {
       icon: "layers",
+      iconImageId: "",
       featured: false,
       texts: texts(
         [
@@ -86,6 +91,7 @@ export const partnershipBenefitsDefaults: PartnershipBenefits = {
     },
     {
       icon: "palette",
+      iconImageId: "",
       featured: false,
       texts: texts(
         ["Modul berwarna ukuran besar", "Tampilan menarik yang membuat anak betah belajar."],
@@ -94,6 +100,7 @@ export const partnershipBenefitsDefaults: PartnershipBenefits = {
     },
     {
       icon: "worksheet",
+      iconImageId: "",
       featured: false,
       texts: texts(
         ["Worksheet pengayaan", "Latihan tambahan untuk menguatkan materi setiap pertemuan."],
@@ -102,6 +109,7 @@ export const partnershipBenefitsDefaults: PartnershipBenefits = {
     },
     {
       icon: "chat",
+      iconImageId: "",
       featured: false,
       texts: texts(
         [
@@ -123,6 +131,7 @@ export const partnershipKitDefaults: PartnershipKit = {
     {
       group: "materials",
       icon: "book",
+      iconImageId: "",
       imageId: "",
       texts: texts(
         ["Modul belajar level 1–5", "Modul berwarna untuk setiap tahap belajar."],
@@ -132,6 +141,7 @@ export const partnershipKitDefaults: PartnershipKit = {
     {
       group: "materials",
       icon: "layers",
+      iconImageId: "",
       imageId: "",
       texts: texts(
         ["5 buku BEC 1A", "Untuk murid baru di bulan pertama."],
@@ -141,6 +151,7 @@ export const partnershipKitDefaults: PartnershipKit = {
     {
       group: "materials",
       icon: "clipboard",
+      iconImageId: "",
       imageId: "",
       texts: texts(
         ["Silabus", "Urutan materi dan target setiap level."],
@@ -150,6 +161,7 @@ export const partnershipKitDefaults: PartnershipKit = {
     {
       group: "materials",
       icon: "folder",
+      iconImageId: "",
       imageId: "",
       texts: texts(
         ["Bank data pengayaan", "Kumpulan materi tambahan BEC di Google Drive."],
@@ -159,6 +171,7 @@ export const partnershipKitDefaults: PartnershipKit = {
     {
       group: "classroom",
       icon: "flag",
+      iconImageId: "",
       imageId: "",
       texts: texts(
         ["Banner 2×1 m & 0,5×1 m", "Penanda unit di depan rumah dan di dalam kelas."],
@@ -168,6 +181,7 @@ export const partnershipKitDefaults: PartnershipKit = {
     {
       group: "classroom",
       icon: "dice",
+      iconImageId: "",
       imageId: "",
       texts: texts(
         ["Boardgames", "Permainan papan untuk belajar sambil bermain."],
@@ -177,6 +191,7 @@ export const partnershipKitDefaults: PartnershipKit = {
     {
       group: "guides",
       icon: "presentation",
+      iconImageId: "",
       imageId: "",
       texts: texts(
         ["Teacher handbook", "Panduan mengajar langkah demi langkah untuk tutor."],
@@ -186,6 +201,7 @@ export const partnershipKitDefaults: PartnershipKit = {
     {
       group: "guides",
       icon: "worksheet",
+      iconImageId: "",
       imageId: "",
       texts: texts(
         ["Berkas administrasi bimbel", "Formulir pendaftaran, absensi, dan laporan siswa."],
@@ -195,6 +211,7 @@ export const partnershipKitDefaults: PartnershipKit = {
     {
       group: "guides",
       icon: "graduation",
+      iconImageId: "",
       imageId: "",
       texts: texts(
         ["Pelatihan tutor BEC", "Pelatihan cara mengajar dengan metode BEC."],
@@ -247,6 +264,7 @@ export const partnershipTrainingDefaults: PartnershipTraining = {
   formats: [
     {
       icon: "monitor",
+      iconImageId: "",
       texts: texts(
         ["Online atau offline", "Pilih yang paling mudah: lewat video call atau tatap muka."],
         ["Online or in person", "Whichever is easiest: by video call or face to face."],
@@ -254,6 +272,7 @@ export const partnershipTrainingDefaults: PartnershipTraining = {
     },
     {
       icon: "clipboard",
+      iconImageId: "",
       texts: texts(
         ["Pelatihan administrasi", "Cara mengelola pendaftaran, absensi, dan laporan siswa."],
         ["Admin training", "How to run enrolment, attendance and student reports."],
@@ -261,6 +280,7 @@ export const partnershipTrainingDefaults: PartnershipTraining = {
     },
     {
       icon: "bookSearch",
+      iconImageId: "",
       texts: texts(
         ["Bedah buku bersama", "Membahas buku BEC dan program lainnya bersama tim."],
         ["Book walkthroughs", "Go through BEC books and programs with the team."],
@@ -273,6 +293,7 @@ export const partnershipStepsDefaults: PartnershipSteps = {
   items: [
     {
       icon: "map",
+      iconImageId: "",
       action: "quota",
       texts: texts(
         [
@@ -284,6 +305,7 @@ export const partnershipStepsDefaults: PartnershipSteps = {
     },
     {
       icon: "clipboard",
+      iconImageId: "",
       action: "apply",
       texts: texts(
         ["Isi formulir pendaftaran", "Kirim data singkat; formulirmu langsung diterima admin BEC."],
@@ -292,6 +314,7 @@ export const partnershipStepsDefaults: PartnershipSteps = {
     },
     {
       icon: "coins",
+      iconImageId: "",
       action: "none",
       texts: texts(
         ["Bayar biaya kemitraan", "Rincian biaya dijelaskan tim kemitraan saat konsultasi."],
@@ -303,6 +326,7 @@ export const partnershipStepsDefaults: PartnershipSteps = {
     },
     {
       icon: "calendar",
+      iconImageId: "",
       action: "none",
       texts: texts(
         ["Jadwalkan pelatihan", "Pilih jadwal pelatihan online atau offline."],
@@ -311,6 +335,7 @@ export const partnershipStepsDefaults: PartnershipSteps = {
     },
     {
       icon: "users",
+      iconImageId: "",
       action: "whatsapp",
       texts: texts(
         ["Gabung grup BEC", "Bergabung dengan grup mitra untuk diskusi dan info terbaru."],

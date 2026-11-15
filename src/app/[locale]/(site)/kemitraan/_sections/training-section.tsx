@@ -6,7 +6,7 @@ import { Stagger, StaggerItem } from "@/components/motion/stagger";
 import { DecorBlob } from "@/components/site/decor-blob";
 import { Section } from "@/components/site/section";
 import { SectionHeader } from "@/components/site/section-header";
-import { PartnershipIcon } from "@/features/partners/components/partnership-icon";
+import { ItemIcon } from "@/features/partners/components/item-icon";
 import type { PartnershipPage } from "@/features/partners/queries";
 import { balancedGridClass, balancedItemClass } from "@/lib/balanced-grid";
 import { cn } from "@/lib/utils";
@@ -59,7 +59,7 @@ export async function TrainingSection({ training }: { training: PartnershipPage[
                 )}
               >
                 <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary-soft text-primary">
-                  <PartnershipIcon name={format.icon} className="size-5" />
+                  <ItemIcon item={format} className="size-5" />
                 </span>
                 <span className="flex flex-col gap-0.5">
                   <span className="text-label text-foreground">{format.title}</span>
