@@ -18,7 +18,23 @@ export default defineConfig({
   },
   projects: [
     { name: "desktop", use: { ...devices["Desktop Chrome"] }, testIgnore: "publishing/**" },
-    { name: "mobile", use: { ...devices["Pixel 7"] }, testIgnore: "publishing/**" },
+    // Phones run only the specs whose layout or interaction differs there (navigation, bottom
+    // sheets, swipe rows, the table/card switch) plus the accessibility sweep; the rest behaves
+    // the same at every width and runs once on desktop. Add a spec here when it gains a phone path.
+    {
+      name: "mobile",
+      use: { ...devices["Pixel 7"] },
+      testMatch: [
+        "accessibility.spec.ts",
+        "admin-shell.spec.ts",
+        "blog.spec.ts",
+        "finder.spec.ts",
+        "home.spec.ts",
+        "partnership.spec.ts",
+        "program.spec.ts",
+        "site-shell.spec.ts",
+      ],
+    },
     // Specs that change content the public specs count (posts, testimonials, FAQ) run after them.
     {
       name: "publishing",

@@ -1,18 +1,16 @@
 name: Deploy
 
-# Production release (ADR-043): after CI passes on `main` (a `staging` → `main` merge), build the
-# images, push them to GHCR and start the release on the server through deploy.sh.
-# Runbook, secrets and variables: docs/DEPLOY.md.
+# Production release (ADR-043, ADR-044): every merge into `staging` builds the images, pushes them
+# to GHCR and starts the release on the server through deploy.sh. CI already passed on the pull
+# request (branch protection), so it is not repeated here. Runbook: docs/DEPLOY.md.
 
 on:
-  workflow_run:
-    workflows: [CI]
-    types: [completed]
-    branches: [main]
+  push:
+    branches: [staging]
   workflow_dispatch:
     inputs:
       ref:
-        description: "Commit SHA on main to deploy (default: the latest commit)"
+        description: "Commit SHA on staging to deploy (default: the latest commit)"
         required: false
 
 concurrency:
@@ -29,10 +27,8 @@ env:
 jobs:
   build:
     name: Build images
-    # A push to main whose CI passed (not a pull request into main), or a manual run.
-    if: >-
-      github.event_name == 'workflow_dispatch' ||
-      (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push')
+    # Off until the production environment is configured (docs/DEPLOY.md § 2).
+    if: vars.DEPLOY_HOST != ''
     runs-on: ubuntu-latest
     environment: production
     permissions:
@@ -43,15 +39,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.ref || github.event.workflow_run.head_sha || github.sha }}
+          ref: ${{ inputs.ref || github.sha }}
           fetch-depth: 0
 
       - name: Release id
         id: release
         run: |
           sha="$(git rev-parse HEAD)"
-          # Only commits on main are released.
-          git merge-base --is-ancestor "$sha" origin/main || { echo "$sha is not on main"; exit 1; }
+          # Only commits on the release branch are deployed.
+          git merge-base --is-ancestor "$sha" origin/staging || { echo "$sha is not on staging"; exit 1; }
           echo "sha=${sha:0:12}" >> "$GITHUB_OUTPUT"
 
       - uses: docker/setup-buildx-action@v3

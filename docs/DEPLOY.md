@@ -21,7 +21,8 @@ Visitor ──► Cloudflare (DNS proxied, SSL Full (strict), cache)
   `dash.beccourses.com` with indexing off; at launch `beccourses.com` points to the same server.
 - Images are built in GitHub Actions, never on the server. A release is identified by the
   first 12 characters of its git SHA; `/api/health` reports it as `version`.
-- Releases happen when `staging` is merged into `main` and CI passes.
+- Every pull request merged into `staging` is released (ADR-044). CI runs on the pull request, and
+  branch protection requires it to pass and be up to date before the merge.
 
 ## 2. Configuration
 
@@ -108,8 +109,8 @@ alter default privileges in schema public grant select on tables to bec_build;
 
 ## 5. Releasing
 
-1. Merge `staging` into `main`. CI runs. When it passes, **Deploy** builds both images and calls
-   `deploy.sh deploy <sha>` on the server.
+1. Merge a pull request into `staging`. Its CI already passed (branch protection, § 5.1). **Deploy**
+   builds both images and calls `deploy.sh deploy <sha>` on the server; it is not tested again.
 2. `deploy.sh`:
    1. pulls the images;
    2. runs the migrations from the tools image under an advisory lock (if they fail, the running
@@ -121,9 +122,23 @@ alter default privileges in schema public grant select on tables to bec_build;
 
 3. The workflow then checks the public URL serves the new version.
 
-Manual release of a commit on `main`: Actions → Deploy → Run workflow (optional `ref`).
+Manual release of a commit on `staging`, e.g. to rebuild after changing a GitHub variable: Actions →
+Deploy → Run workflow (optional `ref`). Deploys queue: one runs at a time.
 
 Downtime per release is a few seconds while the app container is replaced.
+
+### 5.1 Branch protection on `staging`
+
+Set on GitHub (Settings → Branches), required for releasing straight from `staging`:
+
+- changes only through pull requests (no direct pushes);
+- required checks: "Lint, typecheck, unit tests", "Migrations apply on a fresh database" and "Build
+  and E2E";
+- branches must be up to date before merging, so the tested combination is what deploys;
+- admins can bypass in an emergency (use a manual Deploy run afterwards).
+
+`main` is not used for releases yet. If a separate release gate is needed after launch, point the
+Deploy trigger back to `main` (ADR-044).
 
 ### Rollback
 
