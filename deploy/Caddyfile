@@ -36,7 +36,9 @@ dash.beccourses.com {
 # 	import common
 # }
 #
-# www.beccourses.com, dash.beccourses.com {
+# dash.beccourses.com {
 # 	tls /certs/origin.pem /certs/origin.key
 # 	redir https://beccourses.com{uri} permanent
 # }
+#
+# `www` is redirected by a Cloudflare Redirect Rule: the Origin Certificate does not cover it.
