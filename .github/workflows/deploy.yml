@@ -133,6 +133,7 @@ jobs:
             NEXT_PUBLIC_MEDIA_URL=${{ vars.NEXT_PUBLIC_MEDIA_URL }}
             SITE_INDEXING=${{ vars.SITE_INDEXING || 'false' }}
             APP_VERSION=${{ needs.tools.outputs.sha }}
+            BUILD_ID=${{ github.run_id }}-${{ github.run_attempt }}
           # Read-only database role: the build only reads published content.
           secrets: |
             database_url=${{ secrets.BUILD_DATABASE_URL }}
