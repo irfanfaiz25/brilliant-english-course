@@ -69,6 +69,10 @@ async function main() {
         await tx.delete(table);
       }
       await tx.delete(schema.mediaAssets).where(like(schema.mediaAssets.key, "/placeholders/%"));
+      // The Kemitraan settings point at those sample photos by id; seed them again below.
+      await tx
+        .delete(schema.settings)
+        .where(inArray(schema.settings.key, ["partnership", "partnershipTraining"]));
       // The sample conversions' audit rows go with their leads.
       await tx
         .delete(schema.auditLog)
