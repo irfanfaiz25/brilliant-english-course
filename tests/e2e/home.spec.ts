@@ -18,10 +18,10 @@ test.describe("home page — top sections", () => {
 
   test("age chips jump to and highlight the matching level", async ({ page }) => {
     await page.goto("/");
-    await page.getByRole("link", { name: "7–9 th — lihat level Intro" }).click();
+    await page.getByRole("link", { name: "7–11 th — lihat Elementary Level" }).click();
 
-    await expect(page).toHaveURL(/#level-intro$/);
-    const card = page.locator("#level-intro");
+    await expect(page).toHaveURL(/#level-elementary$/);
+    const card = page.locator("#level-elementary");
     await expect(card).toBeInViewport();
     expect(await card.evaluate((el) => el.matches(":target"))).toBe(true);
   });

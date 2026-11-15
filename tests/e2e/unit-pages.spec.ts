@@ -61,7 +61,7 @@ test.describe("unit page", () => {
       "href",
       /google\.com\/maps\/search/,
     );
-    await expect(page.getByRole("link", { name: "Lihat program Secondary" })).toHaveAttribute(
+    await expect(page.getByRole("link", { name: "Lihat program Secondary Level" })).toHaveAttribute(
       "href",
       "/program#secondary",
     );

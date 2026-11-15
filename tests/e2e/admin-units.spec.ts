@@ -44,7 +44,7 @@ test.describe("admin units", () => {
     await page.getByLabel(/^Bujur/).fill("106.854");
     await page.getByLabel(/^Nama pengelola/).fill("Ibu Uji");
     await page.getByLabel(/^Nomor WhatsApp unit/).fill("0812-0000-9999");
-    await page.getByLabel("Kindy").check();
+    await page.getByLabel("Kindy Class", { exact: true }).check();
     await expect(page.locator("[inert]")).toContainText(name);
 
     await page.getByLabel(/^Status/).selectOption({ label: "Aktif" });

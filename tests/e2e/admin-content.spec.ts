@@ -29,11 +29,11 @@ test.describe("admin programs", () => {
     page,
   }, testInfo) => {
     await signInTo(page, "/admin/program", e2eUsers(testInfo.project.name).admin.email);
-    await page.getByRole("link", { name: "Ubah level Kindy" }).click();
-    await expect(page.getByRole("heading", { level: 1, name: "Level Kindy" })).toBeVisible();
+    await page.getByRole("link", { name: "Ubah level Kindy Class" }).click();
+    await expect(page.getByRole("heading", { level: 1, name: "Level Kindy Class" })).toBeVisible();
     await page.waitForLoadState("networkidle");
 
-    // Kindy (4–6) may not reach into Intro (7–9).
+    // Kindy Class (4–6) may not reach into Elementary (7–11).
     const ageMax = page.getByLabel(/^Usia maksimal/);
     await ageMax.fill("7");
     await page.getByRole("button", { name: "Simpan perubahan" }).click();
@@ -88,7 +88,7 @@ test.describe("admin programs", () => {
     await expect(page.getByRole("heading", { level: 1, name: "Tambah level" })).toBeVisible();
     await page.waitForLoadState("networkidle");
 
-    // Ages 6–15 overlap Kindy, Intro and Secondary: allowed only outside the age finder.
+    // Ages 6–15 overlap Kindy Class, Elementary and Secondary: allowed only outside the age finder.
     await page.getByLabel(/^Usia minimal/).fill("6");
     await page.getByLabel(/^Usia maksimal/).fill("15");
     await page.getByLabel(/^Tampilkan di pencari usia/).uncheck();
@@ -138,15 +138,61 @@ test.describe("admin programs", () => {
     }
   });
 
+  test("adds a class to a level, shows it on the site and removes it", async ({
+    page,
+  }, testInfo) => {
+    await signInTo(page, "/admin/program/secondary", e2eUsers(testInfo.project.name).admin.email);
+    const name = `Kelas Uji ${Date.now() % 10000}`;
+    const classes = page.getByRole("region", { name: "Kelas dalam program" });
+
+    await classes.getByRole("button", { name: "Tambah kelas" }).click();
+    await classes
+      .getByLabel(/^Nama kelas/)
+      .last()
+      .fill(name);
+    await classes.getByLabel(/^Dari/).last().selectOption({ label: "SMP kelas 3" });
+    await classes
+      .getByLabel(/^Sampai/)
+      .last()
+      .selectOption({ label: "SMP kelas 1" });
+    await page.getByRole("button", { name: "Simpan perubahan" }).click();
+    await expect(
+      classes.getByText("Kelas akhir tidak boleh lebih awal dari kelas awal."),
+    ).toBeVisible();
+    await classes
+      .getByLabel(/^Sampai/)
+      .last()
+      .selectOption({ label: "SMP kelas 3" });
+    await page.getByRole("button", { name: "Simpan perubahan" }).click();
+    await saved(page);
+
+    try {
+      await page.goto("/program");
+      const path = page.getByRole("list", { name: "Jalur belajar BEC" });
+      await expect(path).toContainText(name);
+      await expect(page.getByRole("list", { name: "Kelas di Secondary Level" })).toContainText(
+        "SMP kelas 3",
+      );
+    } finally {
+      await page.goto("/admin/program/secondary");
+      await page.waitForLoadState("networkidle");
+      await page.getByRole("button", { name: `Hapus kelas ${name}` }).click();
+      await page.getByRole("button", { name: "Simpan perubahan" }).click();
+      await saved(page);
+    }
+    await page.goto("/program");
+    await expect(page.getByRole("list", { name: "Jalur belajar BEC" })).not.toContainText(name);
+  });
+
   test("asks before leaving a form with unsaved changes", async ({ page }, testInfo) => {
-    await signInTo(page, "/admin/program/intro", e2eUsers(testInfo.project.name).admin.email);
+    await signInTo(page, "/admin/program/elementary", e2eUsers(testInfo.project.name).admin.email);
     await page.getByLabel(/^Pertemuan per minggu/).fill("3");
     const trail = page.getByRole("navigation", { name: "Jejak navigasi" });
     await trail.getByRole("link", { name: "Program" }).click();
     const dialog = page.getByRole("alertdialog", { name: "Tinggalkan halaman ini?" });
     await expect(dialog).toBeVisible();
     await dialog.getByRole("button", { name: "Batal" }).click();
-    await expect(page).toHaveURL(/\/admin\/program\/intro$/);
+    await expect(page).toHaveURL(/\/admin\/program\/elementary$/);
     await expect(page.getByLabel(/^Pertemuan per minggu/)).toHaveValue("3");
 
     await trail.getByRole("link", { name: "Program" }).click();
