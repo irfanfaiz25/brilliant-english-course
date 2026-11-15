@@ -20,6 +20,7 @@ import { localeRegion, routing, type Locale } from "@/i18n/routing";
 import { absoluteUrl } from "@/lib/seo/absolute-url";
 import { localizedAlternates } from "@/lib/seo/alternates";
 import { articleJsonLd, JsonLd } from "@/lib/seo/json-ld";
+import { atLeastOneParam, placeholderParam } from "@/lib/static-params";
 
 import { PostCta } from "./_sections/post-cta";
 import { PostHeader } from "./_sections/post-header";
@@ -33,7 +34,10 @@ type Props = PageProps<"/[locale]/blog/[slug]">;
 export async function generateStaticParams({ params }: { params: { locale: string } }) {
   if (!hasLocale(routing.locales, params.locale)) return [];
   const slugs = await getPostSlugs(params.locale);
-  return slugs.map((slug) => ({ slug }));
+  return atLeastOneParam(
+    slugs.map((slug) => ({ slug })),
+    { slug: placeholderParam },
+  );
 }
 
 const postHref = (slug: string) => ({ pathname: "/blog/[slug]" as const, params: { slug } });
