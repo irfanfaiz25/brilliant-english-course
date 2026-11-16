@@ -446,21 +446,28 @@
   }
 }
 
-/* Scroll-linked drift for decorative layers (CSS scroll-driven; static where unsupported). */
+/*
+ * Scroll-linked drift for decorative layers (CSS scroll-driven; static where unsupported). Mouse and
+ * trackpad devices only: on iPhone, scroll-animating these large blurred layers left parts of
+ * nearby content unpainted (blank rectangles over cards and fields), and touch screens gain little
+ * from the effect.
+ */
 @supports (animation-timeline: view()) {
-  .parallax-soft,
-  .parallax-strong {
-    animation: parallax linear both;
-    animation-timeline: view();
-    animation-range: cover;
-  }
+  @media (hover: hover) and (pointer: fine) {
+    .parallax-soft,
+    .parallax-strong {
+      animation: parallax linear both;
+      animation-timeline: view();
+      animation-range: cover;
+    }
 
-  .parallax-soft {
-    --parallax-distance: 24px;
-  }
+    .parallax-soft {
+      --parallax-distance: 24px;
+    }
 
-  .parallax-strong {
-    --parallax-distance: 56px;
+    .parallax-strong {
+      --parallax-distance: 56px;
+    }
   }
 }
 
