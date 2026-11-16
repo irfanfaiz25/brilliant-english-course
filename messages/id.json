@@ -224,7 +224,25 @@
     "chooseParentFirst": "Pilih {parent} dulu",
     "apply": "Terapkan",
     "reset": "Atur ulang",
-    "choose": "Pilih {level}"
+    "choose": "Pilih {level}",
+    "levelShort": {
+      "province": "Provinsi",
+      "regency": "Kab/Kota",
+      "district": "Kecamatan",
+      "village": "Desa/Kel."
+    },
+    "search": {
+      "villageLabel": "Cari desa/kelurahan",
+      "villagePlaceholder": "Contoh: Tanah Baru",
+      "minChars": "Ketik minimal {min} huruf",
+      "loading": "Mencari wilayah…",
+      "empty": "Tidak ada wilayah bernama “{query}”. Coba ejaan lain atau pilih bertahap.",
+      "error": "Pencarian sedang bermasalah. Coba lagi atau pilih bertahap.",
+      "results": "{count} wilayah ditemukan",
+      "clear": "Hapus teks",
+      "browse": "Atau pilih bertahap dari provinsi",
+      "areaHint": "Pilih wilayah dari saran, atau tekan Enter untuk mencari nama unit"
+    }
   },
   "Program": {
     "metaTitle": "Program Kursus Bahasa Inggris Anak: Kindy Class, Elementary, Secondary",

@@ -7,6 +7,15 @@ export const limits = {
   unitsPerVillage: 2,
   /** Village quota at or below this many open slots is shown as "almost full". */
   quotaAlmostFullAt: 1,
+  /** Region name search (Kemitraan village search, Cek Unit area suggestions; ADR-047). */
+  regionSearch: {
+    minChars: 3,
+    maxChars: 60,
+    results: 8,
+    /** Searches per IP within `rateWindowMs` (one per pause in typing). */
+    rateLimit: 60,
+    rateWindowMs: 60 * 1000,
+  },
   partnerApplication: {
     nameMax: 80,
     motivationMax: 500,

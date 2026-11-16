@@ -294,6 +294,8 @@
   --animate-caret: caret 1s steps(1) infinite;
 
   /* ---------- Layers (use as `z-(--z-overlay)`) ---------- */
+  /* Popups inside page content (search suggestions), under sticky bars and the header. */
+  --z-dropdown: 20;
   --z-sticky: 30;
   --z-header: 40;
   --z-overlay: 50;
@@ -513,6 +515,19 @@
 
 ::view-transition-new(site-header) {
   animation: none;
+}
+
+/*
+ * Phones: the bottom action bar (`MobileActionBar`) steps aside while a text field has focus, so
+ * it never covers search suggestions or the field being typed in. Back as soon as focus leaves.
+ */
+body:has(:is(input:not([type="checkbox"], [type="radio"], [type="hidden"]), textarea):focus)
+  [data-mobile-action-bar] {
+  /* Its entrance animation would otherwise hold it in place; it replays when the bar returns. */
+  animation: none;
+  translate: 0 calc(100% + 1.5rem);
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* Reading progress bar (see `ScrollProgress`): CSS scroll-driven, no JS. */

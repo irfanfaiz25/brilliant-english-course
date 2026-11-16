@@ -224,7 +224,25 @@
     "chooseParentFirst": "Choose a {parent} first",
     "apply": "Apply",
     "reset": "Reset",
-    "choose": "Choose a {level}"
+    "choose": "Choose a {level}",
+    "levelShort": {
+      "province": "Province",
+      "regency": "Regency/City",
+      "district": "District",
+      "village": "Village"
+    },
+    "search": {
+      "villageLabel": "Search for a village",
+      "villagePlaceholder": "e.g. Tanah Baru",
+      "minChars": "Type at least {min} letters",
+      "loading": "Searching areas…",
+      "empty": "No area called “{query}”. Try another spelling or choose step by step.",
+      "error": "Search is having trouble. Try again or choose step by step.",
+      "results": "{count} areas found",
+      "clear": "Clear text",
+      "browse": "Or choose step by step from the province",
+      "areaHint": "Pick an area from the suggestions, or press Enter to search unit names"
+    }
   },
   "Program": {
     "metaTitle": "English Programs for Kids: Kindy Class, Elementary, Secondary",

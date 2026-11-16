@@ -75,6 +75,31 @@ test.describe("partnership page", () => {
     await expect(viewer).toHaveCount(0);
   });
 
+  test("finds a village by name, even misspelled, and checks its quota (ADR-047)", async ({
+    page,
+  }) => {
+    await page.goto("/kemitraan#kuota");
+    const search = page.getByRole("combobox", { name: "Cari desa/kelurahan" });
+    // The step-by-step cascade is folded away until a village is chosen.
+    await expect(page.getByRole("combobox", { name: "Provinsi" })).toBeHidden();
+
+    // "Singorejo" is how people spell Singorojo (Jepara); close spellings are found too.
+    await search.fill("singorejo");
+    await expect(
+      page.getByRole("option", { name: /Singorojo.*Mayong, Kab\. Jepara/ }),
+    ).toBeVisible();
+
+    await search.fill("tanah baru");
+    const option = page.getByRole("option", { name: /Tanah Baru.*Beji, Kota Depok/ });
+    await expect(option.getByText("Tersedia")).toBeVisible();
+    await option.click();
+
+    await expect(page).toHaveURL(/\?wilayah=32\.76\.06\.1003/);
+    await expect(page.getByRole("article", { name: "Tanah Baru" })).toBeVisible();
+    // The cascade opens on the chosen path.
+    await expect(page.getByRole("combobox", { name: "Kecamatan" })).toHaveValue("32.76.06");
+  });
+
   test("arrives from Cek Unit with the village pre-selected", async ({ page }) => {
     await page.goto("/kemitraan?wilayah=36.03.18.2009#daftar");
 

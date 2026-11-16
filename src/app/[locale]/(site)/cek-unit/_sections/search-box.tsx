@@ -5,10 +5,20 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 
 import { useUrlState } from "@/components/site/url-state-shell";
 import { fieldControlClass } from "@/components/ui/input-styles";
+import {
+  RegionSuggestionList,
+  suggestionId,
+  type RegionSuggestionLabels,
+} from "@/features/regions/components/region-suggestion-list";
+import { useRegionSuggestions } from "@/features/regions/components/use-region-suggestions";
+import { useSuggestionKeys } from "@/features/regions/components/use-suggestion-keys";
+import type { RegionSearchResult } from "@/features/regions/schema";
 import { cn } from "@/lib/utils";
 
 /** Wait after the last keystroke before searching, so typing stays smooth. */
 const SEARCH_DEBOUNCE_MS = 450;
+/** Areas a parent may look in: a city, a district or a village (ADR-047). */
+const AREA_LEVELS = ["regency", "district", "village"] as const;
 
 type SearchBoxProps = {
   /** Localized finder URL; the form still works as a plain GET without JS. */
@@ -16,15 +26,39 @@ type SearchBoxProps = {
   defaultValue: string;
   /** Other current params to keep when the text changes (region, location). */
   keep: Record<string, string>;
-  labels: { label: string; placeholder: string; submit: string; clear: string };
+  labels: { label: string; placeholder: string; submit: string; clear: string; hint: string };
   idPrefix: string;
+  /** Area suggestions while typing: picking one filters by that region instead of the text. */
+  areas: { labels: RegionSuggestionLabels; keep: Record<string, string> };
 };
 
-export function SearchBox({ action, defaultValue, keep, labels, idPrefix }: SearchBoxProps) {
+/**
+ * The finder's search: free text over unit names and places (Enter or a pause in typing), plus
+ * area suggestions (ADR-047) — a city, district or village picked from the list becomes the
+ * region filter. Without JS it is a plain GET form.
+ */
+export function SearchBox({ action, defaultValue, keep, labels, idPrefix, areas }: SearchBoxProps) {
   const { navigate, isPending } = useUrlState();
   const [value, setValue] = useState(defaultValue);
+  const [open, setOpen] = useState(false);
   const lastSubmitted = useRef(defaultValue);
   const inputId = `${idPrefix}-q`;
+  const listId = `${idPrefix}-areas`;
+  const hintId = `${idPrefix}-q-hint`;
+  const suggestions = useRegionSuggestions(open ? value : "", { levels: AREA_LEVELS });
+
+  const pickArea = (area: RegionSearchResult) => {
+    lastSubmitted.current = "";
+    setValue("");
+    setOpen(false);
+    navigate({ ...areas.keep, wilayah: area.code });
+  };
+  const keys = useSuggestionKeys(suggestions.results, {
+    open,
+    onPick: pickArea,
+    onClose: () => setOpen(false),
+  });
+  const showList = open && suggestions.results.length > 0;
 
   const submit = (text: string) => {
     const query = text.trim();
@@ -44,6 +78,7 @@ export function SearchBox({ action, defaultValue, keep, labels, idPrefix }: Sear
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setOpen(false);
     submit(value);
   };
 
@@ -63,10 +98,25 @@ export function SearchBox({ action, defaultValue, keep, labels, idPrefix }: Sear
         id={inputId}
         name="q"
         type="search"
+        role="combobox"
         autoComplete="off"
         enterKeyHint="search"
+        aria-autocomplete="list"
+        aria-expanded={showList}
+        aria-controls={listId}
+        aria-describedby={hintId}
+        aria-activedescendant={
+          showList && keys.activeIndex >= 0 ? suggestionId(listId, keys.activeIndex) : undefined
+        }
         value={value}
-        onChange={(event) => setValue(event.target.value)}
+        onChange={(event) => {
+          setValue(event.target.value);
+          setOpen(true);
+          keys.setActiveIndex(-1);
+        }}
+        onFocus={() => setOpen(true)}
+        onBlur={() => setOpen(false)}
+        onKeyDown={keys.onKeyDown}
         placeholder={labels.placeholder}
         className={cn(
           fieldControlClass,
@@ -94,6 +144,21 @@ export function SearchBox({ action, defaultValue, keep, labels, idPrefix }: Sear
           {labels.submit}
         </button>
       </div>
+      <p id={hintId} className="sr-only">
+        {labels.hint}
+      </p>
+      {showList && (
+        <RegionSuggestionList
+          id={listId}
+          results={suggestions.results}
+          activeIndex={keys.activeIndex}
+          showLevel
+          labels={areas.labels}
+          onSelect={pickArea}
+          onHover={keys.setActiveIndex}
+          className="absolute inset-x-0 top-full z-(--z-dropdown) mt-1"
+        />
+      )}
     </form>
   );
 }

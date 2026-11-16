@@ -1,6 +1,8 @@
 import { z } from "zod";
 
 import { regionLevels } from "@/config/enums";
+import { limits } from "@/config/limits";
+import type { QuotaStatus } from "@/features/quota/schema";
 
 /** Kemendagri code format, shared with the `regions` table check constraint. */
 export const REGION_CODE_PATTERN = /^\d{2}(\.\d{2}(\.\d{2}(\.\d{4})?)?)?$/;
@@ -25,3 +27,37 @@ export const regionSchema = z.object({
 });
 
 export type Region = z.infer<typeof regionSchema>;
+
+/**
+ * Query of the region search (`/api/regions/search`): the typed text, the levels to look in and
+ * whether village results carry their partnership quota.
+ */
+export const regionSearchParamsSchema = z.object({
+  q: z
+    .string()
+    .transform((text) =>
+      text
+        .trim()
+        .replace(/\s+/g, " ")
+        .toLowerCase()
+        // Official names are long ("Kabupaten Bogor"); people type "kab bogor" or "kab. bogor".
+        .replace(/^kab\.? ?/, "kabupaten "),
+    )
+    .pipe(z.string().min(limits.regionSearch.minChars).max(limits.regionSearch.maxChars)),
+  levels: z
+    .string()
+    .default("village")
+    .transform((value) => [...new Set(value.split(","))].sort())
+    .pipe(z.array(z.enum(regionLevels)).min(1)),
+  quota: z.stringbool().default(false),
+});
+
+export type RegionSearchParams = z.infer<typeof regionSearchParamsSchema>;
+
+/** One search hit: the region and its ancestors as one short line ("Beji, Kota Depok, Jawa Barat"). */
+export type RegionSearchResult = Region & {
+  level: RegionLevel;
+  area: string;
+  /** Villages only, when asked: their partnership quota. */
+  quota?: { status: QuotaStatus; remaining: number };
+};

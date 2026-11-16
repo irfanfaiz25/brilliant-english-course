@@ -103,7 +103,7 @@ Added beyond Penpot (Phase 2b), all in `globals.css`:
   Theme classes live in `features/programs/level-theme.ts`; never pick a level color by slug.
 - `whatsapp-hover` #1DA851, `overlay` (backdrop), `shadow-partner` (orange pop shadow).
 - `partner-strong` (`orange-700`) for small partner text on `partner-soft` surfaces (AA).
-- Layer tokens: `--z-sticky` 30, `--z-header` 40, `--z-overlay` 50, `--z-toast` 60 (use `z-(--z-overlay)`).
+- Layer tokens: `--z-dropdown` 20 (popups in content), `--z-sticky` 30, `--z-header` 40, `--z-overlay` 50, `--z-toast` 60 (use `z-(--z-overlay)`).
 
 **Roles**
 
@@ -277,7 +277,7 @@ Implementation rules:
 | **Section header**           | Overline + H2 + optional lead paragraph; left-aligned on mobile, centered optional on desktop.                                                                                                                                                                                                                                                                                                                 |
 | **Site shell**               | `SiteShell` (`components/site`) wraps every public page: skip link → header → `<main id="main">` → footer → mobile action bar. The localized 404 uses it too.                                                                                                                                                                                                                                                  |
 | **Navbar**                   | Sticky; transparent at the top, `surface-glass` + `shadow-md` once scrolled (IntersectionObserver sentinel, no scroll listeners). Desktop (`lg`+): logo, nav with growing underline for the current section, ID/EN switch, "Gabung Mitra". Below `lg`: logo, a labelled "Cek Unit" button (pin + text; a pin alone was unclear), menu sheet (nav, CTAs, WhatsApp, language). Anchored during page transitions. |
-| **Sticky mobile action bar** | Floating frosted bar below `lg`: parents → "Cek Unit" + WhatsApp; partnership pages (`partnerPaths`) → "Cek Kuota" + "Daftar Mitra". Slides in on load. Footer reserves space for it.                                                                                                                                                                                                                          |
+| **Sticky mobile action bar** | Floating frosted bar below `lg`: parents → "Cek Unit" + WhatsApp; partnership pages (`partnerPaths`) → "Cek Kuota" + "Daftar Mitra". Slides in on load and steps aside while a text field has focus (CSS `:has()`), so it never covers suggestions or the field. Footer reserves space for it.                                                                                                                 |
 | **Accordion (FAQ)**          | Radix Accordion, panels force-mounted so answers stay in the HTML for `FAQPage` schema. Opens and closes smoothly (grid-rows height + fade); hidden from AT when closed.                                                                                                                                                                                                                                       |
 | **Testimonial**              | Quote, name, role ("Orang tua siswa Kindy", "Mitra Kab. Bogor"), optional photo and rating. Horizontal scroll-snap list on mobile, grid on desktop (no auto carousel).                                                                                                                                                                                                                                         |
 | **Scroll rail**              | `ScrollRail` (`components/site`): a row of cards that overflows (Beranda levels from five). CSS scroll-snap; round arrow buttons move one view and hide at each end; the edge where more cards wait fades. The list is focusable (arrow keys), the arrows are pointer shortcuts. Below `md` callers pass their own layout (stacked).                                                                           |
@@ -389,6 +389,9 @@ Implementation rules:
 - **URL is the state:** `?q=` text, `?wilayah=` deepest selected region code, `?lat=&lng=` (rounded to ~100 m),
   `?dekat=1` (came from "use my location"). Every result is shareable ("copy results link") and works without JS
   (GET forms; native selects; `noscript` Apply button).
+- **Area suggestions (ADR-047):** typing in the search box suggests matching cities, districts and villages (city first,
+  level labelled, the area on a second line). Picking one sets the region filter and clears the text; Enter still
+  searches unit names.
 - **Layout:** desktop — sticky side panel (search, location, region cascade) beside the results; phones — a compact panel
   (search, location, "Filter wilayah" bottom sheet with an active-count badge), results first.
 - **Smooth, no flashing:** filters call `router.replace` inside a transition; current results stay and dim
@@ -432,6 +435,9 @@ Implementation rules:
   formats; on phones the flow comes first.
 - **Procedure:** the shared timeline, one column per step up to six (rows of four beyond); a step may link to `#kuota`,
   `#daftar` or WhatsApp.
+- **Village search first (ADR-047):** "Cari desa/kelurahan" suggests villages as you type, each with its area and quota
+  badge; close spellings match too. The step-by-step cascade folds below it ("Atau pilih bertahap"), open once a village
+  is chosen.
 - **Quota checker (`#kuota`):** the shared region cascade with `?wilayah=` in the URL (same `UrlStateShell` as Cek Unit),
   so "Jadi mitra pertama di sini" arrives pre-filled. Result card: status badge with text (Tersedia / Sisa N slot /
   Penuh), a slot meter, active units and partners joining, and the next step (apply, or see existing units when full).
