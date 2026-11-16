@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { unitFixtures } from "@/db/seed/content/units";
 import {
   buildDirectionsUrl,
+  buildLevelSlots,
   distanceKm,
   formatUnitSchedule,
   normalizeSearchText,
@@ -69,5 +70,26 @@ describe("searchUnits", () => {
 
   it("normalizes search text", () => {
     expect(normalizeSearchText("  Pakánsari   Indah ")).toBe("pakansari indah");
+  });
+});
+
+describe("buildLevelSlots", () => {
+  const levels = [
+    { slug: "kindy", name: "Kindy Class", theme: "sunny" as const },
+    { slug: "elementary", name: "Elementary Level", theme: "teal" as const },
+    { slug: "secondary", name: "Secondary Level", theme: "orange" as const },
+  ];
+
+  it("shows every level and marks what the unit opens, partly or fully", () => {
+    expect(
+      buildLevelSlots(levels, {
+        levels: ["kindy", "secondary"],
+        someClasses: { kindy: ["00000000-0000-4000-8000-000000000001"] },
+      }).map(({ slug, offered, partial }) => ({ slug, offered, partial })),
+    ).toEqual([
+      { slug: "kindy", offered: true, partial: true },
+      { slug: "elementary", offered: false, partial: false },
+      { slug: "secondary", offered: true, partial: false },
+    ]);
   });
 });

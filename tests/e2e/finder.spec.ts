@@ -62,6 +62,24 @@ test.describe("unit finder", () => {
     expect(beji?.quota?.status).toBe("available");
   });
 
+  test("the region search reads comma-separated terms as place and area", async ({ request }) => {
+    type Search = { results: { code: string; matchesAll: boolean }[]; partial: boolean };
+    const search = async (q: string) =>
+      (await (
+        await request.get(`/api/regions/search?levels=village&q=${encodeURIComponent(q)}`)
+      ).json()) as Search;
+
+    // Pelem in Kec. Simo, Kab. Boyolali.
+    const area = await search("pelem, simo");
+    expect(area.results[0]).toMatchObject({ code: "33.09.13.2001", matchesAll: true });
+    expect(area.partial).toBe(false);
+
+    // A dusun is not a Kemendagri region: the village still comes back, flagged as partial.
+    const dusun = await search("sanggrahan, pelem");
+    expect(dusun.results.some((result) => result.code === "33.09.13.2001")).toBe(true);
+    expect(dusun.partial).toBe(true);
+  });
+
   test("shows a partnership path when an area has no unit", async ({ page }) => {
     await page.goto("/cek-unit?wilayah=36.03.18.2009");
 

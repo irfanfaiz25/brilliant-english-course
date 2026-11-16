@@ -5,7 +5,7 @@ import type { Locale } from "@/i18n/routing";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 import type { UnitSummary } from "../schema";
-import { formatUnitSchedule } from "../service";
+import { buildLevelSlots, formatUnitSchedule } from "../service";
 import { UnitCardView } from "./unit-card-view";
 
 type UnitCardProps = {
@@ -34,14 +34,14 @@ export async function UnitCard({ unit, distanceLabel, path }: UnitCardProps) {
         manager: t("manager", { name: unit.manager }),
         schedule: formatUnitSchedule(unit, locale),
         whatsappUrl: buildWhatsAppUrl(unit.whatsapp, tWhatsApp("unit", { unit: unit.name })),
-        levelBadges: levels
-          .filter((level) => unit.levels.includes(level.slug))
-          .map(({ slug, name, theme }) => ({ slug, name, theme })),
+        levelSlots: buildLevelSlots(levels, unit),
         labels: {
           address: t("address"),
           manager: t("managerLabel"),
           schedule: t("schedule"),
           levels: t("levels"),
+          levelNotOffered: t("levelNotOffered"),
+          levelPartial: t("levelPartial"),
           chat: t("chat"),
           directions: t("directions"),
         },

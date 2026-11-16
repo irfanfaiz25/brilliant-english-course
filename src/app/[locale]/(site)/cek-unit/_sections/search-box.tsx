@@ -29,7 +29,10 @@ type SearchBoxProps = {
   labels: { label: string; placeholder: string; submit: string; clear: string; hint: string };
   idPrefix: string;
   /** Area suggestions while typing: picking one filters by that region instead of the text. */
-  areas: { labels: RegionSuggestionLabels; keep: Record<string, string> };
+  areas: {
+    labels: RegionSuggestionLabels & { partial: string };
+    keep: Record<string, string>;
+  };
 };
 
 /**
@@ -156,6 +159,7 @@ export function SearchBox({ action, defaultValue, keep, labels, idPrefix, areas 
           labels={areas.labels}
           onSelect={pickArea}
           onHover={keys.setActiveIndex}
+          note={suggestions.partial ? areas.labels.partial : undefined}
           className="absolute inset-x-0 top-full z-(--z-dropdown) mt-1"
         />
       )}

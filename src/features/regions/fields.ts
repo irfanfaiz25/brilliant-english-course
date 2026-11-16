@@ -40,6 +40,7 @@ export async function getRegionSearchLabels({
     error: t("search.error"),
     results: t.raw("search.results") as string,
     clear: t("search.clear"),
+    partial: t("search.partial"),
     levels: {
       province: t("levelShort.province"),
       regency: t("levelShort.regency"),

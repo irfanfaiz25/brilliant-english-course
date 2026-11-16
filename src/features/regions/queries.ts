@@ -1,6 +1,6 @@
 import "server-only";
 
-import { asc, eq, inArray, isNull, sql } from "drizzle-orm";
+import { asc, eq, inArray, isNull, sql, type SQL } from "drizzle-orm";
 import { cacheLife, cacheTag } from "next/cache";
 
 import { cacheTags } from "@/config/cache-tags";
@@ -8,6 +8,7 @@ import { db } from "@/db/client";
 import { regions } from "@/db/schema";
 
 import type { Region, RegionLevel, RegionSearchResult } from "./schema";
+import { fuzzyTerm, likeLiteral } from "./search-terms";
 import { regionCodePath, shortRegionName } from "./service";
 
 const columns = { code: regions.code, name: regions.name };
@@ -53,13 +54,15 @@ export async function getRegionPath(code: string): Promise<Region[]> {
 }
 
 /**
- * Regions whose name matches the typed text (ADR-047): substring matches first, then close
- * spellings ("singorejo" also finds Singorojo), with their ancestors as a short area line.
- * `query` is already normalised (lowercase, single spaces) and `levels` sorted, so the cache key
- * is stable. Uses the trigram index on `regions.name`.
+ * Regions matching the typed terms (ADR-047). The place's name must match one term (substring or
+ * a close spelling: "singorejo" also finds Singorojo); the other terms may match it or its
+ * ancestors, so "beji, depok" finds Beji in Kota Depok and "pelem, boyolali" Pelem in Simo.
+ * Results matching every term come first, then exact names (without "Kabupaten"/"Kota"), wider
+ * areas, prefixes and similarity. `terms` come from `parseRegionQuery` and `levels` are sorted,
+ * so the cache key is stable. Candidates come from the trigram index on `regions.name`.
  */
 export async function searchRegions(
-  query: string,
+  terms: readonly string[],
   levels: readonly RegionLevel[],
   limit: number,
 ): Promise<RegionSearchResult[]> {
@@ -67,10 +70,43 @@ export async function searchRegions(
   cacheTag(cacheTags.regions);
   cacheLife("days");
 
-  // `%` and `_` typed by the visitor are literal characters, not LIKE wildcards.
-  const literal = query.replace(/[\\%_]/g, (char) => `\\${char}`);
-  const pattern = `%${literal}%`;
-  const prefix = `${literal}%`;
+  // A term matches a name as a substring, or as a close spelling of the name without
+  // "Kabupaten"/"Kota" (else "kabupaten bogor" would also find Kabupaten Bone).
+  const matches = (term: string, column: SQL) =>
+    sql`(${column} ilike ${`%${likeLiteral(term)}%`} or ${fuzzyTerm(term)} <% ${column})`;
+  // One condition per term, so Postgres combines index scans (BitmapOr).
+  const nameMatches = sql.join(
+    terms.map((term) => matches(term, sql`r.name`)),
+    sql` or `,
+  );
+  const placeMatches = (term: string) =>
+    sql.join(
+      [sql`r.name`, sql`p1.name`, sql`p2.name`, sql`p3.name`].map((column) =>
+        matches(term, column),
+      ),
+      sql` or `,
+    );
+  const matched = sql.join(
+    terms.map((term) => sql`(case when ${placeMatches(term)} then 1 else 0 end)`),
+    sql` + `,
+  );
+  const exact = sql.join(
+    terms.map(
+      (term) =>
+        sql`(lower(r.name) = ${term}
+          or regexp_replace(lower(r.name), '^(kabupaten|kota|kota administrasi) ', '') = ${term})`,
+    ),
+    sql` or `,
+  );
+  const prefix = sql.join(
+    terms.map((term) => sql`r.name ilike ${`${likeLiteral(term)}%`}`),
+    sql` or `,
+  );
+  const similarity = sql`greatest(${sql.join(
+    terms.map((term) => sql`word_similarity(${fuzzyTerm(term)}, r.name)`),
+    sql`, `,
+  )})`;
+
   const rows = await db.execute<{
     code: string;
     name: string;
@@ -78,8 +114,10 @@ export async function searchRegions(
     parent: string | null;
     grandparent: string | null;
     root: string | null;
+    matched: number;
   }>(sql`
-    select r.code, r.name, r.level, p1.name as parent, p2.name as grandparent, p3.name as root
+    select r.code, r.name, r.level, p1.name as parent, p2.name as grandparent, p3.name as root,
+      (${matched})::int as matched
     from ${regions} r
     left join ${regions} p1 on p1.code = r.parent_code
     left join ${regions} p2 on p2.code = p1.parent_code
@@ -88,15 +126,15 @@ export async function searchRegions(
       levels.map((level) => sql`${level}::region_level`),
       sql`, `,
     )})
-      and (r.name ilike ${pattern} or ${query} <% r.name)
+      and (${nameMatches})
     order by
-      -- The name without "Kabupaten"/"Kota" equals the text: "depok" puts Kota Depok first.
-      (lower(r.name) = ${query}
-        or regexp_replace(lower(r.name), '^(kabupaten|kota|kota administrasi) ', '') = ${query}) desc,
+      matched desc,
+      -- The name without "Kabupaten"/"Kota" equals a term: "depok" puts Kota Depok first.
+      (${exact}) desc,
       -- Then wider areas first: a city before its districts and villages of the same name.
       array_position(array['province', 'regency', 'district', 'village']::region_level[], r.level),
-      r.name ilike ${prefix} desc,
-      word_similarity(${query}, r.name) desc,
+      (${prefix}) desc,
+      ${similarity} desc,
       length(r.name),
       r.code
     limit ${limit}
@@ -110,5 +148,6 @@ export async function searchRegions(
       .filter((name): name is string => name !== null)
       .map(shortRegionName)
       .join(", "),
+    matchesAll: row.matched === terms.length,
   }));
 }

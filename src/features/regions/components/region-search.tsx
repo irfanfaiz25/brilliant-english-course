@@ -30,6 +30,8 @@ export type RegionSearchLabels = RegionSuggestionLabels & {
   /** "{count} hasil", announced to screen readers. */
   results: string;
   clear: string;
+  /** Shown when several comma terms matched only in part (hamlets are not in the data). */
+  partial: string;
 };
 
 /**
@@ -143,6 +145,7 @@ export function RegionSearch({
           labels={labels}
           onSelect={pick}
           onHover={keys.setActiveIndex}
+          note={suggestions.partial ? labels.partial : undefined}
           className="absolute inset-x-0 top-full z-(--z-dropdown) mt-1"
         />
       )}

@@ -9,7 +9,7 @@ const limiter = createRateLimiter({
 });
 
 /**
- * Region search as you type (ADR-047): `?q=tanah baru&levels=village&quota=1`. A GET route, not a
+ * Region search as you type (ADR-047): `?q=sanggrahan, pelem&levels=village&quota=1`. A GET route, not a
  * Server Action, so searches can run in parallel and be cancelled while the visitor types.
  * Results are cached per query; the quota part refreshes within minutes.
  */
@@ -25,5 +25,11 @@ export async function GET(request: Request) {
   if (!parsed.success) return Response.json({ error: "invalidQuery" }, { status: 400 });
 
   const results = await findRegions(parsed.data);
-  return Response.json({ results }, { headers: { "Cache-Control": "private, max-age=60" } });
+  // Several terms, none matched in full: probably a hamlet (dusun) or RT, below the dataset.
+  const partial =
+    parsed.data.q.length > 1 && results.length > 0 && !results.some((result) => result.matchesAll);
+  return Response.json(
+    { results, partial },
+    { headers: { "Cache-Control": "private, max-age=60" } },
+  );
 }

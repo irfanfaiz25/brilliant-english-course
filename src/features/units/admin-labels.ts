@@ -23,6 +23,8 @@ export async function unitCardTemplates(): Promise<UnitCardTemplates> {
       manager: t("managerLabel"),
       schedule: t("schedule"),
       levels: t("levels"),
+      levelNotOffered: t("levelNotOffered"),
+      levelPartial: t("levelPartial"),
       chat: t("chat"),
       directions: t("directions"),
     },

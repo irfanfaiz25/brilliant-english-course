@@ -739,6 +739,9 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
     Ranked by exact name (without "Kabupaten"/"Kota"), then wider areas, prefix and similarity. "kab" is read as
     "kabupaten". Results are cached per normalised query. Village quotas come from one batched query
     (`getVillageQuotas`).
+  - **Comma terms:** "sanggrahan, pelem" or "beji, depok" are read as up to four terms (`parseRegionQuery`). The place
+    must match one term; the others may match it or its parent areas, and places matching every term rank first. When
+    none does (a dusun or RT is not in the Kemendagri list), the suggestions say so and show the closest villages.
   - **UI:** suggestions follow the WAI-ARIA combobox pattern (`useRegionSuggestions`, `useSuggestionKeys`,
     `RegionSuggestionList`) and both pages share it.
   - **Phones:** the bottom action bar steps aside while a text field has focus, so it never covers the suggestions.
@@ -751,5 +754,4 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
   - "use my location" to find the village, set aside: it needs a paid reverse-geocoding service, and village accuracy
     is poor;
   - a second search box on Cek Unit, set aside: two boxes in one panel confuse.
-- **Follow-up:** Searching "village + area" in one string ("tanah baru depok") is not supported yet; the area line
-  disambiguates instead.
+- **Follow-up:** An area without a comma ("tanah baru depok") is still read as one name; the area line disambiguates.

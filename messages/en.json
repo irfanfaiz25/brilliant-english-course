@@ -189,10 +189,12 @@
     "enrollment": "{status, select, open {Open} limited {Few seats left} full {Full} other {—}}",
     "chat": "Chat on WhatsApp",
     "directions": "Get Directions",
-    "levels": "Levels offered",
+    "levels": "Programs",
     "schedule": "Schedule",
     "address": "Address",
-    "managerLabel": "Manager"
+    "managerLabel": "Manager",
+    "levelNotOffered": "Not offered",
+    "levelPartial": "Some classes"
   },
   "Activities": {
     "overline": "Fun Activities",
@@ -233,7 +235,7 @@
     },
     "search": {
       "villageLabel": "Search for a village",
-      "villagePlaceholder": "e.g. Tanah Baru",
+      "villagePlaceholder": "e.g. Tanah Baru, Depok",
       "minChars": "Type at least {min} letters",
       "loading": "Searching areas…",
       "empty": "No area called “{query}”. Try another spelling or choose step by step.",
@@ -241,7 +243,8 @@
       "results": "{count} areas found",
       "clear": "Clear text",
       "browse": "Or choose step by step from the province",
-      "areaHint": "Pick an area from the suggestions, or press Enter to search unit names"
+      "areaHint": "Pick an area from the suggestions, or press Enter to search unit names",
+      "partial": "Nothing matches every word. Area data goes down to villages, so hamlets (dusun) and RTs are not included: pick the village."
     }
   },
   "Program": {

@@ -4,6 +4,8 @@ import { regionLevels } from "@/config/enums";
 import { limits } from "@/config/limits";
 import type { QuotaStatus } from "@/features/quota/schema";
 
+import { parseRegionQuery } from "./search-terms";
+
 /** Kemendagri code format, shared with the `regions` table check constraint. */
 export const REGION_CODE_PATTERN = /^\d{2}(\.\d{2}(\.\d{2}(\.\d{4})?)?)?$/;
 
@@ -33,17 +35,12 @@ export type Region = z.infer<typeof regionSchema>;
  * whether village results carry their partnership quota.
  */
 export const regionSearchParamsSchema = z.object({
+  /** The typed text as search terms: "sanggrahan, pelem" → ["sanggrahan", "pelem"]. */
   q: z
     .string()
-    .transform((text) =>
-      text
-        .trim()
-        .replace(/\s+/g, " ")
-        .toLowerCase()
-        // Official names are long ("Kabupaten Bogor"); people type "kab bogor" or "kab. bogor".
-        .replace(/^kab\.? ?/, "kabupaten "),
-    )
-    .pipe(z.string().min(limits.regionSearch.minChars).max(limits.regionSearch.maxChars)),
+    .max(limits.regionSearch.maxChars)
+    .transform(parseRegionQuery)
+    .pipe(z.array(z.string()).min(1)),
   levels: z
     .string()
     .default("village")
@@ -58,6 +55,8 @@ export type RegionSearchParams = z.infer<typeof regionSearchParamsSchema>;
 export type RegionSearchResult = Region & {
   level: RegionLevel;
   area: string;
+  /** Whether every comma-separated term matched (the name or an ancestor's). */
+  matchesAll: boolean;
   /** Villages only, when asked: their partnership quota. */
   quota?: { status: QuotaStatus; remaining: number };
 };

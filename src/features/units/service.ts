@@ -2,6 +2,8 @@ import type { Locale } from "@/i18n/routing";
 
 import { isWithinRegion } from "@/features/regions/service";
 
+import type { LevelBadge } from "@/features/programs/schema";
+
 import type { UnitSummary } from "./schema";
 
 /** Monday-based reference week, used only to get localized weekday names. */
@@ -156,4 +158,22 @@ export function resolveLevelOffers(
     offers.push({ levelId: level.id, allClasses, classIds: allClasses ? [] : classIds });
   }
   return offers;
+}
+
+/** A program level on a unit card: every level is shown, so cards compare at a glance. */
+export type LevelSlot = LevelBadge & {
+  offered: boolean;
+  /** Offered with only some of its classes (ADR-040). */
+  partial: boolean;
+};
+
+/** One slot per site level, in display order, marked with what the unit opens there. */
+export function buildLevelSlots(
+  levels: readonly LevelBadge[],
+  unit: Pick<UnitSummary, "levels" | "someClasses">,
+): LevelSlot[] {
+  return levels.map(({ slug, name, theme }) => {
+    const offered = unit.levels.includes(slug);
+    return { slug, name, theme, offered, partial: offered && Boolean(unit.someClasses?.[slug]) };
+  });
 }
