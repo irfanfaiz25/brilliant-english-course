@@ -47,6 +47,14 @@ test.describe("site shell", () => {
 });
 
 test.describe("site shell on desktop", () => {
+  test("decorative parallax drifts with the mouse and trackpad", async ({ page }) => {
+    await page.goto("/kemitraan");
+    const animations = await page
+      .locator(".parallax-soft, .parallax-strong")
+      .evaluateAll((els) => els.map((el) => getComputedStyle(el).animationName));
+    expect(animations).toContain("parallax");
+  });
+
   test.skip(({ isMobile }) => isMobile, "desktop navigation only");
 
   test("primary navigation uses localized URLs", async ({ page }) => {
@@ -104,6 +112,16 @@ test.describe("page layout on phones", () => {
       expect(extra).toBe(0);
     });
   }
+
+  // On iPhone, scroll-animated blurred decor left nearby content unpainted: parallax is for mice.
+  test("decorative parallax stays still on touch screens", async ({ page }) => {
+    await page.goto("/kemitraan");
+    const animations = await page
+      .locator(".parallax-soft, .parallax-strong")
+      .evaluateAll((els) => els.map((el) => getComputedStyle(el).animationName));
+    expect(animations.length).toBeGreaterThan(0);
+    expect(new Set(animations)).toEqual(new Set(["none"]));
+  });
 
   // iPhone Safari shakes a sticky bar that sits under an `overflow` clip while the page scrolls.
   for (const path of ["/program", "/kemitraan"]) {
