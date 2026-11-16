@@ -1,7 +1,9 @@
 import {
+  CheckIcon,
   ClockIcon,
   LocateFixedIcon,
   MapPinIcon,
+  MinusIcon,
   NavigationIcon,
   UserRoundIcon,
 } from "lucide-react";
@@ -11,11 +13,11 @@ import { BrandIcon } from "@/components/icons/brand-icon";
 import { Badge, type BadgeProps } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { levelTheme } from "@/features/programs/level-theme";
-import type { LevelBadge } from "@/features/programs/schema";
 import { Link } from "@/i18n/navigation";
+import { cn } from "@/lib/utils";
 
 import type { EnrollmentStatus, UnitSummary } from "../schema";
-import { buildDirectionsUrl, unitInitials } from "../service";
+import { buildDirectionsUrl, type LevelSlot } from "../service";
 
 const enrollmentBadge: Record<EnrollmentStatus, NonNullable<BadgeProps["variant"]>> = {
   open: "success",
@@ -30,13 +32,15 @@ export type UnitCardText = {
   manager: string;
   schedule: string;
   whatsappUrl: string;
-  /** The levels the unit offers that are on the site, in display order. */
-  levelBadges: readonly LevelBadge[];
+  /** Every site level in display order, marked with what the unit opens (`buildLevelSlots`). */
+  levelSlots: readonly LevelSlot[];
   labels: {
     address: string;
     manager: string;
     schedule: string;
     levels: string;
+    levelNotOffered: string;
+    levelPartial: string;
     chat: string;
     directions: string;
   };
@@ -52,39 +56,32 @@ type UnitCardViewProps = {
 };
 
 /**
- * Unit card (DESIGN.md § 4 Card · Unit): identity, status, where/when, levels, and two actions.
- * Pure markup so the admin can preview it live; `UnitCard` fills the texts on the server.
+ * Unit card (DESIGN.md § 4 Card · Unit). A fixed frame so cards line up in a grid: name and code
+ * with the status pinned top right, where/when (address up to two lines), one slot per program level
+ * (offered, partly offered or not, so units compare at a glance), and the two actions at the
+ * bottom. Pure markup so the admin can preview it live; `UnitCard` fills the texts on the server.
  */
 export function UnitCardView({ unit, text, distanceLabel, path }: UnitCardViewProps) {
   return (
-    <article className="@container flex flex-col gap-4 rounded-xl border border-border/60 bg-card p-5 shadow-card transition-[transform,box-shadow] duration-(--duration-base) ease-out hover:-translate-y-0.5 hover:shadow-lg sm:p-6">
-      <header className="flex items-start gap-3">
-        <span
-          aria-hidden
-          className="inline-flex size-12 shrink-0 items-center justify-center rounded-xl bg-gradient-brand text-label text-inverse-foreground shadow-glow-primary"
-        >
-          {unitInitials(unit.name)}
-        </span>
-        <div className="flex min-w-0 flex-1 flex-wrap items-start justify-between gap-x-3 gap-y-1.5">
-          <div className="flex min-w-0 flex-col">
-            <h3 className="text-h5 text-foreground">
-              {path ? (
-                <Link
-                  href={{ pathname: "/unit/[...path]", params: { path: [...path] } }}
-                  className="rounded-sm underline decoration-primary/30 underline-offset-4 transition-colors duration-(--duration-fast) hover:text-primary hover:decoration-primary"
-                >
-                  {unit.name}
-                </Link>
-              ) : (
-                unit.name
-              )}
-            </h3>
-            <p className="text-caption text-muted-foreground">{text.code}</p>
-          </div>
-          <Badge variant={enrollmentBadge[unit.enrollment]} dot>
-            {text.enrollment}
-          </Badge>
-        </div>
+    <article className="@container flex h-full flex-col gap-4 rounded-xl border border-border/60 bg-card p-5 shadow-card transition-[transform,box-shadow] duration-(--duration-base) ease-out hover:-translate-y-0.5 hover:shadow-lg sm:p-6">
+      {/* Name | status; the code below spans both, so it never wraps beside the status. */}
+      <header className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-x-3 gap-y-0.5">
+        <h3 className="line-clamp-2 text-h5 text-foreground" title={unit.name}>
+          {path ? (
+            <Link
+              href={{ pathname: "/unit/[...path]", params: { path: [...path] } }}
+              className="rounded-sm underline decoration-primary/30 underline-offset-4 transition-colors duration-(--duration-fast) hover:text-primary hover:decoration-primary"
+            >
+              {unit.name}
+            </Link>
+          ) : (
+            unit.name
+          )}
+        </h3>
+        <Badge variant={enrollmentBadge[unit.enrollment]} dot className="whitespace-nowrap">
+          {text.enrollment}
+        </Badge>
+        <p className="col-span-2 text-caption text-muted-foreground">{text.code}</p>
       </header>
 
       {distanceLabel && (
@@ -96,23 +93,28 @@ export function UnitCardView({ unit, text, distanceLabel, path }: UnitCardViewPr
 
       <dl className="flex flex-col gap-2 text-body-sm text-muted-foreground">
         <UnitFact icon={<MapPinIcon aria-hidden />} label={text.labels.address}>
-          {unit.address}
-        </UnitFact>
-        <UnitFact icon={<UserRoundIcon aria-hidden />} label={text.labels.manager}>
-          {text.manager}
+          <span className="line-clamp-2" title={unit.address}>
+            {unit.address}
+          </span>
         </UnitFact>
         <UnitFact icon={<ClockIcon aria-hidden />} label={text.labels.schedule}>
           {text.schedule}
         </UnitFact>
+        <UnitFact icon={<UserRoundIcon aria-hidden />} label={text.labels.manager}>
+          {text.manager}
+        </UnitFact>
       </dl>
 
-      <ul aria-label={text.labels.levels} className="flex flex-wrap gap-1.5">
-        {text.levelBadges.map((level) => (
-          <li key={level.slug}>
-            <Badge variant={levelTheme[level.theme].badge}>{level.name}</Badge>
-          </li>
-        ))}
-      </ul>
+      <section aria-label={text.labels.levels} className="flex flex-col gap-2">
+        <p aria-hidden className="text-overline text-muted-foreground uppercase">
+          {text.labels.levels}
+        </p>
+        <ul className="grid auto-cols-fr grid-flow-col gap-1.5">
+          {text.levelSlots.map((level) => (
+            <LevelSlotItem key={level.slug} level={level} labels={text.labels} />
+          ))}
+        </ul>
+      </section>
 
       {/* Side by side once the card itself is wide enough (also inside the admin preview). */}
       <div className="mt-auto grid gap-2 pt-1 @xs:grid-cols-2">
@@ -130,6 +132,40 @@ export function UnitCardView({ unit, text, distanceLabel, path }: UnitCardViewPr
         </Button>
       </div>
     </article>
+  );
+}
+
+/** A level slot: the level's colours with a tick when offered, muted with a dash when not. */
+function LevelSlotItem({ level, labels }: { level: LevelSlot; labels: UnitCardText["labels"] }) {
+  const theme = levelTheme[level.theme];
+  return (
+    <li
+      className={cn(
+        "flex min-w-0 flex-col items-center justify-center gap-0.5 rounded-lg px-1.5 py-2 text-center",
+        level.offered ? theme.soft : "bg-muted/60",
+      )}
+    >
+      <span
+        className={cn(
+          // Icon above the name in a narrow card, beside it once there is room.
+          "inline-flex flex-col items-center gap-0.5 text-caption font-semibold @xs:flex-row @xs:gap-1",
+          level.offered ? theme.accent : "text-muted-foreground",
+        )}
+      >
+        {level.offered ? (
+          <CheckIcon aria-hidden className="size-3.5 shrink-0" />
+        ) : (
+          <MinusIcon aria-hidden className="size-3.5 shrink-0" />
+        )}
+        <span className="line-clamp-2">{level.name}</span>
+      </span>
+      {level.partial && (
+        <span className="text-caption leading-tight font-normal text-muted-foreground">
+          {labels.levelPartial}
+        </span>
+      )}
+      {!level.offered && <span className="sr-only">{labels.levelNotOffered}</span>}
+    </li>
   );
 }
 

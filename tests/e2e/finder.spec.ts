@@ -23,12 +23,61 @@ test.describe("unit finder", () => {
   test("searches as you type and keeps the query in the URL", async ({ page }) => {
     await page.goto("/cek-unit");
     await page
-      .getByRole("searchbox", { name: "Cari nama unit, kecamatan, atau kota" })
+      .getByRole("combobox", { name: "Cari nama unit, kecamatan, atau kota" })
+      .filter({ visible: true })
       .fill("depok");
 
     await expect(page).toHaveURL(/\?q=depok$/);
     await expect(unitCards(page)).toHaveCount(2);
     await expect(page.getByRole("link", { name: "Hapus filter “depok”" })).toBeVisible();
+  });
+
+  test("suggests areas while typing and filters by the one picked (ADR-047)", async ({ page }) => {
+    await page.goto("/cek-unit");
+    const search = page
+      .getByRole("combobox", { name: "Cari nama unit, kecamatan, atau kota" })
+      .filter({ visible: true });
+    await search.fill("depok");
+
+    // The city ranks above villages of the same name; levels are labelled.
+    const city = page.getByRole("option", { name: /^Kota Depok\s*Kab\/Kota/ });
+    await expect(city).toBeVisible();
+    await city.click();
+
+    await expect(page).toHaveURL(/\?wilayah=32\.76$/);
+    await expect(search).toHaveValue("");
+    await expect(visibleText(page, "2 unit aktif di Kota Depok")).toBeVisible();
+  });
+
+  test("the region search API refuses bad queries", async ({ request }) => {
+    expect((await request.get("/api/regions/search?q=ab")).status()).toBe(400);
+    expect((await request.get("/api/regions/search?q=bogor&levels=planet")).status()).toBe(400);
+    const response = await request.get("/api/regions/search?q=tanah%20baru&quota=true");
+    expect(response.status()).toBe(200);
+    const { results } = (await response.json()) as {
+      results: { code: string; area: string; quota?: { status: string } }[];
+    };
+    const beji = results.find((result) => result.code === "32.76.06.1003");
+    expect(beji?.area).toBe("Beji, Kota Depok, Jawa Barat");
+    expect(beji?.quota?.status).toBe("available");
+  });
+
+  test("the region search reads comma-separated terms as place and area", async ({ request }) => {
+    type Search = { results: { code: string; matchesAll: boolean }[]; partial: boolean };
+    const search = async (q: string) =>
+      (await (
+        await request.get(`/api/regions/search?levels=village&q=${encodeURIComponent(q)}`)
+      ).json()) as Search;
+
+    // Pelem in Kec. Simo, Kab. Boyolali.
+    const area = await search("pelem, simo");
+    expect(area.results[0]).toMatchObject({ code: "33.09.13.2001", matchesAll: true });
+    expect(area.partial).toBe(false);
+
+    // A dusun is not a Kemendagri region: the village still comes back, flagged as partial.
+    const dusun = await search("sanggrahan, pelem");
+    expect(dusun.results.some((result) => result.code === "33.09.13.2001")).toBe(true);
+    expect(dusun.partial).toBe(true);
   });
 
   test("shows a partnership path when an area has no unit", async ({ page }) => {

@@ -1,4 +1,4 @@
-import { and, eq, gt, isNull, ne, or, sql, type SQL } from "drizzle-orm";
+import { and, eq, gt, inArray, isNull, ne, or, sql, type SQL } from "drizzle-orm";
 
 import type { Database } from "@/db/client";
 import { db } from "@/db/client";
@@ -98,6 +98,39 @@ export async function villageUsage(
       .where(and(eq(quotaReservations.villageCode, villageCode), openReservation)),
   ]);
   return { activeUnits: unitRow?.count ?? 0, reserved: reservationRow?.slots ?? 0 };
+}
+
+/** `villageUsage` for several villages in two queries (search results); missing ones are 0. */
+export async function villagesUsage(
+  executor: Reader,
+  villageCodes: readonly string[],
+): Promise<Map<string, { activeUnits: number; reserved: number }>> {
+  const usage = new Map(villageCodes.map((code) => [code, { activeUnits: 0, reserved: 0 }]));
+  if (villageCodes.length === 0) return usage;
+  const [unitRows, reservationRows] = await Promise.all([
+    executor
+      .select({ code: units.villageCode, count: sql<number>`count(*)::int` })
+      .from(units)
+      .where(and(inArray(units.villageCode, [...villageCodes]), activeUnit))
+      .groupBy(units.villageCode),
+    executor
+      .select({
+        code: quotaReservations.villageCode,
+        slots: sql<number>`coalesce(sum(${quotaReservations.slots}), 0)::int`,
+      })
+      .from(quotaReservations)
+      .where(and(inArray(quotaReservations.villageCode, [...villageCodes]), openReservation))
+      .groupBy(quotaReservations.villageCode),
+  ]);
+  for (const row of unitRows) {
+    const entry = usage.get(row.code);
+    if (entry) entry.activeUnits = row.count;
+  }
+  for (const row of reservationRows) {
+    const entry = usage.get(row.code);
+    if (entry) entry.reserved = row.slots;
+  }
+  return usage;
 }
 
 /** End of the chosen day in Indonesian western time, so "until 31 Dec" includes that day. */

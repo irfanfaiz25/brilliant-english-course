@@ -6,7 +6,11 @@ import { CopyLinkButton } from "@/components/site/copy-link-button";
 import { PendingRegion, UrlStateShell } from "@/components/site/url-state-shell";
 import { Separator } from "@/components/ui/separator";
 import { RegionFilter } from "@/features/regions/components/region-filter";
-import { buildRegionFields, getRegionFilterLabels } from "@/features/regions/fields";
+import {
+  buildRegionFields,
+  getRegionFilterLabels,
+  getRegionSearchLabels,
+} from "@/features/regions/fields";
 import { getRegionPath } from "@/features/regions/queries";
 import type { Region } from "@/features/regions/schema";
 import { UnitCard } from "@/features/units/components/unit-card";
@@ -53,9 +57,14 @@ export async function Finder({
   const unitPaths = unitPathsByCode(directory);
   const results = searchUnits(units, { query: params.query, regionCode, near: params.near });
 
-  const [fields, regionLabels] = await Promise.all([
+  const tRegions = await getTranslations("Regions");
+  const [fields, regionLabels, areaLabels] = await Promise.all([
     buildRegionFields(path),
     getRegionFilterLabels(),
+    getRegionSearchLabels({
+      label: t("filters.searchLabel"),
+      placeholder: t("filters.searchPlaceholder"),
+    }),
   ]);
   const action = getPathname({ href: "/cek-unit", locale });
   const keepForRegion = finderQuery({ query: params.query });
@@ -79,7 +88,10 @@ export async function Finder({
         placeholder: t("filters.searchPlaceholder"),
         submit: t("filters.searchSubmit"),
         clear: t("results.clearAll"),
+        hint: tRegions("search.areaHint"),
       }}
+      // A picked area replaces the typed text; the location sort stays.
+      areas={{ labels: areaLabels, keep: finderQuery({ near: params.near }) }}
     />
   );
   const locationButton = (

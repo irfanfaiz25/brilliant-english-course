@@ -9,13 +9,13 @@ import { fillTemplate } from "@/lib/template";
 import { buildWhatsAppUrl, normalizeWhatsAppNumber } from "@/lib/whatsapp";
 
 import type { EnrollmentStatus, UnitForm, UnitFormInput, UnitSummary } from "../schema";
-import { formatUnitSchedule } from "../service";
+import { buildLevelSlots, formatUnitSchedule } from "../service";
 import { UnitCardView, type UnitCardText } from "./unit-card-view";
 
 /** Texts of the public unit card as templates (`Kode Unit {code}`), filled in the browser. */
 export type UnitCardTemplates = Omit<
   UnitCardText,
-  "code" | "manager" | "enrollment" | "schedule" | "whatsappUrl" | "levelBadges"
+  "code" | "manager" | "enrollment" | "schedule" | "whatsappUrl" | "levelSlots"
 > & {
   code: string;
   manager: string;
@@ -87,7 +87,7 @@ export function UnitCardPreview({
             unit.whatsapp || "0",
             fillTemplate(templates.whatsappMessage, { unit: name }),
           ),
-          levelBadges: levelOptions.filter((level) => unit.levels.includes(level.slug)),
+          levelSlots: buildLevelSlots(levelOptions, unit),
           labels: templates.labels,
         }}
       />

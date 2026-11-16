@@ -157,6 +157,8 @@ Rules:
   uploads use `MediaUploader` (`features/media/components`, browser → storage with progress) and files are stored only
   through `storage` (`lib/storage`: R2, or `.storage/` when the `R2_*` variables are unset); image URLs come from `mediaUrl()`; selects use `NativeSelect`, weekdays `WeekdayPicker`, and a
   village is chosen with `RegionPicker` (`features/regions/components`, initial state from `getRegionPickerLevels()`).
+  On the public site a region is searched by name with `RegionSearch` (or the finder's suggestions) through
+  `/api/regions/search`, with the `RegionFilter` cascade as the alternative (ADR-047).
   Public cards an admin edits are pure views (`LevelCard`, `ActivityCard`, `UnitCardView`) so forms can preview them.
   An activity card opens its detail popup (`ActivityExplorer`, URL `?kegiatan=<slug>`, back closes it; ADR-042).
   Program levels group classes (ADR-040): school-year labels come from `formatGradeSpan()` (`features/programs/grades.ts`,

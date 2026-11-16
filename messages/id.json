@@ -189,10 +189,12 @@
     "enrollment": "{status, select, open {Tersedia} limited {Kuota terbatas} full {Penuh} other {—}}",
     "chat": "Chat WhatsApp",
     "directions": "Lihat Rute",
-    "levels": "Level tersedia",
+    "levels": "Program",
     "schedule": "Jadwal",
     "address": "Alamat",
-    "managerLabel": "Pengelola"
+    "managerLabel": "Pengelola",
+    "levelNotOffered": "Tidak dibuka",
+    "levelPartial": "Sebagian kelas"
   },
   "Activities": {
     "overline": "Kegiatan Seru",
@@ -224,7 +226,26 @@
     "chooseParentFirst": "Pilih {parent} dulu",
     "apply": "Terapkan",
     "reset": "Atur ulang",
-    "choose": "Pilih {level}"
+    "choose": "Pilih {level}",
+    "levelShort": {
+      "province": "Provinsi",
+      "regency": "Kab/Kota",
+      "district": "Kecamatan",
+      "village": "Desa/Kel."
+    },
+    "search": {
+      "villageLabel": "Cari desa/kelurahan",
+      "villagePlaceholder": "Contoh: Tanah Baru, Depok",
+      "minChars": "Ketik minimal {min} huruf",
+      "loading": "Mencari wilayah…",
+      "empty": "Tidak ada wilayah bernama “{query}”. Coba ejaan lain atau pilih bertahap.",
+      "error": "Pencarian sedang bermasalah. Coba lagi atau pilih bertahap.",
+      "results": "{count} wilayah ditemukan",
+      "clear": "Hapus teks",
+      "browse": "Atau pilih bertahap dari provinsi",
+      "areaHint": "Pilih wilayah dari saran, atau tekan Enter untuk mencari nama unit",
+      "partial": "Tidak ada yang cocok dengan semua kata. Data wilayah sampai tingkat desa/kelurahan, jadi nama dusun/RT tidak termasuk: pilih desanya."
+    }
   },
   "Program": {
     "metaTitle": "Program Kursus Bahasa Inggris Anak: Kindy Class, Elementary, Secondary",

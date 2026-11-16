@@ -724,3 +724,34 @@ Format: **ADR-NNN — Title** · Date · Status · Decision · Why · Alternativ
   - the old site links two different head office WhatsApp numbers (0877-8424-1961 on the home
     page, 0877-4824-1961 on Kontak Kami): BEC confirms one in Pengaturan;
   - the BEC team replaces the sample photos and dummy unit details.
+
+### ADR-047 — Search regions by name; the cascade stays as the alternative
+
+2026-11-16 · Accepted
+
+- **Decision:** Visitors can type a region's name instead of walking Provinsi → Kab/Kota → Kecamatan → Desa.
+  - **Kemitraan:** "Cari desa/kelurahan" (`RegionSearch`) suggests villages, each with its area and quota badge. The
+    `RegionFilter` cascade folds below it (`RegionBrowse`, a native `<details>`), open once a village is chosen.
+  - **Cek Unit:** the existing search box also suggests cities, districts and villages. Picking one sets the region
+    filter and clears the text; Enter still searches unit names.
+  - **Search:** `GET /api/regions/search?q=&levels=&quota=` (rate-limited per IP) runs `searchRegions()`: the trigram
+    index on `regions.name`, substring matches plus close spellings (`word_similarity`, so "singorejo" finds Singorojo).
+    Ranked by exact name (without "Kabupaten"/"Kota"), then wider areas, prefix and similarity. "kab" is read as
+    "kabupaten". Results are cached per normalised query. Village quotas come from one batched query
+    (`getVillageQuotas`).
+  - **Comma terms:** "sanggrahan, pelem" or "beji, depok" are read as up to four terms (`parseRegionQuery`). The place
+    must match one term; the others may match it or its parent areas, and places matching every term rank first. When
+    none does (a dusun or RT is not in the Kemendagri list), the suggestions say so and show the closest villages.
+  - **UI:** suggestions follow the WAI-ARIA combobox pattern (`useRegionSuggestions`, `useSuggestionKeys`,
+    `RegionSuggestionList`) and both pages share it.
+  - **Phones:** the bottom action bar steps aside while a text field has focus, so it never covers the suggestions.
+- **Why:** Partners usually know their village but not its Kemendagri path, and four dependent selects meant four
+  server round trips and long pickers on phones. Names repeat across Indonesia (four "Tanah Baru"), so a suggestion
+  always shows its area. The quota in the result answers the question before the pick. The cascade stays for browsing and
+  for visitors without JS.
+- **Alternatives:**
+  - a GET route instead of Server Actions, because actions run one at a time and cannot be cancelled while typing;
+  - "use my location" to find the village, set aside: it needs a paid reverse-geocoding service, and village accuracy
+    is poor;
+  - a second search box on Cek Unit, set aside: two boxes in one panel confuse.
+- **Follow-up:** An area without a comma ("tanah baru depok") is still read as one name; the area line disambiguates.

@@ -3,6 +3,7 @@ import "server-only";
 import { getTranslations } from "next-intl/server";
 
 import type { RegionFilterLabels, RegionLevelField } from "./components/region-filter";
+import type { RegionSearchLabels } from "./components/region-search";
 import { getRegionChildren } from "./queries";
 import { regionLevels, type Region } from "./schema";
 
@@ -10,6 +11,50 @@ import { regionLevels, type Region } from "./schema";
 export async function getRegionFilterLabels(): Promise<RegionFilterLabels> {
   const t = await getTranslations("Regions");
   return { title: t("title"), all: t("all"), apply: t("apply"), reset: t("reset") };
+}
+
+/**
+ * Labels of the region search (`RegionSearch`, the finder's suggestions). `label` and
+ * `placeholder` are the caller's (what is searched differs per page); `quota` adds the village
+ * quota badges (Kemitraan).
+ */
+export async function getRegionSearchLabels({
+  label,
+  placeholder,
+  quota = false,
+}: {
+  label: string;
+  placeholder: string;
+  quota?: boolean;
+}): Promise<RegionSearchLabels> {
+  const [t, tQuota] = await Promise.all([
+    getTranslations("Regions"),
+    getTranslations("Partnership.quota"),
+  ]);
+  return {
+    label,
+    placeholder,
+    minChars: t.raw("search.minChars") as string,
+    loading: t("search.loading"),
+    empty: t.raw("search.empty") as string,
+    error: t("search.error"),
+    results: t.raw("search.results") as string,
+    clear: t("search.clear"),
+    partial: t("search.partial"),
+    levels: {
+      province: t("levelShort.province"),
+      regency: t("levelShort.regency"),
+      district: t("levelShort.district"),
+      village: t("levelShort.village"),
+    },
+    quota: quota
+      ? {
+          available: tQuota("available"),
+          almostFull: tQuota.raw("almostFull") as string,
+          full: tQuota("full"),
+        }
+      : undefined,
+  };
 }
 
 /**

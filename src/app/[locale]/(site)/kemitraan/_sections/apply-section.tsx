@@ -7,8 +7,14 @@ import { Doodle } from "@/components/site/doodle";
 import { Section } from "@/components/site/section";
 import { SectionHeader } from "@/components/site/section-header";
 import { getQuotaRules, getVillageQuota } from "@/features/quota/queries";
+import { RegionBrowse } from "@/features/regions/components/region-browse";
 import { RegionFilter } from "@/features/regions/components/region-filter";
-import { buildRegionFields, getRegionFilterLabels } from "@/features/regions/fields";
+import { RegionSearch } from "@/features/regions/components/region-search";
+import {
+  buildRegionFields,
+  getRegionFilterLabels,
+  getRegionSearchLabels,
+} from "@/features/regions/fields";
 import { getRegionPath } from "@/features/regions/queries";
 import { regionCodeSchema, type Region } from "@/features/regions/schema";
 import { getPathname } from "@/i18n/navigation";
@@ -65,9 +71,15 @@ async function QuotaAndForm({ searchParams }: { searchParams: SearchParams }) {
 
   const path = code ? await getRegionPath(code) : ([] as Region[]);
   const village = path.length === 4 ? path[3] : undefined;
-  const [fields, labels, quota, rules] = await Promise.all([
+  const tRegions = await getTranslations("Regions.search");
+  const [fields, labels, searchLabels, quota, rules] = await Promise.all([
     buildRegionFields(path),
     getRegionFilterLabels(),
+    getRegionSearchLabels({
+      label: tRegions("villageLabel"),
+      placeholder: tRegions("villagePlaceholder"),
+      quota: true,
+    }),
     village ? getVillageQuota(village.code) : Promise.resolve(null),
     getQuotaRules(),
   ]);
@@ -96,13 +108,17 @@ async function QuotaAndForm({ searchParams }: { searchParams: SearchParams }) {
             <h3 className="text-h4 text-foreground">{t("title")}</h3>
             <p className="text-body-sm text-muted-foreground">{t("hint")}</p>
           </div>
-          <RegionFilter
-            action={getPathname({ href: "/kemitraan", locale })}
-            fields={fields}
-            keep={{}}
-            labels={labels}
-            idPrefix="quota"
-          />
+          {/* Search the village first; the step-by-step cascade is the alternative (ADR-047). */}
+          <RegionSearch levels={["village"]} quota labels={searchLabels} />
+          <RegionBrowse label={tRegions("browse")} defaultOpen={path.length > 0}>
+            <RegionFilter
+              action={getPathname({ href: "/kemitraan", locale })}
+              fields={fields}
+              keep={{}}
+              labels={labels}
+              idPrefix="quota"
+            />
+          </RegionBrowse>
           <PendingRegion>
             {village && quota ? (
               <QuotaResult key={village.code} village={village} area={area} quota={quota} />
