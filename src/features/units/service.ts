@@ -67,16 +67,6 @@ export function buildMapUrl(location: { lat: number; lng: number }): string {
   return url.toString();
 }
 
-/** Two-letter initials for the unit avatar, e.g. "Unit Sukamaju" → "SU". */
-export function unitInitials(name: string): string {
-  const words = name
-    .replace(/^unit\s+/i, "")
-    .split(/\s+/)
-    .filter(Boolean);
-  const [first = "", second = ""] = words;
-  return (second ? first[0] + second[0] : first.slice(0, 2)).toUpperCase();
-}
-
 type GeoPoint = { lat: number; lng: number };
 
 const EARTH_RADIUS_KM = 6371;

@@ -8,7 +8,6 @@ import {
   formatUnitSchedule,
   normalizeSearchText,
   searchUnits,
-  unitInitials,
 } from "./service";
 
 describe("formatUnitSchedule", () => {
@@ -29,11 +28,6 @@ describe("unit helpers", () => {
     expect(buildDirectionsUrl("Jl. Raya No. 1, Bogor")).toBe(
       "https://www.google.com/maps/dir/?api=1&destination=Jl.+Raya+No.+1%2C+Bogor",
     );
-  });
-
-  it("derives initials", () => {
-    expect(unitInitials("Unit Sukamaju")).toBe("SU");
-    expect(unitInitials("Unit Bojong Gede")).toBe("BG");
   });
 });
 

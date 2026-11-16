@@ -36,7 +36,6 @@ import {
   buildMapUrl,
   distanceKm,
   formatUnitSchedule,
-  unitInitials,
 } from "@/features/units/service";
 import { getPathname, Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
@@ -132,17 +131,9 @@ export async function UnitView({
               className="relative isolate flex flex-col gap-6 overflow-hidden rounded-3xl border border-border/60 bg-card p-5 shadow-glow-primary sm:p-8"
             >
               <DecorBlob tone="primary" className="-top-16 -right-16 size-56 opacity-60" />
-              <header className="flex items-center gap-4">
-                <span
-                  aria-hidden
-                  className="inline-flex size-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-brand text-h5 text-inverse-foreground shadow-glow-primary"
-                >
-                  {unitInitials(unit.name)}
-                </span>
-                <h2 id="unit-details-title" className="text-h4 text-foreground">
-                  {t("detailsTitle")}
-                </h2>
-              </header>
+              <h2 id="unit-details-title" className="text-h4 text-foreground">
+                {t("detailsTitle")}
+              </h2>
 
               <dl className="flex flex-col gap-5">
                 <FactRow icon={<MapPinIcon aria-hidden />} label={tUnits("address")}>

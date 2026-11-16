@@ -17,7 +17,7 @@ import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
 import type { EnrollmentStatus, UnitSummary } from "../schema";
-import { buildDirectionsUrl, unitInitials, type LevelSlot } from "../service";
+import { buildDirectionsUrl, type LevelSlot } from "../service";
 
 const enrollmentBadge: Record<EnrollmentStatus, NonNullable<BadgeProps["variant"]>> = {
   open: "success",
@@ -56,27 +56,17 @@ type UnitCardViewProps = {
 };
 
 /**
- * Unit card (DESIGN.md § 4 Card · Unit). A fixed frame so cards line up in a grid: identity with
- * the status pinned top right, where/when (address up to two lines), one slot per program level
+ * Unit card (DESIGN.md § 4 Card · Unit). A fixed frame so cards line up in a grid: name and code
+ * with the status pinned top right, where/when (address up to two lines), one slot per program level
  * (offered, partly offered or not, so units compare at a glance), and the two actions at the
  * bottom. Pure markup so the admin can preview it live; `UnitCard` fills the texts on the server.
  */
 export function UnitCardView({ unit, text, distanceLabel, path }: UnitCardViewProps) {
   return (
     <article className="@container flex h-full flex-col gap-4 rounded-xl border border-border/60 bg-card p-5 shadow-card transition-[transform,box-shadow] duration-(--duration-base) ease-out hover:-translate-y-0.5 hover:shadow-lg sm:p-6">
-      {/* Wide card: avatar | name | status, the code spanning name and status below. Narrow card:
-          the status moves under the code so the name keeps its width. */}
-      <header className="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-x-3 gap-y-0.5 @xs:grid-cols-[auto_minmax(0,1fr)_auto]">
-        <span
-          aria-hidden
-          className="col-start-1 row-span-3 row-start-1 inline-flex size-12 shrink-0 items-center justify-center rounded-xl bg-gradient-brand text-label text-inverse-foreground shadow-glow-primary @xs:row-span-2"
-        >
-          {unitInitials(unit.name)}
-        </span>
-        <h3
-          className="col-start-2 row-start-1 line-clamp-2 text-h5 text-foreground"
-          title={unit.name}
-        >
+      {/* Name | status; the code below spans both, so it never wraps beside the status. */}
+      <header className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-x-3 gap-y-0.5">
+        <h3 className="line-clamp-2 text-h5 text-foreground" title={unit.name}>
           {path ? (
             <Link
               href={{ pathname: "/unit/[...path]", params: { path: [...path] } }}
@@ -88,16 +78,10 @@ export function UnitCardView({ unit, text, distanceLabel, path }: UnitCardViewPr
             unit.name
           )}
         </h3>
-        <Badge
-          variant={enrollmentBadge[unit.enrollment]}
-          dot
-          className="col-start-2 row-start-3 mt-1 justify-self-start whitespace-nowrap @xs:col-start-3 @xs:row-start-1 @xs:mt-0"
-        >
+        <Badge variant={enrollmentBadge[unit.enrollment]} dot className="whitespace-nowrap">
           {text.enrollment}
         </Badge>
-        <p className="col-start-2 row-start-2 text-caption text-muted-foreground @xs:col-end-4">
-          {text.code}
-        </p>
+        <p className="col-span-2 text-caption text-muted-foreground">{text.code}</p>
       </header>
 
       {distanceLabel && (
